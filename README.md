@@ -4,3 +4,5 @@
 Contributors: Eric Collins, Jason Fortunato, David Roccapriore, Linnea Sahlberg, Rich Wenner
 
 Rich was able to edit this file on his box!  
+
+So was Linnea!
