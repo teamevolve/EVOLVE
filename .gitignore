@@ -1,0 +1,22 @@
+#ignore hidden directories and files
+.*
+
+#ignore temporary files
+*.tmp
+*.temp
+*.temporary
+
+#ignore log file
+*.log
+*.logfile
+
+#ignore backup files
+\#*\#
+*.bak
+*.backup
+
+#ignore emacs backup files
+*~
+
+#compiled java files
+*.class
