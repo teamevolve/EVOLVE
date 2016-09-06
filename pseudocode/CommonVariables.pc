@@ -11,6 +11,8 @@
 #	EXVAR   = 0000                  # This is an example variable
 #       ...
 #
+# For local variables, please use lowercase variable names to avoid confustion.
+#
 ################################################################################
 
 # Integer variables
