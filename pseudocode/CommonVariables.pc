@@ -1,0 +1,72 @@
+################################################################################
+# Contributors: ericscollins
+################################################################################
+# Common variables used in all functions in the original fortran. Listed with
+# their modernized types. Due to restricted variable name length, many of these
+# have unclear purposes; as we determine these purposes, please leave a comment
+# describing its usage starting in column 40.
+#
+# e.g.
+#	...
+#	EXVAR   = 0000                  # This is an example variable
+#       ...
+#
+################################################################################
+
+# Integer variables
+int 
+	IGEN    = 1
+	IN      = 5
+	IY      = 12345
+	IZ      = 12345
+	LGEN
+	MXPOP1
+	MXPOP2
+	NOGENS
+	OUTFLOW
+	OUTLP   = 6
+	OUTSCR  = 6
+	PRINT2  = 6
+	SUMGEN  = 1
+	SUMRY 
+	TOADLT
+
+# Integer arrays
+int[] 
+	INFLO[3]
+	MATES[6]
+	NOADLT[3]
+	OUTFLO[3]
+
+# Two Dimensional integer arrays 
+int[][]
+	RSLT[3][125]
+
+# Floating point variables
+float
+	AM
+	FRQMP
+	S
+	V
+
+# Floating point arrays
+float[]
+	ALSUR [2]
+	ASELCO[2]
+	FITAL [2]
+	FITGNT[3]
+	GNTSUR[3]
+	GSELCO[3]
+	JUV   [3]
+	NOOUT [3]
+	NOYONG[6]
+	OBSFR [3]
+	REPR8 [3]
+	SURVR8[3]
+		
+		
+# String variables	
+	ANS
+	GRF
+	NEXT
+	TITLE
