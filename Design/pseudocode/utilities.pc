@@ -59,7 +59,7 @@ void ALFREQ(int dumy)
 ############################################################
 void GNTSEL(int dumy)
 ############################################################
-# Calculates genotype selection coefficient
+# Calculates genotype selection coefficients
 ############################################################
 
     # Fill genotype fitness coefficient array
@@ -70,9 +70,19 @@ void GNTSEL(int dumy)
         GSELCO[i] = 1 - FTGNT[i]
 
 
-
+############################################################
 void ALSEL(int dumy)
-    ...
+############################################################
+# Calculates allele selection coefficients
+############################################################
+
+    # Fill allele fitness coefficient array
+    ALFIT(dumy)
+
+    # Calculate allele selection coefficients
+    for i in 0..2
+        ASELCO[i] = 1 - FITAL[i]
+
 
 void ALFIT(int dumy)
     ...
