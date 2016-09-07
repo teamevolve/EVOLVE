@@ -21,7 +21,7 @@ int
 	IN      = 5
 	IY      = 12345
 	IZ      = 12345
-	LGEN
+	LGEN                            # Index of last generation
 	MXPOP1                          # Carrying capacity
 	MXPOP2                          # Pop size after a crash
 	NOGENS                          # No. of generations to simulate
