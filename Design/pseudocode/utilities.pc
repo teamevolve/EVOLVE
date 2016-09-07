@@ -84,8 +84,50 @@ void ALSEL(int dumy)
         ASELCO[i] = 1 - FITAL[i]
 
 
+############################################################
 void ALFIT(int dumy)
-    ...
+############################################################
+# Calculates the relative fitness coefficient of each allele
+############################################################
+
+    ### Local declarations ###
+    int atot
+
+    # Make sure coeff can be calculated
+    if (IGEN > 1)
+        # set last generation index
+        LGEN = dumy - 1
+
+	# get total number of adults
+	atot = RSLT[0][LGEN - 1] + RSLT[1][LGEN - 1] + RSLT[2][LGEN - 1]
+
+	# not sure what this does, checks for valid conditions
+	ALFRMP = ALFREQ(LGEN) # wtf, where did this var come from?!
+	if ((ALFRMP != 0) and (ALFRMP != 1) and (atot != 0))
+	    ALSUR[0] = 0.0
+	    ALSUR[1] = 0.0
+	    FITAL[0] = 0.0
+	    FITAL[1] = 0.0
+
+	    # calculate allele survival rates
+	    ALSUR[0] = (1 - ALFREQ(dumy)) / (1 - ALFREQ(LGEN))
+	    ALSUR[1] = ALFREQ(dumy) / ALFREQ(LGEN)
+
+	    # calculate relative fitness coefficients
+	    if (ALSUR[0] >= ALSUR[1])
+	        FITAL[0] = 1.0
+		FITAL[1] = ALSUR[1] / ALSUR[0]
+	    else
+	        FITAL[1] = 1.0
+		FITAL[0] = ALSUR[0] / ALSUR[1]
+	else
+	    print("Warning, Entry into ALFIT with req. of M in previous " +
+	          "generation = 0.0 or 1.0, or total # adults = 0.")
+
+    else
+        print("Warning, entry into ALFIT with IGEN = 1")
+    
+        
 
 void GNTFIT(int dumy)
     ...
