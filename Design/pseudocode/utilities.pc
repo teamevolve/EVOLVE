@@ -41,12 +41,26 @@ void GAUSS()
 ############################################################
 void ALFREQ(int dumy)
 ############################################################
-#
+# Calculates allele frequency of the M allele
+############################################################
+
+    ### Local Variables ###
+    float answer
+
+    # if allele is extinct, return 0
+    if ((RSLT[1][dumy-1] == 0) and (RSLT[2][dumy-1] == 0))
+        answer = 0
+    else
+	answer = (RSLT[1][dumy - 1] + 2 * float(RSLT[2][dumy - 1])) /
+	         (2 * (RSLT[0][dumy - 1] + RSLT[1][dumy - 1] + RSLT[2][dumy - 1]))
+    return answer
+
+
+############################################################
+void GNTSEL(int dumy)
 ############################################################
     ...
 
-void GNTSEL(int dumy)
-    ...
 
 void ALSEL(int dumy)
     ...
