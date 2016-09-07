@@ -78,4 +78,4 @@ void SRVIVL()
 
     ### put adults into results array ###
     for i in 0..3
-        RSLT[i][IGEN] = adlt[i]
+        RSLT[i][IGEN - 1] = adlt[i]
