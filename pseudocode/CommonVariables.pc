@@ -17,14 +17,14 @@
 
 # Integer variables
 int 
-	IGEN    = 1
+	IGEN    = 1                     # Current generation number
 	IN      = 5
 	IY      = 12345
 	IZ      = 12345
 	LGEN
-	MXPOP1
-	MXPOP2
-	NOGENS
+	MXPOP1                          # Carrying capacity
+	MXPOP2                          # Pop size after a crash
+	NOGENS                          # No. of generations to simulate
 	OUTFLOW
 	OUTLP   = 6
 	OUTSCR  = 6
@@ -35,21 +35,21 @@ int
 
 # Integer arrays
 int[] 
-	INFLO[3]
+	INFLO[3]                        # No. of each genotype immigrating
 	MATES[6]
-	NOADLT[3]
-	OUTFLO[3]
+	NOADLT[3]                       # No. of adults of each genotype in pop
+	OUTFLO[3]                       # No. of each genotype emmigrating
 
 # Two Dimensional integer arrays 
 int[][]
-	RSLT[3][125]
+	RSLT[3][125]                    # Contains results of simulation
 
 # Floating point variables
 float
-	AM
+	AM                              # Mean used in gaussian RNG
 	FRQMP
-	S
-	V
+	S                               # Std deviation for gaussian RNG
+	V                               # Rand num returned in V from GAUSS
 
 # Floating point arrays
 float[]
@@ -59,16 +59,18 @@ float[]
 	FITGNT[3]
 	GNTSUR[3]
 	GSELCO[3]
-	JUV   [3]
+	JUV   [3]                       # No. of juveniles of each genotype
 	NOOUT [3]
 	NOYONG[6]
 	OBSFR [3]
 	REPR8 [3]
-	SURVR8[3]
+	SURVR8[3]                       # Survival rate for each genotype
 		
 		
 # String variables	
 	ANS
 	GRF
-	NEXT
+	NEXT                            # Contains instructions about whether to
+	                                ## repeat simulation with modified input
+					## or to display graphs
 	TITLE
