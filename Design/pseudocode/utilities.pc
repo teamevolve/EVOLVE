@@ -1,0 +1,61 @@
+#################################################################################
+# Contributors: ericscollins
+#################################################################################
+#
+# Shared utility functions
+#
+#################################################################################
+
+############################################################
+void GAUSS()
+############################################################
+# Uses seed IY, standard deviation S, and mean AM to
+# calculate a gaussian random number. Returns number in V
+# This function needs to be verified
+############################################################
+
+    ### Local variable defs ###
+    float q,
+          u1,
+	  u2,
+	  v1,
+	  v2,
+	  x1
+
+    ### Random number generation ###
+    u1 = randomFromSeed(IY)             # u1 and u2 will have a value between 0 and 1
+    u2 = randomFromSeed(IY)
+    v1 = 2 * u1 - 1
+    v2 = 2 * u2 - 1
+    q = v1 ** 2 + v2 ** 2
+
+    ### Check if number is valid ### 
+    if (q <= 1)
+        x1 = v1 * sqrt(-2 * ln(Q) / Q)
+    	V = x1 * S + AM
+    else
+        # Try again if invalid
+        GAUSS()
+    
+    
+############################################################
+void ALFREQ(int dumy)
+############################################################
+#
+############################################################
+    ...
+
+void GNTSEL(int dumy)
+    ...
+
+void ALSEL(int dumy)
+    ...
+
+void ALFIT(int dumy)
+    ...
+
+void GNTFIT(int dumy)
+    ...
+    
+
+
