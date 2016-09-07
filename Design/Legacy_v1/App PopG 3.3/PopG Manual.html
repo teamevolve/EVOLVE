@@ -1,0 +1,287 @@
+<HTML>
+<HEAD>
+<TITLE>
+PopG Genetic Simulation Program
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ccffff">
+<DIV ALIGN=CENTER>
+<H1>PopG genetic simulation program</H1>
+</DIV>
+<DIV ALIGN=CENTER>
+<IMG SRC="popg.gif" ALT="[PopG icon here]" HEIGHT=100>
+<P>
+<H2>version 3.3</H2>
+<H2>October, 2008</H2>
+</DIV>
+ 
+This is a one-locus, two-allele genetic simulation program for use by
+students.  Earlier versions were called Simul8.
+At our distribution server
+<TT>evolution.gs.washington.edu</TT> in folder <TT>pub/popgen</TT>
+there are archives that can be fetched for Windows, Mac OS, Mac OS X and Linux.
+These contain executables and documentation.  A source code archive is
+also available there which has support files for compiling your own version
+of the program in these operating systems.  Normally you will not need the
+source code and you will not need to recompile the program.  The source code
+can also be used to make versions for other varieties of Unix.
+See below for links that will enable you to fetch the archives.
+<P>
+<H2>Getting PopG</H2>
+<P>
+You can fetch PopG using the links below.
+<P>
+<UL>
+<LI>For Windows: <A HREF="http://evolution.gs.washington.edu/popgen/popgwin.exe">popgwin.exe</A>
+A self-extracting zip archive containing the files of the Windows version
+for Windows 95, 98, NT, 2000, me, xp, Vista and as far as we
+know all other recent versions of windows.
+<LI>For Mac OS X: <A HREF="http://evolution.gs.washington.edu/popgen/popgosx.dmg">popgosx.dmg</A>
+A Mac OS X version which can be run on any version of Mac OS X as a
+Universal native-mode executable.  It is a .dmg "disk image" file.
+<LI>For Linux: <A HREF="http://evolution.gs.washington.edu/popgen/popglinux.tar.gz">popglinux.tar.gz</A> Linux version, as a Gnuzip'ed tar archive of
+the executables and documentation. 
+</UL>
+There are also executable versions for some older kinds of computers, including
+earlier Unix workstations, pre-Windows DOS systems, and earlier Macintosh
+processors.  These can be fetched from folder <a href="http://evolution.gs.washington.edu/popgen/old">old</a> at our PopG site.  <b>Most users will not need to
+use these older executables,</b> but if you do, you should start by reading the
+<tt>README</tt> file in that folder.
+<P> 
+<H2>The documentation</H2>
+<P> 
+The documentation files are included in the fetchable archives, and consist
+of this web page.  The latest version of it can be read on the Web
+<A HREF="http://evolution.gs.washington.edu/popgen/popg.html">using this link</A>.
+<P>
+<H2>Unpacking the archives</H2>
+<P>
+After fetching the archives for Windows, for Mac, or for Linux/Unix, you need
+to unpack them.  Do this:
+<DL>
+<DT>For Windows
+<DD>Make sure the <TT>popgwin.exe</TT> file is in the folder where you want
+the program to be.  The click on it.  It will run and unpack itself into
+a set of files, including this documentation file and the
+PopG executable.  These will be in a folder (directory) called <TT>PopG_3.3</TT>
+<DT>For Mac OS X
+<DD>After the disk image has been downloaded, you should click on it to
+mount it.  A new folder should open showing the contents of the disk image.
+It will have a folder (directory) <TT>PopG_3.3</TT> with
+documentation, an icon graphic, and the
+<TT>PopG</TT> executable). Copy the <tt>PopG_3.3</tt> folder to some other
+place on your system, outside of the disk image (such as your desktop). <i>Do
+not try to use it inside the disk image.</i>
+<DT>For Linux or Unix
+<DD>Put the <TT>popglinux.tar.gz</TT> file into the folder where you want
+the program to reside and do
+<TT>tar xvfz popglinux.tar.gz</TT>.  This will create a
+folder (directory) called <TT>PopG_3.3</TT> that contains these files.
+</DL>
+<P> 
+<H2>Running the program</H2>
+<P> 
+To run the program on Linux or Unix systems you should simply type <TT>popg</TT>
+while in the proper directory.
+On Windows or Macintosh systems you simply click (or double-click) on the
+program icon.
+<P> 
+The program uses a random number generator.  It should give you a different 
+result every time it is run. 
+<P> 
+The program opens a window, and there are three menus that you can use to
+control it.  On Windows and Linux/Unix systems the menus are in the upper
+left of the main window.  On Mac OS they are in the upper left of your
+desktop window.  The windows are File and Run.  Most of their menu items
+can selected using the mouse or else (in the Windows and Macintosh cases) by
+typing the appropriate character on the keyboard.  On Windows systems
+these are Control characters such as <TT>Control-C</TT> (holding down the
+<TT>Ctrl</TT> key while typing <TT>C</TT>).  On Macintosh systems they are
+Command characters such as <TT>Command-C</TT> (holding down the <TT>Command</TT> key while typing <TT>C</TT>.
+<P>
+<H3>The <TT>Run</TT> menu</H3>
+<P>
+This contains four menu items, <TT>Continue w/</TT>, <TT>Continue</TT>, <TT>New Run</TT>, and <TT>Restart</TT>.
+<DL>
+<DT><TT>New Run</TT> (Control-N or Command-N)</DT>
+<DD>Initially only <TT>New Run</TT> is available.  It brings up a box with
+parameter values that can be changed, marking then with the mouse and using
+backspace and/or delete keys, and typing modified values in.  When these are
+given the desired values, clicking the <TT>OK</TT> box will dismiss the
+parameter values and start the run.  If at any point you want to restart
+the run with different parameter values, you can select <TT>New Run</TT>
+and you will be given a chance to change the parameters.
+<DT><TT>Continue w/</TT> (Control-C or Command-C)
+<DD>This choice continues the run, for the same number of generations as
+before (which is shown in the menu).
+<DT><TT>Continue</TT>
+<DD>This continues the run, but presents a box allowing the user to first
+change the number of generations run in the continuation of the run.
+<DT><TT>Restart</TT> (Control-R or Command-R)
+<DD>This restarts the run with the same parameter values as before.  If you
+want to change some of the parameter values, use <TT>New Run</TT> instead.
+</DL>
+<P>
+<H3>The File menu</H3>
+<P>
+This contains four menu items, which may not all be available.  They are
+<TT>Save</TT>, <TT>Print</TT>, <TT>About</TT> and <TT>Quit</TT>.  
+<DL>
+<DT><TT>Quit</TT> (Control-Q or Command-Q)
+<DD>This is self-explanatory: the program quits.
+<DT><TT>Print</TT> (Control-P or Command-P)
+<DD>This sends the present image of the graph to the system's print queue.
+On Windows, Mac OS X or Mac OS 9 systems it will present the user with a
+"print box"
+in which various options can be selected. On Linux or Unix systems it will
+send the graph as a Postscript file to the system's <TT>lpr</TT>
+printing command.
+<DT><TT>Save</TT> (Control-S or Command-S)
+<DD>This saves the graph as a Postscript file, allowing the user to
+select the name of the file (the default name is <TT>output.ps)</TT>.
+<DT><TT>About</TT> (Control-A or Command-A)
+<DD>Displays the program's copyright notice.
+</DL>
+<P> 
+<H2>Compiling it yourself</H2>
+<P>
+Most people will not have to compile the program themselves, and thus they
+won't need a C compiler for it.  But if you want to modify the program, or
+if you want to port it to a different version of Unix, you will need to
+compile the program.  If you don't need to do any of these, you can just use
+the executables that we distribute.
+<P>
+If you do need to compile the program, first download from our site the
+appropriate source code archive, and make sure it is extracted into a folder.
+Instructions for downloading and compiling the source code are available
+on our server, where you will find
+<a href="http://evolution.gs.washington.edu/popgen/compiling.html">a web page</a>
+with those instructions.
+There are downloadable files that contain source code, compiling
+instructions, and compilation support files for Windows, for Linux and Unix
+systems, and for Mac OS 9 and Mac OS X systems.  After you download the correct
+source code archive, use your browser to read the <TT>compiling.html</TT>
+web page in the main source code folder.  It contains instructions for
+compiling in each of these operating systems.
+<P>
+<H2>Simulating with PopG</H2>
+<P> 
+This program simulates the evolution of random-mating populations with two 
+alleles, arbitrary fitnesses of the three genotypes, an arbitrary mutation 
+rate, an arbitrary rate of migration between the replicate populations, and
+finite population size.
+<P>
+The programs simulate ten simultaneously evolving populations with you
+specifying the population size, the fitnesses
+of the three genotypes, the mutation rates in both directions (from <EM>A</EM> 
+to <EM>a</EM>
+and from <EM>a</EM> to <EM>A</EM>), and the initial gene frequency.  They also ask for a
+migration rate among all the populations, which will make their gene
+frequencies more similar to each other.  Much of the time (but not always!)
+you will want to set this migration rate to zero.  In most respects the
+program is self-explanatory. 
+<P>
+When you make a menu selection that causes the program to run,
+a graph of the gene frequencies of the <EM>A</EM> allele in each of the
+populations will be drawn in the window.  Note that the window can be
+resized, and the graph should adjust to this.  
+There will also be a dashed curve that shows what the
+gene frequencies would be in an infinite population (one with no
+genetic drift).  The graph can be printed using the <TT>Print</TT>
+option of the <TT>File</TT> menu, or saved to a Postscript file using
+the <TT>Save</TT> option in that menu.
+<P>
+Note that once the plot of the gene frequency curves reaches the
+right-hand side of the graph, the program prints there the number of
+populations that fixed for the <EM>A</EM> allele (ended up with a
+frequency of 1.0) and the number that lost this allele.
+<P>
+The program can simulate a wide variety of cases, and you should
+explore some of these.  Here are some suggestions:
+<UL>
+<LI>Try cases with no mutation, no migration, and all fitnesses 1.0 so
+that there is no selection.  Does genetic drift in a population of
+size 1000 accomplish roughly the same changes in 1000 generations as
+genetic drift in a population of size 100 does in 100 generations?
+By running a largish number of populations, can you check whether
+the probability that an allele is fixed by genetic drift is equal to
+its initial frequency in the populations?
+<LI>Try a case with no mutation or migration, with the <EM>A</EM>
+allele favored by natural selection (with fitness of the <EM>AA</EM>
+genotype set highest and fitness of the <EM>aa</EM> genotype set
+lowest).  Start with a small frequency of <EM>A</EM>.  Is it always
+fixed?  If one starts with a single copy of the allele, how does
+the probability that <EM>A</EM> is fixed compare with the selection
+coefficient favoring it in the heterozygote (compared to the fitness
+of the <EM>aa</EM> genotype?  Is this fixation probability larger than
+the one you would get with the same initial frequency with no
+selection?
+<LI>Try overdominance (<EM>Aa</EM> having the highest fitness).  Does
+the gene frequency converge towards an equilibrium?  Why does it
+vary from this equilibrium frequency?  How large do the selection
+coefficients have to be to cause the gene frequency to stay away from
+fixation or loss for large amounts of time?
+<LI>Try underdominance (<EM>Aa</EM> having the lowest fitness).
+Is there a starting gene frequency that will result in some populations
+heading for fixation, and others heading for loss?  If you add a small
+amount of migration, what will happen?  if you add a small amount of
+mutation in both directions?
+<LI>With migration but no selection or mutation, how much migration is
+needed to make the gene frequency curves be quite similar to each other?
+How much is needed to make them all end up at the same gene frequency?
+How is that migration rate affected by the population size?
+<LI>With mutation but no migration or selection, how much mutation is
+needed to cause the gene frequencies to converge on a mutational
+equilibrium gene frequency?  How does this value relate to the
+population size?
+<LI>If an allele is selected against, can you set up mutation rates
+that will maintain it at low frequency in the population?
+</UL>
+You should be able to use the program to get a good feel for the 
+relative strengths of different evolutionary forces.  It is worthwhile
+trying many different kinds of cases and asking what values of
+parameters are needed to make one evolutionary force be influential in
+the presence of another.
+<P>
+<H2>Credits</H2>
+<P>
+PopG was written by Joe Felsenstein, Hisashi Horino, Sean Lamont,
+Bill Alford, Mark Wells, Mike Palczewski, Doug Buxton, and Elizabeth
+Walkup.  I wrote the original
+version of the program.  Hisashi and Sean did the screen graphics for
+IBM PC and the first part of the Postscript printing system.  Bill
+greatly improved and expanded the Postscript printing and
+the X windows graphics.  Mark Wells did the
+original Macintosh version.  Mike Palczewski greatly improved the Windows,
+Macintosh and X Windows graphical user interface, and Doug Buxton modified the
+program to the 3.0 version and prepared the executables for different
+operating systems.  Elizabeth Walkup improved the X windows interaction
+and prepared version 3.3.
+<P>
+<H2>Copyright notice</H2>
+<P>
+Copyright 1993-2008.  University of Washington and Joseph Felsenstein.  All
+rights reserved.  Permission is granted to reproduce, perform, and modify
+this program.  Permission is granted to distribute or provide access to this
+program provided that this copyright notice is not removed, this program is
+not integrated with or called by any product or service that generates
+revenue, and that your distribution of this program is free.  Any modified
+versions of this program that are distributed or accessible shall indicate
+that they are based on this program.  Educational institutions are
+granted permission to distribute this program to their students and staff
+for a fee to recover distribution costs.  Permission requests for any other
+distribution of this program should be directed to &nbsp;&nbsp;license<!deathtospam>&nbsp;@&nbsp;<!deathtospam>u.washington.edu.
+<P>
+<DIV ALIGN=RIGHT>
+<TABLE>
+<TR><TD ALIGN=LEFT> Joe Felsenstein<BR>
+Department of Genome Sciences<BR>
+University of Washington<BR>
+Box 355065<BR>
+Seattle, WA 98195-5065, USA</TD></TR>
+</TABLE>
+</DIV>
+<P>
+email: <TT>&nbsp;&nbsp;joe<!put here to frustrate spammers harvesting email addresses>&nbsp;@&nbsp;<!more antispam>gs.washington.edu&nbsp;&nbsp;</TT>
+</BODY>
+</HTML>
