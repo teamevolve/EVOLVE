@@ -54,13 +54,13 @@ float
 # Floating point arrays
 float[]
 	ALSUR [2]
-	ASELCO[2]
-	FITAL [2]
-	FITGNT[3]
+	ASELCO[2]                       # Allele selection coefficients
+	FITAL [2]                       # Allele relative fitness coefficients
+	FITGNT[3]                       # Genotype relative fitness coefficients
 	GNTSUR[3]
-	GSELCO[3]
+	GSELCO[3]                       # Genotype selection coefficients 
 	JUV   [3]                       # No. of juveniles of each genotype
-	NOOUT [3]
+	NOOUT [3]                       
 	NOYONG[6]
 	OBSFR [3]
 	REPR8 [3]
