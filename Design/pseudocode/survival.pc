@@ -68,7 +68,7 @@ void SRVIVL()
 
 
     ### test for adults > carrying capacity, crash if necessary ###
-    if (atot >= MAXPOP1)
+    if (atot > MAXPOP1)
         # get ratio of crash population to total population
         crsh = float(MXPOP2) / float(atot)
         for i in 0..3
