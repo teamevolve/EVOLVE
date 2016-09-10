@@ -1,0 +1,594 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title></title>
+<script type="text/javascript" src="outliner.js"></script><style type="text/css">
+                        
+                        body {
+                        -webkit-text-size-adjust:none;
+                        }
+			
+                        img.status {
+                        margin-left: 2px; margin-right: 2px; margin-top: 2px; height: 11px; width: 11px;
+                        }
+                        
+                        img.checkbox-column {
+                        height: 11px; width: 11px; vertical-align: top; margin-top: 3px;
+                        }
+                        
+                        img.leaf {
+                        margin-left: 3px; margin-right:3px; margin-top: 2px; margin-bottom: 3px; height: 6px; width 6px;
+                        }
+                        
+                        img.parent {
+                        margin-left: 3px; margin-right:3px; margin-top: 2px; height: 10px; width: 10px;
+                        }
+			
+			th {
+			vertical-align: bottom;
+			
+			}
+			
+			td {
+			vertical-align: top;
+			}
+			
+			td,th {
+			
+			empty-cells: show;
+			}
+			
+			.top-right-border {
+			
+			}
+			
+			.no-border {
+			border-bottom: 0px;
+			border-left: 0px;
+			}
+			
+			
+			
+			
+			table {
+			
+			font-family: Helvetica, sans-serif;
+			font-size: 12px;
+			font-family: "Verdana", sans-serif;  font-size: 13px;			
+			
+			}
+
+			
+			
+			.wholeDocument {
+			font-family: "Verdana", sans-serif;  font-size: 13px;background-color:rgb(255,255,255) ;  
+	
+			}
+		
+			
+			td.subcell {
+			border: none;
+			}
+			
+			td.content {
+			padding-left: 4px;
+			padding-bottom: 2px;
+			padding-top: 1px;
+			padding-right: 3px;
+			}
+			
+			.full {
+			height: 100%;
+			}
+			
+			.heighthack {
+                        
+                            height: 25px;
+                            
+			}
+			
+			div.titlepadding { 
+			padding-right:3px;
+			padding-left:6px;
+			padding-bottom:3px;
+			padding-top: 2px;
+			}
+			
+			
+					.summary_node {
+						background: rgba(0,0,0,.12);
+						margin-bottom: 1px;
+					}
+				
+			
+			div.column {   
+			padding-right: 3px;
+			padding-left: 4px;
+			padding-top: 0px;
+			padding-bottom: 0px;
+			margin-right: 1px;
+			}
+			
+			.labelpadding {
+			padding-right: 3px;
+			padding-top: 1px;
+			padding-left: 2px;
+			}
+			
+			.indicator {
+			white-space: nowrap;
+			text-align:right;
+			margin-right: 0px;
+			vertical-align: top;
+			padding-top: 1px;
+			padding-left: 0px;
+			}
+			
+			.wholedocgutter {
+			
+			}
+			
+			div.row {
+			}
+			
+			div.headerRow {
+			}
+			
+			.expanded {
+			display: block;
+			}
+			.collapsed {
+			display: none;
+			}
+			
+            div.palette-hit-zone {
+                position: fixed;
+                bottom: 0px;
+				height: 33%;
+                left:50%;
+                width: 66%;
+                margin-left: -33%;
+            }
+
+			div.floating-palette {
+                -webkit-border-radius: 5px;
+                -webkit-transition: opacity is fade-in-out;
+                -webkit-transition-duration: 1s;
+				background-color: rgb(64, 64, 64);
+                opacity:0.7;
+				width: 88px;
+				height: 44px;
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                margin-left: -44px;
+			}
+            
+            div.palette-cell {
+                opacity:1;
+                margin-top: 6px;
+                margin-bottom: 6px;
+                position: absolute;
+                height: 32px;
+                width: 32px;
+            }
+            
+            div.cell-divider {
+                position: absolute;
+                margin-top: 6px;
+                margin-bottom: 6px;
+                margin-left: 44px;
+                height: 32px;
+                width:0px;
+                position:absolute;
+                left:0px;
+                border-right:rgb(207, 207, 207) 2px solid;
+            }
+			
+			
+			
+			
+			.note { 
+			padding-left: 5px;
+			padding-right: 3px; 
+			border: none; 
+			color:rgb(0,0,0) ;  font-family: "Times", sans-serif;  font-family: "Times", sans-serif;  
+			}
+                        
+                        .note-bg {
+                        
+                        }
+			
+			/* Total table width is 793
+			Adjusted table width is 840 */
+			
+			.wholething {
+				width: auto;
+			}
+			
+			
+			table.row {
+				
+						width: 793px;
+						
+			
+			}
+			
+			
+    .col_width1 { 
+        width: 793px;  /* Actual width is 793 */
+    }
+
+    .col1 { 
+        
+    }
+
+    .colbackground1 { 
+        
+    }
+
+			
+			/* Level Styles */
+			
+			
+    .columntitle { 
+        font-weight: 500;  
+    }
+
+    .level1 { 
+        color:rgb(50,50,50) ;  font-weight: 200;  font-size: 30px;
+    }
+
+    .levelcolor1 { 
+        
+    }
+
+    .levelguttercolor1 { 
+        
+    }
+
+    .level2 { 
+        color:rgb(50,50,50) ;  font-weight: 700;  font-size: 18px;
+    }
+
+    .levelcolor2 { 
+        
+    }
+
+    .levelguttercolor2 { 
+        
+    }
+
+    .level3 { 
+        font-weight: 700;  
+    }
+
+    .levelcolor3 { 
+        
+    }
+
+    .levelguttercolor3 { 
+        
+    }
+
+    .level4 { 
+        font-weight: 700;  
+    }
+
+    .levelcolor4 { 
+        
+    }
+
+    .levelguttercolor4 { 
+        
+    }
+
+    .level5 { 
+        font-weight: 700;  
+    }
+
+    .levelcolor5 { 
+        
+    }
+
+    .levelguttercolor5 { 
+        
+    }
+
+    .ns-eUsXLp0Pv1g-Heading1 { 
+        color:rgb(50,50,50) ;  font-family: "Helvetica Neue", sans-serif;  font-weight: 200;  font-size: 30px;}
+
+    .ns-d4-frBYwy2X-Heading2 { 
+        color:rgb(50,50,50) ;  font-family: "Helvetica Neue", sans-serif;  font-size: 18px;}
+
+    .ns-kRw332h0q-G-Heading3 { 
+        font-family: "Helvetica Neue", sans-serif;  font-weight: 500;  font-size: 13px;}
+
+    .ns-nU7Pax9sHwm-HighlightYellow { 
+        }
+
+    .ns-m6c_M2fT6yP-HighlightRed { 
+        }
+
+    .ns-auoqZ5xVKeG-HighlightGreen { 
+        }
+
+    .ns-hE9mXgl4a8m-Purple { 
+        color:rgb(150,97,207) ;  }
+
+    .ns-l2kopvXC4ak-Blue { 
+        color:rgb(58,142,237) ;  }
+
+    .ns-f7F2187eZ56-Bondi { 
+        color:rgb(0,191,192) ;  }
+
+    .ns-kJhkVDl2Xsd-Green { 
+        color:rgb(103,187,53) ;  }
+
+    .ns-inNRQJ-da6E-Yellow { 
+        color:rgb(255,187,0) ;  }
+
+    .ns-nAm7imW-teW-Orange { 
+        color:rgb(255,144,77) ;  }
+
+    .ns-jtC-ndQ7Pcw-Red { 
+        color:rgb(242,96,119) ;  }
+
+    .ns-dI8s4BxgdIs-Graphite { 
+        color:rgb(107,124,165) ;  }
+
+    .ns-cxpgY0Q2QUp-NewStyle { 
+        }
+
+    .ns-bg-eUsXLp0Pv1g-Heading1 { 
+        }
+
+    .ns-bg-d4-frBYwy2X-Heading2 { 
+        }
+
+    .ns-bg-kRw332h0q-G-Heading3 { 
+        }
+
+    .ns-bg-nU7Pax9sHwm-HighlightYellow { 
+        background-color:rgba(255,187,0,0.25) ;  }
+
+    .ns-bg-m6c_M2fT6yP-HighlightRed { 
+        background-color:rgba(242,96,119,0.25) ;  }
+
+    .ns-bg-auoqZ5xVKeG-HighlightGreen { 
+        background-color:rgba(103,187,53,0.25) ;  }
+
+    .ns-bg-hE9mXgl4a8m-Purple { 
+        }
+
+    .ns-bg-l2kopvXC4ak-Blue { 
+        }
+
+    .ns-bg-f7F2187eZ56-Bondi { 
+        }
+
+    .ns-bg-kJhkVDl2Xsd-Green { 
+        }
+
+    .ns-bg-inNRQJ-da6E-Yellow { 
+        }
+
+    .ns-bg-nAm7imW-teW-Orange { 
+        }
+
+    .ns-bg-jtC-ndQ7Pcw-Red { 
+        }
+
+    .ns-bg-dI8s4BxgdIs-Graphite { 
+        }
+
+    .ns-bg-cxpgY0Q2QUp-NewStyle { 
+        }
+
+    .ns-gutter-eUsXLp0Pv1g-Heading1 { 
+        }
+
+    .ns-gutter-d4-frBYwy2X-Heading2 { 
+        }
+
+    .ns-gutter-kRw332h0q-G-Heading3 { 
+        }
+
+    .ns-gutter-nU7Pax9sHwm-HighlightYellow { 
+        }
+
+    .ns-gutter-m6c_M2fT6yP-HighlightRed { 
+        }
+
+    .ns-gutter-auoqZ5xVKeG-HighlightGreen { 
+        }
+
+    .ns-gutter-hE9mXgl4a8m-Purple { 
+        }
+
+    .ns-gutter-l2kopvXC4ak-Blue { 
+        }
+
+    .ns-gutter-f7F2187eZ56-Bondi { 
+        }
+
+    .ns-gutter-kJhkVDl2Xsd-Green { 
+        }
+
+    .ns-gutter-inNRQJ-da6E-Yellow { 
+        }
+
+    .ns-gutter-nAm7imW-teW-Orange { 
+        }
+
+    .ns-gutter-jtC-ndQ7Pcw-Red { 
+        }
+
+    .ns-gutter-dI8s4BxgdIs-Graphite { 
+        }
+
+    .ns-gutter-cxpgY0Q2QUp-NewStyle { 
+        }
+</style>
+</head>
+<body class="wholeDocument"><table cellspacing="0" cellpadding="0" class="top-right-border"><tr><td class="wholething no-border">
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="o7F9zLHwwyt"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor1"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level1 levelguttercolor1" style="width: 9px;"></td>
+<td class=" subcell wholedocgutter indicator level1 levelguttercolor1" style="width: 15px;"><img onmousedown="ioSwitch('po7F9zLHwwyt', event.shiftKey)" id="io7F9zLHwwyt" border="0" alt="V" class="parent" src="Expanded.png" title="collapse"></td>
+<td class=" subcell wholedocgutter labelpadding level1 levelguttercolor1" style=" width: 1px; "></td>
+<td class=" content level1 subcell">Calculations<br>
+</td>
+</tr></table></div></td></tr></table>
+<div id="po7F9zLHwwyt" class="expanded">
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="jPmn8s2hNCa"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor2"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level2 levelguttercolor2" style="width: 25px;"></td>
+<td class=" subcell wholedocgutter indicator level2 levelguttercolor2" style="width: 15px;"><img onmousedown="ioSwitch('pjPmn8s2hNCa', event.shiftKey)" id="ijPmn8s2hNCa" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level2 levelguttercolor2" style=" width: 1px; "></td>
+<td class=" content level2 subcell">Notation<span class="" style='font-family: "Times", sans-serif;  font-weight: 400;  '> </span><span class="" style='font-family: "Times", sans-serif;  font-weight: 400;  font-size: 12px;'>The notation below is a combination of traditional notations and my own ‘pseudo notation’</span><br>
+</td>
+</tr></table></div></td></tr></table>
+<div id="pjPmn8s2hNCa" class="collapsed"><table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="kgb29kYUfS0"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor3"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level3 levelguttercolor3" style="width: 41px;"></td>
+<td class=" subcell wholedocgutter indicator level3 levelguttercolor3" style="width: 15px;"><img border="0" alt="*" class="leaf" src="LeafRowHandle.png"></td>
+<td class=" subcell wholedocgutter labelpadding level3 levelguttercolor3" style=" width: 1px; "></td>
+<td class=" content level3 subcell">
+<span class="" style="font-size: 12px;">Allele Frequencies:</span><span class="" style="font-weight: 400;  font-size: 12px;"> (range 0.0–1.0):</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">p</span><span class="" style="font-weight: 400;  font-size: 12px;"> 	Frequency of the A allele, p(#) = frequency in generation #, etc</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">q</span><span class="" style="font-weight: 400;  font-size: 12px;"> 	Frequency of the B allele </span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">r</span><span class="" style="font-weight: 400;  font-size: 12px;"> 	Frequency of the C allele</span><br><span class="" style="font-weight: 400;  font-size: 12px;">	Note: </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">p</span><span class="" style="font-weight: 400;  font-size: 12px;"> &amp; </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">q</span><span class="" style="font-weight: 400;  font-size: 12px;"> are the traditional notations for frequency of 2 alleles; I've added </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">r</span><span class="" style="font-weight: 400;  font-size: 12px;"> for the 3rd.</span><br><span class="" style="font-weight: 400;  font-size: 12px;">	Suggest we use </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">FreqA, FreqB, FreqC</span><span class="" style="font-weight: 400;  font-size: 12px;"> in coding.</span><br><span class="" style="font-weight: 400;  font-size: 12px;">With all of these we could use parentheses to indicate generation, e.g. </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">FreqA(1)</span><span class="" style="font-weight: 400;  font-size: 12px;"> is frequency of A allele in generation 1</span><br><span class="" style="font-size: 12px;">Genotype Frequencies:</span><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">FreqAA, FreqAB, FreqAC, FreqBC, FreqBB, FreqCC</span><br><span class="" style="font-size: 12px;">Survival rates:</span><span class="" style="font-weight: 400;  font-size: 12px;"> (range 0.0–1.0):</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">SurvR8AA, SurvR8AB, SurvR8AC, SurvR8BC, SurvR8BB, SurvR8CC</span><br><span class="" style="font-size: 12px;">Reproductive rates:</span><span class="" style="font-weight: 400;  font-size: 12px;"> (range 0.0–10.0):</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">RepR8AA, RepR8AB … RepR8CC</span><br><span class="" style="font-size: 12px;">Absolute Fitnesses:</span><span class="" style="font-weight: 400;  font-size: 12px;"> (range 0.0–10.0): </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">Note: W, </span><span class="" style="font-weight: 400;  font-size: 12px;">or</span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;"> ω,</span><span class="" style="font-weight: 400;  font-size: 12px;"> is traditional notation for ‘Fitness’ (sometimes absolute &amp; sometimes relative), with Selection coefficient (</span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">s</span><span class="" style="font-weight: 400;  font-size: 12px;">) defined as </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">1 - W</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">WAbsAA, WAbsAB, … WAbsCC</span><br><span class="" style="font-size: 12px;">Relative Fitnesses:</span><span class="" style="font-weight: 400;  font-size: 12px;"> (range 0.0–1.0):</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">WRelAA, WRelAB … WRelCC</span><br><span class="" style="font-size: 12px;">Total population size:</span><span class="" style="font-weight: 400;  font-size: 12px;"> (range 0–10,000)</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">NumPop</span><br><span class="" style="font-size: 12px;">Genotype numbers:</span><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">NumAA, NumAB, NumAC, NumBC, NumBB, NumCC</span><br><span class="" style="font-size: 12px;">Mutation rates:</span><span class="" style="font-weight: 400;  font-size: 12px;"> from </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">A</span><span class="" style="font-weight: 400;  font-size: 12px;"> to </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">B</span><span class="" style="font-weight: 400;  font-size: 12px;"> and vice versa</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">MuR8A2B), MuR8B2A … MuR8C2B</span><br><span class="" style="font-size: 12px;">Migration rates:</span><span class="" style="font-weight: 400;  font-size: 12px;"> (0.0–0.95)</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">MigR8AA, MigR8AB … MigR8CC</span><br><span class="" style="font-size: 12px;">Mating rates:</span><span class="" style="font-weight: 400;  font-size: 12px;"> (QUERY: may need another symbol if &amp; is an operator?)</span><br><span class="" style="font-weight: 400;  font-size: 12px;"> </span><span class="" style="font-style: italic;font-weight: 400;  font-size: 12px;">M8R8AA&amp;AA, M8R8AA&amp;AB … M8R8CC&amp;CC</span><br>
+</td>
+</tr></table></div></td></tr></table></div>
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="biO2cRC_u1D"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor2"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level2 levelguttercolor2" style="width: 25px;"></td>
+<td class=" subcell wholedocgutter indicator level2 levelguttercolor2" style="width: 15px;"><img onmousedown="ioSwitch('pbiO2cRC_u1D', event.shiftKey)" id="ibiO2cRC_u1D" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level2 levelguttercolor2" style=" width: 1px; "></td>
+<td class=" content level2 subcell">Formulae<br>
+</td>
+</tr></table></div></td></tr></table>
+<div id="pbiO2cRC_u1D" class="collapsed">
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="iTd7Og7b9JH"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor3"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level3 levelguttercolor3" style="width: 41px;"></td>
+<td class=" subcell wholedocgutter indicator level3 levelguttercolor3" style="width: 15px;"><img onmousedown="ioSwitch('piTd7Og7b9JH', event.shiftKey)" id="iiTd7Og7b9JH" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level3 levelguttercolor3" style=" width: 1px; "></td>
+<td class=" content level3 subcell">
+<span class="" style="color:rgb(0,0,0) ;  font-size: 12px;">Calculation of Allele &amp; Genotype frequencies</span><br>
+</td>
+</tr></table></div></td></tr></table>
+<div id="piTd7Og7b9JH" class="collapsed">
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="iigZ66LNURD"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor4"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level4 levelguttercolor4" style="width: 57px;"></td>
+<td class=" subcell wholedocgutter indicator level4 levelguttercolor4" style="width: 15px;"><img onmousedown="ioSwitch('piigZ66LNURD', event.shiftKey)" id="iiigZ66LNURD" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level4 levelguttercolor4" style=" width: 1px; "></td>
+<td class=" content level4 subcell">Allele Frequencies<br>
+</td>
+</tr></table></div></td></tr></table>
+<div id="piigZ66LNURD" class="collapsed"><table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="aT5TCvSuSV6"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor5"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level5 levelguttercolor5" style="width: 73px;"></td>
+<td class=" subcell wholedocgutter indicator level5 levelguttercolor5" style="width: 15px;"><img border="0" alt="*" class="leaf" src="LeafRowHandle.png"></td>
+<td class=" subcell wholedocgutter labelpadding level5 levelguttercolor5" style=" width: 1px; "></td>
+<td class=" content level5 subcell">
+<span class="" style="font-size: 12px;">2–Allele Case: </span><span class="" style="font-style: italic;font-size: 12px;">p + q = 1</span><br><span class="" style="font-size: 12px;">	Given </span><span class="" style="font-style: italic;font-size: 12px;">FreqA, FreqB = 1 - FreqA</span><br><span class="" style="font-size: 12px;">3–Allele Case: </span><span class="" style="font-style: italic;font-size: 12px;">p + q + r = 1</span><br><span class="" style="font-size: 12px;">	Given </span><span class="" style="font-style: italic;font-size: 12px;">FreqA, FreqB</span><span class="" style="font-size: 12px;">, then </span><span class="" style="font-style: italic;font-size: 12px;">FreqC = 1 - (FreqA + FreqB)</span><br>
+</td>
+</tr></table></div></td></tr></table></div>
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="g50_1EGVMFO"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor4"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level4 levelguttercolor4" style="width: 57px;"></td>
+<td class=" subcell wholedocgutter indicator level4 levelguttercolor4" style="width: 15px;"><img onmousedown="ioSwitch('pg50_1EGVMFO', event.shiftKey)" id="ig50_1EGVMFO" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level4 levelguttercolor4" style=" width: 1px; "></td>
+<td class=" content level4 subcell">Expected freq.s of genotypes<span class="" style="font-weight: 400;  "> (Hardy–Weinberg equilibrium)</span><br>
+</td>
+</tr></table></div></td></tr></table>
+<div id="pg50_1EGVMFO" class="collapsed"><table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="eqFQVftB693"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor5"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level5 levelguttercolor5" style="width: 73px;"></td>
+<td class=" subcell wholedocgutter indicator level5 levelguttercolor5" style="width: 15px;"><img border="0" alt="*" class="leaf" src="LeafRowHandle.png"></td>
+<td class=" subcell wholedocgutter labelpadding level5 levelguttercolor5" style=" width: 1px; "></td>
+<td class=" content level5 subcell">2–Allele Case:  <span class="" style="font-style: italic;">p^2 + 2pq + q^2 = 1</span><br> <span class="" style="font-style: italic;">FreqAA = FreqA^2</span><br><span class="" style="font-style: italic;">	FreqBB = FreqB^2</span><br><span class="" style="font-style: italic;">	FreqAB = 2*FreqA*FreqB</span><br>3–Allele Case: freq.s of genotypes = <span class="" style="font-style: italic;">p^2 + q^2 + r^2+ 2pq + 2pr + 2qr = 1</span><br> <span class="" style="font-style: italic;">FreqAA = FreqA^2</span><br><span class="" style="font-style: italic;">	FreqBB = FreqB^2</span><br><span class="" style="font-style: italic;">	FreqCC = FreqC^2</span><br><span class="" style="font-style: italic;">	FreqAB = 2*FreqA*FreqB</span><br><span class="" style="font-style: italic;">	FreqAC = 2*FreqA*FreqC</span><br><span class="" style="font-style: italic;">	FreqBC = 2*FreqB*FreqC</span><br>
+</td>
+</tr></table></div></td></tr></table></div>
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="jD_vAbwKdj4"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor4"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level4 levelguttercolor4" style="width: 57px;"></td>
+<td class=" subcell wholedocgutter indicator level4 levelguttercolor4" style="width: 15px;"><img onmousedown="ioSwitch('pjD_vAbwKdj4', event.shiftKey)" id="ijD_vAbwKdj4" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level4 levelguttercolor4" style=" width: 1px; "></td>
+<td class=" content level4 subcell">Allele freq.s given genotype numbers<br>
+</td>
+</tr></table></div></td></tr></table>
+<div id="pjD_vAbwKdj4" class="collapsed"><table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="cRSnjwYoOJj"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor5"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level5 levelguttercolor5" style="width: 73px;"></td>
+<td class=" subcell wholedocgutter indicator level5 levelguttercolor5" style="width: 15px;"><img border="0" alt="*" class="leaf" src="LeafRowHandle.png"></td>
+<td class=" subcell wholedocgutter labelpadding level5 levelguttercolor5" style=" width: 1px; "></td>
+<td class=" content level5 subcell">2–Allele Case: given <span class="" style="font-style: italic;">NumAA + NumAB + NumBB = NumPop</span><br><span class="" style="font-style: italic;">	FreqA = (2 * NumAA + NumAB) / (2 * NumPop)</span><br><span class="" style="font-style: italic;">	FreqB = (2 * NumBB + NumAB) / (2 * NumPop)</span><br>3–Allele Case: given <span class="" style="font-style: italic;">NumAA + NumBB + NumCC + NumAB + NumAC + NumBC = NumPop</span><br> <span class="" style="font-style: italic;">FreqA = (2 * NumAA + NumAB + NumAC) / (2 * NumPop)</span><br><span class="" style="font-style: italic;">	FreqB = (2 * NumBB + NumAB + NumBC) / (2 * NumPop)</span><br><span class="" style="font-style: italic;">	FreqC = (2 * NumCC + NumAC + NumBC) / (2 * NumPop)</span><br>
+</td>
+</tr></table></div></td></tr></table></div>
+</div>
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack">
+<tr id="lr-avcIEn_u"><td class=" col1 colbackground1 col_width1" style="border-bottom: none;"><div class=" full levelcolor3"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level3 levelguttercolor3" style="width: 41px;"></td>
+<td class=" subcell wholedocgutter indicator level3 levelguttercolor3" style="width: 15px;"><img onmousedown="ioSwitch('plr-avcIEn_u', event.shiftKey)" id="ilr-avcIEn_u" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level3 levelguttercolor3" style=" width: 1px; "></td>
+<td class=" content level3 subcell">Calculation of Fitnesses<br>
+</td>
+</tr></table></div></td></tr>
+<tr><td class=" level3 levelcolor3"><div class=" full"><table border="0" cellspacing="0" cellpadding="0" style="width:100%"><tr>
+<td style="width: 41px;" class="note-bg subcell"></td>
+<td class="note-bg subcell" style="width: 15px;"></td>
+<td class="note-bg subcell labelpadding level3" style=" color: rgba(0,0,0,0); width: 1px; "></td>
+<td class="note subcell">
+<span class="" style="font-style: italic;">W</span> or <span class="" style="font-style: italic;">ω</span> is a traditional notation for ‘Fitness’ (which may be either absolute or relative), with Selection coefficient, <span class="" style="font-style: italic;">s, </span>defined as <span class="" style="font-style: italic;">1 - W</span><br>
+</td>
+</tr></table></div></td></tr>
+</table>
+<div id="plr-avcIEn_u" class="collapsed">
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="m14U_0uff8N"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor4"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level4 levelguttercolor4" style="width: 57px;"></td>
+<td class=" subcell wholedocgutter indicator level4 levelguttercolor4" style="width: 15px;"><img onmousedown="ioSwitch('pm14U_0uff8N', event.shiftKey)" id="im14U_0uff8N" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level4 levelguttercolor4" style=" width: 1px; "></td>
+<td class=" content level4 subcell">Calculate Absolute Fitnesses given survival &amp; reproductive rates<br>
+</td>
+</tr></table></div></td></tr></table>
+<div id="pm14U_0uff8N" class="collapsed"><table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="hxA3T7FlWrG"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor5"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level5 levelguttercolor5" style="width: 73px;"></td>
+<td class=" subcell wholedocgutter indicator level5 levelguttercolor5" style="width: 15px;"><img border="0" alt="*" class="leaf" src="LeafRowHandle.png"></td>
+<td class=" subcell wholedocgutter labelpadding level5 levelguttercolor5" style=" width: 1px; font-style: italic;"></td>
+<td class=" content level5 subcell" style="font-style: italic;">
+<span class="" style="font-size: 12px;">WAbsAA = SurvR8AA * RepR8AA</span><br><span class="" style="font-size: 12px;">WAbsBB = SurvR8BB * RepR8BB</span><br><span class="" style="font-size: 12px;">:</span><br><span class="" style="font-size: 12px;">WAbsBC = SurvR8BC * RepR8BC</span><br>
+</td>
+</tr></table></div></td></tr></table></div>
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="mtVrB_YwkeN"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor4"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level4 levelguttercolor4" style="width: 57px;"></td>
+<td class=" subcell wholedocgutter indicator level4 levelguttercolor4" style="width: 15px;"><img onmousedown="ioSwitch('pmtVrB_YwkeN', event.shiftKey)" id="imtVrB_YwkeN" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level4 levelguttercolor4" style=" width: 1px; "></td>
+<td class=" content level4 subcell">Calculate Relative Fitnesses given absolute fitnesses<br>
+</td>
+</tr></table></div></td></tr></table>
+<div id="pmtVrB_YwkeN" class="collapsed"><table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="lRGteeLbHe3"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor5"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level5 levelguttercolor5" style="width: 73px;"></td>
+<td class=" subcell wholedocgutter indicator level5 levelguttercolor5" style="width: 15px;"><img border="0" alt="*" class="leaf" src="LeafRowHandle.png"></td>
+<td class=" subcell wholedocgutter labelpadding level5 levelguttercolor5" style=" width: 1px; font-style: italic;"></td>
+<td class=" content level5 subcell" style="font-style: italic;">WRelAA = WAbsAA / Maximum(WAbsAA, WAbsBB, WAbsCC, WAbsAB, WAbsAC, WAbsBC)<br>:<br>WRelBC = WAbsBC / Maximum(WAbsAA, WAbsBB, WAbsCC, WAbsAB, WAbsAC, WAbsBC)<br>
+</td>
+</tr></table></div></td></tr></table></div>
+<table cellspacing="0" border="0" cellpadding="0" class="row heighthack">
+<tr id="k3S76VQ3XE_"><td class=" col1 colbackground1 col_width1" style="border-bottom: none;"><div class=" full levelcolor4"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level4 levelguttercolor4" style="width: 57px;"></td>
+<td class=" subcell wholedocgutter indicator level4 levelguttercolor4" style="width: 15px;"><img onmousedown="ioSwitch('pk3S76VQ3XE_', event.shiftKey)" id="ik3S76VQ3XE_" border="0" alt="&gt;" class="parent" src="Collapsed.png" title="expand"></td>
+<td class=" subcell wholedocgutter labelpadding level4 levelguttercolor4" style=" width: 1px; "></td>
+<td class=" content level4 subcell">Calculate Mean Fitness of population<br>
+</td>
+</tr></table></div></td></tr>
+<tr><td class=" level4 levelcolor4"><div class=" full"><table border="0" cellspacing="0" cellpadding="0" style="width:100%"><tr>
+<td style="width: 57px;" class="note-bg subcell"></td>
+<td class="note-bg subcell" style="width: 15px;"></td>
+<td class="note-bg subcell labelpadding level4" style=" color: rgba(0,0,0,0); width: 1px; "></td>
+<td class="note subcell">Mean Fitness of a population = average fitness of the whole population = fitness of each genotype multiplied by its frequency. The traditional notation is W(hat), <br>
+</td>
+</tr></table></div></td></tr>
+</table>
+<div id="pk3S76VQ3XE_" class="collapsed"><table cellspacing="0" border="0" cellpadding="0" class="row heighthack"><tr id="jN8Yj8hUfAS"><td class=" col1 colbackground1 col_width1" style=""><div class=" full levelcolor5"><table border="0" cellspacing="0" cellpadding="0" style="height:100%" class=" col_width1 col1"><tr>
+<td class=" subcell wholedocgutter level5 levelguttercolor5" style="width: 73px;"></td>
+<td class=" subcell wholedocgutter indicator level5 levelguttercolor5" style="width: 15px;"><img border="0" alt="*" class="leaf" src="LeafRowHandle.png"></td>
+<td class=" subcell wholedocgutter labelpadding level5 levelguttercolor5" style=" width: 1px; font-style: italic;"></td>
+<td class=" content level5 subcell" style="font-style: italic;">MeanAbsFitPop = (FreqAA*AbsFitAA) + (FreqBB*AbsFitBB) + (FreqCC*AbsFitCC) + (FreqAB*AbsFitAB) + (FreqAC*AbsFitAC) + (FreqBC*AbsFitBC)<br>
+</td>
+</tr></table></div></td></tr></table></div>
+</div>
+</div>
+</div>
+</td></tr></table></body>
+</html>
