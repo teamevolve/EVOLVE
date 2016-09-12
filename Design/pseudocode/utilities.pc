@@ -128,9 +128,32 @@ void ALFIT(int dumy)
         print("Warning, entry into ALFIT with IGEN = 1")
     
         
-
+############################################################
 void GNTFIT(int dumy)
-    ...
-    
+############################################################
+# Calculates the relative fitness coefficient of each
+# genotype
+############################################################
 
+    ### Local Declarations ###
+    int   atot
+    
+    float expfrm,
+    	  expfrw,
+	  expfr
+
+    ### Check valid context ###
+    if (IGEN != 1)
+        atot = RSLT[0][dumy - 1] + RSLT[1][dumy - 1] + RSLT[2][dumy - 1]
+	LGEN = dumy - 1
+	FRQMP = ALFREQ(LGEN)
+	if ((FRQMP > 0) and (FRMPQ < 1) and (atot > 0))
+
+	else
+	    print("Warning, entry into GNTFIT with M allelle freqency" +
+	          "in previous gen = 0 or 1, or total # adults in present " +
+		  "gen = 0")
+		  
+    else
+        print("Warning, entry into GNTFIT with IGEN = 1")
 
