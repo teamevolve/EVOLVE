@@ -1,0 +1,56 @@
+
+int currentGen = 1;
+int totalAdult;
+
+
+// juevnile
+// result = multidim array
+
+Juvenile runReproduction()
+{
+	int previousGen = currentGen - 1;
+
+	// clear mates and noyoung (all 0)
+
+
+	// total # adults = sum of results from ww, wm, mm for previousGen:
+	// this probably only works with 2 alleles
+	totalAdult = result[1, previousGen] + result[2, previousGen] + result[3, previousGen];
+
+	// clear juveniles array (all 0)
+
+	// store # adults for each allele in prev gen:
+	numAdults[i] = result[i, previousGen] for i = [1, 3]
+
+	
+}
+
+void mateFew()
+{
+	int cutoff = 200;
+	int count = 0;
+	double probability, rand (YFL, pesudorandom 0-1);
+	
+	int maxPairs = cutoff/2;
+	
+	integerPair[i] (IPAR) = 0 for i = [1,2]
+
+	for all pairs < maxPairs
+		if maxPairs < 1 -> go to end
+		if totalAdult <= 0 -> go to end
+		
+		for all j = [1,2]
+			if totalAdult = 0 -> continue
+			if totalAdult = 1 && j = 1 ->  m8witSelf(), break;
+
+			rand = random(); // between 0, 1
+			probability1 = (double) numAdult[1]/totalAdult
+			probability2 = (double) numAdult[2]/totalAdult 
+
+			if rand < probability1 // genotype1 is created
+				
+			else if rand < probability1 + p2 // genotype2
+				
+			else // rand > p1 + p2 // genotype3
+			totalAdult--
+}
