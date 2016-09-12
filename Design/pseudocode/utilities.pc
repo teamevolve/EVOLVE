@@ -131,6 +131,9 @@ void ALFIT(int dumy)
 ############################################################
 void GNTFIT(int dumy)
 ############################################################
+# Calculates the relative fitness coefficient of each
+# genotype
+############################################################
 
     ### Local declarations ###
     int atot
@@ -178,12 +181,12 @@ void GNTFIT(int dumy)
 	        FITGNT[0] = 1.0
 		FITGNT[1] = GNTSUR[1] / GNTSUR[0]
 		FITGNT[2] = GNTSUR[2] / GNTSUR[0]
+		  
 	else
-	    print("Warning, entry into GNTFIT with M allele freqency in " +
-	          "previous gen = 0 or 1, or total # adults in present gen " +
-		  "= 0")
+	    print("Warning, entry into GNTFIT with M allelle freqency" +
+	          "in previous gen = 0 or 1, or total # adults in present " +
+		  "gen = 0")
 		  
     else
-        print("Warning, Entry into GNTFIT with IGEN = 1")
-
+        print("Warning, entry into GNTFIT with IGEN = 1")
 
