@@ -7,7 +7,7 @@ package help;
  * files, parse that information, and display it. It is controlled by
  * EvolveDirector.
  * 
- * @see EvolveDirector
+ * @see shared.EvolveDirector
  * 
  * @author ericscollins
  *

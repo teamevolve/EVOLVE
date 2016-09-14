@@ -13,11 +13,11 @@ import shared.SessionParameters;
  * 
  * @see DataManager
  * @see SessionParameters
- * @see SimulationEngine
- * @see GraphingEngine
- * @see ImportExportEngine
- * @see HelpEngine
- * @see DebugEngine
+ * @see simulation.SimulationEngine
+ * @see graphing.GraphingEngine
+ * @see importexport.ImportExportEngine
+ * @see help.HelpEngine
+ * @see debug.DebugEngine
  * 
  * @author ericscollins
  * 

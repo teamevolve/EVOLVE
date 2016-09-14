@@ -69,6 +69,8 @@ public class DataManager {
 	 * Mutator for sessionParams member, used only by EvolveDirector and the 
 	 * import component.
 	 * 
+	 * @param sp SessionParameters object to store
+	 * 
 	 * @see EvolveDirector
 	 */
 	public void setSessionParams(SessionParameters sp) {
@@ -79,6 +81,8 @@ public class DataManager {
 	
 	/**
 	 * Accessor for sessionParams member.
+	 * 
+	 * @return returns stored SessionParameters object
 	 */
 	public SessionParameters getSessionParams() {
 		return sessionParams;

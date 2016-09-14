@@ -5,7 +5,7 @@ package debug;
  * This class orchestrates all action of the debug component, delegating all
  * work to more specialized components. It is controlled by EvolveDirector.
  * 
- * @see EvolveDirector
+ * @see shared.EvolveDirector
  * 
  * @author ericscollins
  *

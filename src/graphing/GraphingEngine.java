@@ -6,7 +6,7 @@ package graphing;
  * drawing and manipulating 2d and 3d graphs, delegating all work to more 
  * specialized components. It is controlled by EvolveDirector
  * 
- * @see EvolveDirector
+ * @see shared.EvolveDirector
  * 
  * @author ericscollins
  *

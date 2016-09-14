@@ -8,7 +8,7 @@ package importexport;
  * Notebook files, and exporting simulation data to spreadsheets and 
  * (eventually) Notebook files. It is controlled by EvolveDirector.
  * 
- * @see EvolveDirector
+ * @see shared.EvolveDirector
  * 
  * @author ericscollins
  *

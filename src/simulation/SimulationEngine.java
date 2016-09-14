@@ -7,8 +7,8 @@ package simulation;
  * populations and stepping through generations, as well as recording data to
  * DataManager. It is controlled by EvolveDirector.
  * 
- * @see EvolveDirector
- * @see DataManager
+ * @see shared.EvolveDirector
+ * @see shared.DataManager
  * 
  * @author ericscollins
  *
