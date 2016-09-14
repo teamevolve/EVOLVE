@@ -6,7 +6,7 @@ package shared;
  * DataManager is a mostly (possibly wholly) passive data structure used by 
  * components throughout EVOLVE as a repository for simulation data and
  * metadata including evolution data for each population, simulation 
- * parameters (maybe), and (possibly) information automatically calculated from
+ * parameters, and (possibly) information automatically calculated from
  * stored simulation data. Since DataManager is a singleton class, code similar
  * to the following must be used to use the object:
  * <br>
