@@ -1,0 +1,76 @@
+################################################################################
+# Contributors: ericscollins
+################################################################################
+# Common variables used in all functions in the original fortran. Listed with
+# their modernized types. Due to restricted variable name length, many of these
+# have unclear purposes; as we determine these purposes, please leave a comment
+# describing its usage starting in column 40.
+#
+# e.g.
+#	...
+#	EXVAR   = 0000                  # This is an example variable
+#       ...
+#
+# For local variables, please use lowercase variable names to avoid confustion.
+#
+################################################################################
+
+# Integer variables
+int 
+	IGEN    = 1                     # Current generation number
+	IN      = 5
+	IY      = 12345
+	IZ      = 12345
+	LGEN                            # Index of last generation
+	MXPOP1                          # Carrying capacity
+	MXPOP2                          # Pop size after a crash
+	NOGENS                          # No. of generations to simulate
+	OUTFLOW
+	OUTLP   = 6
+	OUTSCR  = 6
+	PRINT2  = 6
+	SUMGEN  = 1
+	SUMRY 
+	TOADLT
+
+# Integer arrays
+int[] 
+	INFLO[3]                        # No. of each genotype immigrating
+	MATES[6]
+	NOADLT[3]                       # No. of adults of each genotype in pop
+	OUTFLO[3]                       # No. of each genotype emmigrating
+
+# Two Dimensional integer arrays 
+int[][]
+	RSLT[3][125]                    # Contains results of simulation
+
+# Floating point variables
+float
+	AM                              # Mean used in gaussian RNG
+	FRQMP
+	S                               # Std deviation for gaussian RNG
+	V                               # Rand num returned in V from GAUSS
+
+# Floating point arrays
+float[]
+	ALSUR [2]                       # Allele survival rates
+	ASELCO[2]                       # Allele selection coefficients
+	FITAL [2]                       # Allele relative fitness coefficients
+	FITGNT[3]                       # Genotype relative fitness coefficients
+	GNTSUR[3]                       # Genotype survival rates
+	GSELCO[3]                       # Genotype selection coefficients 
+	JUV   [3]                       # No. of juveniles of each genotype
+	NOOUT [3]                       
+	NOYONG[6]
+	OBSFR [3]
+	REPR8 [3]
+	SURVR8[3]                       # Survival rate for each genotype
+		
+		
+# String variables	
+	ANS
+	GRF
+	NEXT                            # Contains instructions about whether to
+	                                ## repeat simulation with modified input
+					## or to display graphs
+	TITLE

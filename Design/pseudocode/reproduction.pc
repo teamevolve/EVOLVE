@@ -1,0 +1,111 @@
+************************************************************************¬
+
+**********************************************************************¬
+
+file: MA.RE vrsn: 29 rvsd: 29 May 81
+
+subroutines reprod, m8few, m8many
+
+**********************************************************************¬
+
+
+
+
+FUNCTION: CONTROLS MATING AND REPRODUCTION OF POPULATION, RETURNS
+NUMBER OF JUVENILES OF EACH GENOTYPE IN "JUV" ARRAY.
+SYNOPSIS:
+
+1) REPROD ASSIGNS THE ADULTS OF THE PREVIOUS GENERATION TO THE "NOADLT" ARRAY.
+
+2) AFTER INITIALIZING VARIABLES, "REPROD" CALLS 1 OR 2 OTHERROUTINES ("M8FEW"
+OR "M8MANY") WHICH RANDOMLY MATE INDIVIDUALSFROM "NOADLT" AND RETURN THE NUMBER
+OF EACH OF THE 6 POSSIBLE COMBINATIONS OF MATES IN THE "MATES" ARRAY.
+ REPROD THEN CALCULATES THE NUMBER OF YOUNG FROM EACH TYPE OF
+MATING FROM THE REPRODUCTIVE RATES ("REPR8") OF THE GENOTYPES
+AND PLACES THEM IN THE "NOYONG" ARRAY).
+
+3) FINALLY, THE NUMBER OF YOUNG OF EACH GENOTYPE ARE DETERMINED
+FROM "NOYONG" ACCORDING TO MENDELIAN RATIOS AND PLACED INTO
+THE "JUV" ARRAY WHICH IS RETURNED TO MAIN.
+
+
+int currentGen = 1;
+int totalAdult;
+
+
+// juevnile
+// result = multidim array
+
+Juvenile runReproduction()
+{
+	int previousGen = currentGen - 1;
+
+	// clear mates and noyoung (all 0)
+
+
+	// total # adults = sum of results from ww, wm, mm for previousGen:
+	// this probably only works with 2 alleles
+	totalAdult = result[1, previousGen] + result[2, previousGen] + result[3, previousGen];
+
+	// clear juveniles array (all 0)
+
+	// store # adults for each allele in prev gen:
+	numAdults[i] = result[i, previousGen] for i = [1, 3]
+
+	
+}
+
+void mateFew()
+{
+	int cutoff = 200;
+	int count = 0;
+	double probability, rand (YFL, pesudorandom 0-1);
+	
+	int maxPairs = cutoff/2;
+	
+	integerPair[i] (IPAR) = 0 for i = [1,2]
+
+	for all pairs < maxPairs
+		if maxPairs < 1 -> go to end
+		if totalAdult <= 0 -> go to end
+		
+		for all j = [1,2]
+			if totalAdult = 0 -> continue
+			if totalAdult = 1 && j = 1 ->  m8witSelf(), break;
+
+			rand = random(); // between 0, 1
+			probability1 = (double) numAdult[1]/totalAdult
+			probability2 = (double) numAdult[2]/totalAdult 
+
+			if rand < probability1 // genotype1 is created
+				
+			else if rand < probability1 + p2 // genotype2
+				
+			else // rand > p1 + p2 // genotype3
+			totalAdult--
+}
+
+void m8many {
+
+     int totalMates;
+     double genotypeFrequency[3];
+     
+     for i in range(1,3)
+     	   genotypeFrequency[i] = numberAdults[i] / totalAdults;
+     
+
+     //calc each type of mating
+     mates[0] = mates[0] + genotypeFrequency[0]^2 * todalAdults + 0.5
+     //is the 0.5 thing rounding???
+     mates[1] = mates[1] + 2 (genotypeFrequency[0] + genotypeFrequency[1]) * todalAdults + 0.5
+     mates[2] = mates[1] + 2 (genotypeFrequency[0] + genotypeFrequency[2]) * todalAdults + 0.5
+     mates[3] = mates[3] + genotypeFrequency[1]^2 * todalAdults + 0.5
+     mates[4] = mates[4] + 2 (genotypeFrequency[1] + genotypeFrequency[2]) * todalAdults + 0.5
+     mates[5] = mates[5] + genotypeFrequency[2]^2 * todalAdults + 0.5
+
+     tmates = sum of mates[0-5]
+
+     return
+     
+   
+}
