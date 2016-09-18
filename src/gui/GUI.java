@@ -6,6 +6,7 @@
  * GUI
  ********************************************************************/
 package gui;
+import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -13,25 +14,22 @@ import javax.swing.*;
 /**
  * 
  * @author linneasahlberg
- *
+ * @author jasonfortunato
  */
-public class GUI extends JPanel implements ActionListener {
-	/**
-	 * eclipse wants this
-	 */
+public class GUI extends Applet {
 	private static final long serialVersionUID = 1L;
 	protected JTextField seedField;
 	
 	public GUI() {
-		super(new GridBagLayout());
 		seedField = new JTextField(8);
-		seedField.addActionListener(this);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		String seed = seedField.getText();
-		seedField.selectAll();
+		GridBagLayout layout = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		setFont(new Font ("SansSerif", Font.PLAIN, 14));
+		setLayout(layout);
+		
+		c.fill =GridBagConstraints.BOTH;
+		c.weightx = 1.0;
+		
 	}
 
 	public static void createAndShowGUI() {
