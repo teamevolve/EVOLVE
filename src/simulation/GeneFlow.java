@@ -8,11 +8,11 @@ import shared.Genotype;
 /**
  * GeneFlow is a container used by PopulationManager to store data regarding 
  * gene flow from migrations and from mutations. Once created it is stored in a
- * GenerationInfo object by the Population that received it.
+ * GenerationRecord object by the Population that received it.
  * 
  * @see PopulationManager
  * @see Population
- * @see GenerationInfo
+ * @see GenerationRecord
  * 
  * @author ericscollins
  *
@@ -40,22 +40,22 @@ public class GeneFlow {
 	/**
 	 * Accessor for immigration counts
 	 * 
-	 * @param gt genotype to get immigration count for
+	 * @param  gt genotype to get immigration count for
 	 * @return immigration count for given genotype
 	 */
-	public int getInflow(Genotype gt) {
+	public int getImmigrationCount(Genotype gt) {
 		return immigrations.get(gt);
 	}
 	
 	
 	/**
-	 * Accessor for emmigration counts
+	 * Accessor for emigration counts
 	 * 
 	 * 
-	 * @param gt genotype to get emigration count for
-	 * @return emmigration count for given genotype
+	 * @param  gt genotype to get emigration count for
+	 * @return emigration count for given genotype
 	 */
-	public int getOutflow(Genotype gt) {
+	public int getEmigrationCount(Genotype gt) {
 		return emigrations.get(gt);
 	}
 	
@@ -63,8 +63,8 @@ public class GeneFlow {
 	/**
 	 * Accessor for mutation counts
 	 * 
-	 * @param from genotype that mutation affected
-	 * @param to resulting genotype
+	 * @param  from genotype that mutation affected
+	 * @param  to   resulting genotype
 	 * @return from -> to mutation count
 	 */
 	public int getMutations(Genotype from, Genotype to) {
@@ -76,9 +76,9 @@ public class GeneFlow {
 	 * Mutator for immigration counts
 	 * 
 	 * @param gt genotype to set immigration count for
-	 * @param n number of immigrating individuals
+	 * @param n  number of immigrating individuals
 	 */
-	public void setImmigration(Genotype gt, int n) {
+	public void setImmigrationCount(Genotype gt, int n) {
 		immigrations.put(gt, n);
 	}
 	
@@ -86,10 +86,10 @@ public class GeneFlow {
 	/**
 	 * Mutator for emigration counts
 	 * 
-	 * @param gt genotypte to set emigration count for
-	 * @param n number of emigrating individuals
+	 * @param gt genotype to set emigration count for
+	 * @param n  number of emigrating individuals
 	 */
-	public void setEmigration(Genotype gt, int n) {
+	public void setEmigrationCount(Genotype gt, int n) {
 		emigrations.put(gt,  n);
 	}
 	
@@ -98,8 +98,8 @@ public class GeneFlow {
 	 * Mutator for mutation counts
 	 * 
 	 * @param from genotype affected by mutation
-	 * @param to resulting genotype
-	 * @param n number of mutations from -> to
+	 * @param to   resulting genotype
+	 * @param n    number of mutations from -> to
 	 */
 	public void setMutations(Genotype from, Genotype to, int n) {
 		if (!mutations.containsKey(from)) {
