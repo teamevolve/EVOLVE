@@ -24,5 +24,32 @@ import shared.SessionParameters;
  */
 
 public class EvolveDirector {
+	/**
+	 * Member to enable singleton class
+	 */
+	private static EvolveDirector instance = null;
+	
+	
+	
+	/**
+	 * Returns a singleton instance of EvolveDirector
+	 * 
+	 * @return a singleton instance of EvolveDirector
+	 */
+	public static EvolveDirector getInstance() {
+		if (instance == null) {
+			instance = new EvolveDirector();
+		}
+		return instance;
+	}
+	
+	
+	/**
+	 * Private constructor to disable normal instantiation
+	 */
+	private EvolveDirector() {
+		
+	}
+	
 
 }
