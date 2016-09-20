@@ -15,5 +15,29 @@ package simulation;
  */
 
 public class SimulationEngine {
+	/**
+	 * Member to enable singleton class
+	 */
+	public static SimulationEngine instance = null;
+	
+	
+	/**
+	 * Returns singleton instance of SimulationEngine
+	 * @return singleton instance of SimulationEngine
+	 */
+	public static SimulationEngine getInstance() {
+		if (instance == null) {
+			instance  = new SimulationEngine();
+		}
+		return instance;
+	}
+	
+	
+	/**
+	 * Private constructor to disable normal instantiation
+	 */
+	private SimulationEngine() {
+		
+	}
 
 }

@@ -65,7 +65,7 @@ public class GeneFlow {
 	 * 
 	 * @param  from genotype that mutation affected
 	 * @param  to   resulting genotype
-	 * @return from -> to mutation count
+	 * @return from &gt; to mutation count
 	 */
 	public int getMutations(Genotype from, Genotype to) {
 		return mutations.get(from).get(to);
@@ -99,7 +99,7 @@ public class GeneFlow {
 	 * 
 	 * @param from genotype affected by mutation
 	 * @param to   resulting genotype
-	 * @param n    number of mutations from -> to
+	 * @param n    number of mutations from &gt; to
 	 */
 	public void setMutations(Genotype from, Genotype to, int n) {
 		if (!mutations.containsKey(from)) {
