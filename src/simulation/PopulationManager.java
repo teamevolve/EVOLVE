@@ -40,5 +40,13 @@ public class PopulationManager {
 	private PopulationManager() {
 		
 	}
-
+	
+	
+	/**
+	 * Process migrations
+	 * 
+	 */
+	public void processMigrations() {
+		
+	}
 }
