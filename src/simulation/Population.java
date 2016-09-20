@@ -45,14 +45,14 @@ public class Population {
 	
 	/**
 	 * Retrieves the last generation simulated.
-	 * 
+	 *
 	 * @return the last generation simulated
 	 */
 	public GenerationRecord getLastGeneration() {
 		return generationHistory.get(generationHistory.size() - 1);
 	}
 	
-		
+
 	/**
 	 * Simulates birth and death over a generation of a population
 	 */
@@ -75,7 +75,7 @@ public class Population {
 	 * @see   GeneFlow
 	 */
 	public void adjustForFlow(GeneFlow flow) {
-		
+
 	}
 	
 	
