@@ -1,5 +1,7 @@
 package shared;
 
+import java.util.HashMap;
+
 /**
  * SessionParameters is a passive data structure used across the EVOLVE 
  * product, making parameters input by the user portable and accessible. Its 
@@ -31,17 +33,14 @@ public class SessionParameters {
 	
 	private int popSize, seed;
 	private boolean popConst, fixedMig;
-	private double reproRateAA, reproRateAB, reproRateBB;
-	private double survRateAA, survRateAB, survRateBB;
-	private double absFitAA, absFitAB, absFitBB;
-	private double relFitAA, relFitAB, relFitBB;
-	private double mutAtoB, mutBtoA;
-	private double migAA, migAB, migBB;
-	private double freqA;
-	private double freqAA, freqAB, freqBB;
-	private double mateAAtoAA, mateAAtoAB, mateAAtoBB;
-	private double mateABtoAA, mateABtoAB, mateABtoBB;
-	private double mateBBtoAA, mateBBtoAB, mateBBtoBB;
+	private HashMap<Genotype, Double> reproductionRates;
+	private HashMap<Genotype, Double> survivalRates;
+	private HashMap<Genotype, Double> absoluteFitnesses;
+	private HashMap<Genotype, Double> relativeFitnesses;
+	private HashMap<Genotype, HashMap<Genotype, Double>> mutationRates;
+	private HashMap<Genotype, Double> migrationRates;
+	private HashMap<Genotype, Double> genotypeFrequencies;
+	private HashMap<Genotype, HashMap<Genotype, Double>> sexualSelectionRates;
 
 	/* normal stuff */
 	
@@ -76,185 +75,58 @@ public class SessionParameters {
 	public void setPopConst(boolean popConst) {
 		this.popConst = popConst;
 	}
-	public double getReproRateAA() {
-		return reproRateAA;
+	public double getReproductionRate(Genotype gt) {
+		return reproductionRates.get(gt);
 	}
-	public void setReproRateAA(double reproRateAA) {
-		this.reproRateAA = reproRateAA;
+	public void setReproductionRate(Genotype gt, double rate) {
+		reproductionRates.put(gt,  rate);
 	}
-	public double getReproRateBB() {
-		return reproRateBB;
+	public double getSurvivalRate(Genotype gt) {
+		return survivalRates.get(gt);
 	}
-	public void setReproRateBB(double reproRateBB) {
-		this.reproRateBB = reproRateBB;
+	public void setSurvivalRate(Genotype gt, double rate) {
+		survivalRates.put(gt,  rate);
 	}
-	public double getReproRateAB() {
-		return reproRateAB;
+	public double getAbsoluteFitness(Genotype gt) {
+		return absoluteFitnesses.get(gt);
 	}
-	public void setReproRateAB(double reproRateAB) {
-		this.reproRateAB = reproRateAB;
+	public void setAbsoluteFitness(Genotype gt, double fitness) {
+		absoluteFitnesses.put(gt, fitness);
 	}
-	public double getSurvRateAB() {
-		return survRateAB;
+	public double getRelativeFitness(Genotype gt) {
+		return relativeFitnesses.get(gt);
 	}
-	public void setSurvRateAB(double survRateAB) {
-		this.survRateAB = survRateAB;
+	public void setRelativeFitness(Genotype gt, double fitness) {
+		relativeFitnesses.put(gt, fitness);
 	}
-	public double getSurvRateBB() {
-		return survRateBB;
+	public double getMigrationRate(Genotype gt) {
+		return migrationRates.get(gt);
 	}
-	public void setSurvRateBB(double survRateBB) {
-		this.survRateBB = survRateBB;
+	public void setMigrationRate(Genotype gt, double rate) {
+		migrationRates.put(gt, rate);
 	}
-	public double getSurvRateAA() {
-		return survRateAA;
+	public double getMutationRate(Genotype gt1, Genotype gt2) {
+		return mutationRates.get(gt1).get(gt2);
 	}
-	public void setSurvRateAA(double survRateAA) {
-		this.survRateAA = survRateAA;
+	public void setMuationRate(Genotype gt1, Genotype gt2, double rate) {
+		if (!mutationRates.containsKey(gt1)) {
+			mutationRates.put(gt1, new HashMap<Genotype, Double>());
+		}
+		mutationRates.get(gt1).put(gt2, rate);
 	}
-	public double getAbsFitBB() {
-		return absFitBB;
+	public double getGenotypeFrequency(Genotype gt) {
+		return genotypeFrequencies.get(gt);
 	}
-	public void setAbsFitBB(double absFitBB) {
-		this.absFitBB = absFitBB;
+	public void setGenotypeFrequency(Genotype gt, double freq) {
+		genotypeFrequencies.put(gt, freq);
 	}
-	public double getAbsFitAA() {
-		return absFitAA;
+	public double getSexualSelectionRate(Genotype gt1, Genotype gt2) {
+		return sexualSelectionRates.get(gt1).get(gt2);
 	}
-	public void setAbsFitAA(double absFitAA) {
-		this.absFitAA = absFitAA;
-	}
-	public double getAbsFitAB() {
-		return absFitAB;
-	}
-	public void setAbsFitAB(double absFitAB) {
-		this.absFitAB = absFitAB;
-	}
-	public double getRelFitAA() {
-		return relFitAA;
-	}
-	public void setRelFitAA(double relFitAA) {
-		this.relFitAA = relFitAA;
-	}
-	public double getRelFitBB() {
-		return relFitBB;
-	}
-	public void setRelFitBB(double relFitBB) {
-		this.relFitBB = relFitBB;
-	}
-	public double getRelFitAB() {
-		return relFitAB;
-	}
-	public void setRelFitAB(double relFitAB) {
-		this.relFitAB = relFitAB;
-	}
-	public double getMigAA() {
-		return migAA;
-	}
-	public void setMigAA(double migAA) {
-		this.migAA = migAA;
-	}
-	public double getMutAtoB() {
-		return mutAtoB;
-	}
-	public void setMutAtoB(double mutAtoB) {
-		this.mutAtoB = mutAtoB;
-	}
-	public double getMutBtoA() {
-		return mutBtoA;
-	}
-	public void setMutBtoA(double mutBtoA) {
-		this.mutBtoA = mutBtoA;
-	}
-	public double getFreqA() {
-		return freqA;
-	}
-	public void setFreqA(double freqA) {
-		this.freqA = freqA;
-	}
-	public double getMigAB() {
-		return migAB;
-	}
-	public void setMigAB(double migAB) {
-		this.migAB = migAB;
-	}
-	public double getMigBB() {
-		return migBB;
-	}
-	public void setMigBB(double migBB) {
-		this.migBB = migBB;
-	}
-	public double getMateAAtoAA() {
-		return mateAAtoAA;
-	}
-	public void setMateAAtoAA(double mateAAtoAA) {
-		this.mateAAtoAA = mateAAtoAA;
-	}
-	public double getFreqAB() {
-		return freqAB;
-	}
-	public void setFreqAB(double freqAB) {
-		this.freqAB = freqAB;
-	}
-	public double getFreqAA() {
-		return freqAA;
-	}
-	public void setFreqAA(double freqAA) {
-		this.freqAA = freqAA;
-	}
-	public double getFreqBB() {
-		return freqBB;
-	}
-	public void setFreqBB(double freqBB) {
-		this.freqBB = freqBB;
-	}
-	public double getMateAAtoBB() {
-		return mateAAtoBB;
-	}
-	public void setMateAAtoBB(double mateAAtoBB) {
-		this.mateAAtoBB = mateAAtoBB;
-	}
-	public double getMateAAtoAB() {
-		return mateAAtoAB;
-	}
-	public void setMateAAtoAB(double mateAAtoAB) {
-		this.mateAAtoAB = mateAAtoAB;
-	}
-	public double getMateABtoAB() {
-		return mateABtoAB;
-	}
-	public void setMateABtoAB(double mateABtoAB) {
-		this.mateABtoAB = mateABtoAB;
-	}
-	public double getMateABtoBB() {
-		return mateABtoBB;
-	}
-	public void setMateABtoBB(double mateABtoBB) {
-		this.mateABtoBB = mateABtoBB;
-	}
-	public double getMateABtoAA() {
-		return mateABtoAA;
-	}
-	public void setMateABtoAA(double mateABtoAA) {
-		this.mateABtoAA = mateABtoAA;
-	}
-	public double getMateBBtoAB() {
-		return mateBBtoAB;
-	}
-	public void setMateBBtoAB(double mateBBtoAB) {
-		this.mateBBtoAB = mateBBtoAB;
-	}
-	public double getMateBBtoBB() {
-		return mateBBtoBB;
-	}
-	public void setMateBBtoBB(double mateBBtoBB) {
-		this.mateBBtoBB = mateBBtoBB;
-	}
-	public double getMateBBtoAA() {
-		return mateBBtoAA;
-	}
-	public void setMateBBtoAA(double mateBBtoAA) {
-		this.mateBBtoAA = mateBBtoAA;
-	}
-	
+	public void setSexualSelectionRate(Genotype gt1, Genotype gt2, double rate) {
+		if (!sexualSelectionRates.containsKey(gt1)) {
+			sexualSelectionRates.put(gt1, new HashMap<Genotype, Double>());
+		}
+		sexualSelectionRates.get(gt1).put(gt2, rate);
+	}	
 }
