@@ -1,6 +1,9 @@
 package simulation;
 
 import java.util.HashMap;
+import shared.Genotype;
+
+
 
 /**
  * GenerationRecord is a data holding class used by Population. This contains 
@@ -9,6 +12,7 @@ import java.util.HashMap;
  * each generation and stored in a list in Population.  
  * 
  * @author richwenner
+ * @author ericscollins
  *
  */
 
@@ -17,8 +21,12 @@ public class GenerationRecord {
 	private int generationNumber;
 	private int populationID;
 	private int populationSize;	
-	private HashMap<String, Float> genotypeFrequencies;
+	private HashMap<Genotype, Double> genotypeFrequencies;
 	private GeneFlow geneFlow;
+	
+	public GenerationRecord() {
+		genotypeFrequencies = new HashMap<Genotype, Double>();
+	}
 	
 	//Getters & Setters
 	public int getGenerationNumber() {
@@ -39,11 +47,11 @@ public class GenerationRecord {
 	public void setPopulationSize(int popSize) {
 		populationSize = popSize;
 	}
-	public HashMap<String, Float> getGenotypeFrequencies() {
-		return genotypeFrequencies;
+	public double getGenotypeFreq(Genotype gt) {
+		return genotypeFrequencies.get(gt);
 	}
-	public void setGenotypeFrequencies(HashMap<String, Float> gtFreq) {
-		genotypeFrequencies = gtFreq;
+	public void setGenotypeFreq(Genotype gt, double freq) {
+		genotypeFrequencies.put(gt, freq);
 	}
 	public GeneFlow getGeneFlow() {
 		return geneFlow;
