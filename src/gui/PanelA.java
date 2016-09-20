@@ -14,10 +14,12 @@ public class PanelA extends JPanel {
 	private static final long serialVersionUID = 1L;
 	protected JTextField seedField = new JTextField(8);
 	
+	
 	public PanelA() {
 		// Set up panel
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridBagLayout());
+		setLayout(new GridBagLayout());
+		
 		
 		// Group fields to the panel
 		JLabel seedLabel = new JLabel("Seed: ");
