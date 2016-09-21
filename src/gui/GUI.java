@@ -40,6 +40,12 @@ public class GUI extends JPanel {
 	JTextField numGens;
 	JLabel postCrashLabel;
 	JTextField postCrash;
+	JLabel initFreqALabel;
+	JTextField initFreqA;
+	JLabel calcFreqAA;
+	JLabel calcFreqAB;
+	JLabel calcFreqBB;
+	
 	
 	/** 
 	 * This is the panel that will be added to the window (the frame)
@@ -116,6 +122,26 @@ public class GUI extends JPanel {
 		c.gridx = 10; c.gridy = 60;
 		add(numGens, c);
 		
+		// initial frequencies stuff
+		initFreqALabel = new JLabel("Initial Frequency of Allele A: ");
+		initFreqA = new JTextField(TEXT_LEN_SHORT);
+		
+		c.gridx = 0; c.gridy = 70;
+		add(initFreqALabel, c);
+		c.gridx = 10; c.gridy = 70;
+		add(initFreqA, c);
+		
+		calcFreqAA = new JLabel("AA: ");
+		calcFreqAB = new JLabel("AB: ");
+		calcFreqBB = new JLabel("BB: ");
+		c.gridx = 10; c.gridy = 80;
+		add(calcFreqAA, c);
+		c.gridx = 20; c.gridy = 80;
+		add(calcFreqAB, c);
+		c.gridx = 30; c.gridy = 80;
+		add(calcFreqBB, c);
+		
+		
 		
 		// **************submit button- to be deleted later ***************
 		submit = new JButton(">> Submit <<");
@@ -123,13 +149,11 @@ public class GUI extends JPanel {
 		c.gridx = 0; c.gridy = 999999;
 		add(submit, c);		
 		
-		submit.addActionListener(new ActionListener() {
+		/*submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 			}
-		});
-		
-		}
+		});*/
 		
 	}
 
