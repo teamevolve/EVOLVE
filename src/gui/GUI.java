@@ -14,6 +14,9 @@ public class GUI extends JPanel {
 	static final int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 3;
 	
+	// we'll dump our input into this guy/object
+	shared.SessionParameters parms;
+	
 	// eventually delete this for real time inputs
 	JButton submit;
 	
@@ -45,15 +48,18 @@ public class GUI extends JPanel {
 	 * This is the panel that will be added to the window (the frame)
 	 */
 	public GUI() {
+		// our input will go in this guy/object <-- lowkey offensive
+		parms = new shared.SessionParameters();
+		
 		setLayout(new GridBagLayout());
 	
 		// seed stuff
 		seedLabel = new JLabel("Seed: ");
 		seedField = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 1000; c.gridy = 0;
+		c.gridx = 999990; c.gridy = 0;
 		add(seedLabel, c);		
-		c.gridx = 100; c.gridy = 0;
+		c.gridx = 999999; c.gridy = 0;
 		add(seedField, c);	
 		
 		// population size stuff
@@ -135,19 +141,21 @@ public class GUI extends JPanel {
 		c.gridx = 30; c.gridy = 80;
 		add(calcFreqBB, c);
 		
-		
-		
 		// **************submit button- to be deleted later ***************
 		submit = new JButton(">> Submit <<");
 		
-		c.gridx = 0; c.gridy = 999999;
+		c.gridx = 999999; c.gridy = 999999;
 		add(submit, c);		
 		
-		/*submit.addActionListener(new ActionListener() {
+		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				parms.setSeed(Integer.parseInt(seedField.getText()));
+				parms.setPopSize(Integer.parseInt(popSizeField.getText()));
 				
+				System.out.println(parms.getSeed());
+				System.out.println(parms.getPopSize());
 			}
-		});*/
+		});
 		
 	}
 
