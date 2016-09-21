@@ -31,7 +31,7 @@ import java.util.HashMap;
 public class SessionParameters {
 	// all members should private
 	
-	private int popSize, seed;
+	private int popSize, seed, numPops;
 	private boolean popConst, fixedMig;
 	private HashMap<Genotype, Double> reproductionRates;
 	private HashMap<Genotype, Double> survivalRates;
@@ -56,6 +56,12 @@ public class SessionParameters {
 	}
 	public void setPopSize(int popSize) {
 		this.popSize = popSize;
+	}
+	public int getNumPops() {
+		return numPops;
+	}
+	public void setNumPops(int n) {
+		numPops = n;
 	}
 	public int getSeed() {
 		return seed;
@@ -128,5 +134,5 @@ public class SessionParameters {
 			sexualSelectionRates.put(gt1, new HashMap<Genotype, Double>());
 		}
 		sexualSelectionRates.get(gt1).put(gt2, rate);
-	}	
+	}
 }

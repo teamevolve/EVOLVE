@@ -19,47 +19,83 @@ import shared.Genotype;
 public class GenerationRecord {
 
 	private int generationNumber;
-	private int populationID;
-	private int populationSize;	
-	private HashMap<Genotype, Double> genotypeFrequencies;
-	private GeneFlow geneFlow;
+	private int parentPopID;
+	private HashMap<Genotype, Integer> genotypeSubpopulationSizes;
+	private HashMap<Genotype, Integer> immigrations;
+	private HashMap<Genotype, Integer> emigrations;
+	private HashMap<Genotype, HashMap<Genotype, Integer>> mutations;
+	private HashMap<Genotype, Integer> births;
+	private HashMap<Genotype, Integer> deaths;
 	
-	public GenerationRecord() {
-		genotypeFrequencies = new HashMap<Genotype, Double>();
+	public GenerationRecord(int popID, int genNum) {
+		genotypeSubpopulationSizes = new HashMap<Genotype, Integer>();
+		parentPopID = popID;
+		generationNumber = genNum;
 	}
 	
 	//Getters & Setters
 	public int getGenerationNumber() {
 		return generationNumber;
+	}	
+	
+	public int getParentPopID() {
+		return parentPopID;
 	}
-	public void setGenerationNumber(int genNumber) {
-		generationNumber = genNumber;
-	}
-	public int getPopulationID() {
-		return populationID;
-	}
-	public void setPopulationID(int popID) {
-		populationID = popID;
-	}
+
 	public int getPopulationSize() {
-		return populationSize;
+		int populationSize = 0;
+		for (int i : genotypeSubpopulationSizes.values()) {
+			populationSize += i;
+		}
+		return populationSize;		
 	}
-	public void setPopulationSize(int popSize) {
-		populationSize = popSize;
-	}
+	
 	public double getGenotypeFreq(Genotype gt) {
-		return genotypeFrequencies.get(gt);
-	}
-	public void setGenotypeFreq(Genotype gt, double freq) {
-		genotypeFrequencies.put(gt, freq);
-	}
-	public GeneFlow getGeneFlow() {
-		return geneFlow;
-	}
-	public void setGeneFlow(GeneFlow gf) {
-		geneFlow = gf;
+		return (double) genotypeSubpopulationSizes.get(gt) / (double) getPopulationSize();
 	}
 	
+	public int getGenotypeSubpopulationSize(Genotype gt) {
+		return genotypeSubpopulationSizes.get(gt);
+	}
+	public void setGenotypeSubpopulationSize(Genotype gt, int size) {
+		genotypeSubpopulationSizes.put(gt, size);
+	}
 	
+	public int getImmigrationCount(Genotype gt) {
+		return immigrations.get(gt);
+	}
+	public void setImmigrationCount(Genotype gt, int count) {
+		immigrations.put(gt, count);
+	}
 	
+	public int getEmigrationCount(Genotype gt) {
+		return emigrations.get(gt);
+	}
+	public void setEmigrationCount(Genotype gt, int count) {
+		emigrations.put(gt,  count);
+	}
+	
+	public int getMuationCount(Genotype from, Genotype to) {
+		return mutations.get(from).get(to);
+	}
+	public void setMutationCount(Genotype from, Genotype to, int count) {
+		if (!mutations.containsKey(from)) {
+			mutations.put(from, new HashMap<Genotype, Integer>());
+		}
+		mutations.get(from).put(to, count);
+	}
+	
+	public int getBirths(Genotype gt) {
+		return births.get(gt);
+	}
+	public void setBirths(Genotype gt, int n) {
+		births.put(gt, n);
+	}
+	
+	public int getDeaths(Genotype gt) {
+		return deaths.get(gt);
+	}
+	public void setDeaths(Genotype gt, int n) {
+		deaths.put(gt, n);
+	}
 }
