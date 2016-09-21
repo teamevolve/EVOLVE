@@ -24,7 +24,8 @@ import java.util.HashMap;
  * @see EvolveDirector
  * @see DataManager
  * 
- * 
+ * @author linneasahlberg
+ * @author jasonfortunato
  * @author ericscollins
  *
  */
