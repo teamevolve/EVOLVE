@@ -20,6 +20,9 @@ public class GUI extends JPanel {
 	static final int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 3;
 	
+	// eventually delete this for real time inputs
+	JButton submit;
+	
 	GridBagConstraints c = new GridBagConstraints();
 	JLabel seedLabel;
 	JTextField seedField;
@@ -43,7 +46,7 @@ public class GUI extends JPanel {
 	 */
 	public GUI() {
 		setLayout(new GridBagLayout());
-		
+	
 		// seed stuff
 		seedLabel = new JLabel("Seed: ");
 		seedField = new JTextField(TEXT_LEN_LONG);
@@ -112,13 +115,22 @@ public class GUI extends JPanel {
 		add(numGensLabel, c);
 		c.gridx = 10; c.gridy = 60;
 		add(numGens, c);
-
 		
-		//setFont(new Font ("SansSerif", Font.PLAIN, 40));
 		
-		//c.fill = GridBagConstraints.BOTH;
-		//c.weightx = 1.0;
-
+		// **************submit button- to be deleted later ***************
+		submit = new JButton(">> Submit <<");
+		
+		c.gridx = 0; c.gridy = 999999;
+		add(submit, c);		
+		
+		submit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		}
+		
 	}
 
 	public static void createAndShowGUI() {
