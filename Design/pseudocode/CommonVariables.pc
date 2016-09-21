@@ -5,6 +5,7 @@
 # their modernized types. Due to restricted variable name length, many of these
 # have unclear purposes; as we determine these purposes, please leave a comment
 # describing its usage starting in column 40.
+# We'll need to come up w/ new, clearer variable names. I've suggested some in my EVOLVE v4 Notes.html folder
 #
 # e.g.
 #	...
@@ -25,9 +26,9 @@ int
 	MXPOP1                          # Carrying capacity
 	MXPOP2                          # Pop size after a crash
 	NOGENS                          # No. of generations to simulate
-	OUTFLOW
-	OUTLP   = 6
-	OUTSCR  = 6
+	OUTFLOW                         # Emigration
+	OUTLP   = 6                     # Output to line printer
+	OUTSCR  = 6                     # Output to screen
 	PRINT2  = 6
 	SUMGEN  = 1
 	SUMRY 
@@ -36,13 +37,13 @@ int
 # Integer arrays
 int[] 
 	INFLO[3]                        # No. of each genotype immigrating
-	MATES[6]
+	MATES[6]                        # No. of pairs of mates in array of mates (e.g., number of AA–AB, AA–BB etc. pairs) 
 	NOADLT[3]                       # No. of adults of each genotype in pop
 	OUTFLO[3]                       # No. of each genotype emmigrating
 
 # Two Dimensional integer arrays 
 int[][]
-	RSLT[3][125]                    # Contains results of simulation
+	RSLT[3][125]                    # Contains results of simulation {3 genotypes x 125 generations}
 
 # Floating point variables
 float
@@ -60,10 +61,10 @@ float[]
 	GNTSUR[3]                       # Genotype survival rates
 	GSELCO[3]                       # Genotype selection coefficients 
 	JUV   [3]                       # No. of juveniles of each genotype
-	NOOUT [3]                       
-	NOYONG[6]
-	OBSFR [3]
-	REPR8 [3]
+	NOOUT [3]                       # No. of emigrants of ea genotype
+	NOYONG[6]			# No. young from mated pairs
+	OBSFR [3]			# Observed genotype frequencies
+	REPR8 [3]			# Reproductive rates of genotypes
 	SURVR8[3]                       # Survival rate for each genotype
 		
 		
