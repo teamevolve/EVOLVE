@@ -3,6 +3,8 @@
  * utilities, common objects, and DataManagerand and EvolveDirector classes.
  *
  * @author ericscollins
+ * @author jasonfortunato
+ * @author linneasahlberg
  *
  */
 package shared;

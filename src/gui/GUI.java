@@ -1,11 +1,5 @@
-/*********************************************************************
- * Linnea and Jason
- * 
- * 9/18/16
- * 
- * GUI
- ********************************************************************/
 package gui;
+
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,8 +8,8 @@ import javax.swing.*;
 /**
  * @author linneasahlberg
  * @author jasonfortunato
+ * Started 9/18/16
  */
-
 public class GUI extends JPanel {
 	static final int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 3;
