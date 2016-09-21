@@ -33,9 +33,7 @@ public class Population {
 	public Population() {
 		populationID = populationCounter++;
 		generationHistory = new ArrayList<GenerationRecord>();
-		GenerationRecord gr = new GenerationRecord();
-		gr.setPopulationID(populationID);
-		gr.setGenerationNumber(0);
+		GenerationRecord gr = new GenerationRecord(populationID, 0);
 		for (Genotype gt : Genotype.values()) {
 			
 			gr.setGenotypeSubpopulationSize(gt, (int)(DataManager.getInstance().getSessionParams().getPopSize() *
@@ -69,7 +67,7 @@ public class Population {
 	 * Simulates birth and death over a generation of a population
 	 */
 	public void simulateGeneration() {
-		GenerationRecord newGeneration = new GenerationRecord();
+		GenerationRecord newGeneration = new GenerationRecord(populationID, generationHistory.size());
 		reproduce(getLastGeneration(), newGeneration);
 		survive(getLastGeneration(), newGeneration);
 		mutate(getLastGeneration(), newGeneration);
