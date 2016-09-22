@@ -21,6 +21,7 @@ public class GUI extends JPanel {
 	JButton submit;
 	
 	GridBagConstraints c = new GridBagConstraints();
+	
 	JLabel seedLabel; 				// Seed
 	JTextField seedField;
 	JLabel popSizeLabel;			// Population size
@@ -59,6 +60,8 @@ public class GUI extends JPanel {
 		parms = new shared.SessionParameters();
 		
 		setLayout(new GridBagLayout());
+		
+		c.anchor = GridBagConstraints.WEST;
 	
 		// seed stuff
 		seedLabel = new JLabel("Seed: ");
@@ -75,7 +78,7 @@ public class GUI extends JPanel {
 		
 		c.gridx = 0; c.gridy = 10;
 		add(popSizeLabel, c);
-		c.gridx = 10; c.gridy = 10;
+		c.gridx = 1; c.gridy = 10;
 		add(popSizeField, c);
 		
 		// population constant radio button stuff
@@ -88,37 +91,37 @@ public class GUI extends JPanel {
 		
 		c.gridx = 0; c.gridy = 20;
 		add(popConstLabel, c);
-		c.gridx = 10; c.gridy = 20;
+		c.gridx = 1; c.gridy = 20;
 		add(popConstTrue, c);
-		c.gridx = 11; c.gridy = 20;
+		c.gridx = 2; c.gridy = 20;
 		add(popConstFalse, c);
 		
 		// initial population stuff - appears when popSize varying
 		initPopLabel = new JLabel("Init Pop(if vary): ");
 		initPop = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 10; c.gridy = 30;
+		c.gridx = 1; c.gridy = 30;
 		add(initPopLabel, c);
-		c.gridx = 11; c.gridy = 30;
+		c.gridx = 2; c.gridy = 30;
 		add(initPop, c);
 		
 		// carrying capacity stuff - appears when popSize varying
 		carryCapLabel = new JLabel("Carry Cap(if vary): ");
 		carryCap = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 10; c.gridy = 40;
+		c.gridx = 1; c.gridy = 40;
 		add(carryCapLabel, c);
-		c.gridx = 11; c.gridy = 40;
+		c.gridx = 2; c.gridy = 40;
 		add(carryCap, c);
 		
 		// post crash population size stuff - appears when popSize varying
 		postCrashLabel = new JLabel("Post crash pop size(if vary): ");
 		postCrash = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 10; c.gridy = 50;
+		c.gridx = 1; c.gridy = 50;
+		c.gridwidth = 3;
 		add(postCrashLabel, c);
-		c.gridwidth = 2;
-		c.gridx = 11; c.gridy = 50;
+		c.gridx = 2; c.gridy = 50;
 		c.gridwidth = 1;
 		add(postCrash, c);
 		
@@ -128,7 +131,8 @@ public class GUI extends JPanel {
 		
 		c.gridx = 0; c.gridy = 60;
 		add(numGensLabel, c);
-		c.gridx = 10; c.gridy = 60;
+		c.gridx = 1; c.gridy = 60;
+		c.anchor = GridBagConstraints.EAST;
 		add(numGens, c);
 		
 		// initial frequencies stuff
@@ -136,18 +140,24 @@ public class GUI extends JPanel {
 		initFreqA = new JTextField(TEXT_LEN_SHORT);
 		
 		c.gridx = 0; c.gridy = 70;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.WEST;
 		add(initFreqALabel, c);
-		c.gridx = 10; c.gridy = 70;
+		
+		c.gridx = 1; c.gridy = 70;
+		c.anchor = GridBagConstraints.EAST;
+		c.gridwidth = 1;
 		add(initFreqA, c);
 		
 		calcFreqAA = new JLabel("AA: ");
 		calcFreqAB = new JLabel("AB: ");
 		calcFreqBB = new JLabel("BB: ");
-		c.gridx = 10; c.gridy = 80;
+		c.gridx = 1; c.gridy = 80;
+		c.anchor = GridBagConstraints.WEST;
 		add(calcFreqAA, c);
-		c.gridx = 20; c.gridy = 80;
+		c.gridx = 2; c.gridy = 80;
 		add(calcFreqAB, c);
-		c.gridx = 30; c.gridy = 80;
+		c.gridx = 3; c.gridy = 80;
 		add(calcFreqBB, c);
 		
 		// Selection radio buttons
@@ -160,9 +170,11 @@ public class GUI extends JPanel {
 		
 		c.gridx = 0; c.gridy = 90;
 		add(selectLabel, c);
-		c.gridx = 10; c.gridy = 90;
+		c.gridx = 1; c.gridy = 90;
+		c.gridwidth = 2;
 		add(selectRandS, c);
-		c.gridx = 20; c.gridy = 90;
+		c.gridx = 3; c.gridy = 90;
+		c.gridwidth = 1;
 		add(selectAbs, c);
 		
 		// Reproduction Rates (visible if Repro and Surv is selected)
@@ -174,17 +186,26 @@ public class GUI extends JPanel {
 		reproAB = new JTextField(TEXT_LEN_LONG);
 		reproBB = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 10; c.gridy = 100;
+		c.gridx = 1; c.gridy = 100;
 		c.gridwidth = 2;
 		add(reproRateLabel, c);
 		
 		// add label then field x3
-		c.gridx = 10; c.gridy = 110;
+		c.gridx = 1; c.gridy = 110;
 		c.gridwidth = 1;
 		add(reproAALabel, c);
-		c.gridx = 11; c.gridy = 110;
+		c.gridx = 2; c.gridy = 110;
 		add(reproAA, c);
 		
+		c.gridx = 3; c.gridy = 110;
+		add(reproABLabel, c);
+		c.gridx = 4; c.gridy = 110;
+		add(reproAB, c);
+		
+		c.gridx = 5; c.gridy = 110;
+		add(reproBBLabel, c);
+		c.gridx = 6; c.gridy = 110;
+		add(reproBB, c);
 		
 		
 		// **************submit button- to be deleted later ***************
