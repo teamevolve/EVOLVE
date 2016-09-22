@@ -103,5 +103,7 @@ public class PopulationManager {
 				}
 			}
 		}
+		// How to calculate num immigration from each population?
+		// How to redistribute drifters?
 	}
 }
