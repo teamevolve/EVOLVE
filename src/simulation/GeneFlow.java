@@ -8,6 +8,7 @@ import shared.Genotype;
 /**
  * GeneFlow is a container used by PopulationManager to store data regarding 
  * gene flow from migrations and from mutations. Once created it is stored in a
+ * {FP: not sure why mutation is mentioned here; mutation occurs w/in populations, not between them.}
  * GenerationRecord object by the Population that received it.
  * 
  * @see PopulationManager
