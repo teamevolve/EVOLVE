@@ -49,7 +49,16 @@ public class SessionParameters {
 		
 	}
 	
-	
+	public SessionParameters() {
+		reproductionRates = new HashMap<Genotype, Double>();
+		survivalRates = new HashMap<Genotype, Double>();
+		absoluteFitnesses = new HashMap<Genotype, Double>();
+		relativeFitnesses = new HashMap<Genotype, Double>();
+		mutationRates = new HashMap<Genotype, HashMap<Genotype, Double>>();
+		migrationRates = new HashMap<Genotype, Double>();
+		genotypeFrequencies = new HashMap<Genotype, Double>();
+		sexualSelectionRates = new HashMap<Genotype, HashMap<Genotype, Double>>();
+	}
 	
 	/* accessors and mutators */	
 	public int getPopSize() {
@@ -115,7 +124,8 @@ public class SessionParameters {
 	public double getMutationRate(Genotype gt1, Genotype gt2) {
 		return mutationRates.get(gt1).get(gt2);
 	}
-	public void setMuationRate(Genotype gt1, Genotype gt2, double rate) {
+	public void setMutationRate(Genotype gt1, Genotype gt2, double rate) {
+		System.out.println();
 		if (!mutationRates.containsKey(gt1)) {
 			mutationRates.put(gt1, new HashMap<Genotype, Double>());
 		}

@@ -85,7 +85,7 @@ public class PopulationManager {
 				}	
 			}
 		}
-		
+
 		// Distribute drifters from pool among populations
 		{
 			Random rng = new Random();
@@ -94,7 +94,8 @@ public class PopulationManager {
 			GenerationRecord gr;
 			for (Genotype gt : inTransit.keySet()) {
 				while(inTransit.get(gt) > 0) {
-					randImm = rng.nextInt(inTransit.get(gt) - 1) + 1;
+					randImm = rng.nextInt(inTransit.get(gt));
+					if (randImm == 0) randImm++;
 					randInd = rng.nextInt(populationList.size());
 					gr = populationList.get(randInd).getLastGeneration();
 					gr.setGenotypeSubpopulationSize(gt, gr.getGenotypeSubpopulationSize(gt) + randImm);
