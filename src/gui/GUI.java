@@ -90,7 +90,7 @@ public class GUI extends JPanel {
 		add(popConstLabel, c);
 		c.gridx = 10; c.gridy = 20;
 		add(popConstTrue, c);
-		c.gridx = 20; c.gridy = 20;
+		c.gridx = 11; c.gridy = 20;
 		add(popConstFalse, c);
 		
 		// initial population stuff - appears when popSize varying
@@ -99,7 +99,7 @@ public class GUI extends JPanel {
 		
 		c.gridx = 10; c.gridy = 30;
 		add(initPopLabel, c);
-		c.gridx = 20; c.gridy = 30;
+		c.gridx = 11; c.gridy = 30;
 		add(initPop, c);
 		
 		// carrying capacity stuff - appears when popSize varying
@@ -108,7 +108,7 @@ public class GUI extends JPanel {
 		
 		c.gridx = 10; c.gridy = 40;
 		add(carryCapLabel, c);
-		c.gridx = 20; c.gridy = 40;
+		c.gridx = 11; c.gridy = 40;
 		add(carryCap, c);
 		
 		// post crash population size stuff - appears when popSize varying
@@ -117,7 +117,9 @@ public class GUI extends JPanel {
 		
 		c.gridx = 10; c.gridy = 50;
 		add(postCrashLabel, c);
-		c.gridx = 20; c.gridy = 50;
+		c.gridwidth = 2;
+		c.gridx = 11; c.gridy = 50;
+		c.gridwidth = 1;
 		add(postCrash, c);
 		
 		// num generations stuff
@@ -164,20 +166,27 @@ public class GUI extends JPanel {
 		add(selectAbs, c);
 		
 		// Reproduction Rates (visible if Repro and Surv is selected)
-		reproRateLabel = new JLabel("Reproduction Rates (0 to 10, decimals allowed");
-		reproAALabel = new JLabel("AA");
-		reproABLabel = new JLabel("AB");
-		reproBBLabel = new JLabel("BB");
-		reproAA = new JTextField("AA: ");
-		reproAB = new JTextField("AB: ");
-		reproBB = new JTextField("BB: ");
+		reproRateLabel = new JLabel("Reproduction Rates (0 to 10, decimals allowed)");
+		reproAALabel = new JLabel("AA: ");
+		reproABLabel = new JLabel("AB: ");
+		reproBBLabel = new JLabel("BB: ");
+		reproAA = new JTextField(TEXT_LEN_LONG);
+		reproAB = new JTextField(TEXT_LEN_LONG);
+		reproBB = new JTextField(TEXT_LEN_LONG);
 		
 		c.gridx = 10; c.gridy = 100;
-		c.gridwidth = 3;
+		c.gridwidth = 2;
 		add(reproRateLabel, c);
-		c.gridx = 0; c.gridy = 100;
-		c.gridwidth = 1;
+		
 		// add label then field x3
+		c.gridx = 10; c.gridy = 110;
+		c.gridwidth = 1;
+		add(reproAALabel, c);
+		c.gridx = 11; c.gridy = 110;
+		add(reproAA, c);
+		
+		
+		
 		// **************submit button- to be deleted later ***************
 		submit = new JButton(">> Submit <<");
 		
