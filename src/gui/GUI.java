@@ -21,28 +21,35 @@ public class GUI extends JPanel {
 	JButton submit;
 	
 	GridBagConstraints c = new GridBagConstraints();
-	JLabel seedLabel;
+	JLabel seedLabel; 				// Seed
 	JTextField seedField;
-	JLabel popSizeLabel;
+	JLabel popSizeLabel;			// Population size
 	JTextField popSizeField;
-	JLabel popConstLabel;
+	JLabel popConstLabel;			// Population constant
 	ButtonGroup popConstGroup;
 	JRadioButton popConstTrue;
 	JRadioButton popConstFalse;
-	JLabel initPopLabel;
+	JLabel initPopLabel;  			// Initial population
 	JTextField initPop;
-	JLabel carryCapLabel;
+	JLabel carryCapLabel;			// Carrying Capacity
 	JTextField carryCap;
-	JLabel numGensLabel;
+	JLabel numGensLabel; 			// Number of Gens
 	JTextField numGens;
-	JLabel postCrashLabel;
+	JLabel postCrashLabel; 			// Crash
 	JTextField postCrash;
-	JLabel initFreqALabel;
+	JLabel initFreqALabel; 			// Initial frequencies
 	JTextField initFreqA;
-	JLabel calcFreqAA;
-	JLabel calcFreqAB;
-	JLabel calcFreqBB;
-	
+	JLabel calcFreqAA, calcFreqAB, 
+		calcFreqBB;
+	JLabel selectLabel;				// Selection
+	ButtonGroup selectGroup;
+	JRadioButton selectRandS, 
+		selectAbs;
+	JLabel reproRateLabel, 					// Reproduction Rates (0 to 10, decimal allowed)
+		reproAALabel, reproABLabel, reproBBLabel;
+	JTextField reproAA, reproAB, reproBB;
+	JLabel survRateLabel,					// Survival Rates (0 to 1)
+		survAALabel, survABLabel, survBBLabel;
 	
 	/** 
 	 * This is the panel that will be added to the window (the frame)
@@ -141,6 +148,36 @@ public class GUI extends JPanel {
 		c.gridx = 30; c.gridy = 80;
 		add(calcFreqBB, c);
 		
+		// Selection radio buttons
+		selectLabel = new JLabel("Selection: ");
+		selectGroup = new ButtonGroup();
+		selectRandS = new JRadioButton("Reproduction and Survival");
+		selectAbs = new JRadioButton("Absolute Fitness");
+		selectGroup.add(selectRandS);
+		selectGroup.add(selectAbs);
+		
+		c.gridx = 0; c.gridy = 90;
+		add(selectLabel, c);
+		c.gridx = 10; c.gridy = 90;
+		add(selectRandS, c);
+		c.gridx = 20; c.gridy = 90;
+		add(selectAbs, c);
+		
+		// Reproduction Rates (visible if Repro and Surv is selected)
+		reproRateLabel = new JLabel("Reproduction Rates (0 to 10, decimals allowed");
+		reproAALabel = new JLabel("AA");
+		reproABLabel = new JLabel("AB");
+		reproBBLabel = new JLabel("BB");
+		reproAA = new JTextField("AA: ");
+		reproAB = new JTextField("AB: ");
+		reproBB = new JTextField("BB: ");
+		
+		c.gridx = 10; c.gridy = 100;
+		c.gridwidth = 3;
+		add(reproRateLabel, c);
+		c.gridx = 0; c.gridy = 100;
+		c.gridwidth = 1;
+		// add label then field x3
 		// **************submit button- to be deleted later ***************
 		submit = new JButton(">> Submit <<");
 		
