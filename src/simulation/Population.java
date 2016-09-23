@@ -69,8 +69,8 @@ public class Population {
 	public void simulateGeneration() {
 		GenerationRecord newGeneration = new GenerationRecord(populationID, generationHistory.size());
 		reproduce(getLastGeneration(), newGeneration);
-		survive(getLastGeneration(), newGeneration);
-		mutate(getLastGeneration(), newGeneration);
+		mutate(newGeneration);
+		survive(newGeneration);
 		generationHistory.add(newGeneration);
 	}
 	
@@ -111,8 +111,7 @@ public class Population {
 	 * @param current  GenerationRecord representing the current generation,
 	 *                 will be modified by survive() to reflect death
 	 */
-	private static void survive(GenerationRecord previous, 
-			                    GenerationRecord current) {
+	private static void survive(GenerationRecord current) {
 	}
 	
 	
@@ -126,9 +125,8 @@ public class Population {
 	 *                 
 	 * @author ericscollins
 	 */
-	private static void mutate(GenerationRecord previous,
-			                   GenerationRecord current) {
-		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+	private static void mutate(GenerationRecord current) {
+/*		final SessionParameters sp = DataManager.getInstance().getSessionParams();
 		double rate;
 		double delta;
 		
@@ -151,6 +149,6 @@ public class Population {
 		// Should mutations be based on previous generation's population?
 		// Or on population pre/post reproduce/survive?
 		// Is there any randomness involved?
-		
+	*/	
 	}
 }
