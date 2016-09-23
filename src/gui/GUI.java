@@ -57,9 +57,17 @@ public class GUI extends JPanel {
 	JTextField absFitAA, absFitAB, absFitBB;
 	JLabel relFitLabel,					// Relative fitness (0 to 1)
 		relFitAALabel, relFitABLabel, relFitBBLabel;
-	JLabel mutLabel,
+	JLabel mutLabel,					// Mutation (0 to 1)
 		mutAtoBLabel, mutBtoALabel;
 	JTextField mutAtoB, mutBtoA;
+	JLabel migLabel;					// Migration
+	ButtonGroup migGroup;
+	JRadioButton fixedMig, varMig;
+	JLabel fixedMigRateLabel;
+	JTextField fixedMigRate;
+	JLabel varMigRateLabel;
+	JLabel varMigRateAALabel, varMigRateABLabel, varMigRateBBLabel;
+	JTextField varMigRateAA, varMigRateAB, varMigRateBB;
 	
 	/** 
 	 * This is the panel that will be added to the window (the frame)
@@ -111,19 +119,19 @@ public class GUI extends JPanel {
 		c.gridx = 2; c.gridy = 20;
 		add(popConstFalse, c);
 		
-		// initial population stuff - appears when popSize varying
+		/*// initial population stuff - appears when popSize varying
 		initPopLabel = new JLabel("Initial Population Size: ");
 		initPop = new JTextField(TEXT_LEN_LONG);
 
 		c.gridx = 1; c.gridy = 30;
 		c.gridwidth = 2;
 		add(initPopLabel, c);
-		c.gridx = 2; c.gridy = 30;
+		c.gridx = 3; c.gridy = 30;
 		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		c.ipadx = -55;
+		c.anchor = GridBagConstraints.WEST;
+		//c.ipadx = -55;
 		add(initPop, c);
-		c.ipadx = 0;
+		c.ipadx = 0;*/
 		
 		// carrying capacity stuff - appears when popSize varying
 		carryCapLabel = new JLabel("Carrying Capacity: ");
@@ -132,12 +140,13 @@ public class GUI extends JPanel {
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.WEST;
 		add(carryCapLabel, c);
-		c.gridx = 2; c.gridy = 40;
+		c.gridx = 3; c.gridy = 40;
 		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		c.ipadx = -55;
+		//c.anchor = GridBagConstraints.EAST;
+		//c.ipadx = -55;
 		add(carryCap, c);
 		c.ipadx = 0;
+		
 		
 		// post crash population size stuff - appears when popSize varying
 		postCrashLabel = new JLabel("Post Crash Population Size: ");
@@ -145,12 +154,12 @@ public class GUI extends JPanel {
 		
 		c.gridx = 1; c.gridy = 50;
 		c.gridwidth = 3;
-		c.anchor = GridBagConstraints.WEST;
+		//c.anchor = GridBagConstraints.WEST;
 		add(postCrashLabel, c);
-		c.gridx = 2; c.gridy = 50;
+		c.gridx = 3; c.gridy = 50;
 		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		c.ipadx = -55;
+		//c.anchor = GridBagConstraints.EAST;
+		//c.ipadx = -55;
 		add(postCrash, c);
 		c.ipadx = 0;
 		
@@ -308,7 +317,7 @@ public class GUI extends JPanel {
 		add(absFitAA, c);
 	
 		c.gridx = 2; c.gridy = 150;
-		//c.anchor = GridBagConstraints.EAST;
+		//c.anchor = GridBagConstraints.WEST;
 		add(absFitABLabel, c);
 		c.gridx = 2; c.gridy = 150;
 		c.anchor = GridBagConstraints.EAST;
@@ -370,6 +379,24 @@ public class GUI extends JPanel {
 		c.gridx = 2; c.gridy = 190;
 		c.anchor = GridBagConstraints.EAST;
 		add(mutBtoA, c);
+		
+		// Migration radio buttons
+		migLabel = new JLabel("Migration: ");
+		migGroup = new ButtonGroup();
+		fixedMig = new JRadioButton("Fixed");
+		varMig = new JRadioButton("Varies by Genotype");
+		migGroup.add(fixedMig);
+		migGroup.add(varMig);
+		
+		c.gridx = 0; c.gridy = 200;
+		c.anchor = GridBagConstraints.WEST;
+		add(migLabel, c);
+		c.gridx = 0; c.gridy = 200;
+		c.anchor = GridBagConstraints.EAST;
+		add(fixedMig, c);
+		c.gridx = 1; c.gridy = 200;
+		c.anchor = GridBagConstraints.WEST;
+		add(varMig, c);
 		
 		// **************submit button- to be deleted later ***************
 		submit = new JButton(">> Submit <<");
