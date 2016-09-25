@@ -128,12 +128,22 @@ public class Population {
 	 * @author ericscollins
 	 */
 	private static void mutate(GenerationRecord current) {
+<<<<<<< HEAD
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		Random rng = new Random();
 		
+=======
+/*		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+		double rate;
+		double delta;
+		
+		// For every combination of genotypes 'from', 'to' 
+		// where 'from' mutates to 'to'...
+>>>>>>> bb7c3f84c553b6c78c79459da7500e8299d92227
 		for (Genotype from : Genotype.values()) {
 			int sizeBefore = current.getGenotypeSubpopulationSize(from);
 			for (Genotype to : Genotype.values()) {
+<<<<<<< HEAD
 				if (from != to) 
 					results.get(from).put(to, (int)(Math.round(
 						Math.log(rng.nextDouble() + ) / 
@@ -142,5 +152,23 @@ public class Population {
 		}
 		
 		for ()
+=======
+				if (from == to) continue;
+				rate = sp.getMutationRate(from, to);
+				delta = rate * previous.getGenotypeSubpopulationSize(from);
+				// ... subtract appropriate amount from 'from' subpopulation ...
+				current.setGenotypeSubpopulationSize(from, 
+						(int)(current.getGenotypeSubpopulationSize(from) - delta));
+				// ... and add the same amount to the 'to' subpopulation
+				current.setGenotypeSubpopulationSize(to, 
+						(int)(current.getGenotypeSubpopulationSize(to) + 
+							  rate * previous.getGenotypeSubpopulationSize(to)));
+			}
+		}
+		// Should mutations be based on previous generation's population?
+		// Or on population pre/post reproduce/survive?
+		// Is there any randomness involved?
+	*/	
+>>>>>>> bb7c3f84c553b6c78c79459da7500e8299d92227
 	}
 }

@@ -78,6 +78,7 @@ public class PopulationManager {
 			contrib.put(p, new HashMap<Genotype, Double>());
 		}
 
+<<<<<<< HEAD
 		
 		for (Genotype gt : Genotype.values()) {
 			genotypeMigrationRate = sp.getMigrationRate(gt);
@@ -93,6 +94,23 @@ public class PopulationManager {
 				perPopulationDistribution += temp;
 				contrib.get(p).put(gt, temp);
 				record.setGenotypeSubpopulationSize(gt, subPopulationSize - numEmigrations);
+=======
+		// Distribute drifters from pool among populations
+		{
+			Random rng = new Random();
+			int randImm;
+			int randInd;
+			GenerationRecord gr;
+			for (Genotype gt : inTransit.keySet()) {
+				while(inTransit.get(gt) > 0) {
+					randImm = rng.nextInt(inTransit.get(gt));
+					if (randImm == 0) randImm++;
+					randInd = rng.nextInt(populationList.size());
+					gr = populationList.get(randInd).getLastGeneration();
+					gr.setGenotypeSubpopulationSize(gt, gr.getGenotypeSubpopulationSize(gt) + randImm);
+					inTransit.put(gt, inTransit.get(gt) - randImm);
+				}
+>>>>>>> bb7c3f84c553b6c78c79459da7500e8299d92227
 			}
 			
 			// Redistribute
@@ -100,5 +118,7 @@ public class PopulationManager {
 			
 
 		}
+		// How to calculate num immigration from each population?
+		// How to redistribute drifters?
 	}
 }
