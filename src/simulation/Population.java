@@ -1,6 +1,8 @@
 package simulation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 import shared.DataManager;
 import shared.Genotype;
@@ -126,29 +128,19 @@ public class Population {
 	 * @author ericscollins
 	 */
 	private static void mutate(GenerationRecord current) {
-/*		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-		double rate;
-		double delta;
+		SessionParameters sp = DataManager.getInstance().getSessionParams();
+		Random rng = new Random();
 		
-		// For every combination of genotypes 'from', 'to' 
-		// where 'from' mutates to 'to'...
 		for (Genotype from : Genotype.values()) {
+			int sizeBefore = current.getGenotypeSubpopulationSize(from);
 			for (Genotype to : Genotype.values()) {
-				if (from == to) continue;
-				rate = sp.getMutationRate(from, to);
-				delta = rate * previous.getGenotypeSubpopulationSize(from);
-				// ... subtract appropriate amount from 'from' subpopulation ...
-				current.setGenotypeSubpopulationSize(from, 
-						(int)(current.getGenotypeSubpopulationSize(from) - delta));
-				// ... and add the same amount to the 'to' subpopulation
-				current.setGenotypeSubpopulationSize(to, 
-						(int)(current.getGenotypeSubpopulationSize(to) + 
-							  rate * previous.getGenotypeSubpopulationSize(to)));
+				if (from != to) 
+					results.get(from).put(to, (int)(Math.round(
+						Math.log(rng.nextDouble() + ) / 
+						Math.log(sp.getMutationRate(from, to)))));
 			}
 		}
-		// Should mutations be based on previous generation's population?
-		// Or on population pre/post reproduce/survive?
-		// Is there any randomness involved?
-	*/	
+		
+		for ()
 	}
 }
