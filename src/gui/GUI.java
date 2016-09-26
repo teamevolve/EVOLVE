@@ -84,6 +84,14 @@ public class GUI extends JPanel {
 		// add spacing
 		c.insets = new Insets(1, 10, 0, 0);
 		
+		
+		// Problems were comming from non-uniformed column widths
+		// This will standardize them
+		for(int i = 0; i < 6; i++) {
+			c.gridx = i; c.gridy = 1;
+			add(new JLabel("_______________________________"), c);
+		}
+		
 		// seed stuff
 		seedLabel = new JLabel("Seed: ");
 		seedField = new JTextField(TEXT_LEN_LONG);
@@ -140,9 +148,9 @@ public class GUI extends JPanel {
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.WEST;
 		add(carryCapLabel, c);
-		c.gridx = 3; c.gridy = 40;
+		c.gridx = 2; c.gridy = 40;
 		c.gridwidth = 1;
-		//c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.EAST;
 		//c.ipadx = -55;
 		add(carryCap, c);
 		c.ipadx = 0;
@@ -153,12 +161,12 @@ public class GUI extends JPanel {
 		postCrash = new JTextField(TEXT_LEN_LONG);
 		
 		c.gridx = 1; c.gridy = 50;
-		c.gridwidth = 3;
-		//c.anchor = GridBagConstraints.WEST;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.WEST;
 		add(postCrashLabel, c);
-		c.gridx = 3; c.gridy = 50;
+		c.gridx = 2; c.gridy = 50;
 		c.gridwidth = 1;
-		//c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.EAST;
 		//c.ipadx = -55;
 		add(postCrash, c);
 		c.ipadx = 0;
@@ -191,18 +199,45 @@ public class GUI extends JPanel {
 		c.gridwidth = 1;
 		add(initFreqA, c);
 		
-		calcFreqAA = new JLabel("AA: ");
-		calcFreqAB = new JLabel("AB: ");
-		calcFreqBB = new JLabel("BB: ");
+		calcFreqAA = new JLabel("AA: ___");
+		calcFreqAB = new JLabel("AB: ___");
+		calcFreqBB = new JLabel("BB: ___");
+		c.gridwidth = 2;
 		c.gridx = 1; c.gridy = 80;
 		c.anchor = GridBagConstraints.WEST;
 		add(calcFreqAA, c);
-		c.gridx = 2; c.gridy = 80;
-		//c.anchor = GridBagConstraints.EAST;
+		c.gridx = 1; c.gridy = 80;
+		c.anchor = GridBagConstraints.CENTER;
 		add(calcFreqAB, c);
-		c.gridx = 2; c.gridy = 80;
+		c.gridx = 1; c.gridy = 80;
 		c.anchor = GridBagConstraints.EAST;
 		add(calcFreqBB, c);
+		
+		/* EVOLUTIONARY FORCES ***********************************************/
+		JLabel evoForces = new JLabel("Select active evolutionary forces:");
+		JCheckBox PopSizeCheck = new JCheckBox("Population Size");
+		PopSizeCheck.setSelected(true);
+		PopSizeCheck.setEnabled(false);
+		JCheckBox SelectCheck = new JCheckBox("Natural Selection");
+		JCheckBox MutationCheck = new JCheckBox("Mutation");
+		JCheckBox MigrationCheck = new JCheckBox("Migration");
+		JCheckBox SexualSelectCheck = new JCheckBox("Non-Random Mating");
+
+		c.gridx = 0; c.gridy = 84;
+		c.gridwidth = 3;
+		c.anchor = GridBagConstraints.WEST;
+		add(evoForces, c);
+		c.gridx = 0; c.gridy = 86;
+		c.gridwidth = 1;
+		add(PopSizeCheck, c);
+		c.gridx = 1; c.gridy = 86;
+		add(SelectCheck, c);
+		c.gridx = 2; c.gridy = 86;
+		add(MutationCheck, c);
+		c.gridx = 3; c.gridy = 86;
+		add(MigrationCheck, c);
+		c.gridx = 4; c.gridy = 86;
+		add(SexualSelectCheck, c);
 		
 		// Selection radio buttons
 		selectLabel = new JLabel("Selection: ");
@@ -212,6 +247,7 @@ public class GUI extends JPanel {
 		selectGroup.add(selectRandS);
 		selectGroup.add(selectAbs);
 		
+		c.gridwidth = 1;
 		c.gridx = 0; c.gridy = 90;
 		c.anchor = GridBagConstraints.WEST;
 		add(selectLabel, c);
@@ -236,26 +272,26 @@ public class GUI extends JPanel {
 		add(reproRateLabel, c);
 		
 		// add label then field x3
-		c.gridx = 1; c.gridy = 110;
 		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(reproAALabel, c);
-		c.gridx = 2; c.gridy = 110;
+		c.gridx = 1; c.gridy = 110;
 		c.anchor = GridBagConstraints.WEST;
+		add(reproAALabel, c);
+		c.gridx = 1; //c.gridy = 110;
+		c.anchor = GridBagConstraints.CENTER;
 		add(reproAA, c);
 		
 		c.gridx = 2; c.gridy = 110;
-		c.anchor = GridBagConstraints.EAST;
-		add(reproABLabel, c);
-		c.gridx = 3; c.gridy = 110;
 		c.anchor = GridBagConstraints.WEST;
+		add(reproABLabel, c);
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2; c.gridy = 110;
 		add(reproAB, c);
 		
-		c.gridx = 4; c.gridy = 110;
-		c.anchor = GridBagConstraints.EAST;
-		add(reproBBLabel, c);
-		c.gridx = 5; c.gridy = 110;
+		c.gridx = 3; c.gridy = 110;
 		c.anchor = GridBagConstraints.WEST;
+		add(reproBBLabel, c);
+		c.gridx = 3; c.gridy = 110;
+		c.anchor = GridBagConstraints.CENTER;
 		add(reproBB, c);
 		
 		// Survival Rates (visible if Repro and Surv is selected)
@@ -269,29 +305,30 @@ public class GUI extends JPanel {
 		
 		c.gridx = 1; c.gridy = 120;
 		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.WEST;
 		add(survRateLabel, c);
 		
 		// add label then field x3
 		c.gridx = 1; c.gridy = 130;
 		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(survAALabel, c);
-		c.gridx = 2; c.gridy = 130;
 		c.anchor = GridBagConstraints.WEST;
+		add(survAALabel, c);
+		c.gridx = 1; c.gridy = 130;
+		c.anchor = GridBagConstraints.CENTER;
 		add(survAA, c);
 		
 		c.gridx = 2; c.gridy = 130;
-		c.anchor = GridBagConstraints.EAST;
-		add(survABLabel, c);
-		c.gridx = 3; c.gridy = 130;
 		c.anchor = GridBagConstraints.WEST;
+		add(survABLabel, c);
+		c.gridx = 2; c.gridy = 130;
+		c.anchor = GridBagConstraints.CENTER;
 		add(survAB, c);
 		
-		c.gridx = 4; c.gridy = 130;
-		c.anchor = GridBagConstraints.EAST;
-		add(survBBLabel, c);
-		c.gridx = 5; c.gridy = 130;
+		c.gridx = 3; c.gridy = 130;
 		c.anchor = GridBagConstraints.WEST;
+		add(survBBLabel, c);
+		c.gridx = 3; c.gridy = 130;
+		c.anchor = GridBagConstraints.CENTER;
 		add(survBB, c);
 		
 		// Absolute Fitness Rates (any number)
@@ -303,55 +340,57 @@ public class GUI extends JPanel {
 		absFitAB = new JTextField(TEXT_LEN_LONG);
 		absFitBB = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 0; c.gridy = 140;
+		c.gridx = 1; c.gridy = 140;
 		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.WEST;
 		add(absFitLabel, c);
 		
 		// add label then field x3
-		c.gridx = 0; c.gridy = 150;
+		c.gridx = 1; c.gridy = 150;
 		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.WEST;
 		add(absFitAALabel, c);
 		c.gridx = 1; c.gridy = 150;
-		c.anchor = GridBagConstraints.WEST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(absFitAA, c);
 	
 		c.gridx = 2; c.gridy = 150;
-		//c.anchor = GridBagConstraints.WEST;
+		c.anchor = GridBagConstraints.WEST;
 		add(absFitABLabel, c);
 		c.gridx = 2; c.gridy = 150;
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(absFitAB, c);
 		
 		c.gridx = 3; c.gridy = 150;
 		c.anchor = GridBagConstraints.WEST;
 		add(absFitBBLabel, c);
 		c.gridx = 3; c.gridy = 150;
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(absFitBB, c);
 		
 		// Relative Fitness Rates (display only, 0 to 1)
 		relFitLabel = new JLabel("Relative Fitness: ");
-		relFitAALabel = new JLabel("AA: ");
-		relFitABLabel = new JLabel("AB: ");
-		relFitBBLabel = new JLabel("BB: ");
+		relFitAALabel = new JLabel("AA: ___");
+		relFitABLabel = new JLabel("AB: ___");
+		relFitBBLabel = new JLabel("BB: ___");
 		
-		c.gridx = 0; c.gridy = 160;
+		c.gridx = 1; c.gridy = 160;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.WEST;
 		add(relFitLabel, c);
 		
 		// add label then field x3
-		c.gridx = 0; c.gridy = 170;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
+		c.gridx = 1; c.gridy = 170;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.WEST;
 		add(relFitAALabel, c);
 	
-		c.gridx = 2; c.gridy = 170;
-		c.anchor = GridBagConstraints.WEST;
+//		c.gridx = 2; c.gridy = 170;
+		c.anchor = GridBagConstraints.CENTER;
 		add(relFitABLabel, c);
 		
-		c.gridx = 3; c.gridy = 170;
+//		c.gridx = 3; c.gridy = 170;
+		c.anchor = GridBagConstraints.EAST;
 		add(relFitBBLabel, c);
 
 		// Mutation (0 to 1)
