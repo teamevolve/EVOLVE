@@ -398,6 +398,53 @@ public class GUI extends JPanel {
 		c.anchor = GridBagConstraints.WEST;
 		add(varMig, c);
 		
+		// Migration rate - if fixed
+		fixedMigRateLabel = new JLabel("Migration Rate: ");
+		fixedMigRate = new JTextField(TEXT_LEN_SHORT);
+		
+		c.gridx = 1; c.gridy = 210;
+		c.anchor = GridBagConstraints.WEST;
+		add(fixedMigRateLabel, c);
+		c.gridx = 1; c.gridy = 210;
+		c.anchor = GridBagConstraints.EAST;
+		add(fixedMigRate, c);
+		
+		// Migration Rates by genotype - if varies
+		varMigRateLabel = new JLabel("Migration Rate: ");
+		varMigRateAALabel = new JLabel("AA: ");
+		varMigRateABLabel = new JLabel("AB: ");
+		varMigRateBBLabel = new JLabel("BB: ");
+		varMigRateAA = new JTextField(TEXT_LEN_SHORT);
+		varMigRateAB = new JTextField(TEXT_LEN_SHORT);
+		varMigRateBB = new JTextField(TEXT_LEN_SHORT);
+		
+		c.gridx = 1; c.gridy = 220;
+		c.anchor = GridBagConstraints.WEST;
+		add(varMigRateLabel, c);
+		
+		// add label then field x3
+		/*c.gridx = 1; c.gridy = 230;
+		c.gridwidth = 1;
+		c.anchor = GridBagConstraints.WEST;
+		add(varMigRateAALabel, c);
+		c.gridx = 1; c.gridy = 230;
+		c.anchor = GridBagConstraints.EAST;
+		add(varMigRateAA, c);
+	
+		c.gridx = 2; c.gridy = 230;
+		//c.anchor = GridBagConstraints.WEST;
+		add(varMigRateABLabel, c);
+		c.gridx = 2; c.gridy = 230;
+		c.anchor = GridBagConstraints.EAST;
+		add(varMigRateAB, c);
+		
+		c.gridx = 3; c.gridy = 230;
+		c.anchor = GridBagConstraints.WEST;
+		add(varMigRateBBLabel, c);
+		c.gridx = 3; c.gridy = 230;
+		c.anchor = GridBagConstraints.EAST;
+		add(varMigRateBB, c);*/
+		
 		// **************submit button- to be deleted later ***************
 		submit = new JButton(">> Submit <<");
 		
