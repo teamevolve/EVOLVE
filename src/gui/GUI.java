@@ -213,15 +213,15 @@ public class GUI extends JPanel {
 		c.anchor = GridBagConstraints.EAST;
 		add(calcFreqBB, c);
 		
-		/* EVOLUTIONARY FORCES ***********************************************/
+		/* EVOLUTIONARY FORCES ***************************************************************/
 		JLabel evoForces = new JLabel("Select active evolutionary forces:");
-		JCheckBox PopSizeCheck = new JCheckBox("Population Size");
-		PopSizeCheck.setSelected(true);
-		PopSizeCheck.setEnabled(false);
-		JCheckBox SelectCheck = new JCheckBox("Natural Selection");
-		JCheckBox MutationCheck = new JCheckBox("Mutation");
-		JCheckBox MigrationCheck = new JCheckBox("Migration");
-		JCheckBox SexualSelectCheck = new JCheckBox("Non-Random Mating");
+		JCheckBox popSizeCheck = new JCheckBox("Population Size", true);
+//		popSizeCheck.setSelected(true);
+		popSizeCheck.setEnabled(false);
+		JCheckBox selectCheck = new JCheckBox("Natural Selection");
+		JCheckBox mutationCheck = new JCheckBox("Mutation");
+		JCheckBox migrationCheck = new JCheckBox("Migration");
+		JCheckBox sexualSelectCheck = new JCheckBox("Non-Random Mating");
 
 		c.gridx = 0; c.gridy = 84;
 		c.gridwidth = 3;
@@ -229,15 +229,15 @@ public class GUI extends JPanel {
 		add(evoForces, c);
 		c.gridx = 0; c.gridy = 86;
 		c.gridwidth = 1;
-		add(PopSizeCheck, c);
+		add(popSizeCheck, c);
 		c.gridx = 1; c.gridy = 86;
-		add(SelectCheck, c);
+		add(selectCheck, c);
 		c.gridx = 2; c.gridy = 86;
-		add(MutationCheck, c);
+		add(mutationCheck, c);
 		c.gridx = 3; c.gridy = 86;
-		add(MigrationCheck, c);
+		add(migrationCheck, c);
 		c.gridx = 4; c.gridy = 86;
-		add(SexualSelectCheck, c);
+		add(sexualSelectCheck, c);
 		
 		// Selection radio buttons
 		selectLabel = new JLabel("Selection: ");
@@ -401,6 +401,7 @@ public class GUI extends JPanel {
 		mutBtoA = new JTextField(TEXT_LEN_SHORT);
 		
 		c.gridx = 0; c.gridy = 180;
+		c.anchor = GridBagConstraints.WEST;
 		add(mutLabel, c);
 		
 		// add label then field x3
@@ -449,7 +450,7 @@ public class GUI extends JPanel {
 		add(fixedMigRate, c);
 		
 		// Migration Rates by genotype - if varies
-		varMigRateLabel = new JLabel("Migration Rate: ");
+		varMigRateLabel = new JLabel("Migration Rate (by genotype): ");
 		varMigRateAALabel = new JLabel("AA: ");
 		varMigRateABLabel = new JLabel("AB: ");
 		varMigRateBBLabel = new JLabel("BB: ");
@@ -457,32 +458,33 @@ public class GUI extends JPanel {
 		varMigRateAB = new JTextField(TEXT_LEN_SHORT);
 		varMigRateBB = new JTextField(TEXT_LEN_SHORT);
 		
+		c.gridwidth = 3;
 		c.gridx = 1; c.gridy = 220;
 		c.anchor = GridBagConstraints.WEST;
 		add(varMigRateLabel, c);
 		
 		// add label then field x3
-		/*c.gridx = 1; c.gridy = 230;
+		c.gridx = 1; c.gridy = 230;
 		c.gridwidth = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(varMigRateAALabel, c);
 		c.gridx = 1; c.gridy = 230;
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(varMigRateAA, c);
 	
 		c.gridx = 2; c.gridy = 230;
-		//c.anchor = GridBagConstraints.WEST;
+		c.anchor = GridBagConstraints.WEST;
 		add(varMigRateABLabel, c);
 		c.gridx = 2; c.gridy = 230;
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(varMigRateAB, c);
 		
 		c.gridx = 3; c.gridy = 230;
 		c.anchor = GridBagConstraints.WEST;
 		add(varMigRateBBLabel, c);
 		c.gridx = 3; c.gridy = 230;
-		c.anchor = GridBagConstraints.EAST;
-		add(varMigRateBB, c);*/
+		c.anchor = GridBagConstraints.CENTER;
+		add(varMigRateBB, c);
 		
 		// **************submit button- to be deleted later ***************
 		submit = new JButton(">> Submit <<");
@@ -497,6 +499,8 @@ public class GUI extends JPanel {
 				
 				System.out.println(parms.getSeed());
 				System.out.println(parms.getPopSize());
+				System.out.println(selectCheck.isSelected());
+				System.out.println(popSizeCheck.isSelected());
 			}
 		});
 		
