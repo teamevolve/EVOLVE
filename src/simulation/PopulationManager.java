@@ -57,52 +57,68 @@ public class PopulationManager {
 	
 	/**
 	 * Process interpopulation migrations, modifying populations to reflect 
-	 * immigrations and emigrations.
-	 * 
+	 * immigrations and emigrations. Organisms emigrating from one population
+	 * cannot immigrate to their original population, and are distributed as 
+	 * evenly as possible among all other populations.
 	 */
 	public void processMigrations() {
-		HashMap<Population, HashMap<Genotype, Double>> contrib = new HashMap<Population, HashMap<Genotype, Double>>();
-		SessionParameters sp = DataManager.getInstance().getSessionParams();
-		int distributeTo = populationList.size() - 1;
-
+		HashMap<Population, HashMap<Genotype, Integer>> contrib = new HashMap<Population, HashMap<Genotype, Integer>>();
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
 		double genotypeMigrationRate;
-		double perPopulationDistribution;
-		int totalMigrations;
-		int subPopulationSize;
+		double totalMigrations;
+		final double distributeTo = populationList.size() - 1;
 		int numEmigrations;
-		double temp;
+		int contribution;
+		int adjusted;
 		GenerationRecord record;
-		
-		
+		Random random = new Random();
+
+		// Initialize contribution hashmap
 		for (Population p : populationList) {
-			contrib.put(p, new HashMap<Genotype, Double>());
+			contrib.put(p, new HashMap<Genotype, Integer>());
 		}
 
-
-		
+		// For each genotype...
 		for (Genotype gt : Genotype.values()) {
 			genotypeMigrationRate = sp.getMigrationRate(gt);
-			perPopulationDistribution = 0.0;
 			totalMigrations = 0;
-			for (Population p : populationList) {
-				record = p.getLastGeneration();
-				subPopulationSize = record.getGenotypeSubpopulationSize(gt);
-				
-				numEmigrations = (int)(subPopulationSize * genotypeMigrationRate);
+			
+			// Determine how many individuals emigrate from each population
+			for (Population p : populationList) {	
+				numEmigrations = (int)(p.getLastGeneration().getGenotypeSubpopulationSize(gt) * genotypeMigrationRate);
 				totalMigrations += numEmigrations;
-				temp = numEmigrations / distributeTo;
-				perPopulationDistribution += temp;
-				contrib.get(p).put(gt, temp);
-				record.setGenotypeSubpopulationSize(gt, subPopulationSize - numEmigrations);
-
+				contrib.get(p).put(gt, numEmigrations);
 			}
 			
+			
+			double perPopulationDistribution = totalMigrations / distributeTo; 
+			
+			
 			// Redistribute
+			for (Population p : populationList) {
+				record = p.getLastGeneration();
+				contribution = contrib.get(p).get(gt);
+				adjusted = (int)(perPopulationDistribution - ((double) contribution) / distributeTo);
+				
+				totalMigrations -= adjusted;
+				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) - contribution + adjusted);
+				record.setEmigrationCount(gt, contribution);
+				record.setImmigrationCount(gt, adjusted);
+			}
 			
 			
+			if (totalMigrations != 0) {
+				int randInd = random.nextInt(populationList.size());
+				for (; totalMigrations > 0; totalMigrations--, randInd = (randInd + 1) % populationList.size()) {
+					record = populationList.get(randInd).getLastGeneration();
+					record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) + 1);
+				}
+				for (; totalMigrations < 0; totalMigrations++, randInd = (randInd + 1) % populationList.size()) {
+					record = populationList.get(randInd).getLastGeneration();
+					record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) - 1);
+				}
+			}
 
 		}
-		// How to calculate num immigration from each population?
-		// How to redistribute drifters?
 	}
 }
