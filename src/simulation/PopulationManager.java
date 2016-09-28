@@ -62,16 +62,25 @@ public class PopulationManager {
 	 * evenly as possible among all other populations.
 	 */
 	public void processMigrations() {
-		HashMap<Population, HashMap<Genotype, Integer>> contrib = new HashMap<Population, HashMap<Genotype, Integer>>();
-		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-		double genotypeMigrationRate;
-		double totalMigrations;
+		// Individuals cannot immigrate to their population of origin
 		final double distributeTo = populationList.size() - 1;
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+		final Random random = new Random();
+		
+		// Map of contributions each population has made to the pool of 
+		// drifting individuals
+		HashMap<Population, HashMap<Genotype, Integer>> contrib = new HashMap<Population, HashMap<Genotype, Integer>>();
+
+		// Containers for temporarily storing values used more than once
 		int numEmigrations;
 		int contribution;
 		int adjusted;
+		int randInd;
+		double genotypeMigrationRate;
+		double totalMigrations;
+		double perPopulationDistribution;
 		GenerationRecord record;
-		Random random = new Random();
+		
 
 		// Initialize contribution hashmap
 		for (Population p : populationList) {
@@ -90,14 +99,18 @@ public class PopulationManager {
 				contrib.get(p).put(gt, numEmigrations);
 			}
 			
+			// Calculate approximately how many individuals will be distributed
+			// to each population
+			perPopulationDistribution = totalMigrations / distributeTo; 
 			
-			double perPopulationDistribution = totalMigrations / distributeTo; 
 			
-			
-			// Redistribute
+			// General redistribution
 			for (Population p : populationList) {
 				record = p.getLastGeneration();
 				contribution = contrib.get(p).get(gt);
+				
+				// Remove populations contribution, since individuals cannot
+				// immigrate into their population of origin
 				adjusted = (int)(perPopulationDistribution - ((double) contribution) / distributeTo);
 				
 				totalMigrations -= adjusted;
@@ -106,9 +119,9 @@ public class PopulationManager {
 				record.setImmigrationCount(gt, adjusted);
 			}
 			
-			
+			// Redistribute remaining individuals, or correct for overdistribution
 			if (totalMigrations != 0) {
-				int randInd = random.nextInt(populationList.size());
+				randInd = random.nextInt(populationList.size());
 				for (; totalMigrations > 0; totalMigrations--, randInd = (randInd + 1) % populationList.size()) {
 					record = populationList.get(randInd).getLastGeneration();
 					record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) + 1);

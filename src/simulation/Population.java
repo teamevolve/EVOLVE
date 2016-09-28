@@ -1,7 +1,6 @@
 package simulation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 import shared.DataManager;
@@ -128,6 +127,47 @@ public class Population {
 	 * @author ericscollins
 	 */
 	private static void mutate(GenerationRecord current) {
-
+		final Random rng = new Random();
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+		
+		// Containers to hold temporary values used more than once
+		int remainingMutations;
+		int numMutations;
+		double mutationRate;
+		double randomValue;
+		
+		// For all possible combinations of genotypes...
+		for (Genotype from : Genotype.values()) {
+			remainingMutations = current.getGenotypeSubpopulationSize(from);
+			for (Genotype to : Genotype.values()) {
+				// Mutations to self are ignored
+				if (from == to) continue;
+				
+				mutationRate = sp.getMutationRate(from, to);
+				randomValue = rng.nextDouble();
+				
+				// Check if any mutations occurred
+				if (randomValue <= mutationRate) {
+					
+					// Calculate how many mutations occurred
+					numMutations = (int)(Math.log(randomValue) / Math.log(mutationRate));
+					
+					// Ensure number of mutations never exceeds source
+					// subpopulation's size
+					if (remainingMutations - numMutations < 0) {
+						numMutations = remainingMutations;
+					}
+					
+					current.setMutationCount(from, to, numMutations);
+					remainingMutations -= numMutations;
+					current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - numMutations);
+					current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + numMutations);
+					
+					// If source subpopulation has been depleted, move on to 
+					// the next subpopulation
+					if (remainingMutations == 0) break;
+				}
+			}
+		}
 	}
 }
