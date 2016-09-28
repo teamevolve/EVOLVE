@@ -73,7 +73,6 @@ public class GUI extends JPanel {
 	 * This is the panel that will be added to the window (the frame)
 	 */
 	public GUI() {
-		add(new JScrollPane(new JPanel()));
 		
 		// our input will go in this guy/object <-- lowkey offensive
 		parms = new shared.SessionParameters();
@@ -511,21 +510,20 @@ public class GUI extends JPanel {
 
 		//make the panel
 		GUI g = new GUI();
-		//g.setLayout(new GridBagLayout());
-		
+				
 		//make the window
 		JFrame frame = new JFrame();
 		frame.setTitle("EVOLVE - v0.0");
 		//frame.setSize(800, 640);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 
-		// add the panel to the window
-		frame.add(g);
+		//add the GUI to a scrollable pane
+		JScrollPane scrPane = new JScrollPane(g);
+
+		// add the scrollable pane to the window
+		frame.add(scrPane);
 		frame.pack();
 		frame.setVisible(true);
-		//System.out.println("done");
-
 	}
 	
 	public static void main(String[] args) {
