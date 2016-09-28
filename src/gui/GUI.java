@@ -73,6 +73,8 @@ public class GUI extends JPanel {
 	 * This is the panel that will be added to the window (the frame)
 	 */
 	public GUI() {
+		add(new JScrollPane(new JPanel()));
+		
 		// our input will go in this guy/object <-- lowkey offensive
 		parms = new shared.SessionParameters();
 		
@@ -84,8 +86,7 @@ public class GUI extends JPanel {
 		// add spacing
 		c.insets = new Insets(1, 10, 0, 0);
 		
-		
-		// Problems were comming from non-uniformed column widths
+		// Problems were coming from non-uniformed column widths
 		// This will standardize them
 		for(int i = 0; i < 6; i++) {
 			c.gridx = i; c.gridy = 1;
