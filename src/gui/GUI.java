@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+
+
 /**
  * @author linneasahlberg
  * @author jasonfortunato
@@ -20,28 +22,19 @@ public class GUI extends JPanel {
 	// eventually delete this for real time inputs
 	JButton submit;
 	
-	GridBagConstraints c = new GridBagConstraints();
+	public GridBagConstraints c = new GridBagConstraints();
 	
 	JLabel seedLabel; 				// Seed
 	JTextField seedField;
-	JLabel popSizeLabel;			// Population size
-	JTextField popSizeField;
-	JLabel popConstLabel;			// Population constant
-	ButtonGroup popConstGroup;
-	JRadioButton popConstTrue;
-	JRadioButton popConstFalse;
-	JLabel initPopLabel;  			// Initial population
-	JTextField initPop;
-	JLabel carryCapLabel;			// Carrying Capacity
-	JTextField carryCap;
-	JLabel numGensLabel; 			// Number of Gens
-	JTextField numGens;
-	JLabel postCrashLabel; 			// Crash
-	JTextField postCrash;
 	JLabel initFreqALabel; 			// Initial frequencies
 	JTextField initFreqA;
 	JLabel calcFreqAA, calcFreqAB, 
 		calcFreqBB;
+	JLabel numGensLabel; 			// Number of Gens
+	JTextField numGens;
+
+	
+	
 	JLabel selectLabel;				// Selection
 	ButtonGroup selectGroup;
 	JRadioButton selectRandS, 
@@ -101,75 +94,6 @@ public class GUI extends JPanel {
 		add(seedLabel, c);		
 		c.gridx = 999999; c.gridy = 0;
 		add(seedField, c);	
-		
-		// population size stuff
-		popSizeLabel = new JLabel("Population Size: ");
-		popSizeField = new JTextField(TEXT_LEN_LONG);
-		
-		c.gridx = 0; c.gridy = 10;
-		c.anchor = GridBagConstraints.WEST;
-		add(popSizeLabel, c);
-		c.gridx = 1; c.gridy = 10;
-		add(popSizeField, c);
-		
-		// population constant radio button stuff
-		popConstLabel = new JLabel("Population Size is: ");
-		popConstGroup = new ButtonGroup();
-		popConstTrue = new JRadioButton("Constant");
-		popConstFalse = new JRadioButton("Varying");
-		popConstGroup.add(popConstTrue);
-		popConstGroup.add(popConstFalse);
-		
-		c.gridx = 0; c.gridy = 20;
-		add(popConstLabel, c);
-		c.gridx = 1; c.gridy = 20;
-		add(popConstTrue, c);
-		c.gridx = 2; c.gridy = 20;
-		add(popConstFalse, c);
-		
-		/*// initial population stuff - appears when popSize varying
-		initPopLabel = new JLabel("Initial Population Size: ");
-		initPop = new JTextField(TEXT_LEN_LONG);
-
-		c.gridx = 1; c.gridy = 30;
-		c.gridwidth = 2;
-		add(initPopLabel, c);
-		c.gridx = 3; c.gridy = 30;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.WEST;
-		//c.ipadx = -55;
-		add(initPop, c);
-		c.ipadx = 0;*/
-		
-		// carrying capacity stuff - appears when popSize varying
-		carryCapLabel = new JLabel("Carrying Capacity: ");
-		carryCap = new JTextField(TEXT_LEN_LONG);
-		c.gridx = 1; c.gridy = 40;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.WEST;
-		add(carryCapLabel, c);
-		c.gridx = 2; c.gridy = 40;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		//c.ipadx = -55;
-		add(carryCap, c);
-		c.ipadx = 0;
-		
-		
-		// post crash population size stuff - appears when popSize varying
-		postCrashLabel = new JLabel("Post Crash Population Size: ");
-		postCrash = new JTextField(TEXT_LEN_LONG);
-		
-		c.gridx = 1; c.gridy = 50;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.WEST;
-		add(postCrashLabel, c);
-		c.gridx = 2; c.gridy = 50;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		//c.ipadx = -55;
-		add(postCrash, c);
-		c.ipadx = 0;
 		
 		// num generations stuff
 		numGensLabel = new JLabel("Number of Generations: ");
@@ -585,7 +509,7 @@ public class GUI extends JPanel {
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				parms.setSeed(Integer.parseInt(seedField.getText()));
-				parms.setPopSize(Integer.parseInt(popSizeField.getText()));
+//				parms.setPopSize(Integer.parseInt(popSizeField.getText()));
 				
 				System.out.println(parms.getSeed());
 				System.out.println(parms.getPopSize());
@@ -598,9 +522,14 @@ public class GUI extends JPanel {
 
 	public static void createAndShowGUI() {
 
-		//make the panel
+		//make the panels
 		GUI g = new GUI();
-				
+
+		PopSizePane pp = new PopSizePane();
+		
+		g.c.gridx = 1; g.c.gridy = 1;
+		g.add(pp);
+		
 		//make the window
 		JFrame frame = new JFrame();
 		frame.setTitle("EVOLVE - v0.0");
