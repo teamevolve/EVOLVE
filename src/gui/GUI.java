@@ -216,7 +216,6 @@ public class GUI extends JPanel {
 		/* EVOLUTIONARY FORCES ***************************************************************/
 		JLabel evoForces = new JLabel("Select active evolutionary forces:");
 		JCheckBox popSizeCheck = new JCheckBox("Population Size", true);
-//		popSizeCheck.setSelected(true);
 		popSizeCheck.setEnabled(false);
 		JCheckBox selectCheck = new JCheckBox("Natural Selection");
 		JCheckBox mutationCheck = new JCheckBox("Mutation");
@@ -405,16 +404,16 @@ public class GUI extends JPanel {
 		add(mutLabel, c);
 		
 		// add label then field x3
-		c.gridx = 0; c.gridy = 190;
+		c.gridx = 1; c.gridy = 190;
 		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(mutAtoBLabel, c);
 		c.gridx = 1; c.gridy = 190;
-		c.anchor = GridBagConstraints.WEST;
+		c.anchor = GridBagConstraints.EAST;
 		add(mutAtoB, c);
 	
 		c.gridx = 2; c.gridy = 190;
-		//c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(mutBtoALabel, c);
 		c.gridx = 2; c.gridy = 190;
 		c.anchor = GridBagConstraints.EAST;
