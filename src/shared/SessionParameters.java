@@ -147,20 +147,16 @@ public class SessionParameters {
 		}
 		sexualSelectionRates.get(gt1).put(gt2, rate);
 	}
-
 	public int getPopCapacity() {
 		return popCapacity;
 	}
-
-	public void setPopCapacity(int popCapacity) {
-		this.popCapacity = popCapacity;
+	public void setPopCapacity(int pop) {
+		this.popCapacity = pop;
 	}
-
 	public int getCrashCapacity() {
 		return crashCapacity;
 	}
-
-	public void setCrashCapacity(int crashCapacity) {
-		this.crashCapacity = crashCapacity;
+	public void setCrashCapacity(int pop) {
+		this.crashCapacity = pop;
 	}
 }
