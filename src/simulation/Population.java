@@ -117,19 +117,26 @@ public class Population {
 	private static void survive(GenerationRecord current) {
 		
 		int temp;
-		int totalAdults;
-		float crash;  //This percentage to kill should a crash happen
+		int totalAdults = 0; //as of yet unclear whether popSize continually changes, probs can remove
+		double crash;
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
 		
-		//DataManager.getInstance().getSessionParams().getGenotypeFrequency(gt)));
-		
+		//Calculate the number of each genotype surviving
 		for (Genotype gt: Genotype.values()) {
-			//temp = current.getGenotypeSubpopulationSize(gt) * current.getSurvivalRate();
-			current.setGenotypeSubpopulationSize(gt, 3);
+			//Typecasting to int in java is analogous to flooring
+			//Unclear if we want survival to work like mutate/reprod with 'randomness'
+			temp = (int)(current.getGenotypeSubpopulationSize(gt) * sp.getSurvivalRate(gt));
+			current.setGenotypeSubpopulationSize(gt, temp);
+			totalAdults += temp;
 		}
 		
-		
-		
-		
+		//Kill off populations if larger than carrying capacity
+		if (totalAdults > sp.getPopCapacity()) {
+			crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
+			for (Genotype gt: Genotype.values()) {
+				current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
+			}
+		}
 	}
 	
 	
