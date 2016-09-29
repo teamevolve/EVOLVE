@@ -112,8 +112,25 @@ public class Population {
 	 *                 used to calculate data about the new generation
 	 * @param current  GenerationRecord representing the current generation,
 	 *                 will be modified by survive() to reflect death
+	 *                 
+	 * @author richwenner
 	 */
 	private static void survive(GenerationRecord current) {
+		
+		int temp;
+		int totalAdults;
+		float crash;  //This percentage to kill should a crash happen
+		
+		//DataManager.getInstance().getSessionParams().getGenotypeFrequency(gt)));
+		
+		for (Genotype gt: Genotype.values()) {
+			//temp = current.getGenotypeSubpopulationSize(gt) * current.getSurvivalRate();
+			current.setGenotypeSubpopulationSize(gt, 3);
+		}
+		
+		
+		
+		
 	}
 	
 	
