@@ -1,12 +1,10 @@
 package gui;
 
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -16,10 +14,7 @@ import javax.swing.JTextField;
  * @author linneasahlberg
  * 
  */
-public class PopSizePane extends JPanel {
-
-	static final int TEXT_LEN_LONG = 8;
-	final static int TEXT_LEN_SHORT = 3;
+public class PopSizePane extends EvoPane {
 
 	JLabel popSizeLabel;			// Population size
 	JTextField popSizeField;
@@ -35,17 +30,9 @@ public class PopSizePane extends JPanel {
 	JTextField postCrash;
 
 	public PopSizePane() {
-		GridBagConstraints c = new GridBagConstraints();
-		setLayout(new GridBagLayout());
+
+		super();
 		
-		// Problems were coming from non-uniformed column widths
-		// This will standardize them
-		for(int i = 0; i < 6; i++) {
-			c.gridx = i; c.gridy = 1;
-			add(new JLabel("_______________________________"), c);
-		}
-		
-		// population size stuff
 		popSizeLabel = new JLabel("Initial Population Size: ");
 		popSizeField = new JTextField(TEXT_LEN_LONG);
 		
@@ -103,7 +90,7 @@ public class PopSizePane extends JPanel {
 		c.ipadx = 0;
 		
 
-	
+		
 		}
 	
 		public static void main(String[] args){
