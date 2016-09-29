@@ -17,21 +17,12 @@ import javax.swing.JTextField;
  *
  */
 
-public class SexSelectPane extends JPanel {
+public class SexSelectPane extends EvoPane {
 	static final int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 3;
 	
 	public SexSelectPane() {
 		
-		GridBagConstraints c = new GridBagConstraints();
-		setLayout(new GridBagLayout());
-		
-		// Problems were coming from non-uniformed column widths
-		// This will standardize them
-		for(int i = 0; i < 6; i++) {
-			c.gridx = i; c.gridy = 1;
-			add(new JLabel("_______________________________"), c);
-		}
 		
 		// Sexual selection -> evolutionary force #5
 		JLabel mateFreqLabel = new JLabel("Mating Frequencies: ");

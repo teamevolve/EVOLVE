@@ -110,7 +110,11 @@ public class GUI extends EvoPane {
 		popSizeCheck.setEnabled(false);
 		
 		JCheckBox selectCheck = new JCheckBox("Natural Selection", true);
-	
+		selectCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				sp.setEnabled(selectCheck.isSelected());
+			}
+		});	
 		
 		JCheckBox mutationCheck = new JCheckBox("Mutation", true);
 		mutationCheck.addActionListener(new ActionListener() {
@@ -121,8 +125,19 @@ public class GUI extends EvoPane {
 
 		
 		JCheckBox migrationCheck = new JCheckBox("Migration", true);
+		migrationCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				mip.setEnabled(migrationCheck.isSelected());
+			}
+		});
+		
 		JCheckBox sexualSelectCheck = new JCheckBox("Non-Random Mating", true);
-
+		sexualSelectCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				ssp.setEnabled(sexualSelectCheck.isSelected());
+			}
+		});
+		
 		c.gridx = 0; c.gridy = 7;
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.WEST;
