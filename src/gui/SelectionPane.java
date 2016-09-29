@@ -213,8 +213,6 @@ public class SelectionPane extends JPanel {
 		window.add(test);
 		window.pack();
 		window.setVisible(true);
-		
-		
 	}
 
 	
