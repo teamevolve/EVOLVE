@@ -16,10 +16,7 @@ import javax.swing.JTextField;
  * @author linneasahlberg
  * 
  */
-public class SelectionPane extends JPanel {
-	
-	static final int TEXT_LEN_LONG = 8;
-	final static int TEXT_LEN_SHORT = 3;
+public class SelectionPane extends EvoPane {
 	
 	JLabel selectLabel;				// Selection
 	ButtonGroup selectGroup;
@@ -38,16 +35,6 @@ public class SelectionPane extends JPanel {
 		relFitAALabel, relFitABLabel, relFitBBLabel;
 	
 	public SelectionPane() {
-		
-		GridBagConstraints c = new GridBagConstraints();
-		setLayout(new GridBagLayout());
-		
-		// Problems were coming from non-uniformed column widths
-		// This will standardize them
-		for(int i = 0; i < 6; i++) {
-			c.gridx = i; c.gridy = 1;
-			add(new JLabel("_______________________________"), c);
-		}
 		
 		// Selection radio buttons
 		selectLabel = new JLabel("Selection: ");
@@ -213,8 +200,6 @@ public class SelectionPane extends JPanel {
 		window.add(test);
 		window.pack();
 		window.setVisible(true);
-		
-		
 	}
 
 	

@@ -14,28 +14,15 @@ import javax.swing.JTextField;
  * @author jasonfortunato
  * @author linneasahlberg
  */
-public class MutationPane extends JPanel {
-
-	static final int TEXT_LEN_LONG = 8;
-	final static int TEXT_LEN_SHORT = 3;
+public class MutationPane extends EvoPane {
 
 	JLabel mutLabel,					// Mutation (0 to 1)
 		mutAtoBLabel, mutBtoALabel;
 	JTextField mutAtoB, mutBtoA;
-
-	GridBagConstraints c = new GridBagConstraints();
 	
 	public MutationPane(){
 		
-		// Problems were coming from non-uniformed column widths
-		// This will standardize them
-		for(int i = 0; i < 6; i++) {
-			c.gridx = i; c.gridy = 1;
-			add(new JLabel("_______________________________"), c);
-		}
-		
-		
-		setLayout(new GridBagLayout());
+		super();
 		
 		// Mutation (0 to 1)
 		mutLabel = new JLabel("Mutation (0 to 1): ");
@@ -63,8 +50,6 @@ public class MutationPane extends JPanel {
 		c.gridx = 2;
 		c.anchor = GridBagConstraints.EAST;
 		add(mutBtoA, c);
-
-		
 		
 	}
 
@@ -78,9 +63,6 @@ public class MutationPane extends JPanel {
 		window.pack();
 		window.setVisible(true);
 		
-		
 	}
 
-	
-	
 }
