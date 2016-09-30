@@ -2,6 +2,8 @@ package simulation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 
 import shared.DataManager;
@@ -67,21 +69,24 @@ public class PopulationManager {
 	 * evenly as possible among all other populations.
 	 */
 	public void processMigrations() {
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+		
 		// Individuals cannot immigrate to their population of origin
 		final double distributeTo = populationList.size() - 1;
-		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-		final Random random = new Random();
 		
-		// Map of contributions each population has made to the pool of 
-		// drifting individuals
+		// Map of contributions each population has made to the pool of drifting individuals
 		HashMap<Population, HashMap<Genotype, Integer>> contrib = new HashMap<Population, HashMap<Genotype, Integer>>();
+		
+		// Set of populations that could take on an extra organism without 
+		// concern that they'd be taking their own individual back
+		HashSet<Population> accepting = new HashSet<Population>();
 
 		// Containers for temporarily storing values used more than once
 		int numEmigrations;
 		int contribution;
-		int adjusted;
-		int randInd;
+		int adjustedI;
 		int subPopSize;
+		double adjustedD;
 		double genotypeMigrationRate;
 		double totalMigrations;
 		GenerationRecord record;
@@ -123,25 +128,24 @@ public class PopulationManager {
 				
 				// Remove population's contribution, since individuals cannot
 				// immigrate into their population of origin
-				adjusted = (int)((totalMigrations - contribution) / distributeTo);
+				adjustedD = (totalMigrations - contribution) / distributeTo;
+				adjustedI = (int)adjustedD;
 				
-				totalMigrations -= adjusted;
-				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) - contribution + adjusted);
+				// Collect populations that can take an extra individual
+				if (adjustedD > adjustedI)
+					accepting.add(p);
+				
+				totalMigrations -= adjustedI;
+				
+				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) - contribution + adjustedI);
 				record.setEmigrationCount(gt, contribution);
-				record.setImmigrationCount(gt, adjusted);
+				record.setImmigrationCount(gt, adjustedI);
 			}
 			
-			// Redistribute remaining individuals, or correct for overdistribution -- NEEDS FIXIN
-			if (totalMigrations != 0) {
-				randInd = random.nextInt(populationList.size());
-				for (; totalMigrations > 0; totalMigrations--, randInd = (randInd + 1) % populationList.size()) {
-					record = populationList.get(randInd).getLastGeneration();
-					record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) + 1);
-				}
-				for (; totalMigrations < 0; totalMigrations++, randInd = (randInd + 1) % populationList.size()) {
-					record = populationList.get(randInd).getLastGeneration();
-					record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) - 1);
-				}
+			// Redistribute remaining individuals
+			for (Iterator<Population> it = accepting.iterator(); totalMigrations > 0; totalMigrations--) {
+				record = it.next().getLastGeneration();
+				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) + 1);
 			}
 
 		}
