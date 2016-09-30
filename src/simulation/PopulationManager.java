@@ -7,6 +7,7 @@ import java.util.Random;
 import shared.DataManager;
 import shared.Genotype;
 import shared.SessionParameters;
+import shared.Utilities;
 
 /**
  * PopulationManager is controlled mostly by SimulationEngine, and delegates
@@ -22,11 +23,13 @@ import shared.SessionParameters;
  */
 
 public class PopulationManager {
+	final static double EMIGRATION_MEAN = 1.0;
+	final static double EMIGRATION_STDDEV = 0.1;
+	final Random INTERNAL_RNG = new Random(DataManager.getInstance().getSessionParams().getSeed());
+
 	/**
 	 * Member to enable singleton class
 	 */
-	final Random INTERNAL_RNG = new Random(DataManager.getInstance().getSessionParams().getSeed());
-	
 	private static PopulationManager instance = null;
 	//private HashMap<Integer, Population> populationMap;
 	private ArrayList<Population> populationList;
@@ -78,9 +81,9 @@ public class PopulationManager {
 		int contribution;
 		int adjusted;
 		int randInd;
+		int subPopSize;
 		double genotypeMigrationRate;
 		double totalMigrations;
-		double perPopulationDistribution;
 		GenerationRecord record;
 		
 
@@ -95,15 +98,22 @@ public class PopulationManager {
 			totalMigrations = 0;
 			
 			// Determine how many individuals emigrate from each population
-			for (Population p : populationList) {	
-				numEmigrations = (int)(p.getLastGeneration().getGenotypeSubpopulationSize(gt) * genotypeMigrationRate);
+			for (Population p : populationList) {
+				subPopSize = p.getLastGeneration().getGenotypeSubpopulationSize(gt);
+				numEmigrations = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, EMIGRATION_MEAN, EMIGRATION_STDDEV) * 
+						                         subPopSize * genotypeMigrationRate);
+				
+				// Correct extreme random values
+				if (numEmigrations < 0) {
+					numEmigrations = 0;
+				}
+				else if (numEmigrations > subPopSize) {
+					numEmigrations = subPopSize;
+				}
+				
 				totalMigrations += numEmigrations;
 				contrib.get(p).put(gt, numEmigrations);
 			}
-			
-			// Calculate approximately how many individuals will be distributed
-			// to each population
-			perPopulationDistribution = totalMigrations / distributeTo; 
 			
 			
 			// General redistribution
@@ -111,9 +121,9 @@ public class PopulationManager {
 				record = p.getLastGeneration();
 				contribution = contrib.get(p).get(gt);
 				
-				// Remove populations contribution, since individuals cannot
+				// Remove population's contribution, since individuals cannot
 				// immigrate into their population of origin
-				adjusted = (int)(perPopulationDistribution - ((double) contribution) / distributeTo);
+				adjusted = (int)((totalMigrations - contribution) / distributeTo);
 				
 				totalMigrations -= adjusted;
 				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) - contribution + adjusted);
