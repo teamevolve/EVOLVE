@@ -36,6 +36,11 @@ public class GenerationRecord {
 	 */
 	public GenerationRecord(int popID, int genNum) {
 		genotypeSubpopulationSizes = new HashMap<Genotype, Integer>();
+		immigrations = new HashMap<Genotype, Integer>();
+		emigrations = new HashMap<Genotype, Integer>();
+		mutations = new HashMap<Genotype, HashMap<Genotype, Integer>>();
+		births = new HashMap<Genotype, Integer>();
+		deaths = new HashMap<Genotype, Integer>();
 		parentPopID = popID;
 		generationNumber = genNum;
 	}

@@ -2,6 +2,7 @@ package test;
 import test.TestResources;
 
 import java.lang.reflect.Method;
+import java.util.Random;
 
 import shared.DataManager;
 import shared.Genotype;
@@ -9,27 +10,26 @@ import shared.SessionParameters;
 import simulation.GenerationRecord;
 import simulation.Population;
 
-public class TestMutate extends Population {
+public class TestMutate {
 
 	public static void main(String[] args) {
 		TestResources.init();
 		
-		GenerationRecord gr = new GenerationRecord(0,0);
-		gr.setGenotypeSubpopulationSize(Genotype.AA, 1000);
-		gr.setGenotypeSubpopulationSize(Genotype.AB, 1000);
-		gr.setGenotypeSubpopulationSize(Genotype.BB, 1000);
 		
 		GenerationRecord ngr = new GenerationRecord(0, 1);
-		ngr.setGenotypeSubpopulationSize(Genotype.AA, 1000);
-		ngr.setGenotypeSubpopulationSize(Genotype.AB, 1000);
-		ngr.setGenotypeSubpopulationSize(Genotype.BB, 1000);
+		ngr.setGenotypeSubpopulationSize(Genotype.AA, 100);
+		ngr.setGenotypeSubpopulationSize(Genotype.AB, 100);
+		ngr.setGenotypeSubpopulationSize(Genotype.BB, 100);
 		
 		try {
-			Method mutate = Population.class.getDeclaredMethod("mutate", GenerationRecord.class, GenerationRecord.class);
+			Method mutate = Population.class.getDeclaredMethod("mutate", GenerationRecord.class);
 			mutate.setAccessible(true);
-			mutate.invoke(Population.class, gr, ngr);
+			Population p = new Population((new Random().nextLong()));
+			mutate.invoke(p, ngr);
+			System.out.println("success is always an option");
 		}
 		catch (Exception e) {
+			System.out.println("failure is always an option");
 			e.printStackTrace();
 		}
 		

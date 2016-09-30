@@ -25,6 +25,8 @@ public class PopulationManager {
 	/**
 	 * Member to enable singleton class
 	 */
+	final Random INTERNAL_RNG = new Random(DataManager.getInstance().getSessionParams().getSeed());
+	
 	private static PopulationManager instance = null;
 	//private HashMap<Integer, Population> populationMap;
 	private ArrayList<Population> populationList;
@@ -50,7 +52,7 @@ public class PopulationManager {
 		populationList = new ArrayList<Population>();
 		int numPops = DataManager.getInstance().getSessionParams().getNumPops();
 		for (int i=0; i < numPops; i++) {
-			populationList.add(new Population());
+			populationList.add(new Population(INTERNAL_RNG.nextLong()));
 		}
 	}
 	
@@ -119,7 +121,7 @@ public class PopulationManager {
 				record.setImmigrationCount(gt, adjusted);
 			}
 			
-			// Redistribute remaining individuals, or correct for overdistribution
+			// Redistribute remaining individuals, or correct for overdistribution -- NEEDS FIXIN
 			if (totalMigrations != 0) {
 				randInd = random.nextInt(populationList.size());
 				for (; totalMigrations > 0; totalMigrations--, randInd = (randInd + 1) % populationList.size()) {
