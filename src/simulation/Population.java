@@ -1,6 +1,7 @@
 package simulation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -102,6 +103,30 @@ public class Population {
 	 */
 	private static void reproduce(GenerationRecord previous, 
 			                      GenerationRecord current) {
+		// For each pair of mates, calculate the number of offspring for each type:
+		
+		// genotype iterator
+		ArrayList<Genotype> gt_itr = new ArrayList<Genotype>(Arrays.asList(Genotype.values()));
+		Random rand = new Random();
+		
+		for (Genotype gt1 : Genotype.values())
+		{
+			// Set Sub Population Size to 0 to start:
+			current.setGenotypeSubpopulationSize(gt1, 0);
+			
+			// Calculate amount of offspring from each combination of two genotypes:
+			for (Genotype gt2: gt_itr)
+			{
+				double prob = rand.nextDouble();
+				
+				int sum = 	previous.getGenotypeSubpopulationSize(gt1) + 
+							previous.getGenotypeSubpopulationSize(gt2);
+				current.setGenotypeSubpopulationSize(gt1, (int) (sum*prob));
+				current.setGenotypeSubpopulationSize(gt2, (int) (sum*prob));
+			}
+			gt_itr.remove(gt1);//asdffasdfa
+		}
+		
 	}
 	
 	
