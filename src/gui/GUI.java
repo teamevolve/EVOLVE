@@ -5,175 +5,73 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+
+
 /**
  * @author linneasahlberg
  * @author jasonfortunato
  * Started 9/18/16
  */
-public class GUI extends JPanel {
-	static final int TEXT_LEN_LONG = 8;
-	final static int TEXT_LEN_SHORT = 3;
-	
+public class GUI extends EvoPane {
+
 	// we'll dump our input into this guy/object
 	shared.SessionParameters parms;
 	
 	// eventually delete this for real time inputs
 	JButton submit;
-	
-	GridBagConstraints c = new GridBagConstraints();
-	
+		
 	JLabel seedLabel; 				// Seed
 	JTextField seedField;
-	JLabel popSizeLabel;			// Population size
-	JTextField popSizeField;
-	JLabel popConstLabel;			// Population constant
-	ButtonGroup popConstGroup;
-	JRadioButton popConstTrue;
-	JRadioButton popConstFalse;
-	JLabel initPopLabel;  			// Initial population
-	JTextField initPop;
-	JLabel carryCapLabel;			// Carrying Capacity
-	JTextField carryCap;
-	JLabel numGensLabel; 			// Number of Gens
-	JTextField numGens;
-	JLabel postCrashLabel; 			// Crash
-	JTextField postCrash;
 	JLabel initFreqALabel; 			// Initial frequencies
 	JTextField initFreqA;
 	JLabel calcFreqAA, calcFreqAB, 
 		calcFreqBB;
-	JLabel selectLabel;				// Selection
-	ButtonGroup selectGroup;
-	JRadioButton selectRandS, 
-		selectAbs;
-	JLabel reproRateLabel, 					// Reproduction Rates (0 to 10, decimal allowed)
-		reproAALabel, reproABLabel, reproBBLabel;
-	JTextField reproAA, reproAB, reproBB;
-	JLabel survRateLabel,					// Survival Rates (0 to 1)
-		survAALabel, survABLabel, survBBLabel;
-	JTextField survAA, survAB, survBB;
-	JLabel absFitLabel,					// Absolute fitness (any num)
-		absFitAALabel, absFitABLabel, absFitBBLabel;
-	JTextField absFitAA, absFitAB, absFitBB;
-	JLabel relFitLabel,					// Relative fitness (0 to 1)
-		relFitAALabel, relFitABLabel, relFitBBLabel;
-	JLabel mutLabel,					// Mutation (0 to 1)
-		mutAtoBLabel, mutBtoALabel;
-	JTextField mutAtoB, mutBtoA;
-	JLabel migLabel;					// Migration
-	ButtonGroup migGroup;
-	JRadioButton fixedMig, varMig;
-	JLabel fixedMigRateLabel;
-	JTextField fixedMigRate;
-	JLabel varMigRateLabel;
-	JLabel varMigRateAALabel, varMigRateABLabel, varMigRateBBLabel;
-	JTextField varMigRateAA, varMigRateAB, varMigRateBB;
+	JLabel numGensLabel; 			// Number of Gens
+	JTextField numGens;
+	
+	/* Evolutionary Forces Panes *********************************************/
+	PopSizePane pp = new PopSizePane();
+	SelectionPane sp = new SelectionPane();
+	MutationPane mp = new MutationPane();
+	MigrationPane mip = new MigrationPane();
+	SexSelectPane ssp = new SexSelectPane();
+
 	
 	/** 
 	 * This is the panel that will be added to the window (the frame)
 	 */
 	public GUI() {
-		// our input will go in this guy/object <-- lowkey offensive
-		parms = new shared.SessionParameters();
 		
-		setLayout(new GridBagLayout());
+		super();
+		
+		// our input will go in this 
+		parms = new shared.SessionParameters();
 		
 		// left align
 		c.anchor = GridBagConstraints.WEST;
 		
-		// add spacing
-		c.insets = new Insets(1, 10, 0, 0);
-		
-		// seed stuff
+		/* seed stuff *****************************************************************************/
 		seedLabel = new JLabel("Seed: ");
 		seedField = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 999998; c.gridy = 0;
-		c.anchor = GridBagConstraints.EAST;
+		c.gridx = 5; c.gridy = 1;
+		c.anchor = GridBagConstraints.WEST;
 		add(seedLabel, c);		
-		c.gridx = 999999; c.gridy = 0;
+		c.gridx = 5; c.gridy = 1;
+		c.anchor = GridBagConstraints.EAST;
 		add(seedField, c);	
-		
-		// population size stuff
-		popSizeLabel = new JLabel("Population Size: ");
-		popSizeField = new JTextField(TEXT_LEN_LONG);
-		
-		c.gridx = 0; c.gridy = 10;
-		c.anchor = GridBagConstraints.WEST;
-		add(popSizeLabel, c);
-		c.gridx = 1; c.gridy = 10;
-		add(popSizeField, c);
-		
-		// population constant radio button stuff
-		popConstLabel = new JLabel("Population Size is: ");
-		popConstGroup = new ButtonGroup();
-		popConstTrue = new JRadioButton("Constant");
-		popConstFalse = new JRadioButton("Varying");
-		popConstGroup.add(popConstTrue);
-		popConstGroup.add(popConstFalse);
-		
-		c.gridx = 0; c.gridy = 20;
-		add(popConstLabel, c);
-		c.gridx = 1; c.gridy = 20;
-		add(popConstTrue, c);
-		c.gridx = 2; c.gridy = 20;
-		add(popConstFalse, c);
-		
-		/*// initial population stuff - appears when popSize varying
-		initPopLabel = new JLabel("Initial Population Size: ");
-		initPop = new JTextField(TEXT_LEN_LONG);
-
-		c.gridx = 1; c.gridy = 30;
-		c.gridwidth = 2;
-		add(initPopLabel, c);
-		c.gridx = 3; c.gridy = 30;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.WEST;
-		//c.ipadx = -55;
-		add(initPop, c);
-		c.ipadx = 0;*/
-		
-		// carrying capacity stuff - appears when popSize varying
-		carryCapLabel = new JLabel("Carrying Capacity: ");
-		carryCap = new JTextField(TEXT_LEN_LONG);
-		c.gridx = 1; c.gridy = 40;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.WEST;
-		add(carryCapLabel, c);
-		c.gridx = 3; c.gridy = 40;
-		c.gridwidth = 1;
-		//c.anchor = GridBagConstraints.EAST;
-		//c.ipadx = -55;
-		add(carryCap, c);
-		c.ipadx = 0;
-		
-		
-		// post crash population size stuff - appears when popSize varying
-		postCrashLabel = new JLabel("Post Crash Population Size: ");
-		postCrash = new JTextField(TEXT_LEN_LONG);
-		
-		c.gridx = 1; c.gridy = 50;
-		c.gridwidth = 3;
-		//c.anchor = GridBagConstraints.WEST;
-		add(postCrashLabel, c);
-		c.gridx = 3; c.gridy = 50;
-		c.gridwidth = 1;
-		//c.anchor = GridBagConstraints.EAST;
-		//c.ipadx = -55;
-		add(postCrash, c);
-		c.ipadx = 0;
 		
 		// num generations stuff
 		numGensLabel = new JLabel("Number of Generations: ");
 		numGens = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 0; c.gridy = 60;
+		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.EAST;
 		add(numGensLabel, c);
-		c.gridx = 1; c.gridy = 60;
+		c.gridx = 1; c.gridy = 1;
 		add(numGens, c);
 		
-		// initial frequencies stuff
+		/* initial frequencies stuff ***********************************************************/
 		
 		initFreqALabel = new JLabel("Initial Frequency of Allele A: ");
 		initFreqA = new JTextField(TEXT_LEN_SHORT);
@@ -181,260 +79,141 @@ public class GUI extends JPanel {
 		// add spacing
 		c.insets = new Insets(5, 10, 5, 0);
 		
-		c.gridx = 0; c.gridy = 70;
+		c.gridx = 0; c.gridy = 4;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.WEST;
 		add(initFreqALabel, c);
 		
-		c.gridx = 1; c.gridy = 70;
+		c.gridx = 1; c.gridy = 4;
 		c.anchor = GridBagConstraints.EAST;
 		c.gridwidth = 1;
 		add(initFreqA, c);
 		
-		calcFreqAA = new JLabel("AA: ");
-		calcFreqAB = new JLabel("AB: ");
-		calcFreqBB = new JLabel("BB: ");
-		c.gridx = 1; c.gridy = 80;
+		calcFreqAA = new JLabel("AA: ___");
+		calcFreqAB = new JLabel("AB: ___");
+		calcFreqBB = new JLabel("BB: ___");
+		c.gridwidth = 2;
+		c.gridx = 1; c.gridy = 5;
 		c.anchor = GridBagConstraints.WEST;
 		add(calcFreqAA, c);
-		c.gridx = 2; c.gridy = 80;
-		//c.anchor = GridBagConstraints.EAST;
+		c.gridx = 1; c.gridy = 5;
+		c.anchor = GridBagConstraints.CENTER;
 		add(calcFreqAB, c);
-		c.gridx = 2; c.gridy = 80;
+		c.gridx = 1; c.gridy = 5;
 		c.anchor = GridBagConstraints.EAST;
 		add(calcFreqBB, c);
 		
-		// Selection radio buttons
-		selectLabel = new JLabel("Selection: ");
-		selectGroup = new ButtonGroup();
-		selectRandS = new JRadioButton("Reproduction and Survival");
-		selectAbs = new JRadioButton("Absolute Fitness");
-		selectGroup.add(selectRandS);
-		selectGroup.add(selectAbs);
+		/* EVOLUTIONARY FORCES ***************************************************************/
+		JLabel evoForces = new JLabel("Select active evolutionary forces:");
 		
-		c.gridx = 0; c.gridy = 90;
-		c.anchor = GridBagConstraints.WEST;
-		add(selectLabel, c);
-		c.gridx = 1; c.gridy = 90;
-		c.gridwidth = 2;
-		add(selectRandS, c);
-		c.gridx = 3; c.gridy = 90;
-		c.gridwidth = 1;
-		add(selectAbs, c);
+		JCheckBox popSizeCheck = new JCheckBox("Population Size", true);
+		popSizeCheck.setEnabled(false);
 		
-		// Reproduction Rates (visible if Repro and Surv is selected)
-		reproRateLabel = new JLabel("Reproduction Rates (0 to 10, decimals allowed): ");
-		reproAALabel = new JLabel("AA: ");
-		reproABLabel = new JLabel("AB: ");
-		reproBBLabel = new JLabel("BB: ");
-		reproAA = new JTextField(TEXT_LEN_LONG);
-		reproAB = new JTextField(TEXT_LEN_LONG);
-		reproBB = new JTextField(TEXT_LEN_LONG);
+		JCheckBox selectCheck = new JCheckBox("Natural Selection", true);
+		selectCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				sp.setEnabled(selectCheck.isSelected());
+			}
+		});	
 		
-		c.gridx = 1; c.gridy = 100;
-		c.gridwidth = 3;
-		add(reproRateLabel, c);
-		
-		// add label then field x3
-		c.gridx = 1; c.gridy = 110;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(reproAALabel, c);
-		c.gridx = 2; c.gridy = 110;
-		c.anchor = GridBagConstraints.WEST;
-		add(reproAA, c);
-		
-		c.gridx = 2; c.gridy = 110;
-		c.anchor = GridBagConstraints.EAST;
-		add(reproABLabel, c);
-		c.gridx = 3; c.gridy = 110;
-		c.anchor = GridBagConstraints.WEST;
-		add(reproAB, c);
-		
-		c.gridx = 4; c.gridy = 110;
-		c.anchor = GridBagConstraints.EAST;
-		add(reproBBLabel, c);
-		c.gridx = 5; c.gridy = 110;
-		c.anchor = GridBagConstraints.WEST;
-		add(reproBB, c);
-		
-		// Survival Rates (visible if Repro and Surv is selected)
-		survRateLabel = new JLabel("Survival Rates (0 to 1): ");
-		survAALabel = new JLabel("AA: ");
-		survABLabel = new JLabel("AB: ");
-		survBBLabel = new JLabel("BB: ");
-		survAA = new JTextField(TEXT_LEN_SHORT);
-		survAB = new JTextField(TEXT_LEN_SHORT);
-		survBB = new JTextField(TEXT_LEN_SHORT);
-		
-		c.gridx = 1; c.gridy = 120;
-		c.gridwidth = 2;
-		add(survRateLabel, c);
-		
-		// add label then field x3
-		c.gridx = 1; c.gridy = 130;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(survAALabel, c);
-		c.gridx = 2; c.gridy = 130;
-		c.anchor = GridBagConstraints.WEST;
-		add(survAA, c);
-		
-		c.gridx = 2; c.gridy = 130;
-		c.anchor = GridBagConstraints.EAST;
-		add(survABLabel, c);
-		c.gridx = 3; c.gridy = 130;
-		c.anchor = GridBagConstraints.WEST;
-		add(survAB, c);
-		
-		c.gridx = 4; c.gridy = 130;
-		c.anchor = GridBagConstraints.EAST;
-		add(survBBLabel, c);
-		c.gridx = 5; c.gridy = 130;
-		c.anchor = GridBagConstraints.WEST;
-		add(survBB, c);
-		
-		// Absolute Fitness Rates (any number)
-		absFitLabel = new JLabel("Absolute Fitness (any number): ");
-		absFitAALabel = new JLabel("AA: ");
-		absFitABLabel = new JLabel("AB: ");
-		absFitBBLabel = new JLabel("BB: ");
-		absFitAA = new JTextField(TEXT_LEN_LONG);
-		absFitAB = new JTextField(TEXT_LEN_LONG);
-		absFitBB = new JTextField(TEXT_LEN_LONG);
-		
-		c.gridx = 0; c.gridy = 140;
-		c.gridwidth = 2;
-		add(absFitLabel, c);
-		
-		// add label then field x3
-		c.gridx = 0; c.gridy = 150;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(absFitAALabel, c);
-		c.gridx = 1; c.gridy = 150;
-		c.anchor = GridBagConstraints.WEST;
-		add(absFitAA, c);
-	
-		c.gridx = 2; c.gridy = 150;
-		//c.anchor = GridBagConstraints.WEST;
-		add(absFitABLabel, c);
-		c.gridx = 2; c.gridy = 150;
-		c.anchor = GridBagConstraints.EAST;
-		add(absFitAB, c);
-		
-		c.gridx = 3; c.gridy = 150;
-		c.anchor = GridBagConstraints.WEST;
-		add(absFitBBLabel, c);
-		c.gridx = 3; c.gridy = 150;
-		c.anchor = GridBagConstraints.EAST;
-		add(absFitBB, c);
-		
-		// Relative Fitness Rates (display only, 0 to 1)
-		relFitLabel = new JLabel("Relative Fitness: ");
-		relFitAALabel = new JLabel("AA: ");
-		relFitABLabel = new JLabel("AB: ");
-		relFitBBLabel = new JLabel("BB: ");
-		
-		c.gridx = 0; c.gridy = 160;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.WEST;
-		add(relFitLabel, c);
-		
-		// add label then field x3
-		c.gridx = 0; c.gridy = 170;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(relFitAALabel, c);
-	
-		c.gridx = 2; c.gridy = 170;
-		c.anchor = GridBagConstraints.WEST;
-		add(relFitABLabel, c);
-		
-		c.gridx = 3; c.gridy = 170;
-		add(relFitBBLabel, c);
+		JCheckBox mutationCheck = new JCheckBox("Mutation", true);
+		mutationCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				mp.setEnabled(mutationCheck.isSelected());
+			}
+		});
 
-		// Mutation (0 to 1)
-		mutLabel = new JLabel("Mutation (0 to 1): ");
-		mutAtoBLabel = new JLabel("A to B: ");
-		mutBtoALabel = new JLabel("B to A: ");
-		mutAtoB = new JTextField(TEXT_LEN_SHORT);
-		mutBtoA = new JTextField(TEXT_LEN_SHORT);
 		
-		c.gridx = 0; c.gridy = 180;
-		add(mutLabel, c);
+		JCheckBox migrationCheck = new JCheckBox("Migration", true);
+		migrationCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				mip.setEnabled(migrationCheck.isSelected());
+			}
+		});
 		
-		// add label then field x3
-		c.gridx = 0; c.gridy = 190;
+		JCheckBox sexualSelectCheck = new JCheckBox("Non-Random Mating", true);
+		sexualSelectCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				ssp.setEnabled(sexualSelectCheck.isSelected());
+			}
+		});
+		
+		c.gridx = 0; c.gridy = 7;
+		c.gridwidth = 3;
+		c.anchor = GridBagConstraints.WEST;
+		add(evoForces, c);
+		c.gridx = 0; c.gridy = 9;
 		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(mutAtoBLabel, c);
-		c.gridx = 1; c.gridy = 190;
-		c.anchor = GridBagConstraints.WEST;
-		add(mutAtoB, c);
-	
-		c.gridx = 2; c.gridy = 190;
-		//c.anchor = GridBagConstraints.EAST;
-		add(mutBtoALabel, c);
-		c.gridx = 2; c.gridy = 190;
-		c.anchor = GridBagConstraints.EAST;
-		add(mutBtoA, c);
+		add(popSizeCheck, c);
+		c.gridx = 1; c.gridy = 9;
+		add(selectCheck, c);
+		c.gridx = 2; c.gridy = 9;
+		add(mutationCheck, c);
+		c.gridx = 3; c.gridy = 9;
+		add(migrationCheck, c);
+		c.gridx = 4; c.gridy = 9;
+		add(sexualSelectCheck, c);
 		
-		// Migration radio buttons
-		migLabel = new JLabel("Migration: ");
-		migGroup = new ButtonGroup();
-		fixedMig = new JRadioButton("Fixed");
-		varMig = new JRadioButton("Varies by Genotype");
-		migGroup.add(fixedMig);
-		migGroup.add(varMig);
+		/* Panes ****************************************************************************/
+		c.gridwidth = 6;
+		c.gridx = 0; c.gridy = 10;
+		add(pp, c);
+
+		c.gridx = 0; c.gridy = 20;
+		add(sp, c);
+
+		c.gridx = 0; c.gridy = 30;
+		add(mp, c);
 		
-		c.gridx = 0; c.gridy = 200;
-		c.anchor = GridBagConstraints.WEST;
-		add(migLabel, c);
-		c.gridx = 0; c.gridy = 200;
-		c.anchor = GridBagConstraints.EAST;
-		add(fixedMig, c);
-		c.gridx = 1; c.gridy = 200;
-		c.anchor = GridBagConstraints.WEST;
-		add(varMig, c);
+		c.gridx = 0; c.gridy = 40;
+		add(mip, c);
 		
-		// **************submit button- to be deleted later ***************
+		c.gridx = 0; c.gridy = 50;
+		add(ssp, c);
+		
+		
+		/* submit button***********************************************************/
 		submit = new JButton(">> Submit <<");
 		
-		c.gridx = 999999; c.gridy = 999999;
+		c.gridx = 5; c.gridy = 999999;
 		add(submit, c);		
+		
+		/* Action Listener ********************************************************/
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				parms.setSeed(Integer.parseInt(seedField.getText()));
-				parms.setPopSize(Integer.parseInt(popSizeField.getText()));
+				parms.setPopSize(Integer.parseInt(pp.popSizeField.getText()));
 				
 				System.out.println(parms.getSeed());
 				System.out.println(parms.getPopSize());
+				
 			}
 		});
+
+
+
 		
 	}
 
 	public static void createAndShowGUI() {
 
-		//make the panel
-		GUI g = new GUI();
-		//g.setLayout(new GridBagLayout());
+		//make the GUI panel and add evo force panels to GUI
+		GUI g = new GUI();		
 		
 		//make the window
 		JFrame frame = new JFrame();
 		frame.setTitle("EVOLVE - v0.0");
 		//frame.setSize(800, 640);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 
-		// add the panel to the window
-		frame.add(g);
+		//add the GUI to a scrollable pane
+		JScrollPane scrPane = new JScrollPane(g);
+
+		// add the scrollable pane to the window
+		frame.add(scrPane);
 		frame.pack();
 		frame.setVisible(true);
-		//System.out.println("done");
-
 	}
 	
 	public static void main(String[] args) {

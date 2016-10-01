@@ -29,12 +29,12 @@ public class TestResources {
 	final private static double  RELATIVE_FITNESS_AB      = 0.5;
 	final private static double  RELATIVE_FITNESS_BB      = 0.5;
 	
-	final private static double  MUTATION_RATE_AA_TO_AB   = 0.1;
-	final private static double  MUTATION_RATE_AA_TO_BB   = 0.2;
-	final private static double  MUTATION_RATE_AB_TO_AA   = 0.3;
-	final private static double  MUTATION_RATE_AB_TO_BB   = 0.4;
-	final private static double  MUTATION_RATE_BB_TO_AA   = 0.5;
-	final private static double  MUTATION_RATE_BB_TO_AB   = 0.6;
+	final private static double  MUTATION_RATE_AA_TO_AB   = 0.01;
+	final private static double  MUTATION_RATE_AA_TO_BB   = 0.01;
+	final private static double  MUTATION_RATE_AB_TO_AA   = 0.05;
+	final private static double  MUTATION_RATE_AB_TO_BB   = 0.05;
+	final private static double  MUTATION_RATE_BB_TO_AA   = 0.1;
+	final private static double  MUTATION_RATE_BB_TO_AB   = 0.1;
 	
 	final private static double  MIGRATION_RATE_AA        = 0.2;
 	final private static double  MIGRATION_RATE_AB        = 0.2;

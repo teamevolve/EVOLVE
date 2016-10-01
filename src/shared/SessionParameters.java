@@ -27,12 +27,13 @@ import java.util.HashMap;
  * @author linneasahlberg
  * @author jasonfortunato
  * @author ericscollins
+ * @author richwenner
  *
  */
 public class SessionParameters {
 	// all members should private
 	
-	private int popSize, seed, numPops;
+	private int popSize, seed, numPops, popCapacity, crashCapacity;
 	private boolean popConst, fixedMig;
 	private HashMap<Genotype, Double> reproductionRates;
 	private HashMap<Genotype, Double> survivalRates;
@@ -145,5 +146,17 @@ public class SessionParameters {
 			sexualSelectionRates.put(gt1, new HashMap<Genotype, Double>());
 		}
 		sexualSelectionRates.get(gt1).put(gt2, rate);
+	}
+	public int getPopCapacity() {
+		return popCapacity;
+	}
+	public void setPopCapacity(int pop) {
+		this.popCapacity = pop;
+	}
+	public int getCrashCapacity() {
+		return crashCapacity;
+	}
+	public void setCrashCapacity(int pop) {
+		this.crashCapacity = pop;
 	}
 }
