@@ -22,10 +22,10 @@ import shared.Utilities;
  */
 public class Population {
 
-	final static double MUTATION_STDDEV = 0.1;
-	final static double MUTATION_MEAN = 1.0;
+	final private static double MUTATION_STDDEV = 0.05;
+	final private static double MUTATION_MEAN = 1.0;
 	
-	final Random INTERNAL_RNG;
+	final private Random INTERNAL_RNG;
 	
 	private static int populationCounter = 0;
 	private int populationID;
@@ -167,9 +167,9 @@ public class Population {
 		double mutationRate;
 
 		// For all possible combinations of genotypes...
-		for (Genotype from : Genotype.values()) {
+		for (Genotype from : Utilities.getShuffledGenotypes(INTERNAL_RNG)) {
 			remainingMutations = current.getGenotypeSubpopulationSize(from);
-			for (Genotype to : Genotype.values()) {
+			for (Genotype to : Utilities.getShuffledGenotypes(INTERNAL_RNG)) {
 				// Mutations to self are ignored
 				if (from == to) continue;
 
