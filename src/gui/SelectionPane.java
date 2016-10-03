@@ -204,45 +204,35 @@ public class SelectionPane extends EvoPane {
 
 		selectRandS.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				modeRandS();
+				modeRandS(true);
 			}
 		});
 		
 		selectAbs.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				modeAbsFit();
+				modeRandS(false);
 			}
 		});
 
 	}
 	
-	private void modeRandS() {
+	private void modeRandS(boolean b) {
 		for(Component comp : rAndS) {
-			comp.setEnabled(true);
+			comp.setEnabled(b);
 		}
 		for(Component comp : absFit) {
-			comp.setEnabled(false);
+			comp.setEnabled(!b);
 		}			
-	}
-	
-	private void modeAbsFit() {
-		for(Component comp : rAndS) {
-			comp.setEnabled(false);
-		}
-		for(Component comp : absFit) {
-			comp.setEnabled(true);
-		}			
-
 	}
 	
 	@Override
 	public void setEnabled(boolean enabled){
 		super.setEnabled(enabled);
 		if (selectRandS.isSelected() && enabled == true) {
-			modeRandS();
+			modeRandS(true);
 		}
 		else if (selectAbs.isSelected() && enabled == true){
-			modeAbsFit();
+			modeRandS(false);
 		}
 		System.out.println(selectRandS.isSelected());
 	}
@@ -311,6 +301,10 @@ public class SelectionPane extends EvoPane {
 		
 	}
 	
+	/**
+	 * 
+	 * Little test guy 
+	 */
 	public static void main(String[] args){
 		JFrame window = new JFrame();
 		
