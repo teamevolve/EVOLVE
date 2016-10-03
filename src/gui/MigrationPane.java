@@ -1,7 +1,11 @@
 package gui;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -27,6 +31,10 @@ public class MigrationPane extends EvoPane {
 	JLabel varMigRateLabel;
 	JLabel varMigRateAALabel, varMigRateABLabel, varMigRateBBLabel;
 	JTextField varMigRateAA, varMigRateAB, varMigRateBB;
+	
+	ArrayList<Component> fixedList = new ArrayList<Component>();
+	ArrayList<Component> varyList = new ArrayList<Component>();
+
 	
 	public MigrationPane() {
 		
@@ -95,8 +103,56 @@ public class MigrationPane extends EvoPane {
 		c.gridx = 3; c.gridy = 230;
 		c.anchor = GridBagConstraints.CENTER;
 		add(varMigRateBB, c);
+		
+		//add fixed elements to fixedList
+		fixedList.add(fixedMigRateLabel);
+		fixedList.add(fixedMigRate);
+		
+		//add vary-by-genotype to varyList
+		varyList.add(varMigRateLabel);
+		varyList.add(varMigRateAALabel);
+		varyList.add(varMigRateABLabel);
+		varyList.add(varMigRateBBLabel);
+		varyList.add(varMigRateAA);
+		varyList.add(varMigRateAB);
+		varyList.add(varMigRateBB);
+		
+		// set radio buttons to grey out sections of panel
+		fixedMig.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeFixed(true);
+			}
+		});
+		
+		varMig.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeFixed(false);
+			}
+		});
+
+		
+	}
+	
+	private void modeFixed(boolean b) {
+		for(Component comp : fixedList) {
+			comp.setEnabled(b);		
+		}
+		for(Component comp : varyList) {
+			comp.setEnabled(!b);
+		}
 	}
 
+	@Override
+	public void setEnabled(boolean enabled){
+		super.setEnabled(enabled);
+		if (fixedMig.isSelected() && enabled == true) {
+			modeFixed(true);
+		}
+		else if (varMig.isSelected() && enabled == true){
+			modeFixed(false);
+		}
+	}
+	
 	public static void main(String[] args){
 		JFrame window = new JFrame();
 		
