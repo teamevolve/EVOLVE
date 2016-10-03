@@ -14,8 +14,9 @@ import javax.swing.*;
  */
 public class GUI extends EvoPane {
 
-	// we'll dump our input into this guy/object
+	// we'll put args here
 	shared.SessionParameters parms;
+
 	
 	// eventually delete this for real time inputs
 	JButton submit;
@@ -46,6 +47,7 @@ public class GUI extends EvoPane {
 		
 		// our input will go in this 
 		parms = new shared.SessionParameters();
+		
 		
 		// left align
 		c.anchor = GridBagConstraints.WEST;
@@ -182,16 +184,18 @@ public class GUI extends EvoPane {
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				parms.setSeed(Integer.parseInt(seedField.getText()));
-				parms.setPopSize(Integer.parseInt(pp.popSizeField.getText()));
+//				parms.setSeed(Integer.parseInt(seedField.getText()));
+
+				sp.submit(parms);
 				
-				System.out.println(parms.getSeed());
-				System.out.println(parms.getPopSize());
+//				System.out.println(parms.getSeed());
+//				System.out.println(parms.getPopSize());
 				
+/*				System.out.println("here is the new stuff: ");
+				System.out.println("AA repro: " + parms.getReproductionRate(shared.Genotype.AA)); */
+
 			}
 		});
-
-
 
 		
 	}

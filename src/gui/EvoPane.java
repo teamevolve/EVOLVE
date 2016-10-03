@@ -46,6 +46,7 @@ public abstract class EvoPane extends JPanel {
 	
 	}
 	
+	
 	@Override
 	public void setEnabled(boolean enable) {
 		super.setEnabled(enable);
