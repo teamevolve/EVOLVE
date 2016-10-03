@@ -234,7 +234,6 @@ public class SelectionPane extends EvoPane {
 		else if (selectAbs.isSelected() && enabled == true){
 			modeRandS(false);
 		}
-		System.out.println(selectRandS.isSelected());
 	}
 	
 	/**
