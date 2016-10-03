@@ -184,9 +184,13 @@ public class GUI extends EvoPane {
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				parms.setSeed(Integer.parseInt(seedField.getText()));
+				parms.setSeed(Integer.parseInt(seedField.getText()));
 
+				pp.submit(parms);
 				sp.submit(parms);
+				mp.submit(parms);
+//				mip.submit(parms);
+//				ssp.submit(parms);
 				
 //				System.out.println(parms.getSeed());
 //				System.out.println(parms.getPopSize());

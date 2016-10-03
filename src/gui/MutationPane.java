@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import shared.Allele;
+import shared.Genotype;
 
 
 /**
@@ -56,8 +57,28 @@ public class MutationPane extends EvoPane {
 	}
 
 	public void submit(shared.SessionParameters p) {
-		p.setMutationRate(Allele.A, Allele.B, Double.parseDouble(mutAtoB.getText()));
-		p.setMutationRate(Allele.B, Allele.A, Double.parseDouble(mutBtoA.getText()));
+		double mutA_B = Double.parseDouble(mutAtoB.getText());
+		double mutB_A = Double.parseDouble(mutBtoA.getText());
+		double mutA_A = 1 - mutA_B;
+		double mutB_B = 1 - mutB_A;
+		
+		p.setAlleleMutationRate(Allele.A, Allele.B, mutA_B);
+		p.setAlleleMutationRate(Allele.B, Allele.A, mutB_A);
+
+		double mutAA_AB = 2 * mutA_B * mutA_A;
+		double mutAA_BB = mutA_B * mutA_B;
+		double mutAB_AA = mutB_A * mutA_A;
+		double mutAB_BB = mutA_B * mutB_B;
+		double mutBB_AA = mutB_A * mutB_A;
+		double mutBB_AB = 2 * mutB_A * mutB_B;
+		
+		p.setMutationRate(Genotype.AA, Genotype.AB, mutAA_AB);
+		p.setMutationRate(Genotype.AA, Genotype.BB, mutAA_BB);
+		p.setMutationRate(Genotype.AB, Genotype.AA, mutAB_AA);
+		p.setMutationRate(Genotype.AB, Genotype.BB, mutAB_BB);
+		p.setMutationRate(Genotype.BB, Genotype.AA, mutBB_AA);
+		p.setMutationRate(Genotype.BB, Genotype.AB, mutBB_AB);
+		
 	}
 	
 	public static void main(String[] args){
