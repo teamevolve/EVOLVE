@@ -204,69 +204,106 @@ public class SelectionPane extends EvoPane {
 
 		selectRandS.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				for(Component comp : rAndS) {
-					comp.setEnabled(true);
-				}
-				for(Component comp : absFit) {
-					comp.setEnabled(false);
-				}			
+				modeRandS();
 			}
 		});
 		
 		selectAbs.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				for(Component comp : rAndS) {
-					comp.setEnabled(false);
-				}
-				for(Component comp : absFit) {
-					comp.setEnabled(true);
-				}			
+				modeAbsFit();
 			}
 		});
 
 	}
 	
+	private void modeRandS() {
+		for(Component comp : rAndS) {
+			comp.setEnabled(true);
+		}
+		for(Component comp : absFit) {
+			comp.setEnabled(false);
+		}			
+	}
 	
+	private void modeAbsFit() {
+		for(Component comp : rAndS) {
+			comp.setEnabled(false);
+		}
+		for(Component comp : absFit) {
+			comp.setEnabled(true);
+		}			
+
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled){
+		super.setEnabled(enabled);
+		if (selectRandS.isSelected() && enabled == true) {
+			modeRandS();
+		}
+		else if (selectAbs.isSelected() && enabled == true){
+			modeAbsFit();
+		}
+		System.out.println(selectRandS.isSelected());
+	}
+	
+	/**
+	 * Dumps absolute and relative fitnesses into session parameters.
+	 * If Reproductioin and Survival radiobutton is checked, it also dumps Repro and Surv rates
+	 * @param p = sesh parms
+	 */
 	public void submit(shared.SessionParameters p){
 
-		double relFitAA = 0;
-		double relFitAB = 0;
-		double relFitBB = 0;
+		double afAA = 0, afAB = 0, afBB = 0;
 
+		double relFitAA, relFitAB, relFitBB;
+		
 		// if repro and surv is selected
 		if(selectRandS.isSelected()) {
-			p.setReproductionRate(Genotype.AA, Double.parseDouble(reproAA.getText()));
-			p.setReproductionRate(Genotype.AB, Double.parseDouble(reproAB.getText()));
-			p.setReproductionRate(Genotype.BB, Double.parseDouble(reproBB.getText()));
-			
-			p.setSurvivalRate(Genotype.AA, Double.parseDouble(survAA.getText()));
-			p.setSurvivalRate(Genotype.AB, Double.parseDouble(survAB.getText()));
-			p.setSurvivalRate(Genotype.BB, Double.parseDouble(survBB.getText()));
+			double AArr = Double.parseDouble(reproAA.getText());
+			double ABrr = Double.parseDouble(reproAB.getText());
+			double BBrr = Double.parseDouble(reproBB.getText());
 
+			double AAsr = Double.parseDouble(survAA.getText());
+			double ABsr = Double.parseDouble(survAB.getText());
+			double BBsr = Double.parseDouble(survBB.getText());
 			
-			// calculate this 
-			relFitAA = 5.3;
-			relFitAB = 1.7;
-			relFitBB = 0.2;
-			
+			p.setReproductionRate(Genotype.AA, AArr);
+			p.setReproductionRate(Genotype.AB, ABrr);
+			p.setReproductionRate(Genotype.BB, BBrr);
 
+			p.setSurvivalRate(Genotype.AA, AAsr);
+			p.setSurvivalRate(Genotype.AB, ABsr);
+			p.setSurvivalRate(Genotype.BB, BBsr);
+
+			// Calculate absolute fitness of each genotype
+			afAA = AArr * AAsr;
+			afAB = ABrr * ABsr;                 // ########## Ensure this is correct calculations??
+			afBB = BBrr * BBsr;
+
+			absFitAA.setText(String.format("%.4f", afAA));
+			absFitAB.setText(String.format("%.4f", afAB));
+			absFitBB.setText(String.format("%.4f", afBB));
+			
 		}
 		else if(selectAbs.isSelected()) {
-
-			double afAA = Double.parseDouble(absFitAA.getText());
-			double afAB = Double.parseDouble(absFitAB.getText());
-			double afBB = Double.parseDouble(absFitBB.getText());
-			
-			p.setAbsoluteFitness(Genotype.AA, afAA);
-			p.setAbsoluteFitness(Genotype.AA, afAB);
-			p.setAbsoluteFitness(Genotype.AA, afBB);
-
-			relFitAA = afAA / (afAA + afAB + afBB);
-			relFitAB = afAB / (afAA + afAB + afBB);
-			relFitBB = afBB / (afAA + afAB + afBB);
+			afAA = Double.parseDouble(absFitAA.getText());
+			afAB = Double.parseDouble(absFitAB.getText());
+			afBB = Double.parseDouble(absFitBB.getText());
 		}
 
-
+		p.setAbsoluteFitness(Genotype.AA, afAA);
+		p.setAbsoluteFitness(Genotype.AA, afAB);
+		p.setAbsoluteFitness(Genotype.AA, afBB);
+		
+		relFitAA = afAA / (afAA + afAB + afBB);
+		relFitAB = afAB / (afAA + afAB + afBB);
+		relFitBB = afBB / (afAA + afAB + afBB);
+		
+		p.setRelativeFitness(Genotype.AA, relFitAA);
+		p.setRelativeFitness(Genotype.AB, relFitAB);
+		p.setRelativeFitness(Genotype.BB, relFitBB);
+		
 		relFitAALabel.setText("AA:   " + String.format("%.4f", relFitAA));
 		relFitABLabel.setText("AB:   " + String.format("%.4f", relFitAB));
 		relFitBBLabel.setText("BB:   " + String.format("%.4f", relFitBB));
