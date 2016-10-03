@@ -79,7 +79,7 @@ public class GUI extends EvoPane {
 		initFreqA = new JTextField(TEXT_LEN_SHORT);
 		
 		// add spacing
-		c.insets = new Insets(5, 10, 5, 0);
+//		c.insets = new Insets(5, 10, 5, 0);
 		
 		c.gridx = 0; c.gridy = 4;
 		c.gridwidth = 2;
