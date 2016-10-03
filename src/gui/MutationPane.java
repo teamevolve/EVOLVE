@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import shared.Allele;
+
 
 /**
  * 
@@ -53,6 +55,10 @@ public class MutationPane extends EvoPane {
 		
 	}
 
+	public void submit(shared.SessionParameters p) {
+		p.setMutationRate(Allele.A, Allele.B, Double.parseDouble(mutAtoB.getText()));
+		p.setMutationRate(Allele.B, Allele.A, Double.parseDouble(mutBtoA.getText()));
+	}
 	
 	public static void main(String[] args){
 		JFrame window = new JFrame();
