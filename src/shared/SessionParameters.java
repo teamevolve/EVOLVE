@@ -39,7 +39,8 @@ public class SessionParameters {
 	private HashMap<Genotype, Double> survivalRates;
 	private HashMap<Genotype, Double> absoluteFitnesses;
 	private HashMap<Genotype, Double> relativeFitnesses;
-	private HashMap<Allele, HashMap<Allele, Double>> mutationRates;   // changed from Genotype to Allele --JF
+	private HashMap<Genotype, HashMap<Genotype, Double>> mutationRates;
+	private HashMap<Allele, HashMap<Allele, Double>> alleleMutationRates;
 	private HashMap<Genotype, Double> migrationRates;
 	private HashMap<Genotype, Double> genotypeFrequencies;
 	private HashMap<Genotype, HashMap<Genotype, Double>> sexualSelectionRates;
@@ -55,7 +56,8 @@ public class SessionParameters {
 		survivalRates = new HashMap<Genotype, Double>();
 		absoluteFitnesses = new HashMap<Genotype, Double>();
 		relativeFitnesses = new HashMap<Genotype, Double>();
-		mutationRates = new HashMap<Allele, HashMap<Allele, Double>>(); // changed from Genotype to Allele --JF
+		mutationRates = new HashMap<Genotype, HashMap<Genotype, Double>>();
+		alleleMutationRates = new HashMap<Allele, HashMap<Allele, Double>>();
 		migrationRates = new HashMap<Genotype, Double>();
 		genotypeFrequencies = new HashMap<Genotype, Double>();
 		sexualSelectionRates = new HashMap<Genotype, HashMap<Genotype, Double>>();
@@ -122,27 +124,24 @@ public class SessionParameters {
 	public void setMigrationRate(Genotype gt, double rate) {
 		migrationRates.put(gt, rate);
 	}
-	// Changing this guy from Genotypes to Alleles --Jason
-	public double getMutationRate(Allele a1, Allele a2) {
-		return mutationRates.get(a1).get(a2);
+	public double getAlleleMutationRate(Allele a1, Allele a2) {
+		return alleleMutationRates.get(a1).get(a2);
 	}
-	public void setMutationRate(Allele a1, Allele a2, double rate) {
-		if (!mutationRates.containsKey(a1)) {
-			mutationRates.put(a1, new HashMap<Allele, Double>());
+	public void setAlleleMutationRate(Allele a1, Allele a2, double rate){
+		if (!alleleMutationRates.containsKey(a1)) {
+			alleleMutationRates.put(a1, new HashMap<Allele, Double>());
 		}
-		mutationRates.get(a1).put(a2, rate);
+		alleleMutationRates.get(a1).put(a2, rate);
 	}
-	
-/*	public double getMutationRate(Genotype gt1, Genotype gt2) {
+	public double getMutationRate(Genotype gt1, Genotype gt2) {
 		return mutationRates.get(gt1).get(gt2);
-	}
+	}	
 	public void setMutationRate(Genotype gt1, Genotype gt2, double rate) {
-		System.out.println();
 		if (!mutationRates.containsKey(gt1)) {
 			mutationRates.put(gt1, new HashMap<Genotype, Double>());
 		}
 		mutationRates.get(gt1).put(gt2, rate);
-	} */
+	} 
 	public double getGenotypeFrequency(Genotype gt) {
 		return genotypeFrequencies.get(gt);
 	}
