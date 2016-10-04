@@ -44,6 +44,8 @@ public class SessionParameters {
 	private HashMap<Genotype, Double> migrationRates;
 	private HashMap<Genotype, Double> genotypeFrequencies;
 	private HashMap<Genotype, HashMap<Genotype, Double>> sexualSelectionRates;
+	private boolean popSizeChecked, selectChecked, mutationChecked, 
+					migrationChecked, sexSelectChecked;
 
 	/* normal stuff */
 	
@@ -169,4 +171,45 @@ public class SessionParameters {
 	public void setCrashCapacity(int pop) {
 		this.crashCapacity = pop;
 	}
+
+	public boolean isPopSizeChecked() {
+		return popSizeChecked;
+	}
+
+	public void setPopSizeChecked(boolean popSizeChecked) {
+		this.popSizeChecked = popSizeChecked;
+	}
+	
+	public boolean isSelectChecked() {
+		return selectChecked;
+	}
+
+	public void setSelectChecked(boolean selectChecked) {
+		this.selectChecked = selectChecked;
+	}
+
+	public boolean isMutationChecked() {
+		return mutationChecked;
+	}
+
+	public void setMutationChecked(boolean mutationChecked) {
+		this.mutationChecked = mutationChecked;
+	}
+
+	public boolean isMigrationChecked() {
+		return migrationChecked;
+	}
+
+	public void setMigrationChecked(boolean migrationChecked) {
+		this.migrationChecked = migrationChecked;
+	}
+	
+	public boolean isSexSelectChecked() {
+		return sexSelectChecked;
+	}
+
+	public void setSexSelectChecked(boolean sexSelectChecked) {
+		this.sexSelectChecked = sexSelectChecked;
+	}
+
 }

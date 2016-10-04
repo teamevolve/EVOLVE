@@ -34,7 +34,6 @@ public class MigrationPane extends EvoPane {
 	
 	ArrayList<Component> fixedList = new ArrayList<Component>();
 	ArrayList<Component> varyList = new ArrayList<Component>();
-
 	
 	public MigrationPane() {
 		
