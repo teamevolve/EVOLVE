@@ -27,7 +27,7 @@ import shared.Utilities;
 public class PopulationManager {
 	final static double EMIGRATION_MEAN = 1.0;
 	final static double EMIGRATION_STDDEV = 0.1;
-	final Random INTERNAL_RNG = new Random(DataManager.getInstance().getSessionParams().getSeed());
+	final private Random INTERNAL_RNG = new Random(DataManager.getInstance().getSessionParams().getSeed());
 
 	/**
 	 * Member to enable singleton class
@@ -35,6 +35,7 @@ public class PopulationManager {
 	private static PopulationManager instance = null;
 	//private HashMap<Integer, Population> populationMap;
 	private ArrayList<Population> populationList;
+	private ArrayList<Population> extinctList;
 	
 	
 	/**
@@ -55,6 +56,7 @@ public class PopulationManager {
 	 */
 	private PopulationManager() {
 		populationList = new ArrayList<Population>();
+		extinctList = new ArrayList<Population>();
 		int numPops = DataManager.getInstance().getSessionParams().getNumPops();
 		for (int i=0; i < numPops; i++) {
 			populationList.add(new Population(INTERNAL_RNG.nextLong()));
@@ -144,6 +146,7 @@ public class PopulationManager {
 			
 			// Redistribute remaining individuals
 			for (Iterator<Population> it = accepting.iterator(); totalMigrations > 0; totalMigrations--) {
+				/*DEBUG*/System.out.println("here");
 				record = it.next().getLastGeneration();
 				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) + 1);
 			}

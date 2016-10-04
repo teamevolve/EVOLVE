@@ -33,7 +33,8 @@ import java.util.HashMap;
 public class SessionParameters {
 	// all members should private
 	
-	private int popSize, seed, numPops, popCapacity, crashCapacity;
+	private int popSize, numPops, popCapacity, crashCapacity;
+	private long seed;
 	private boolean popConst, fixedMig;
 	private HashMap<Genotype, Double> reproductionRates;
 	private HashMap<Genotype, Double> survivalRates;
@@ -74,10 +75,10 @@ public class SessionParameters {
 	public void setNumPops(int n) {
 		numPops = n;
 	}
-	public int getSeed() {
+	public long getSeed() {
 		return seed;
 	}
-	public void setSeed(int seed) {
+	public void setSeed(long seed) {
 		this.seed = seed;
 	}
 	public boolean isFixedMig() {
@@ -126,7 +127,6 @@ public class SessionParameters {
 		return mutationRates.get(gt1).get(gt2);
 	}
 	public void setMutationRate(Genotype gt1, Genotype gt2, double rate) {
-		System.out.println();
 		if (!mutationRates.containsKey(gt1)) {
 			mutationRates.put(gt1, new HashMap<Genotype, Double>());
 		}
