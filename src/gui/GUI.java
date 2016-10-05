@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import shared.Genotype;
+
 
 
 /**
@@ -14,8 +16,9 @@ import javax.swing.*;
  */
 public class GUI extends EvoPane {
 
-	// we'll dump our input into this guy/object
+	// we'll put args here
 	shared.SessionParameters parms;
+
 	
 	// eventually delete this for real time inputs
 	JButton submit;
@@ -47,6 +50,7 @@ public class GUI extends EvoPane {
 		// our input will go in this 
 		parms = new shared.SessionParameters();
 		
+		
 		// left align
 		c.anchor = GridBagConstraints.WEST;
 		
@@ -77,7 +81,7 @@ public class GUI extends EvoPane {
 		initFreqA = new JTextField(TEXT_LEN_SHORT);
 		
 		// add spacing
-		c.insets = new Insets(5, 10, 5, 0);
+//		c.insets = new Insets(5, 10, 5, 0);
 		
 		c.gridx = 0; c.gridy = 4;
 		c.gridwidth = 2;
@@ -182,16 +186,37 @@ public class GUI extends EvoPane {
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				parms.setSeed(Integer.parseInt(seedField.getText()));
-				parms.setPopSize(Integer.parseInt(pp.popSizeField.getText()));
+				parms.setPopSizeChecked(popSizeCheck.isSelected());
+				parms.setSelectChecked(selectCheck.isSelected());
+				parms.setMutationChecked(mutationCheck.isSelected());
+				parms.setMigrationChecked(migrationCheck.isSelected());
+				parms.setSexSelectChecked(sexualSelectCheck.isSelected());
 				
-				System.out.println(parms.getSeed());
-				System.out.println(parms.getPopSize());
+				//parms.setSeed(Integer.parseInt(seedField.getText()));
+
+				//pp.submit(parms);
+				//sp.submit(parms);
+				//mp.submit(parms);
+//				mip.submit(parms);
+				//ssp.submit(parms);
 				
+//				System.out.println(parms.getSeed());
+//				System.out.println(parms.getPopSize());
+				/*System.out.println(parms.getSexualSelectionRate(Genotype.AA, Genotype.AA));
+				System.out.println(parms.getSexualSelectionRate(Genotype.AA, Genotype.AB));
+				System.out.println(parms.getSexualSelectionRate(Genotype.AA, Genotype.BB));
+				System.out.println(parms.getSexualSelectionRate(Genotype.AB, Genotype.AA));
+				System.out.println(parms.getSexualSelectionRate(Genotype.AB, Genotype.AB));
+				System.out.println(parms.getSexualSelectionRate(Genotype.AB, Genotype.BB));
+				System.out.println(parms.getSexualSelectionRate(Genotype.BB, Genotype.AA));
+				System.out.println(parms.getSexualSelectionRate(Genotype.BB, Genotype.AB));
+				System.out.println(parms.getSexualSelectionRate(Genotype.BB, Genotype.BB)); */
+				
+/*				System.out.println("here is the new stuff: ");
+				System.out.println("AA repro: " + parms.getReproductionRate(shared.Genotype.AA)); */
+
 			}
 		});
-
-
 
 		
 	}
