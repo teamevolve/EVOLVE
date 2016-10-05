@@ -123,18 +123,29 @@ public class Population {
 	 */
 	private void survive(GenerationRecord current) {
 		
-		int temp;
+		int numSurvived, subPopulation;
 		int totalAdults = 0; //as of yet unclear whether popSize continually changes, probs can remove
 		double crash;
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-		
+	
 		//Calculate the number of each genotype surviving
 		for (Genotype gt: Genotype.values()) {
+			subPopulation = current.getGenotypeSubpopulationSize(gt);
 			//Typecasting to int in java is analogous to flooring
-			//Unclear if we want survival to work like mutate/reprod with 'randomness'
-			temp = (int)(current.getGenotypeSubpopulationSize(gt) * sp.getSurvivalRate(gt));
-			current.setGenotypeSubpopulationSize(gt, temp);
-			totalAdults += temp;
+			numSurvived = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, MUTATION_MEAN, MUTATION_STDDEV) * 
+                    subPopulation * sp.getSurvivalRate(gt));
+			
+			
+			if (numSurvived <= 0) {
+				numSurvived = 0;
+			}
+			else if (numSurvived > subPopulation){
+				numSurvived = subPopulation;
+			}
+			
+			//System.out.println(gt.toString() + "<--Generation " + current.getGenerationNumber() + "-->" + numSurvived);
+			current.setGenotypeSubpopulationSize(gt, numSurvived);
+			totalAdults += numSurvived;
 		}
 		
 		//Kill off populations if larger than carrying capacity
