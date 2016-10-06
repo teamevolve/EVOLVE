@@ -224,4 +224,20 @@ public class GenerationRecord {
 	public void setDeaths(Genotype gt, int n) {
 		deaths.put(gt, n);
 	}
+	
+	/**
+	 * Writes out a brief ASCII Generation Record for debugging purposes
+	 * Includes Population Size, Number and Genotype Subpopulations for any Generation Record 
+	 * 
+	 */
+	public void quickWrite() {
+		System.out.println("-----------------------\nGeneration Record " + generationNumber + "\n-----------------------\n" + 
+				"Population Size: " + getPopulationSize() + "\n" +
+				"Genotype Subpopulations:");
+		for (Genotype gt: Genotype.values()) {
+			System.out.println(gt +  " - "  + String.valueOf(getGenotypeSubpopulationSize(gt)));
+		}
+		System.out.println("-----------------------");
+	}
+	
 }

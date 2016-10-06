@@ -1,7 +1,6 @@
 package test;
 
 
-import test.TestResources;
 
 import java.lang.reflect.Method;
 import java.util.Random;
@@ -11,14 +10,11 @@ import shared.Genotype;
 import shared.SessionParameters;
 import simulation.GenerationRecord;
 import simulation.Population;
-import simulation.PopulationManager;
 
 public class TestSurvival {
 
 	public static void main(String[] args) {
-		//TestResources.init();
 		
-		int iteration = 0;
 		
 		SessionParameters sp = new SessionParameters();
 		sp.setSurvivalRate(Genotype.AA, 0.85);
@@ -51,7 +47,8 @@ public class TestSurvival {
 			Population p = new Population((new Random().nextLong()));
 			for (int i=0; i < 15; i++) {
 				mutate.invoke(p, ngr);
-				System.out.println(iteration++);
+				ngr.quickWrite();
+				
 			}
 			//System.out.println("success is always an option");
 		}
@@ -60,9 +57,6 @@ public class TestSurvival {
 			e.printStackTrace();
 		}
 		
-		for (Genotype gt1 : Genotype.values()) {
-			System.out.println(gt1 + " <-> " + ngr.getGenotypeSubpopulationSize(gt1));
-		}
 		
 	}
 
