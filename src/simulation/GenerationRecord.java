@@ -1,5 +1,6 @@
 package simulation;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import shared.Genotype;
 
@@ -16,8 +17,9 @@ import shared.Genotype;
  * @author ericscollins
  */
 
-public class GenerationRecord {
+public class GenerationRecord implements Serializable{
 
+	private static final long serialVersionUID = 2L;
 	final private int generationNumber;
 	final private int parentPopID;
 	private HashMap<Genotype, Integer> genotypeSubpopulationSizes;

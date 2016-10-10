@@ -1,5 +1,6 @@
 package shared;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -30,9 +31,10 @@ import java.util.HashMap;
  * @author richwenner
  *
  */
-public class SessionParameters {
+public class SessionParameters implements Serializable {
 	// all members should private
 	
+	private static final long serialVersionUID = 1L;
 	private int popSize, numPops, popCapacity, crashCapacity;
 	private long seed;
 	private boolean popConst, fixedMig;
