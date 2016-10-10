@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import shared.Genotype;
+
 /**
  * 
  * @author linneasahlberg
@@ -115,6 +117,14 @@ public class MigrationPane extends EvoPane {
 		varyList.add(varMigRateAA);
 		varyList.add(varMigRateAB);
 		varyList.add(varMigRateBB);
+
+		// grey out all the elements-- prevents submit w.o radio button selected
+		for(Component c : fixedList) {
+			c.setEnabled(false);
+		}
+		for(Component c : varyList) {
+			c.setEnabled(false);
+		}
 		
 		// set radio buttons to grey out sections of panel
 		fixedMig.addItemListener(new ItemListener() {
@@ -141,6 +151,22 @@ public class MigrationPane extends EvoPane {
 		}
 	}
 
+	public void submit(shared.SessionParameters p){
+		p.setFixedMig(fixedMig.isSelected());
+		
+		if(fixedMig.isSelected()){
+			for(shared.Genotype gt : shared.Genotype.values()) {
+				p.setMigrationRate(gt,Double.parseDouble(fixedMigRate.getText()));
+			}
+		}
+		else {//varMig.isSelected()) 
+			p.setMigrationRate(Genotype.AA, Double.parseDouble(varMigRateAA.getText()));
+			p.setMigrationRate(Genotype.AB, Double.parseDouble(varMigRateAB.getText()));
+			p.setMigrationRate(Genotype.BB, Double.parseDouble(varMigRateBB.getText()));
+		}	
+	
+	}
+	
 	@Override
 	public void setEnabled(boolean enabled){
 		super.setEnabled(enabled);

@@ -29,6 +29,8 @@ public class GUI extends EvoPane {
 	JTextField initFreqA;
 	JLabel calcFreqAA, calcFreqAB, 
 		calcFreqBB;
+	JLabel numPopsLabel; 			// Number of Pops
+	JTextField numPops;	
 	JLabel numGensLabel; 			// Number of Gens
 	JTextField numGens;
 	
@@ -65,15 +67,26 @@ public class GUI extends EvoPane {
 		c.anchor = GridBagConstraints.EAST;
 		add(seedField, c);	
 		
-		// num generations stuff
-		numGensLabel = new JLabel("Number of Generations: ");
-		numGens = new JTextField(TEXT_LEN_LONG);
+		// num populations stuff **************************************************************/
+		numPopsLabel = new JLabel("Number of Populations: ");
+		numPops = new JTextField(TEXT_LEN_LONG);
 		
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.EAST;
-		add(numGensLabel, c);
+		add(numPopsLabel, c);
 		c.gridx = 1; c.gridy = 1;
+		add(numPops, c);
+
+		// num generations stuff **************************************************************/
+		numGensLabel = new JLabel("Number of Generations: ");
+		numGens = new JTextField(TEXT_LEN_LONG);
+		
+		c.gridx = 0; c.gridy = 2;
+		c.anchor = GridBagConstraints.EAST;
+		add(numGensLabel, c);
+		c.gridx = 1; c.gridy = 2;
 		add(numGens, c);
+		
 		
 		/* initial frequencies stuff ***********************************************************/
 		
@@ -186,19 +199,44 @@ public class GUI extends EvoPane {
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Set SessionParameters NOT from the GUI pane
+				parms.setSeed(Integer.parseInt(seedField.getText()));
+				parms.setNumGens(Integer.parseInt(numGens.getText()));
+				
+				// Set Allele freqs --> maybe just move this into a new method?
+				double alleleAfreq = Double.parseDouble(initFreqA.getText());
+				double alleleBfreq = 1 - alleleAfreq;
+
+				double AAfreq = alleleAfreq * alleleAfreq;
+				double ABfreq = 2 * alleleAfreq * alleleBfreq;
+				double BBfreq = alleleBfreq * alleleBfreq;
+				
+				calcFreqAA.setText(String.format("%.4f", AAfreq));
+				calcFreqAB.setText(String.format("%.4f", ABfreq));
+				calcFreqBB.setText(String.format("%.4f", BBfreq));
+				
+				parms.setGenotypeFrequency(shared.Genotype.AA, AAfreq);
+				parms.setGenotypeFrequency(shared.Genotype.AB, ABfreq);
+				parms.setGenotypeFrequency(shared.Genotype.BB, BBfreq);
+				
 				parms.setPopSizeChecked(popSizeCheck.isSelected());
 				parms.setSelectChecked(selectCheck.isSelected());
 				parms.setMutationChecked(mutationCheck.isSelected());
 				parms.setMigrationChecked(migrationCheck.isSelected());
 				parms.setSexSelectChecked(sexualSelectCheck.isSelected());
 				
-				//parms.setSeed(Integer.parseInt(seedField.getText()));
 
-				//pp.submit(parms);
-				//sp.submit(parms);
-				//mp.submit(parms);
-//				mip.submit(parms);
-				//ssp.submit(parms);
+				// Submit info from the EvoPanes if necessary
+				if(parms.isPopSizeChecked())
+					pp.submit(parms);
+				if(parms.isSelectChecked())
+					sp.submit(parms);
+				if(parms.isMutationChecked())
+					mp.submit(parms);
+				if(parms.isMigrationChecked())
+					mip.submit(parms);
+				if(parms.isSexSelectChecked())
+					ssp.submit(parms);
 				
 //				System.out.println(parms.getSeed());
 //				System.out.println(parms.getPopSize());

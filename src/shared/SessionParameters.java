@@ -32,10 +32,9 @@ import java.util.HashMap;
  *
  */
 public class SessionParameters implements Serializable {
-	// all members should private
 	
 	private static final long serialVersionUID = 1L;
-	private int popSize, numPops, popCapacity, crashCapacity;
+	private int popSize, numPops, numGens, popCapacity, crashCapacity;
 	private long seed;
 	private boolean popConst, fixedMig;
 	private HashMap<Genotype, Double> reproductionRates;
@@ -81,6 +80,14 @@ public class SessionParameters implements Serializable {
 	public void setNumPops(int n) {
 		numPops = n;
 	}
+	public int getNumGens() {
+		return numGens;
+	}
+
+	public void setNumGens(int numGens) {
+		this.numGens = numGens;
+	}
+
 	public long getSeed() {
 		return seed;
 	}
