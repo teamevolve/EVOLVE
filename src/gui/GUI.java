@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import shared.DataManager;
+import shared.EvolveDirector;
 import shared.Genotype;
 
 
@@ -238,20 +240,8 @@ public class GUI extends EvoPane {
 				if(parms.isSexSelectChecked())
 					ssp.submit(parms);
 				
-//				System.out.println(parms.getSeed());
-//				System.out.println(parms.getPopSize());
-				/*System.out.println(parms.getSexualSelectionRate(Genotype.AA, Genotype.AA));
-				System.out.println(parms.getSexualSelectionRate(Genotype.AA, Genotype.AB));
-				System.out.println(parms.getSexualSelectionRate(Genotype.AA, Genotype.BB));
-				System.out.println(parms.getSexualSelectionRate(Genotype.AB, Genotype.AA));
-				System.out.println(parms.getSexualSelectionRate(Genotype.AB, Genotype.AB));
-				System.out.println(parms.getSexualSelectionRate(Genotype.AB, Genotype.BB));
-				System.out.println(parms.getSexualSelectionRate(Genotype.BB, Genotype.AA));
-				System.out.println(parms.getSexualSelectionRate(Genotype.BB, Genotype.AB));
-				System.out.println(parms.getSexualSelectionRate(Genotype.BB, Genotype.BB)); */
-				
-/*				System.out.println("here is the new stuff: ");
-				System.out.println("AA repro: " + parms.getReproductionRate(shared.Genotype.AA)); */
+				DataManager.getInstance().setSessionParams(parms);
+				EvolveDirector.getInstance().runSimulation();
 
 			}
 		});

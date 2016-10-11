@@ -59,6 +59,16 @@ public class PopulationManager {
 		}
 	}
 
+	/**
+	 * Process generation
+	 */
+	public void processGeneration(){
+		for (Population p : populationList) {
+			p.simulateGeneration();
+		}
+		
+		processMigrations();
+	}
 
 	/**
 	 * Process interpopulation migrations, modifying populations to reflect

@@ -1,5 +1,7 @@
 package simulation;
 
+import shared.DataManager;
+
 /**
  * SimulationEngine is the top of level class of the simulation component of 
  * EVOLVE. This class orchestrates all action of the simulation component, 
@@ -32,6 +34,12 @@ public class SimulationEngine {
 		return instance;
 	}
 	
+	public void runSimulation() {
+		for (int i = 0; i < DataManager.getInstance().getSessionParams().getNumGens(); i++) {
+			PopulationManager.getInstance().processGeneration();
+		}
+		
+	}
 	
 	/**
 	 * Private constructor to disable normal instantiation
