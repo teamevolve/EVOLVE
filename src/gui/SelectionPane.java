@@ -267,7 +267,7 @@ public class SelectionPane extends EvoPane {
 
 			// Calculate absolute fitness of each genotype
 			afAA = AArr * AAsr;
-			afAB = ABrr * ABsr;                 // ########## Ensure this is correct calculations??
+			afAB = ABrr * ABsr;                 // ########## Ensure these are correct calculations??
 			afBB = BBrr * BBsr;
 
 			absFitAA.setText(String.format("%.4f", afAA));
