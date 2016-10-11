@@ -63,11 +63,20 @@ public class PopulationManager {
 	 * Process generation
 	 */
 	public void processGeneration(){
+		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		for (Population p : populationList) {
 			p.simulateGeneration();
 		}
-		
-		processMigrations();
+
+		if (sp.isMigrationChecked())
+			processMigrations();
+
+		if (sp.isPopConst()) {
+			int popSize = sp.getPopSize();
+			for (Population p : populationList) {
+				p.scale(popSize);
+			}
+		}
 	}
 
 	/**
