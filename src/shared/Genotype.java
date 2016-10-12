@@ -8,4 +8,5 @@ package shared;
 
 public enum Genotype {
 	AA, AB, BB
+
 }

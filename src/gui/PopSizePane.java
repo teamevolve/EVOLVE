@@ -1,12 +1,17 @@
 package gui;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import java.util.ArrayList;
 
 /**
  * 
@@ -29,6 +34,8 @@ public class PopSizePane extends EvoPane {
 	JLabel postCrashLabel; 			// Crash
 	JTextField postCrash;
 
+	ArrayList<Component> vPopList = new ArrayList<Component>();
+	
 	public PopSizePane() {
 
 		super();
@@ -60,7 +67,7 @@ public class PopSizePane extends EvoPane {
 		
 		
 		// carrying capacity stuff - appears when popSize varying
-		carryCapLabel = new JLabel("Carrying Capacity: ");
+		carryCapLabel = new JLabel("Carrying Capacity: "); 
 		carryCap = new JTextField(TEXT_LEN_LONG);
 		c.gridx = 1; c.gridy = 40;
 		c.gridwidth = 2;
@@ -73,6 +80,7 @@ public class PopSizePane extends EvoPane {
 		add(carryCap, c);
 		c.ipadx = 0;
 		
+
 		
 		// post crash population size stuff - appears when popSize varying
 		postCrashLabel = new JLabel("Post Crash Population Size: ");
@@ -89,10 +97,51 @@ public class PopSizePane extends EvoPane {
 		add(postCrash, c);
 		c.ipadx = 0;
 		
-
+		// Add all that will be disabled when PopSize is constant to the vPopList
+		vPopList.add(carryCapLabel);
+		vPopList.add(carryCap);
+		vPopList.add(postCrashLabel);
+		vPopList.add(postCrash);
+		
+		// Set actions for the PopConstTrue/False radio buttons
+		popConstTrue.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeConstPop(true);
+			}
+		});
+		
+		popConstFalse.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeConstPop(false);
+			}
+		});
 		
 		}
 	
+		private void modeConstPop(boolean b){
+			for(Component comp : vPopList) {
+				comp.setEnabled(!b);
+			}
+			if(b == true) { // clear the two text fields
+				carryCap.setText("");
+				postCrash.setText("");
+			}
+		}
+
+		public void submit(shared.SessionParameters p) {
+			
+			p.setPopSize(Integer.parseInt(popSizeField.getText()));
+			p.setPopConst(popConstTrue.isSelected());
+			if(popConstFalse.isSelected()){
+				p.setPopCapacity(Integer.parseInt(carryCap.getText()));
+				p.setCrashCapacity(Integer.parseInt(postCrash.getText()));
+			}
+		}
+		
+		/** 
+		 * little testerino guy, dont use this, maybe remove this
+		 * @param args
+		 */
 		public static void main(String[] args){
 			JFrame window = new JFrame();
 			

@@ -1,9 +1,12 @@
 package gui;
 
-import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import shared.DataManager;
+import shared.EvolveDirector;
+import shared.Genotype;
 
 
 
@@ -14,10 +17,15 @@ import javax.swing.*;
  */
 public class GUI extends EvoPane {
 
-	// we'll dump our input into this guy/object
+	/**
+	 * Unsure if we should change this -Jason
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	// we'll put args here
 	shared.SessionParameters parms;
-	
-	// eventually delete this for real time inputs
+
 	JButton submit;
 		
 	JLabel seedLabel; 				// Seed
@@ -26,6 +34,8 @@ public class GUI extends EvoPane {
 	JTextField initFreqA;
 	JLabel calcFreqAA, calcFreqAB, 
 		calcFreqBB;
+	JLabel numPopsLabel; 			// Number of Pops
+	JTextField numPops;	
 	JLabel numGensLabel; 			// Number of Gens
 	JTextField numGens;
 	
@@ -47,38 +57,57 @@ public class GUI extends EvoPane {
 		// our input will go in this 
 		parms = new shared.SessionParameters();
 		
+		// add spacing
+//		c.insets = new Insets(5, 10, 5, 0);
+		
 		// left align
 		c.anchor = GridBagConstraints.WEST;
 		
 		/* seed stuff *****************************************************************************/
 		seedLabel = new JLabel("Seed: ");
 		seedField = new JTextField(TEXT_LEN_LONG);
+		seedField.setName(INT);
+		seedField.setInputVerifier(new OurInputVerifier());
 		
-		c.gridx = 5; c.gridy = 1;
+		c.gridx = 4; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(seedLabel, c);		
-		c.gridx = 5; c.gridy = 1;
+		c.gridx = 4; c.gridy = 1;
 		c.anchor = GridBagConstraints.EAST;
 		add(seedField, c);	
 		
-		// num generations stuff
-		numGensLabel = new JLabel("Number of Generations: ");
-		numGens = new JTextField(TEXT_LEN_LONG);
+		// num populations stuff **************************************************************/
+		numPopsLabel = new JLabel("Number of Populations: ");
+		numPops = new JTextField(TEXT_LEN_LONG);
+		numPops.setName(INT);
+		numPops.setInputVerifier(new OurInputVerifier());
 		
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.EAST;
-		add(numGensLabel, c);
+		add(numPopsLabel, c);
 		c.gridx = 1; c.gridy = 1;
+		add(numPops, c);
+
+		// num generations stuff **************************************************************/
+		numGensLabel = new JLabel("Number of Generations: ");
+		numGens = new JTextField(TEXT_LEN_LONG);
+		numGens.setName(INT);
+		numGens.setInputVerifier(new OurInputVerifier());
+		
+		c.gridx = 0; c.gridy = 2;
+		c.anchor = GridBagConstraints.EAST;
+		add(numGensLabel, c);
+		c.gridx = 1; c.gridy = 2;
 		add(numGens, c);
+		
 		
 		/* initial frequencies stuff ***********************************************************/
 		
 		initFreqALabel = new JLabel("Initial Frequency of Allele A: ");
 		initFreqA = new JTextField(TEXT_LEN_SHORT);
-		
-		// add spacing
-		c.insets = new Insets(5, 10, 5, 0);
-		
+		initFreqA.setName(RATE);
+		initFreqA.setInputVerifier(new OurInputVerifier());
+
 		c.gridx = 0; c.gridy = 4;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.WEST;
@@ -182,16 +211,50 @@ public class GUI extends EvoPane {
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Set SessionParameters NOT from the GUI pane
 				parms.setSeed(Integer.parseInt(seedField.getText()));
-				parms.setPopSize(Integer.parseInt(pp.popSizeField.getText()));
+				parms.setNumGens(Integer.parseInt(numGens.getText()));
 				
-				System.out.println(parms.getSeed());
-				System.out.println(parms.getPopSize());
+				// Set Allele freqs --> maybe just move this into a new method?
+				double alleleAfreq = Double.parseDouble(initFreqA.getText());
+				double alleleBfreq = 1 - alleleAfreq;
+
+				double AAfreq = alleleAfreq * alleleAfreq;
+				double ABfreq = 2 * alleleAfreq * alleleBfreq;
+				double BBfreq = alleleBfreq * alleleBfreq;
 				
+				calcFreqAA.setText(String.format("%.4f", AAfreq));
+				calcFreqAB.setText(String.format("%.4f", ABfreq));
+				calcFreqBB.setText(String.format("%.4f", BBfreq));
+				
+				parms.setGenotypeFrequency(Genotype.AA, AAfreq);
+				parms.setGenotypeFrequency(Genotype.AB, ABfreq);
+				parms.setGenotypeFrequency(Genotype.BB, BBfreq);
+				
+				parms.setPopSizeChecked(popSizeCheck.isSelected());
+				parms.setSelectChecked(selectCheck.isSelected());
+				parms.setMutationChecked(mutationCheck.isSelected());
+				parms.setMigrationChecked(migrationCheck.isSelected());
+				parms.setSexSelectChecked(sexualSelectCheck.isSelected());
+				
+
+				// Submit info from the EvoPanes if necessary
+				if(parms.isPopSizeChecked())
+					pp.submit(parms);
+				if(parms.isSelectChecked())
+					sp.submit(parms);
+				if(parms.isMutationChecked())
+					mp.submit(parms);
+				if(parms.isMigrationChecked())
+					mip.submit(parms);
+				if(parms.isSexSelectChecked())
+					ssp.submit(parms);
+				
+				DataManager.getInstance().setSessionParams(parms);
+				EvolveDirector.getInstance().runSimulation();
+
 			}
 		});
-
-
 
 		
 	}

@@ -1,5 +1,7 @@
 package shared;
 
+import simulation.SimulationEngine;
+
 /*
 import shared.SessionParameters;
 */
@@ -43,6 +45,9 @@ public class EvolveDirector {
 		return instance;
 	}
 	
+	public void runSimulation(){
+		SimulationEngine.getInstance().runSimulation();
+	}
 	
 	/**
 	 * Private constructor to disable normal instantiation

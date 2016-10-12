@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,16 +19,26 @@ import javax.swing.JPanel;
 
 public abstract class EvoPane extends JPanel {
 
-	static final int TEXT_LEN_LONG = 8;
+	final static int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 3;
-
+	final static String INT = "int";
+	final static String ANY_DOUBLE = "double";
+	final static String RATE = "rate";
+	final static String ANY_DOUBLE_ZERO_TO_TEN = "double zero to ten";
+	
+	public Font boldFont;
+	
 	public GridBagConstraints c;
 	
 	private boolean enabled;
 	
 	EvoPane() {
 		super();
-
+		JLabel dummy = new JLabel("we're getting the default font");
+		Font font = dummy.getFont();
+		boldFont = new Font(font.getFontName(), Font.BOLD, font.getSize());
+		
+		
 		enabled = true;
 		
 		// set layout
@@ -43,8 +54,8 @@ public abstract class EvoPane extends JPanel {
 			c.anchor = GridBagConstraints.WEST;
 			add(new JLabel("_______________________________"), c);
 		}
-	
 	}
+	
 	
 	@Override
 	public void setEnabled(boolean enable) {
