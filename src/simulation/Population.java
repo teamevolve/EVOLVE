@@ -113,25 +113,37 @@ public class Population {
 		// For each pair of mates, calculate the number of offspring for each type:
 		
 		// genotype iterator
-		ArrayList<Genotype> gt_itr = new ArrayList<Genotype>(Arrays.asList(Genotype.values()));
+		ArrayList<Genotype> gtItr = new ArrayList<Genotype>(Arrays.asList(Genotype.values()));
 		Random rand = new Random();
 		
-		for (Genotype gt1 : Genotype.values())
+		for (Genotype gt1 : Utilities.getShuffledGenotypes(rand))
 		{
 			// Set Sub Population Size to 0 to start:
 			current.setGenotypeSubpopulationSize(gt1, 0);
 			
 			// Calculate amount of offspring from each combination of two genotypes:
-			for (Genotype gt2: gt_itr)
+			for (Genotype gt2: gtItr)
 			{
-				double prob = rand.nextDouble();
-				
 				int sum = 	previous.getGenotypeSubpopulationSize(gt1) + 
 							previous.getGenotypeSubpopulationSize(gt2);
-				current.setGenotypeSubpopulationSize(gt1, (int) (sum*prob));
-				current.setGenotypeSubpopulationSize(gt2, (int) (sum*prob));
+				double mean = ((double) sum)/2;
+				
+				// adjustment factor - gaussian random that accounts for fluctuation from
+				// ideal reproduction
+				double adjFactor = Utilities.nextGaussianRand(rand, 1.0, 0.05);
+				
+				if(gt1 == Genotype.AA && gt2 == Genotype.BB 
+						|| gt1 == Genotype.BB && gt2 == Genotype.AA){
+					// in the AAxBB case, we will have 100% of the population in the AB subpop
+					
+					current.setGenotypeSubpopulationSize(Genotype.AB, sum);
+				}
+				else{	// assuming 50% parent 1 and 50% parent 2
+					current.setGenotypeSubpopulationSize(gt1, (int) (mean*adjFactor+0.5));
+					current.setGenotypeSubpopulationSize(gt2, (int) (mean*(2-adjFactor)));
+				}
 			}
-			gt_itr.remove(gt1);//asdffasdfa
+			gtItr.remove(gt1);
 		}
 		
 	}
