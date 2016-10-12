@@ -3,7 +3,6 @@ package simulation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Random;
 
 import shared.DataManager;
@@ -13,13 +12,13 @@ import shared.Utilities;
 
 /**
  * Population represents a single population within the simulation. It holds
- * all GenerationRecords regarding the population, calculates survival and 
+ * all GenerationRecords regarding the population, calculates survival and
  * reproduction results, and does all direct editing of data about a
  * population.
- * 
+ *
  * @see PopulationManager
  * @see GenerationRecord
- * 
+ *
  * @author ericscollins
  *
  */
@@ -27,16 +26,16 @@ public class Population {
 
 	final private static double MUTATION_STDDEV = 0.05;
 	final private static double MUTATION_MEAN = 1.0;
-	
+
 	final private Random INTERNAL_RNG;
-	
+
 	private static int populationCounter = 0;
 	private int populationID;
 	private ArrayList<GenerationRecord> generationHistory;
 	private boolean extinct;
-	
-	
-	
+
+
+
 	/**
 	 * Constructor: initializes generationHistory, assigns ID
 	 */
@@ -46,24 +45,24 @@ public class Population {
 		GenerationRecord gr = new GenerationRecord(populationID, 0);
 		INTERNAL_RNG = new Random(rngSeed);
 		for (Genotype gt : Genotype.values()) {
-			
+
 			gr.setGenotypeSubpopulationSize(gt, (int)(DataManager.getInstance().getSessionParams().getPopSize() *
 					DataManager.getInstance().getSessionParams().getGenotypeFrequency(gt)));
 		}
 		generationHistory.add(gr);
 	}
-	
-	
+
+
 	/**
 	 * Determine whether population has gone extinct
-	 * 
+	 *
 	 * @return true iff population is extinct
 	 */
 	public boolean isExtinct() {
 		return extinct;
 	}
-	
-	
+
+
 	/**
 	 * Retrieves the last generation simulated.
 	 *
@@ -72,8 +71,8 @@ public class Population {
 	public GenerationRecord getLastGeneration() {
 		return generationHistory.get(generationHistory.size() - 1);
 	}
-	
-	
+
+
 	/**
 	 * Simulates birth and death over a generation of a population
 	 */
@@ -84,67 +83,64 @@ public class Population {
 		survive(newGeneration);
 		generationHistory.add(newGeneration);
 	}
-	
-	
+
+
 	/**
-	 * Adjust population data based on migration and mutation calculated by
-	 * PopulationManager.
-	 * 
-	 * @param flow GeneFlow object containing all information about mutations 
-	 *             and migrations into and out of the population
-	 * 
-	 * @see   PopulationManager
-	 * @see   GeneFlow
+	 * Only run if use sets population size as constant. Scales a population
+	 * keeping its genotype frequencies constant so that its total population
+	 * size is equal to popSize.
+	 *
+	 * @param popSize target size to scale population to
 	 */
-	public void adjustForFlow(GeneFlow flow) {
+	public void scale(int popSize) {
 
 	}
-	
-	
+
+
 	/**
 	 * Simulates production of juveniles in a population.
-	 * 
+	 *
 	 * @param previous GenerationRecord representing the previous generation
 	 *                 used to calculate data about the new generation
 	 * @param current  GenerationRecord representing the current generation,
 	 *                 will be modified by reproduce() to reflect reproduction
 	 */
-	private void reproduce(GenerationRecord previous, 
-			                      GenerationRecord current) {
+	private void reproduce(GenerationRecord previous,
+			GenerationRecord current) {
 		// For each pair of mates, calculate the number of offspring for each type:
-		
+
 		// genotype iterator
-		ArrayList<Genotype> gtItr = new 
+		ArrayList<Genotype> gtItr = new
 				ArrayList<Genotype>(Arrays.asList(Genotype.values()));
 		Random rand = new Random();
-		
+
 		for (Genotype gt1 : Utilities.getShuffledGenotypes(rand))
 		{
 			// Set Sub Population Size to 0 to start:
 			current.setGenotypeSubpopulationSize(gt1, 0);
-			
-			
-			
+
+
+
 			// Calculate amount of offspring from each combination of two genotypes:
 			for (Genotype gt2: gtItr)
 			{
 				// Do punnett squares, get shuffled list of offspring values:
-				Collection<Genotype> offspringGenotypes = 
+				Collection<Genotype> offspringGenotypes =
 						Utilities.getPunnetSquare(gt1, gt2, rand);
 
-				
-				int sum = 	previous.getGenotypeSubpopulationSize(gt1) + 
-							previous.getGenotypeSubpopulationSize(gt2);
+
+				int sum = 	previous.getGenotypeSubpopulationSize(gt1) +
+						previous.getGenotypeSubpopulationSize(gt2);
 				double mean = ((double) sum)/2;
-				
+
 				// adjustment factor - gaussian random that accounts for fluctuation from
 				// ideal reproduction
 				double adjFactor = Utilities.nextGaussianRand(rand, 1.0, 0.05);
-				
-				if(gt1 == Genotype.AA && gt2 == Genotype.BB 
+
+				if(gt1 == Genotype.AA && gt2 == Genotype.BB
 						|| gt1 == Genotype.BB && gt2 == Genotype.AA){
 					// in the AAxBB case, we will have 100% of the population in the AB subpop
-					
+
 					current.setGenotypeSubpopulationSize(Genotype.AB, sum);
 				}
 				else{	// assuming 50% parent 1 and 50% parent 2
@@ -154,27 +150,27 @@ public class Population {
 			}
 			gtItr.remove(gt1);
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Simulates death of members of a population.
-	 * 
+	 *
 	 * @param previous GenerationRecord representing the previous generation
 	 *                 used to calculate data about the new generation
 	 * @param current  GenerationRecord representing the current generation,
 	 *                 will be modified by survive() to reflect death
-	 *                 
+	 *
 	 * @author richwenner
 	 */
 	private void survive(GenerationRecord current) {
-		
+
 		int temp;
 		int totalAdults = 0; //as of yet unclear whether popSize continually changes, probs can remove
 		double crash;
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-		
+
 		//Calculate the number of each genotype surviving
 		for (Genotype gt: Genotype.values()) {
 			//Typecasting to int in java is analogous to flooring
@@ -183,7 +179,7 @@ public class Population {
 			current.setGenotypeSubpopulationSize(gt, temp);
 			totalAdults += temp;
 		}
-		
+
 		//Kill off populations if larger than carrying capacity
 		if (totalAdults > sp.getPopCapacity()) {
 			crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
@@ -192,20 +188,20 @@ public class Population {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Simulates mutations within a population.
-	 * 
+	 *
 	 * @param previous GenerationRecord representing the previous generation
 	 *                 used to calculate data about the new generation
 	 * @param current  GenerationRecord representing the current generation,
 	 *                 will be modified by mutate() to reflect mutations
-	 *                 
+	 *
 	 * @author ericscollins
 	 */
 	private void mutate(GenerationRecord current) {
-		
+
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
 
 		// Containers to hold temporary values used more than once
@@ -221,14 +217,14 @@ public class Population {
 				if (from == to) continue;
 
 				mutationRate = sp.getMutationRate(from, to);
-				
-				// Produce a random number with a mean of MUTATION_MEAN (usually 1.0) and a standard deviation of 
-				// MUTATION_STDDEV and multiply that by the expected average number of mutations 
-				numMutations = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, MUTATION_MEAN, MUTATION_STDDEV) * 
-						                       current.getGenotypeSubpopulationSize(from) * mutationRate);
-				
+
+				// Produce a random number with a mean of MUTATION_MEAN (usually 1.0) and a standard deviation of
+				// MUTATION_STDDEV and multiply that by the expected average number of mutations
+				numMutations = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, MUTATION_MEAN, MUTATION_STDDEV) *
+						current.getGenotypeSubpopulationSize(from) * mutationRate);
+
 				// Ensure number of mutations never exceeds source
-				// subpopulation's size, and that rng did not produce a 
+				// subpopulation's size, and that rng did not produce a
 				// negative value
 				if (remainingMutations - numMutations < 0) {
 					numMutations = remainingMutations;
@@ -242,7 +238,7 @@ public class Population {
 				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - numMutations);
 				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + numMutations);
 
-				// If source subpopulation has been depleted, move on to 
+				// If source subpopulation has been depleted, move on to
 				// the next subpopulation
 				if (remainingMutations == 0) break;
 			}
