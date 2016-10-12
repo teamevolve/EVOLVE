@@ -15,6 +15,7 @@ import shared.Genotype;
  * 
  * @author richwenner
  * @author ericscollins
+ * @author taav-isaac
  */
 
 public class GenerationRecord implements Serializable{
