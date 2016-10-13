@@ -155,7 +155,12 @@ public class Population {
 
 
 	/**
-	 * Simulates death of members of a population.
+	 * Simulates survival of members of a population.  Each allele combination has a
+	 * survival rate that will determine how many live/die, modified by a gaussian RNG.
+	 * If the population goes over the populationCapacity, we set the population down
+	 * to a crashCapacity level.
+	 * TODO: talk to Frank about constant populations & their implementation 
+	 * 
 	 *
 	 * @param previous GenerationRecord representing the previous generation
 	 *                 used to calculate data about the new generation
@@ -165,19 +170,29 @@ public class Population {
 	 * @author richwenner
 	 */
 	private void survive(GenerationRecord current) {
-
-		int temp;
-		int totalAdults = 0; //as of yet unclear whether popSize continually changes, probs can remove
+		
+		int numSurvived, subPopulation;
+		int totalAdults = 0; 
 		double crash;
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+	
 
 		//Calculate the number of each genotype surviving
 		for (Genotype gt: Genotype.values()) {
+			subPopulation = current.getGenotypeSubpopulationSize(gt);
 			//Typecasting to int in java is analogous to flooring
-			//Unclear if we want survival to work like mutate/reprod with 'randomness'
-			temp = (int)(current.getGenotypeSubpopulationSize(gt) * sp.getSurvivalRate(gt));
-			current.setGenotypeSubpopulationSize(gt, temp);
-			totalAdults += temp;
+			numSurvived = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, MUTATION_MEAN, MUTATION_STDDEV) * 
+                    subPopulation * sp.getSurvivalRate(gt));
+			
+			
+			if (numSurvived <= 0) {
+				numSurvived = 0;
+			}
+			else if (numSurvived > subPopulation){
+				numSurvived = subPopulation;
+			}
+			current.setGenotypeSubpopulationSize(gt, numSurvived);
+			totalAdults += numSurvived;
 		}
 
 		//Kill off populations if larger than carrying capacity
@@ -188,7 +203,6 @@ public class Population {
 			}
 		}
 	}
-
 
 	/**
 	 * Simulates mutations within a population.
