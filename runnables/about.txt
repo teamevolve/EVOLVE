@@ -1,0 +1,5 @@
+This folder will hold the jars we export from eclipse. 
+
+Run from the terminal with the following command:
+
+java -jar <jar_file_name> 
