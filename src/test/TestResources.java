@@ -28,13 +28,21 @@ public class TestResources {
 	final private static double  RELATIVE_FITNESS_AA      = 0.5;
 	final private static double  RELATIVE_FITNESS_AB      = 0.5;
 	final private static double  RELATIVE_FITNESS_BB      = 0.5;
+
+	final static double MUTATION_A_B = 0.01;
+	final static double MUTATION_B_A = 0.01;
 	
-	final private static double  MUTATION_RATE_AA_TO_AB   = 0.01;
-	final private static double  MUTATION_RATE_AA_TO_BB   = 0.01;
-	final private static double  MUTATION_RATE_AB_TO_AA   = 0.05;
-	final private static double  MUTATION_RATE_AB_TO_BB   = 0.05;
-	final private static double  MUTATION_RATE_BB_TO_AA   = 0.1;
-	final private static double  MUTATION_RATE_BB_TO_AB   = 0.1;
+	final static double MUTATION_A_A = 1 - MUTATION_A_B;
+	final static double MUTATION_B_B = 1 - MUTATION_B_A;
+	final static double MUTATION_RATE_AA_TO_AA = Math.pow(MUTATION_A_A, 2);
+	final static double MUTATION_RATE_BB_TO_BB = Math.pow(MUTATION_B_B, 2);
+	final static double MUTATION_RATE_AB_TO_AB = MUTATION_A_A * MUTATION_B_B + 2 * MUTATION_A_B * MUTATION_B_A; 
+	final static double MUTATION_RATE_AA_TO_AB = 2 * MUTATION_A_B * MUTATION_A_A;
+	final static double MUTATION_RATE_AA_TO_BB = Math.pow(MUTATION_A_B, 2);
+	final static double MUTATION_RATE_AB_TO_AA = MUTATION_B_A * MUTATION_A_A;
+	final static double MUTATION_RATE_AB_TO_BB = MUTATION_A_B * MUTATION_B_B;
+	final static double MUTATION_RATE_BB_TO_AA = Math.pow(MUTATION_B_A, 2);
+	final static double MUTATION_RATE_BB_TO_AB = 2 * MUTATION_B_A * MUTATION_B_B;
 	
 	final private static double  MIGRATION_RATE_AA        = 0.2;
 	final private static double  MIGRATION_RATE_AB        = 0.2;
@@ -86,6 +94,9 @@ public class TestResources {
 		sp.setMutationRate(Genotype.AB, Genotype.BB, MUTATION_RATE_AB_TO_BB);
 		sp.setMutationRate(Genotype.BB, Genotype.AA, MUTATION_RATE_BB_TO_AA);
 		sp.setMutationRate(Genotype.BB, Genotype.AB, MUTATION_RATE_BB_TO_AB);
+		sp.setMutationRate(Genotype.AA, Genotype.AA, MUTATION_RATE_AA_TO_AA);
+		sp.setMutationRate(Genotype.AB, Genotype.AB, MUTATION_RATE_AB_TO_AB);
+		sp.setMutationRate(Genotype.BB, Genotype.BB, MUTATION_RATE_BB_TO_BB);
 		
 		sp.setMigrationRate(Genotype.AA, MIGRATION_RATE_AA);
 		sp.setMigrationRate(Genotype.AB, MIGRATION_RATE_AB);

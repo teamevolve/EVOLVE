@@ -10,20 +10,23 @@ import simulation.GenerationRecord;
 import simulation.Population;
 
 public class TestMutate {
-	final static double MUTATION_A_B = 0.1;
-	final static double MUTATION_B_A = 0.1;
+	final static double MUTATION_A_B = 0.01;
+	final static double MUTATION_B_A = 0.00;
 
-	final static int SUBPOPSIZE_AA = 1000;
-	final static int SUBPOPSIZE_AB = 1000;
-	final static int SUBPOPSIZE_BB = 1000;
+	final static int SUBPOPSIZE_AA = 100;
+	final static int SUBPOPSIZE_AB = 100;
+	final static int SUBPOPSIZE_BB = 100;
 	
-	final static int GENS_TO_SIMULATE = 10;
+	final static int GENS_TO_SIMULATE = 1000000;
 	
 	final static long SEED = (new Random()).nextLong();
 
 	
 	final static double MUTATION_A_A = 1 - MUTATION_A_B;
-	final static double MUTATION_B_B = 1 - MUTATION_B_A;	
+	final static double MUTATION_B_B = 1 - MUTATION_B_A;
+	final static double MUTATION_RATE_AA_TO_AA = Math.pow(MUTATION_A_A, 2);
+	final static double MUTATION_RATE_BB_TO_BB = Math.pow(MUTATION_B_B, 2);
+	final static double MUTATION_RATE_AB_TO_AB = MUTATION_A_A * MUTATION_B_B + 2 * MUTATION_A_B * MUTATION_B_A; 
 	final static double MUTATION_RATE_AA_TO_AB = 2 * MUTATION_A_B * MUTATION_A_A;
 	final static double MUTATION_RATE_AA_TO_BB = Math.pow(MUTATION_A_B, 2);
 	final static double MUTATION_RATE_AB_TO_AA = MUTATION_B_A * MUTATION_A_A;
@@ -43,6 +46,9 @@ public class TestMutate {
 		sp.setMutationRate(Genotype.AB, Genotype.BB, MUTATION_RATE_AB_TO_BB);
 		sp.setMutationRate(Genotype.BB, Genotype.AA, MUTATION_RATE_BB_TO_AA);
 		sp.setMutationRate(Genotype.BB, Genotype.AB, MUTATION_RATE_BB_TO_AB);
+		sp.setMutationRate(Genotype.AA, Genotype.AA, MUTATION_RATE_AA_TO_AA);
+		sp.setMutationRate(Genotype.BB, Genotype.BB, MUTATION_RATE_BB_TO_BB);
+		sp.setMutationRate(Genotype.AB, Genotype.AB, MUTATION_RATE_AB_TO_AB);
 		
 		GenerationRecord genRecord = new GenerationRecord(0, 0);
 		

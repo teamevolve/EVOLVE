@@ -1,8 +1,13 @@
 package test;
 
 import shared.DataManager;
+import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.Random;
+
 import shared.Genotype;
 import shared.SessionParameters;
+import simulation.Population;
 import simulation.PopulationManager;
 
 public class TestMigration {
@@ -19,10 +24,10 @@ public class TestMigration {
 	final private static double GENOTYPE_FREQ_BB = Math.pow(ALLELE_FREQ_B, 2.0);
 	
 	
-	final private static int NUMBER_OF_POPULATIONS = 100;
-	final private static int POPULATION_SIZE = 100;
+	final private static int NUMBER_OF_POPULATIONS = 10;
+	final private static int POPULATION_SIZE = 1000;
 	
-	final private static long SEED = 1234567890;
+	final private static long SEED = (new Random()).nextLong();
 	
 	//------------------------------------------------------------
 	
@@ -52,8 +57,16 @@ public class TestMigration {
 			popMan.processMigrations();
 		}
 		
-		
-		
+		try {
+			Field m = PopulationManager.class.getDeclaredField("populationList");
+			m.setAccessible(true);
+			for (Population p : (ArrayList<Population>)m.get(popMan)) {
+					System.out.println(p.getLastGeneration().getPopulationSize());
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		
 		
