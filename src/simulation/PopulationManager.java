@@ -63,9 +63,15 @@ public class PopulationManager {
 	 * Process generation
 	 */
 	public void processGeneration(){
+		System.out.println("inside processGeneration()");
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		for (Population p : populationList) {
 			p.simulateGeneration();
+
+			//testing
+			System.out.println(p.getLastGeneration().getGenotypeFreq(Genotype.AA));
+			p.getLastGeneration().quickWrite();
+
 		}
 
 		if (sp.isMigrationChecked())
@@ -77,6 +83,7 @@ public class PopulationManager {
 				p.scale(popSize);
 			}
 		}
+		
 	}
 
 	/**
