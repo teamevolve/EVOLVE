@@ -212,6 +212,7 @@ public class GUI extends EvoPane {
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Set SessionParameters NOT from the GUI pane
+				parms.setNumPops(Integer.parseInt(numPops.getText()));
 				parms.setSeed(Integer.parseInt(seedField.getText()));
 				parms.setNumGens(Integer.parseInt(numGens.getText()));
 				
