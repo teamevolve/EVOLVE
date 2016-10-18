@@ -3,6 +3,7 @@ package simulation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Random;
 
 import shared.DataManager;
@@ -26,7 +27,9 @@ public class Population {
 
 	final private static double MUTATION_STDDEV = 0.05;
 	final private static double MUTATION_MEAN = 1.0;
-
+	final private static double SURVIVAL_STDDEV = 0.05;
+	final private static double SURVIVAL_MEAN = 1.0;
+	
 	final private Random INTERNAL_RNG;
 
 	private static int populationCounter = 0;
@@ -181,7 +184,7 @@ public class Population {
 		for (Genotype gt: Genotype.values()) {
 			subPopulation = current.getGenotypeSubpopulationSize(gt);
 			//Typecasting to int in java is analogous to flooring
-			numSurvived = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, MUTATION_MEAN, MUTATION_STDDEV) * 
+			numSurvived = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, SURVIVAL_MEAN, SURVIVAL_STDDEV) * 
                     subPopulation * sp.getSurvivalRate(gt));
 			
 			
@@ -219,42 +222,46 @@ public class Population {
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
 
 		// Containers to hold temporary values used more than once
-		int remainingMutations;
+		int totalMutations;
 		int numMutations;
-		double mutationRate;
+		int adjustedMutations;
+		double ratio;
+		HashMap<Genotype, Integer> contrib;
 
 		// For all possible combinations of genotypes...
-		for (Genotype from : Utilities.getShuffledGenotypes(INTERNAL_RNG)) {
-			remainingMutations = current.getGenotypeSubpopulationSize(from);
-			for (Genotype to : Utilities.getShuffledGenotypes(INTERNAL_RNG)) {
-				// Mutations to self are ignored
-				if (from == to) continue;
-
-				mutationRate = sp.getMutationRate(from, to);
+		for (Genotype from : Genotype.values()) {
+			contrib = new HashMap<Genotype, Integer>();
+			totalMutations = 0;
+			for (Genotype to : Genotype.values()) {
 
 				// Produce a random number with a mean of MUTATION_MEAN (usually 1.0) and a standard deviation of
 				// MUTATION_STDDEV and multiply that by the expected average number of mutations
 				numMutations = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, MUTATION_MEAN, MUTATION_STDDEV) *
-						current.getGenotypeSubpopulationSize(from) * mutationRate);
+						current.getGenotypeSubpopulationSize(from) * sp.getMutationRate(from, to));
 
-				// Ensure number of mutations never exceeds source
-				// subpopulation's size, and that rng did not produce a
-				// negative value
-				if (remainingMutations - numMutations < 0) {
-					numMutations = remainingMutations;
-				}
-				else if (numMutations < 0) {
-					numMutations = 0;
-				}
+				// Ensure rng did not produce negative value
+				if (numMutations < 0) numMutations = 0;
 
-				current.setMutationCount(from, to, numMutations);
-				remainingMutations -= numMutations;
-				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - numMutations);
-				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + numMutations);
+				totalMutations += numMutations;
+				contrib.put(to, numMutations);
+			}
 
-				// If source subpopulation has been depleted, move on to
-				// the next subpopulation
-				if (remainingMutations == 0) break;
+			// If no mutations happened, move on to the next genotype
+			if (totalMutations == 0) continue;
+
+			// Ratio to scale mutations by to keep population size constant
+			ratio = current.getGenotypeSubpopulationSize(from) / totalMutations;
+
+			for (Genotype to : Genotype.values()) {
+				if (to == from) continue;
+
+				// Scale mutation count appropriately
+				adjustedMutations = (int)Math.round(ratio * contrib.get(to));
+
+				// Adjust subpopulation counts
+				current.setMutationCount(from, to, adjustedMutations);
+				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - adjustedMutations);
+				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + adjustedMutations);
 			}
 		}
 	}
