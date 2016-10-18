@@ -1,16 +1,14 @@
 package shared;
 
-import java.util.HashMap;
-
+/**
+ * Alleles are rarely used in the simulation, but are necessary when
+ * calculating reproduction results. These values are used in conjunction
+ * with the Genotype class.
+ * 
+ * @see Genotype
+ * 
+ * @author ericscollins
+ */
 public enum Allele {
-	A, B;
-	
-	public HashMap<Allele, Double> mutationRate = new HashMap<Allele, Double>();
-	public void setMutationRate(Allele a, double rate) {
-		mutationRate.put(a, rate);
-	}
-	public double getMutationRate(Allele a) {
-		return mutationRate.get(a);
-	}
-	
+	A, B
 }

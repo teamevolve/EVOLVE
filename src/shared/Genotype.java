@@ -1,26 +1,63 @@
 package shared;
 /**
  * The acceptable genotypes to use.  Should be expanded upon for the addition of a third allele.
+ * 
+ * @see Allele
+ * 
  * @author richwenner
  * @author taav-isaac
+ * @author ericscollins
  */
 
 public enum Genotype {
 	AA, AB, BB;
 	
-	public Allele getAllele(int index)
-	{
-		if (index > 1 || index < 0){ assert false;} // add exception here later
-		switch (this.name().charAt(index)){
-			case 'A' : return Allele.A;
-			case 'B' : return Allele.B;
+	
+	/**
+	 * Returns the first allele, alphabetically, making up the genotype.
+	 * 
+	 * @return first allele in genotype
+	 */
+	public Allele getFirstAllele() {
+		switch(this) {
+		case AA: return Allele.A;
+		case AB: return Allele.A;
+		case BB: return Allele.B;
+		default: return null;
 		}
-		assert false; // function should never make it here..
-		return Allele.A;
 	}
-	public static Genotype getGenotype(Allele a1, Allele a2)
-	{
-		String genotypeName = a1.name().concat(a2.name());
-		return Genotype.valueOf(genotypeName);
+	
+	
+	/**
+	 * Returns the second allele, alphabetically, making up the genotype.
+	 * 
+	 * @return second allele in the genotype
+	 */
+	public Allele getSecondAllele() {
+		switch(this) {
+		case AA: return Allele.A;
+		case AB: return Allele.B;
+		case BB: return Allele.B;
+		default: return null;
+		}
+	}
+	
+	
+	/**
+	 * Generates a genotype based on its composing alleles.
+	 * 
+	 * @param a1 an allele composing the desired genotype
+	 * @param a2 an allele composing the desired genotype
+	 * 
+	 * @return the genotype composed of the given alleles
+	 */
+	public static Genotype genotypeFromAlleles(Allele a1, Allele a2) {
+		if (a1 == a2)
+			if (a1 == Allele.A)
+				return AA;
+			else
+				return BB;
+		else
+			return AB;
 	}
 }
