@@ -69,7 +69,7 @@ public class PopulationManager {
 			p.simulateGeneration();
 
 			//testing
-			System.out.println(p.getLastGeneration().getGenotypeFreq(Genotype.AA));
+//			System.out.println(p.getLastGeneration().getGenotypeFreq(Genotype.AA));
 			p.getLastGeneration().quickWrite();
 
 		}

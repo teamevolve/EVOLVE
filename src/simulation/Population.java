@@ -78,9 +78,11 @@ public class Population {
 	 */
 	public void simulateGeneration() {
 		GenerationRecord newGeneration = new GenerationRecord(populationID, generationHistory.size());
-		reproduce(getLastGeneration(), newGeneration);
-		if (DataManager.getInstance().getSessionParams().isMutationChecked()) mutate(newGeneration);
-		survive(newGeneration);
+//		reproduce(getLastGeneration(), newGeneration);
+		if (DataManager.getInstance().getSessionParams().isMutationChecked()) 
+			mutate(newGeneration);
+		if (DataManager.getInstance().getSessionParams().isSelectChecked()) 
+			survive(newGeneration);
 		generationHistory.add(newGeneration);
 	}
 
