@@ -1,4 +1,6 @@
 package shared;
+
+
 /**
  * The acceptable genotypes to use.  Should be expanded upon for the addition of a third allele.
  * 
@@ -8,16 +10,34 @@ package shared;
  * @author taav-isaac
  * @author ericscollins
  */
-
 public enum Genotype {
 	AA(0), AB(1), BB(2);
 	
 	
+	/**
+	 *  Used to ensure pairings aren't overcounted during reproduction
+	 */
 	private int pairingIndex;
 	
+	
+	/**
+	 * Required to set pairing index value
+	 * @param index pairing index
+	 */
 	private Genotype(int index) {
 		pairingIndex = index;
 	}
+	
+	
+	/**
+	 * Accessor for pairing index
+	 * 
+	 * @return pairing index of genotype
+	 */
+	public int getPairingIndex() {
+		return pairingIndex;
+	}
+
 	
 	/**
 	 * Returns the first allele, alphabetically, making up the genotype.
@@ -65,21 +85,5 @@ public enum Genotype {
 				return BB;
 		else
 			return AB;
-	}
-	
-	
-	/**
-	 * Returns whether or not the pairing gt1, gt2 is valid (order matters).
-	 * This prevents duplications of parings (AB, AA and AA, AB). Pairing is
-	 * valid iff gt1 is first alphabetically (AA, AB is valid, AB, AA is not.
-	 * 
-	 * @param gt1 first genotype in paring
-	 * @param gt2 second genotype in pairing
-	 * 
-	 * @return true iff gt1 is first alphabetically
-	 */
-	public static boolean isValidPairing(Genotype gt1, Genotype gt2) {
-		return (gt1.pairingIndex <= gt2.pairingIndex);
-	}
-	
+	}	
 }
