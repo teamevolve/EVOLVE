@@ -64,13 +64,17 @@ public class MutationPane extends EvoPane {
 		
 		p.setAlleleMutationRate(Allele.A, Allele.B, mutA_B);
 		p.setAlleleMutationRate(Allele.B, Allele.A, mutB_A);
-
+		
 		double mutAA_AB = 2 * mutA_B * mutA_A;
 		double mutAA_BB = mutA_B * mutA_B;
 		double mutAB_AA = mutB_A * mutA_A;
 		double mutAB_BB = mutA_B * mutB_B;
 		double mutBB_AA = mutB_A * mutB_A;
 		double mutBB_AB = 2 * mutB_A * mutB_B;
+		double mutAA_AA = mutA_A * mutA_A;
+		double mutBB_BB = mutB_B * mutB_B;
+		double mutAB_AB = mutA_A * mutB_B + mutA_B * mutB_A;
+
 		
 		p.setMutationRate(Genotype.AA, Genotype.AB, mutAA_AB);
 		p.setMutationRate(Genotype.AA, Genotype.BB, mutAA_BB);
@@ -78,6 +82,9 @@ public class MutationPane extends EvoPane {
 		p.setMutationRate(Genotype.AB, Genotype.BB, mutAB_BB);
 		p.setMutationRate(Genotype.BB, Genotype.AA, mutBB_AA);
 		p.setMutationRate(Genotype.BB, Genotype.AB, mutBB_AB);
+		p.setMutationRate(Genotype.AA, Genotype.AA, mutAA_AA);
+		p.setMutationRate(Genotype.AB, Genotype.AB, mutAB_AB);
+		p.setMutationRate(Genotype.BB, Genotype.BB, mutBB_BB);
 		
 	}
 	
