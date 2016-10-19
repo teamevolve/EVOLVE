@@ -1,5 +1,6 @@
 package simulation;
 
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import shared.Genotype;
@@ -241,6 +242,13 @@ public class GenerationRecord implements Serializable{
 			System.out.println(gt +  " - "  + String.valueOf(getGenotypeSubpopulationSize(gt)));
 		}
 		System.out.println("-----------------------");
+	}
+	
+	public void pipedWrite(PrintStream s) {
+		System.setOut(s);
+		for (Genotype gt: Genotype.values()) {
+			System.out.println(gt +  " - "  + String.valueOf(getGenotypeSubpopulationSize(gt)));
+		}
 	}
 	
 }

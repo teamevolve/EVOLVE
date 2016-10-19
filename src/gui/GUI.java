@@ -54,8 +54,6 @@ public class GUI extends EvoPane {
 		
 		super();
 		
-		// our input will go in this 
-		parms = new shared.SessionParameters();
 		
 		// add spacing
 //		c.insets = new Insets(5, 10, 5, 0);
@@ -211,6 +209,11 @@ public class GUI extends EvoPane {
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				// Create a new, blank sesh parms object on each submit click 
+				parms = new shared.SessionParameters();
+
+				
 				// Set SessionParameters NOT from the GUI pane
 				parms.setNumPops(Integer.parseInt(numPops.getText()));
 				parms.setSeed(Integer.parseInt(seedField.getText()));

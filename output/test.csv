@@ -1,4 +1,3 @@
-hey we're here in the runSimulation() function
 -----------------------
 Generation Record 1
 -----------------------
@@ -8,7 +7,6 @@ AA - 9
 AB - 141
 BB - 1321
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 2
 -----------------------
@@ -18,7 +16,6 @@ AA - 14
 AB - 210
 BB - 1988
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 3
 -----------------------
@@ -28,7 +25,6 @@ AA - 20
 AB - 387
 BB - 2914
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 4
 -----------------------
@@ -38,7 +34,6 @@ AA - 37
 AB - 658
 BB - 4219
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 5
 -----------------------
@@ -48,7 +43,6 @@ AA - 94
 AB - 1066
 BB - 5944
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 6
 -----------------------
@@ -58,7 +52,6 @@ AA - 199
 AB - 1787
 BB - 8622
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 7
 -----------------------
@@ -68,7 +61,6 @@ AA - 410
 AB - 3388
 BB - 11553
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 8
 -----------------------
@@ -78,7 +70,6 @@ AA - 863
 AB - 5532
 BB - 18611
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 9
 -----------------------
@@ -88,7 +79,6 @@ AA - 43
 AB - 245
 BB - 710
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 10
 -----------------------
@@ -98,7 +88,6 @@ AA - 92
 AB - 406
 BB - 1098
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 11
 -----------------------
@@ -108,7 +97,6 @@ AA - 177
 AB - 779
 BB - 1628
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 12
 -----------------------
@@ -118,7 +106,6 @@ AA - 415
 AB - 1330
 BB - 2604
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 13
 -----------------------
@@ -128,7 +115,6 @@ AA - 861
 AB - 2480
 BB - 3930
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 14
 -----------------------
@@ -138,7 +124,6 @@ AA - 2074
 AB - 4693
 BB - 6090
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 15
 -----------------------
@@ -148,7 +133,6 @@ AA - 4568
 AB - 9209
 BB - 10495
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 16
 -----------------------
@@ -158,7 +142,6 @@ AA - 217
 AB - 407
 BB - 374
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 17
 -----------------------
@@ -168,7 +151,6 @@ AA - 515
 AB - 819
 BB - 589
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 18
 -----------------------
@@ -178,7 +160,6 @@ AA - 1488
 AB - 1743
 BB - 996
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 19
 -----------------------
@@ -188,7 +169,6 @@ AA - 4467
 AB - 3500
 BB - 1640
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 20
 -----------------------
@@ -198,7 +178,6 @@ AA - 13371
 AB - 8244
 BB - 2558
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 21
 -----------------------
@@ -208,7 +187,6 @@ AA - 631
 AB - 299
 BB - 68
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 22
 -----------------------
@@ -218,7 +196,6 @@ AA - 1840
 AB - 634
 BB - 111
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 23
 -----------------------
@@ -228,7 +205,6 @@ AA - 6185
 AB - 1294
 BB - 167
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 24
 -----------------------
@@ -238,7 +214,6 @@ AA - 19607
 AB - 2748
 BB - 214
 -----------------------
-hey we're here in the for loop
 -----------------------
 Generation Record 25
 -----------------------
@@ -248,4 +223,48 @@ AA - 919
 AB - 76
 BB - 4
 -----------------------
-hey we're here in the for loop
+-----------------------
+Generation Record 26
+-----------------------
+Population Size: 3246
+Genotype Subpopulations:
+AA - 3098
+AB - 143
+BB - 5
+-----------------------
+-----------------------
+Generation Record 27
+-----------------------
+Population Size: 10065
+Genotype Subpopulations:
+AA - 9773
+AB - 287
+BB - 5
+-----------------------
+-----------------------
+Generation Record 28
+-----------------------
+Population Size: 998
+Genotype Subpopulations:
+AA - 980
+AB - 18
+BB - 0
+-----------------------
+-----------------------
+Generation Record 29
+-----------------------
+Population Size: 3340
+Genotype Subpopulations:
+AA - 3308
+AB - 32
+BB - 0
+-----------------------
+-----------------------
+Generation Record 30
+-----------------------
+Population Size: 10119
+Genotype Subpopulations:
+AA - 10050
+AB - 69
+BB - 0
+-----------------------
