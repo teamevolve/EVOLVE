@@ -47,7 +47,7 @@ public class SessionParameters implements Serializable {
 	private HashMap<Genotype, Double> genotypeFrequencies;
 	private HashMap<Genotype, HashMap<Genotype, Double>> sexualSelectionRates;
 	private boolean popSizeChecked, selectChecked, mutationChecked, 
-					migrationChecked, sexSelectChecked;
+					migrationChecked, sexSelectChecked, threeAlleles;
 
 	/* normal stuff */
 	
@@ -220,6 +220,14 @@ public class SessionParameters implements Serializable {
 
 	public void setSexSelectChecked(boolean sexSelectChecked) {
 		this.sexSelectChecked = sexSelectChecked;
+	}
+
+	public boolean isThreeAlleles() {
+		return threeAlleles;
+	}
+
+	public void setThreeAlleles(boolean threeAlleles) {
+		this.threeAlleles = threeAlleles;
 	}
 
 }
