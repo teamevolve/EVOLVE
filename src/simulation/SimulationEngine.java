@@ -35,12 +35,8 @@ public class SimulationEngine {
 	}
 
 	public void runSimulation() {
-		// testerino
-		System.out.println("hey we're here in the runSimulation() function");
 		for (int i = 0; i < DataManager.getInstance().getSessionParams().getNumGens(); i++) {
 			PopulationManager.getInstance().processGeneration();
-			// testerino
-			System.out.println("hey we're here in the for loop");
 		}
 	}
 
