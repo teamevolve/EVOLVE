@@ -10,8 +10,14 @@ package shared;
  */
 
 public enum Genotype {
-	AA, AB, BB;
+	AA(0), AB(1), BB(2);
 	
+	
+	private int pairingIndex;
+	
+	private Genotype(int index) {
+		pairingIndex = index;
+	}
 	
 	/**
 	 * Returns the first allele, alphabetically, making up the genotype.
@@ -60,4 +66,20 @@ public enum Genotype {
 		else
 			return AB;
 	}
+	
+	
+	/**
+	 * Returns whether or not the pairing gt1, gt2 is valid (order matters).
+	 * This prevents duplications of parings (AB, AA and AA, AB). Pairing is
+	 * valid iff gt1 is first alphabetically (AA, AB is valid, AB, AA is not.
+	 * 
+	 * @param gt1 first genotype in paring
+	 * @param gt2 second genotype in pairing
+	 * 
+	 * @return true iff gt1 is first alphabetically
+	 */
+	public static boolean isValidPairing(Genotype gt1, Genotype gt2) {
+		return (gt1.pairingIndex <= gt2.pairingIndex);
+	}
+	
 }
