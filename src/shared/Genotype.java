@@ -100,7 +100,11 @@ public enum Genotype {
 					return AB;
 				else
 					return AC;
-			case B:  return BC;
+			case B: 
+				if (a2 == Allele.A)
+					return AB;
+				else
+					return BC;
 			default: return null;
 			}
 		}

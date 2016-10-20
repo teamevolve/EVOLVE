@@ -1,5 +1,7 @@
 package shared;
 
+import importexport.ExportFormat;
+import importexport.ImportExportEngine;
 import simulation.SimulationEngine;
 
 /*
@@ -46,8 +48,14 @@ public class EvolveDirector {
 	}
 	
 	public void runSimulation(){
+		DataManager.getInstance().getSessionParams().setThreeAlleles(false);
 		SimulationEngine.getInstance().runSimulation();
 	}
+	
+	public void export(ExportFormat format) {
+		ImportExportEngine.getInstance().export(format);
+	}
+	
 	
 	/**
 	 * Private constructor to disable normal instantiation

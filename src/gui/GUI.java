@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import importexport.ExportFormat;
 import shared.DataManager;
 import shared.EvolveDirector;
 import shared.Genotype;
@@ -256,6 +257,7 @@ public class GUI extends EvoPane {
 				
 				DataManager.getInstance().setSessionParams(parms);
 				EvolveDirector.getInstance().runSimulation();
+				EvolveDirector.getInstance().export(ExportFormat.CSV);
 
 			}
 		});

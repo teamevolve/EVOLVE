@@ -38,6 +38,7 @@ public class SimulationEngine {
 		for (int i = 0; i < DataManager.getInstance().getSessionParams().getNumGens(); i++) {
 			PopulationManager.getInstance().processGeneration();
 		}
+		DataManager.getInstance().setSimilulationData(PopulationManager.getInstance().getPopulationList());
 	}
 
 	/**

@@ -58,22 +58,29 @@ public class PopulationManager {
 			populationList.add(new Population(INTERNAL_RNG.nextLong()));
 		}
 	}
+	
+	
+	/**
+	 * Accessor for populationList. Merges living and extinct populations.
+	 * 
+	 * @return list of all populations
+	 */
+	public ArrayList<Population> getPopulationList() {
+		ArrayList<Population> result = new ArrayList<Population>();
+		result.addAll(populationList);
+		result.addAll(extinctList);
+		return result;
+	}
+	
 
 	/**
-	 * Process generation
+	 * Run the population through a simulation of a single generation.
 	 */
 	public void processGeneration(){
-		//testing ******************************************************************
-		//System.out.println("inside processGeneration()");
-		//**************************************************************************
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
+		
 		for (Population p : populationList) {
-			p.simulateGeneration();
-
-			//testing ******************************************************************
-			p.getLastGeneration().quickWrite();
-			//**************************************************************************
-
+			p.simulateGeneration();	
 		}
 
 		if (sp.isMigrationChecked())
@@ -85,9 +92,9 @@ public class PopulationManager {
 				p.scale(popSize);
 			}
 		}
-		
 	}
 
+	
 	/**
 	 * Process interpopulation migrations, modifying populations to reflect
 	 * immigrations and emigrations. Organisms emigrating from one population

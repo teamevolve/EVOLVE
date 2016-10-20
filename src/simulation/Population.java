@@ -19,6 +19,7 @@ import shared.Utilities;
  * @see GenerationRecord
  *
  * @author ericscollins
+ * @auther rwenner
  *
  */
 public class Population {
@@ -29,7 +30,7 @@ public class Population {
 	final private static double SURVIVAL_MEAN = 1.0;
 	final private static double REPRODUCTION_STDDEV = 0.05;
 	final private static double REPRODUCTION_MEAN = 1.0;
-	
+
 	final private Random INTERNAL_RNG;
 
 	private static int populationCounter = 0;
@@ -49,23 +50,31 @@ public class Population {
 		generationHistory.add(getInitialGeneration());
 	}
 
+	
+	/**
+	 * Constructs a GenerationRecord object to be used as the initial 
+	 * generation.
+	 * 
+	 * @return GenerationRecord object representing initial generation
+	 */
 	private GenerationRecord getInitialGeneration() {
 		GenerationRecord gr = new GenerationRecord(populationID, 0);
-		
+
 		for (Genotype gt : Genotype.getValues()) {
 			gr.setGenotypeSubpopulationSize(gt, (int)(DataManager.getInstance().getSessionParams().getPopSize() * DataManager.getInstance().getSessionParams().getGenotypeFrequency(gt)));
 			gr.setImmigrationCount(gt, 0);
 			gr.setEmigrationCount(gt, 0);
 			gr.setBirths(gt, 0);
 			gr.setDeaths(gt, 0);
+
 			for (Genotype gt2 : Genotype.getValues()) {
 				gr.setMutationCount(gt, gt2, 0);
 			}
-			
 		}
 		return gr;
 
 	}
+
 
 	/**
 	 * Determine whether population has gone extinct
@@ -86,16 +95,26 @@ public class Population {
 		return generationHistory.get(generationHistory.size() - 1);
 	}
 
-	
-	 public int getPopID() {
-		 return populationID;
-	 }
-	 
-	 
-	 public ArrayList<GenerationRecord> getGenerationHistory() {
-		 return generationHistory;
-	 }
-	
+
+	/**
+	 * Accessor for populationID.
+	 * 
+	 * @return population ID
+	 */
+	public int getPopID() {
+		return populationID;
+	}
+
+
+	/**
+	 * Accessor for generationHistory.
+	 * 
+	 * @return list of GenerationRecords in Population's history
+	 */
+	public ArrayList<GenerationRecord> getGenerationHistory() {
+		return generationHistory;
+	}
+
 
 	/**
 	 * Simulates birth and death over a generation of a population
@@ -123,7 +142,7 @@ public class Population {
 		//have to initialize to something
 		Genotype maxGenotype = Genotype.AA;
 		int maxPopulation = 0;
-				
+
 		//are they extinct? dunno what we should do if this happens
 		assert (scaleRatio != 0);
 
@@ -136,7 +155,7 @@ public class Population {
 		}
 		getLastGeneration().setGenotypeSubpopulationSize(maxGenotype, getLastGeneration().getGenotypeSubpopulationSize(maxGenotype) + (popSize - getLastGeneration().getPopulationSize()));
 	}
-	
+
 
 
 	/**
@@ -153,21 +172,21 @@ public class Population {
 		final double numParings = previousSize / 2;
 		final HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-		
+
 		// Containers to hold temporary values used more than once
 		double gt1SubPopRatio;
 		double gt1Rate;
-		
+
 		// Initialize result HashMap
 		for (Genotype gt : Genotype.getValues()) {
 			offspring.put(gt, 0.0);
 		}
-		
+
 		// Iterate over every mating pair
 		for (Genotype gt1 :  Genotype.getValues()) {
 			gt1SubPopRatio = previous.getGenotypeSubpopulationSize(gt1);
 			gt1Rate = sp.getReproductionRate(gt1);
-			
+
 			for (Genotype gt2 : Genotype.getValues()) {
 				// Ensure we don't overcount pairs
 				if (!Utilities.isValidPairing(gt1, gt2)) continue;
@@ -189,7 +208,7 @@ public class Population {
 				}
 			}
 		}
-		
+
 		// Store results in new generation
 		for (Genotype gt : Genotype.getValues()) {
 
@@ -215,22 +234,22 @@ public class Population {
 	 * @author richwenner
 	 */
 	private void survive(GenerationRecord current) {
-		
+
 		int numSurvived, subPopulation;
 		int totalAdults = 0; 
 		double crash;
 		int deaths = 0;
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-	
+
 
 		//Calculate the number of each genotype surviving
 		for (Genotype gt: Genotype.getValues()) {
 			subPopulation = current.getGenotypeSubpopulationSize(gt);
 			//Typecasting to int in java is analogous to flooring
 			numSurvived = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, SURVIVAL_MEAN, SURVIVAL_STDDEV) * 
-                    subPopulation * sp.getSurvivalRate(gt));
+					subPopulation * sp.getSurvivalRate(gt));
 
-			
+
 			if (numSurvived <= 0) {
 				numSurvived = 0;
 			}
@@ -250,6 +269,7 @@ public class Population {
 			}
 		}		
 	}
+
 
 	/**
 	 * Simulates mutations within a population.
@@ -304,7 +324,6 @@ public class Population {
 
 				// Adjust subpopulation counts
 				current.setMutationCount(from, to, adjustedMutations);
-				/*DEBUG*/System.out.printf("%s -> %s\n", from, to);
 				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - adjustedMutations);
 				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + adjustedMutations);
 			}

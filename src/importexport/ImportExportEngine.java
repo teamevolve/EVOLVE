@@ -15,5 +15,37 @@ package importexport;
  */
 
 public class ImportExportEngine {
+	/**
+	 * Enables singelton class.
+	 */
+	private static ImportExportEngine instance = null;
+	
+	
+	/**
+	 * Use this instead of constructor. Enables singelton instance of class.
+	 * 
+	 * @return singleton instance of ImportExportEngine
+	 */
+	public static ImportExportEngine getInstance() {
+		if (instance == null)
+			instance = new ImportExportEngine();
+		return instance;
+	}
+	
+	
+	/**
+	 * Private constructor to enable singleton class.
+	 */
+	private ImportExportEngine() {}
+	
+	
+	/**
+	 * Exports data to a desired format.
+	 * 
+	 * @param format format to export to
+	 */
+	public static void export(ExportFormat format) {
+		ExportManager.getInstance().exportTo(format);
+	}
 
 }

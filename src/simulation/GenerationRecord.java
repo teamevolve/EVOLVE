@@ -167,7 +167,7 @@ public class GenerationRecord implements Serializable{
 	 * @param to	mutated genotype
 	 * @return		number of muations from 'from' to 'to'
 	 */
-	public int getMuationCount(Genotype from, Genotype to) {
+	public int getMutationCount(Genotype from, Genotype to) {
 		return mutations.get(from).get(to);
 	}
 	

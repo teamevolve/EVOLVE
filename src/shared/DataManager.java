@@ -1,5 +1,8 @@
 package shared;
 
+import java.util.ArrayList;
+
+import simulation.Population;
 
 /**
  * DataManager is a mostly (possibly wholly) passive data structure used by 
@@ -32,6 +35,10 @@ public class DataManager {
 	 * Holds parameters input by user
 	 */
 	private SessionParameters sessionParams = null;
+	/**
+	 * Holds simulation data once simulation has completed
+	 */
+	private ArrayList<Population> simulationData = null;
 	
 	
 	/**
@@ -80,6 +87,26 @@ public class DataManager {
 	 */
 	public SessionParameters getSessionParams() {
 		return sessionParams;
+	}
+	
+	
+	/**
+	 * Mutator for simulationData. Allows storage of simulation data.
+	 * 
+	 * @param data simulation data to store
+	 */
+	public void setSimilulationData(ArrayList<Population> data) {
+		simulationData = data;
+	}
+	
+	
+	/**
+	 * Accessor for simulationData.
+	 * 
+	 * @return data generated during simulation
+	 */
+	public ArrayList<Population> getSimulationData() {
+		return simulationData;
 	}
 	
 	
