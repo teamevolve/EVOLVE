@@ -45,16 +45,27 @@ public class Population {
 	public Population(long rngSeed) {
 		populationID = populationCounter++;
 		generationHistory = new ArrayList<GenerationRecord>();
-		GenerationRecord gr = new GenerationRecord(populationID, 0);
 		INTERNAL_RNG = new Random(rngSeed);
-		for (Genotype gt : Genotype.getValues()) {
-
-			gr.setGenotypeSubpopulationSize(gt, (int)(DataManager.getInstance().getSessionParams().getPopSize() *
-					DataManager.getInstance().getSessionParams().getGenotypeFrequency(gt)));
-		}
-		generationHistory.add(gr);
+		generationHistory.add(getInitialGeneration());
 	}
 
+	private GenerationRecord getInitialGeneration() {
+		GenerationRecord gr = new GenerationRecord(populationID, 0);
+		
+		for (Genotype gt : Genotype.getValues()) {
+			gr.setGenotypeSubpopulationSize(gt, (int)(DataManager.getInstance().getSessionParams().getPopSize() * DataManager.getInstance().getSessionParams().getGenotypeFrequency(gt)));
+			gr.setImmigrationCount(gt, 0);
+			gr.setEmigrationCount(gt, 0);
+			gr.setBirths(gt, 0);
+			gr.setDeaths(gt, 0);
+			for (Genotype gt2 : Genotype.getValues()) {
+				gr.setMutationCount(gt, gt2, 0);
+			}
+			
+		}
+		return gr;
+
+	}
 
 	/**
 	 * Determine whether population has gone extinct
@@ -144,7 +155,6 @@ public class Population {
 			for (Genotype gt2 : Genotype.getValues()) {
 				// Ensure we don't overcount pairs
 				if (!Utilities.isValidPairing(gt1, gt2)) continue;
-				
 				// Calculate how many offspring of each genotype are produced
 				for (Genotype gt : Utilities.getOffspringGenotypes(gt1, gt2)) {
 					offspring.put(gt, 
@@ -166,6 +176,7 @@ public class Population {
 		
 		// Store results in new generation
 		for (Genotype gt : Genotype.getValues()) {
+
 			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
 			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
 		}
@@ -275,6 +286,7 @@ public class Population {
 
 				// Adjust subpopulation counts
 				current.setMutationCount(from, to, adjustedMutations);
+				/*DEBUG*/System.out.printf("%s -> %s\n", from, to);
 				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - adjustedMutations);
 				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + adjustedMutations);
 			}
