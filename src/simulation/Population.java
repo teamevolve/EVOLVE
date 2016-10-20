@@ -119,8 +119,24 @@ public class Population {
 	 * @param popSize target size to scale population to
 	 */
 	public void scale(int popSize) {
+		double scaleRatio = (double)popSize / (double)getLastGeneration().getPopulationSize();
+		//have to initialize to something
+		Genotype maxGenotype = Genotype.AA;
+		int maxPopulation = 0;
+				
+		//are they extinct? dunno what we should do if this happens
+		assert (scaleRatio != 0);
 
+		for (Genotype gt: Genotype.values()) {
+			if (getLastGeneration().getGenotypeSubpopulationSize(gt) > maxPopulation) {
+				maxPopulation = getLastGeneration().getGenotypeSubpopulationSize(gt);
+				maxGenotype = gt;	
+			}
+			getLastGeneration().setGenotypeSubpopulationSize(gt, (int)Math.round((double)getLastGeneration().getGenotypeSubpopulationSize(gt) * scaleRatio));
+		}
+		getLastGeneration().setGenotypeSubpopulationSize(maxGenotype, getLastGeneration().getGenotypeSubpopulationSize(maxGenotype) + (popSize - getLastGeneration().getPopulationSize()));
 	}
+	
 
 
 	/**
@@ -203,6 +219,7 @@ public class Population {
 		int numSurvived, subPopulation;
 		int totalAdults = 0; 
 		double crash;
+		int deaths = 0;
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
 	
 
@@ -212,7 +229,7 @@ public class Population {
 			//Typecasting to int in java is analogous to flooring
 			numSurvived = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, SURVIVAL_MEAN, SURVIVAL_STDDEV) * 
                     subPopulation * sp.getSurvivalRate(gt));
-			
+
 			
 			if (numSurvived <= 0) {
 				numSurvived = 0;
@@ -221,6 +238,7 @@ public class Population {
 				numSurvived = subPopulation;
 			}
 			current.setGenotypeSubpopulationSize(gt, numSurvived);
+			current.setDeaths(gt, subPopulation - numSurvived);
 			totalAdults += numSurvived;
 		}
 
