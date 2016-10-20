@@ -121,7 +121,7 @@ public class PopulationManager {
 			contributions.put(p, new HashMap<Genotype, Integer>());
 		}
 
-		for (Genotype gt : Genotype.values()) {
+		for (Genotype gt : Genotype.getValues()) {
 			genotypeMigrationRate = sp.getMigrationRate(gt);
 			totalEmigrations = 0;
 

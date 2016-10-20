@@ -11,13 +11,14 @@ package shared;
  * @author ericscollins
  */
 public enum Genotype {
-	AA(0), AB(1), BB(2);
+	AA(0), AB(1), AC(2), BB(3), BC(4), CC(5);
 	
 	
 	/**
 	 *  Used to ensure pairings aren't overcounted during reproduction
 	 */
 	private int pairingIndex;
+	private static Genotype[] twoAlleleArray = {AA, AB, BB};
 	
 	
 	/**
@@ -48,7 +49,11 @@ public enum Genotype {
 		switch(this) {
 		case AA: return Allele.A;
 		case AB: return Allele.A;
+		case AC: return Allele.A;
 		case BB: return Allele.B;
+		case BC: return Allele.B;
+		case CC: return Allele.C;
+		
 		default: return null;
 		}
 	}
@@ -63,7 +68,10 @@ public enum Genotype {
 		switch(this) {
 		case AA: return Allele.A;
 		case AB: return Allele.B;
+		case AC: return Allele.C;
 		case BB: return Allele.B;
+		case BC: return Allele.C;
+		case CC: return Allele.C;
 		default: return null;
 		}
 	}
@@ -79,11 +87,33 @@ public enum Genotype {
 	 */
 	public static Genotype genotypeFromAlleles(Allele a1, Allele a2) {
 		if (a1 == a2)
-			if (a1 == Allele.A)
-				return AA;
-			else
-				return BB;
-		else
-			return AB;
-	}	
+			switch (a1) {
+			case A: return AA;
+			case B: return BB;
+			case C: return CC;
+			default: return null;
+			}
+		else {
+			switch (a1) {
+			case A:
+				if (a2 == Allele.B)
+					return AB;
+				else
+					return AC;
+			case B:  return BC;
+			default: return null;
+			}
+		}
+			
+	}
+	
+	
+	public static Genotype[] getValues() {
+		if (DataManager.getInstance().getSessionParams().isThreeAlleles()) {
+			return values();
+		}
+		else {
+			return twoAlleleArray;
+		}
+	}
 }

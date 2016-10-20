@@ -238,7 +238,7 @@ public class GenerationRecord implements Serializable{
 		System.out.println("-----------------------\nGeneration Record " + generationNumber + "\n-----------------------\n" + 
 				"Population Size: " + getPopulationSize() + "\n" +
 				"Genotype Subpopulations:");
-		for (Genotype gt: Genotype.values()) {
+		for (Genotype gt: Genotype.getValues()) {
 			System.out.println(gt +  " - "  + String.valueOf(getGenotypeSubpopulationSize(gt)));
 		}
 		System.out.println("-----------------------");
@@ -246,7 +246,7 @@ public class GenerationRecord implements Serializable{
 	
 	public void pipedWrite(PrintStream s) {
 		System.setOut(s);
-		for (Genotype gt: Genotype.values()) {
+		for (Genotype gt: Genotype.getValues()) {
 			System.out.println(gt +  " - "  + String.valueOf(getGenotypeSubpopulationSize(gt)));
 		}
 	}

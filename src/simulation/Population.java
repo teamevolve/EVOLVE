@@ -47,7 +47,7 @@ public class Population {
 		generationHistory = new ArrayList<GenerationRecord>();
 		GenerationRecord gr = new GenerationRecord(populationID, 0);
 		INTERNAL_RNG = new Random(rngSeed);
-		for (Genotype gt : Genotype.values()) {
+		for (Genotype gt : Genotype.getValues()) {
 
 			gr.setGenotypeSubpopulationSize(gt, (int)(DataManager.getInstance().getSessionParams().getPopSize() *
 					DataManager.getInstance().getSessionParams().getGenotypeFrequency(gt)));
@@ -75,6 +75,16 @@ public class Population {
 		return generationHistory.get(generationHistory.size() - 1);
 	}
 
+	
+	 public int getPopID() {
+		 return populationID;
+	 }
+	 
+	 
+	 public ArrayList<GenerationRecord> getGenerationHistory() {
+		 return generationHistory;
+	 }
+	
 
 	/**
 	 * Simulates birth and death over a generation of a population
@@ -122,16 +132,16 @@ public class Population {
 		double gt1Rate;
 		
 		// Initialize result HashMap
-		for (Genotype gt : Genotype.values()) {
+		for (Genotype gt : Genotype.getValues()) {
 			offspring.put(gt, 0.0);
 		}
 		
 		// Iterate over every mating pair
-		for (Genotype gt1 :  Genotype.values()) {
+		for (Genotype gt1 :  Genotype.getValues()) {
 			gt1SubPopRatio = previous.getGenotypeSubpopulationSize(gt1);
 			gt1Rate = sp.getReproductionRate(gt1);
 			
-			for (Genotype gt2 : Genotype.values()) {
+			for (Genotype gt2 : Genotype.getValues()) {
 				// Ensure we don't overcount pairs
 				if (!Utilities.isValidPairing(gt1, gt2)) continue;
 				
@@ -155,7 +165,8 @@ public class Population {
 		}
 		
 		// Store results in new generation
-		for (Genotype gt : Genotype.values()) {
+		for (Genotype gt : Genotype.getValues()) {
+			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
 			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
 		}
 	}
@@ -185,7 +196,7 @@ public class Population {
 	
 
 		//Calculate the number of each genotype surviving
-		for (Genotype gt: Genotype.values()) {
+		for (Genotype gt: Genotype.getValues()) {
 			subPopulation = current.getGenotypeSubpopulationSize(gt);
 			//Typecasting to int in java is analogous to flooring
 			numSurvived = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, SURVIVAL_MEAN, SURVIVAL_STDDEV) * 
@@ -205,10 +216,10 @@ public class Population {
 		//Kill off populations if larger than carrying capacity
 		if (totalAdults > sp.getPopCapacity()) {
 			crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
-			for (Genotype gt: Genotype.values()) {
+			for (Genotype gt: Genotype.getValues()) {
 				current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
 			}
-		}
+		}		
 	}
 
 	/**
@@ -233,10 +244,10 @@ public class Population {
 		HashMap<Genotype, Integer> contrib;
 
 		// For all possible combinations of genotypes...
-		for (Genotype from : Genotype.values()) {
+		for (Genotype from : Genotype.getValues()) {
 			contrib = new HashMap<Genotype, Integer>();
 			totalMutations = 0;
-			for (Genotype to : Genotype.values()) {
+			for (Genotype to : Genotype.getValues()) {
 
 				// Produce a random number with a mean of MUTATION_MEAN (usually 1.0) and a standard deviation of
 				// MUTATION_STDDEV and multiply that by the expected average number of mutations
@@ -256,7 +267,7 @@ public class Population {
 			// Ratio to scale mutations by to keep population size constant
 			ratio = current.getGenotypeSubpopulationSize(from) / totalMutations;
 
-			for (Genotype to : Genotype.values()) {
+			for (Genotype to : Genotype.getValues()) {
 				if (to == from) continue;
 
 				// Scale mutation count appropriately

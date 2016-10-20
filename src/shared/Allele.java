@@ -10,5 +10,16 @@ package shared;
  * @author ericscollins
  */
 public enum Allele {
-	A, B
+	A, B, C;
+	
+	private static Allele[] twoAlleleArray = {A, B};
+	
+	public static Allele[] getValues() {
+		if (DataManager.getInstance().getSessionParams().isThreeAlleles())
+			return Allele.values();
+		else
+			return twoAlleleArray;
+		
+	}
+	
 }

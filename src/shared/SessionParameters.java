@@ -37,6 +37,7 @@ public class SessionParameters implements Serializable {
 	private int popSize, numPops, numGens, popCapacity, crashCapacity;
 	private long seed;
 	private boolean popConst, fixedMig;
+	private HashMap<Allele, Double> alleleFrequencies;
 	private HashMap<Genotype, Double> reproductionRates;
 	private HashMap<Genotype, Double> survivalRates;
 	private HashMap<Genotype, Double> absoluteFitnesses;
@@ -65,6 +66,7 @@ public class SessionParameters implements Serializable {
 		migrationRates = new HashMap<Genotype, Double>();
 		genotypeFrequencies = new HashMap<Genotype, Double>();
 		sexualSelectionRates = new HashMap<Genotype, HashMap<Genotype, Double>>();
+		alleleFrequencies = new HashMap<Allele, Double>();
 	}
 	
 	/* accessors and mutators */	
@@ -228,6 +230,14 @@ public class SessionParameters implements Serializable {
 
 	public void setThreeAlleles(boolean threeAlleles) {
 		this.threeAlleles = threeAlleles;
+	}
+	
+	public double getAlleleFrequency(Allele a) {
+		return alleleFrequencies.get(a);
+	}
+	
+	public void setAlleleFrequency(Allele a, double freq) {
+		alleleFrequencies.put(a, freq);
 	}
 
 }
