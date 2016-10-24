@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -25,6 +23,11 @@ import shared.Genotype;
 
 public class MigrationPane extends EvoPane {
 	
+	/**
+	 * auto gen'd
+	 */
+	private static final long serialVersionUID = 7447657572452485224L;
+
 	JLabel migLabel;
 	ButtonGroup migGroup;
 	JRadioButton fixedMig, varMig;
@@ -46,7 +49,7 @@ public class MigrationPane extends EvoPane {
 		varMig = new JRadioButton("Varies by Genotype");
 		migGroup.add(fixedMig);
 		migGroup.add(varMig);
-				
+		
 		c.gridx = 0; c.gridy = 200;
 		c.anchor = GridBagConstraints.WEST;
 		add(migLabel, c);
@@ -60,7 +63,9 @@ public class MigrationPane extends EvoPane {
 		// Migration rate - if fixed
 		fixedMigRateLabel = new JLabel("Migration Rate: ");
 		fixedMigRate = new JTextField(TEXT_LEN_SHORT);
-				
+		
+		fixedMigRate.setName(RATE); fixedMigRate.setInputVerifier(iv);
+		
 		c.gridx = 1; c.gridy = 210;
 		c.anchor = GridBagConstraints.WEST;
 		add(fixedMigRateLabel, c);
@@ -76,7 +81,11 @@ public class MigrationPane extends EvoPane {
 		varMigRateAA = new JTextField(TEXT_LEN_SHORT);
 		varMigRateAB = new JTextField(TEXT_LEN_SHORT);
 		varMigRateBB = new JTextField(TEXT_LEN_SHORT);
-				
+
+		varMigRateAA.setName(RATE); varMigRateAA.setInputVerifier(iv);
+		varMigRateAB.setName(RATE); varMigRateAB.setInputVerifier(iv);
+		varMigRateBB.setName(RATE); varMigRateBB.setInputVerifier(iv);
+		
 		c.gridwidth = 3;
 		c.gridx = 1; c.gridy = 220;
 		c.anchor = GridBagConstraints.WEST;
