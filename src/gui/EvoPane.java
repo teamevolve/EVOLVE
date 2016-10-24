@@ -31,6 +31,8 @@ public abstract class EvoPane extends JPanel {
 	
 	public GridBagConstraints c;
 	
+	public OurInputVerifier iv = new OurInputVerifier();
+	
 	private boolean enabled;
 	
 	EvoPane() {

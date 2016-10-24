@@ -44,9 +44,7 @@ public class SelectionPane extends EvoPane {
 	
 	ArrayList<Component> rAndS = new ArrayList<Component>();
 	ArrayList<Component> absFit = new ArrayList<Component>();
-	
-	OurInputVerifier iv = new OurInputVerifier();
-	
+		
 	public SelectionPane() {
 		
 		// Selection radio buttons
