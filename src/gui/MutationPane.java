@@ -34,6 +34,9 @@ public class MutationPane extends EvoPane {
 		mutAtoB = new JTextField(TEXT_LEN_SHORT);
 		mutBtoA = new JTextField(TEXT_LEN_SHORT);
 		
+		mutAtoB.setName(RATE); mutAtoB.setInputVerifier(iv);
+		mutBtoA.setName(RATE); mutBtoA.setInputVerifier(iv);
+		
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(mutLabel, c);
