@@ -73,7 +73,7 @@ public class GUI extends EvoPane {
 		seedLabel = new JLabel("Seed: ");
 		seedField = new JTextField(TEXT_LEN_LONG);
 		seedField.setName(INT);
-		seedField.setInputVerifier(new OurInputVerifier());
+		seedField.setInputVerifier(iv);
 		
 		c.gridx = 4; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
@@ -86,7 +86,7 @@ public class GUI extends EvoPane {
 		numPopsLabel = new JLabel("Number of Populations: ");
 		numPops = new JTextField(TEXT_LEN_LONG);
 		numPops.setName(INT);
-		numPops.setInputVerifier(new OurInputVerifier());
+		numPops.setInputVerifier(iv);
 		
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.EAST;
@@ -98,7 +98,7 @@ public class GUI extends EvoPane {
 		numGensLabel = new JLabel("Number of Generations: ");
 		numGens = new JTextField(TEXT_LEN_LONG);
 		numGens.setName(INT);
-		numGens.setInputVerifier(new OurInputVerifier());
+		numGens.setInputVerifier(iv);
 		
 		c.gridx = 0; c.gridy = 2;
 		c.anchor = GridBagConstraints.EAST;
@@ -112,7 +112,7 @@ public class GUI extends EvoPane {
 		initFreqALabel = new JLabel("Initial Frequency of Allele A: ");
 		initFreqA = new JTextField(TEXT_LEN_SHORT);
 		initFreqA.setName(RATE);
-		initFreqA.setInputVerifier(new OurInputVerifier());
+		initFreqA.setInputVerifier(iv);
 
 		c.gridx = 0; c.gridy = 4;
 		c.gridwidth = 2;
