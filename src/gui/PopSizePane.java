@@ -43,6 +43,8 @@ public class PopSizePane extends EvoPane {
 		popSizeLabel = new JLabel("Initial Population Size: ");
 		popSizeField = new JTextField(TEXT_LEN_LONG);
 		
+		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
+		
 		c.gridx = 0; c.gridy = 10;
 		c.anchor = GridBagConstraints.WEST;
 		add(popSizeLabel, c);
@@ -62,13 +64,14 @@ public class PopSizePane extends EvoPane {
 		c.gridx = 1; c.gridy = 20;
 		add(popConstTrue, c);
 		c.gridx = 2; c.gridy = 20;
-		add(popConstFalse, c);
+		add(popConstFalse, c);	
 
-		
-		
 		// carrying capacity stuff - appears when popSize varying
 		carryCapLabel = new JLabel("Carrying Capacity: "); 
 		carryCap = new JTextField(TEXT_LEN_LONG);
+
+		carryCap.setName(INT); carryCap.setInputVerifier(iv);
+		
 		c.gridx = 1; c.gridy = 40;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.WEST;
@@ -76,16 +79,15 @@ public class PopSizePane extends EvoPane {
 		c.gridx = 2; c.gridy = 40;
 		c.gridwidth = 1;
 		c.anchor = GridBagConstraints.EAST;
-		//c.ipadx = -55;
 		add(carryCap, c);
 		c.ipadx = 0;
-		
 
-		
 		// post crash population size stuff - appears when popSize varying
 		postCrashLabel = new JLabel("Post Crash Population Size: ");
 		postCrash = new JTextField(TEXT_LEN_LONG);
 		
+		postCrash.setName(INT); postCrash.setInputVerifier(iv);
+
 		c.gridx = 1; c.gridy = 50;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.WEST;
@@ -136,23 +138,6 @@ public class PopSizePane extends EvoPane {
 				p.setPopCapacity(Integer.parseInt(carryCap.getText()));
 				p.setCrashCapacity(Integer.parseInt(postCrash.getText()));
 			}
-		}
-		
-		/** 
-		 * little testerino guy, dont use this, maybe remove this
-		 * @param args
-		 */
-		public static void main(String[] args){
-			JFrame window = new JFrame();
-			
-			PopSizePane test = new PopSizePane();
-			
-			window.add(test);
-			window.pack();
-			window.setVisible(true);
-			
-			
-		}
-	
+		}	
 	
 }
