@@ -25,6 +25,7 @@ public abstract class EvoPane extends JPanel {
 	final static String ANY_DOUBLE = "double";
 	final static String RATE = "rate";
 	final static String ANY_DOUBLE_ZERO_TO_TEN = "double zero to ten";
+	final static String ANY_NUMBER = "any number";
 	
 	public Font boldFont;
 	

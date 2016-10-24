@@ -45,6 +45,8 @@ public class SelectionPane extends EvoPane {
 	ArrayList<Component> rAndS = new ArrayList<Component>();
 	ArrayList<Component> absFit = new ArrayList<Component>();
 	
+	OurInputVerifier iv = new OurInputVerifier();
+	
 	public SelectionPane() {
 		
 		// Selection radio buttons
@@ -75,6 +77,11 @@ public class SelectionPane extends EvoPane {
 		reproAA = new JTextField(TEXT_LEN_LONG); rAndS.add(reproAA);
 		reproAB = new JTextField(TEXT_LEN_LONG); rAndS.add(reproAB);
 		reproBB = new JTextField(TEXT_LEN_LONG); rAndS.add(reproBB);
+
+		// set input verifier
+		reproAA.setName(ANY_DOUBLE_ZERO_TO_TEN); reproAA.setInputVerifier(iv);
+		reproAB.setName(ANY_DOUBLE_ZERO_TO_TEN); reproAB.setInputVerifier(iv);
+		reproBB.setName(ANY_DOUBLE_ZERO_TO_TEN); reproBB.setInputVerifier(iv);
 		
 		c.gridx = 1; c.gridy = 100;
 		c.gridwidth = 3;
@@ -112,6 +119,11 @@ public class SelectionPane extends EvoPane {
 		survAB = new JTextField(TEXT_LEN_SHORT); rAndS.add(survAB);
 		survBB = new JTextField(TEXT_LEN_SHORT); rAndS.add(survBB);
 		
+		// set input names for our verifier
+		survAA.setName(RATE); survAA.setInputVerifier(iv);
+		survAB.setName(RATE); survAB.setInputVerifier(iv);
+		survBB.setName(RATE); survBB.setInputVerifier(iv);
+		
 		c.gridx = 1; c.gridy = 120;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.WEST;
@@ -148,6 +160,11 @@ public class SelectionPane extends EvoPane {
 		absFitAA = new JTextField(TEXT_LEN_LONG); absFit.add(absFitAA);
 		absFitAB = new JTextField(TEXT_LEN_LONG); absFit.add(absFitAB);
 		absFitBB = new JTextField(TEXT_LEN_LONG); absFit.add(absFitBB);
+		
+		// set names for our input verifier
+		absFitAA.setName(ANY_NUMBER); absFitAA.setInputVerifier(iv);
+		absFitAB.setName(ANY_NUMBER); absFitAB.setInputVerifier(iv);
+		absFitBB.setName(ANY_NUMBER); absFitBB.setInputVerifier(iv);
 		
 		c.gridx = 1; c.gridy = 140;
 		c.gridwidth = 2;
@@ -202,6 +219,8 @@ public class SelectionPane extends EvoPane {
 		c.anchor = GridBagConstraints.EAST;
 		add(relFitBBLabel, c);
 
+		// Set listeners for real-time disabling of fields
+		
 		selectRandS.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeRandS(true);
@@ -213,7 +232,7 @@ public class SelectionPane extends EvoPane {
 				modeRandS(false);
 			}
 		});
-
+		
 	}
 	
 	private void modeRandS(boolean b) {

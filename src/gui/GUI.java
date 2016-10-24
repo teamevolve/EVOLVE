@@ -8,6 +8,7 @@ import importexport.ExportFormat;
 import shared.DataManager;
 import shared.EvolveDirector;
 import shared.Genotype;
+import shared.SessionParameters;
 
 
 
@@ -39,6 +40,12 @@ public class GUI extends EvoPane {
 	JTextField numPops;	
 	JLabel numGensLabel; 			// Number of Gens
 	JTextField numGens;
+	
+	JCheckBox popSizeCheck;
+	JCheckBox selectCheck;
+	JCheckBox mutationCheck;
+	JCheckBox migrationCheck;
+	JCheckBox sexualSelectCheck;
 	
 	/* Evolutionary Forces Panes *********************************************/
 	PopSizePane pp = new PopSizePane();
@@ -134,17 +141,17 @@ public class GUI extends EvoPane {
 		/* EVOLUTIONARY FORCES ***************************************************************/
 		JLabel evoForces = new JLabel("Select active evolutionary forces:");
 		
-		JCheckBox popSizeCheck = new JCheckBox("Population Size", true);
+		popSizeCheck = new JCheckBox("Population Size", true);
 		popSizeCheck.setEnabled(false);
 		
-		JCheckBox selectCheck = new JCheckBox("Natural Selection", true);
+		selectCheck = new JCheckBox("Natural Selection", true);
 		selectCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				sp.setEnabled(selectCheck.isSelected());
 			}
 		});	
 		
-		JCheckBox mutationCheck = new JCheckBox("Mutation", true);
+		mutationCheck = new JCheckBox("Mutation", true);
 		mutationCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				mp.setEnabled(mutationCheck.isSelected());
@@ -152,14 +159,14 @@ public class GUI extends EvoPane {
 		});
 
 		
-		JCheckBox migrationCheck = new JCheckBox("Migration", true);
+		migrationCheck = new JCheckBox("Migration", true);
 		migrationCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				mip.setEnabled(migrationCheck.isSelected());
 			}
 		});
 		
-		JCheckBox sexualSelectCheck = new JCheckBox("Non-Random Mating", true);
+		sexualSelectCheck = new JCheckBox("Non-Random Mating", true);
 		sexualSelectCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				ssp.setEnabled(sexualSelectCheck.isSelected());
@@ -214,50 +221,7 @@ public class GUI extends EvoPane {
 				// Create a new, blank sesh parms object on each submit click 
 				parms = new shared.SessionParameters();
 
-				
-				// Set SessionParameters NOT from the GUI pane
-				parms.setNumPops(Integer.parseInt(numPops.getText()));
-				parms.setSeed(Integer.parseInt(seedField.getText()));
-				parms.setNumGens(Integer.parseInt(numGens.getText()));
-				
-				// Set Allele freqs --> maybe just move this into a new method?
-				double alleleAfreq = Double.parseDouble(initFreqA.getText());
-				double alleleBfreq = 1 - alleleAfreq;
-
-				double AAfreq = alleleAfreq * alleleAfreq;
-				double ABfreq = 2 * alleleAfreq * alleleBfreq;
-				double BBfreq = alleleBfreq * alleleBfreq;
-				
-				calcFreqAA.setText(String.format("%.4f", AAfreq));
-				calcFreqAB.setText(String.format("%.4f", ABfreq));
-				calcFreqBB.setText(String.format("%.4f", BBfreq));
-				
-				parms.setGenotypeFrequency(Genotype.AA, AAfreq);
-				parms.setGenotypeFrequency(Genotype.AB, ABfreq);
-				parms.setGenotypeFrequency(Genotype.BB, BBfreq);
-				
-				parms.setPopSizeChecked(popSizeCheck.isSelected());
-				parms.setSelectChecked(selectCheck.isSelected());
-				parms.setMutationChecked(mutationCheck.isSelected());
-				parms.setMigrationChecked(migrationCheck.isSelected());
-				parms.setSexSelectChecked(sexualSelectCheck.isSelected());
-				
-
-				// Submit info from the EvoPanes if necessary
-				if(parms.isPopSizeChecked())
-					pp.submit(parms);
-				if(parms.isSelectChecked())
-					sp.submit(parms);
-				if(parms.isMutationChecked())
-					mp.submit(parms);
-				if(parms.isMigrationChecked())
-					mip.submit(parms);
-				if(parms.isSexSelectChecked())
-					ssp.submit(parms);
-				
-				DataManager.getInstance().setSessionParams(parms);
-				EvolveDirector.getInstance().runSimulation();
-				EvolveDirector.getInstance().export(ExportFormat.CSV);
+				submitInfo(parms);
 
 			}
 		});
@@ -265,6 +229,58 @@ public class GUI extends EvoPane {
 		
 	}
 
+	public void submitInfo(SessionParameters parms) {
+
+		// Set SessionParameters NOT from the GUI pane
+		parms.setNumPops(Integer.parseInt(numPops.getText()));
+		parms.setSeed(Integer.parseInt(seedField.getText()));
+		parms.setNumGens(Integer.parseInt(numGens.getText()));
+		
+		// Set Allele freqs
+		double alleleAfreq = Double.parseDouble(initFreqA.getText());
+		double alleleBfreq = 1 - alleleAfreq;
+
+		double AAfreq = alleleAfreq * alleleAfreq;
+		double ABfreq = 2 * alleleAfreq * alleleBfreq;
+		double BBfreq = alleleBfreq * alleleBfreq;
+		
+		calcFreqAA.setText(String.format("%.4f", AAfreq));
+		calcFreqAB.setText(String.format("%.4f", ABfreq));
+		calcFreqBB.setText(String.format("%.4f", BBfreq));
+		
+		parms.setGenotypeFrequency(Genotype.AA, AAfreq);
+		parms.setGenotypeFrequency(Genotype.AB, ABfreq);
+		parms.setGenotypeFrequency(Genotype.BB, BBfreq);
+		
+		
+		// Get evolutionary force flags
+		parms.setPopSizeChecked(popSizeCheck.isSelected());
+		parms.setSelectChecked(selectCheck.isSelected());
+		parms.setMutationChecked(mutationCheck.isSelected());
+		parms.setMigrationChecked(migrationCheck.isSelected());
+		parms.setSexSelectChecked(sexualSelectCheck.isSelected());
+		
+
+		// Submit info from the EvoPanes if necessary
+		if(parms.isPopSizeChecked())
+			pp.submit(parms);
+		if(parms.isSelectChecked())
+			sp.submit(parms);
+		if(parms.isMutationChecked())
+			mp.submit(parms);
+		if(parms.isMigrationChecked())
+			mip.submit(parms);
+		if(parms.isSexSelectChecked())
+			ssp.submit(parms);
+		
+		// Link datamanger to sesh parms, run sim, export
+		DataManager.getInstance().setSessionParams(parms);
+		EvolveDirector.getInstance().runSimulation();
+		EvolveDirector.getInstance().export(ExportFormat.CSV);
+
+		
+	}
+	
 	public static void createAndShowGUI() {
 
 		//make the GUI panel and add evo force panels to GUI

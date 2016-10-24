@@ -6,7 +6,7 @@ import javax.swing.JTextField;
 
 /**
  * We'll use this to verify the input on the GUI
- * @author jasonfortunato + prob linnea (unless we ditch this) 
+ * @author jasonfortunato 
  *
  */
 public class OurInputVerifier extends InputVerifier {
@@ -16,7 +16,6 @@ public class OurInputVerifier extends InputVerifier {
 		String text = ((JTextField) (input)).getText().trim();
 	    String type = input.getName();
 	    
-	    // using a switch statement because they're cool!
 		switch (type) {
 			case EvoPane.RATE: 		// check that text is a double 0 to 1 inclusive
 				if(isDouble(text)) {
@@ -32,10 +31,13 @@ public class OurInputVerifier extends InputVerifier {
 					double val = Double.parseDouble(text);
 					return val >= 0 && val <= 10;
 				}		
+			case EvoPane.ANY_NUMBER:
+				return isDouble(text);
+				
+			default: 
+				return true;
 		}
-		
-	    return true;
-		
+				
 	}
 	/**
 	 * Using exceptions to check if the string is an int (lol)
