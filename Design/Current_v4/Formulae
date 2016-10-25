@@ -1,56 +1,0 @@
-NOTATION
-
-The notation used below it is a combination of traditional notations and my own ‘pseudo notation’ — like your pseudocode.  8-)
-	Feel free to suggest others for some of the variables that I've created below.
-
-Allele Frequencies (range 0.0–1.0):	p 	Frequency of the A allele, p(#) = frequency in generation #, etc	q 	Frequency of the B allele 	r 	Frequency of the C allele
-	Note: p & q are the traditional notations for frequency of 2 alleles; I've added r for the 3rd.
-	We might use FreqA, FreqB, FreqC in coding.
-Genotype Frequencies: FreqAA, FreqAB, FreqAC, FreqBC, FreqBB, FreqCCSurvival rates (range 0.0–1.0):
-	SurvR8AA, SurvR8AB, SurvR8AC, SurvR8BC, SurvR8BB, SurvR8CC
-Reproductive rates (range 0.0–10.0):
-	RepR8AA, RepR8AB … RepR8CC
-Absolute Fitnesses of each genotype (range 0.0–10.0):
-	WAbsAA, WAbsAB, … WAbsCC
-	Note: W is a traditional notation for ‘Relative Fitness’, with Selection coefficient (s) defined as 1 - WRelative Fitnesses of each genotype (range 0.0–1.0):
-	WRelAA, WRelAB … WRelCCTotal population size (range 0–10,000)
-	NumPop
-Genotype numbers: NumAA, NumAB, NumAC, NumBC, NumBB, NumCCMutation rates from A to B and vice versa
-	MuR8A2B), MuR8B2A … MuR8C2BMigration rates
-	MigR8AA, MigR8AB … MigR8CC
-Mating rates (QUERY: may need another symbol if & is an operator?)
-	M8R8AA&AA, M8R8AA&AB … M8R8CC&CC
-
-FORMULAE
-
-Given 1 or 2 allele frequencies, calculation of remaining allele freq. & expected genotype freq.s:
-	2–Allele Case: given p,  q = 1 - p
-		 Expected freq.s of genotypes (Hardy–Weinberg equilibrium) = p^2 + 2pq + q^2 = 1
-	3–Allele Case: given p & q, r = 1 - (p + q)
-		freq.s of genotypes = p^2 + 2pq + 2pr + 2qr + q^2 + r^2 = 1
-
-Given genotype numbers, calculation of allele frequencies:
-	2–Allele Case: given NumAA + NumAB + NumBB = NumPop
-		p = (2 * NumAA + NumAB) / (2 * NumPop)
-		q = (2 * NumBB + NumAB) / (2 * NumPop)
-	3–Allele Case:
-		NumAA + NumAB + NumBB + NumAC + NumBC + NumCC = NumPop
-		p = (2 * NumAA + NumAB + NumAC) / (2 * NumPop)
-		q = (2 * NumBB + NumAB + NumBC) / (2 * NumPop)
-		r = (2 * NumCC + NumAC + NumBC) / (2 * NumPop)
-
-Given survival & reproductive rates, calculate absolute fitnesses
-		WAbsAA = SurvR8AA * RepR8AA
-		WAbsAB = SurvR8AB * RepR8AB
-		:
-		WAbsCC = SurvR8CC * RepR8CC
-
-Given absolute fitnesses, calculate relative fitnesses
-	2–Allele Case
-		WRelAA = WAbsAA / Maximum(WAbsAA, WAbsAB, WAbsBB)
-		:
-		WRelBB = WAbsBB / Maximum(WAbsAA, WAbsAB,WAbsBB)
-	3–Allele Case: as above plus equivalent for AC, BC, CC
-		WRelAA = WAbsAA / Maximum(WAbsAA, WAbsAB, WAbsAC, WAbsBC, WAbsBB, WAbsCC)
-		:
-		WRelCC = WAbsCC / Maximum(WAbsAA, WAbsAB, WAbsAC, WAbsBC, WAbsBB, WAbsCC)
