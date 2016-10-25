@@ -31,16 +31,23 @@ public class SelectionPane extends EvoPane {
 	JRadioButton selectRandS, 
 		selectAbs;
 	JLabel reproRateLabel, 					// Reproduction Rates (0 to 10, decimal allowed)
-		reproAALabel, reproABLabel, reproBBLabel;
-	JTextField reproAA, reproAB, reproBB;
+		reproAALabel, reproABLabel, reproBBLabel,
+		reproACLabel, reproBCLabel, reproCCLabel;
+	JTextField reproAA, reproAB, reproBB,
+		reproAC, reproBC, reproCC;
 	JLabel survRateLabel,					// Survival Rates (0 to 1)
-		survAALabel, survABLabel, survBBLabel;
-	JTextField survAA, survAB, survBB;
+		survAALabel, survABLabel, survBBLabel,
+		survACLabel, survBCLabel, survCCLabel;
+	JTextField survAA, survAB, survBB,
+		survAC, survBC, survCC;
 	JLabel absFitLabel,					// Absolute fitness (any num)
-		absFitAALabel, absFitABLabel, absFitBBLabel;
-	JTextField absFitAA, absFitAB, absFitBB;
+		absFitAALabel, absFitABLabel, absFitBBLabel,
+		absFitACLabel, absFitBCLabel, absFitCCLabel;
+	JTextField absFitAA, absFitAB, absFitBB,
+		absFitAC, absFitBC, absFitCC;
 	JLabel relFitLabel,					// Relative fitness (0 to 1)
-		relFitAALabel, relFitABLabel, relFitBBLabel;
+		relFitAALabel, relFitABLabel, relFitBBLabel,
+		relFitACLabel, relFitBCLabel, relFitCCLabel;
 	
 	ArrayList<Component> rAndS = new ArrayList<Component>();
 	ArrayList<Component> absFit = new ArrayList<Component>();
@@ -72,9 +79,15 @@ public class SelectionPane extends EvoPane {
 		reproAALabel = new JLabel("AA: "); rAndS.add(reproAALabel);
 		reproABLabel = new JLabel("AB: "); rAndS.add(reproABLabel);
 		reproBBLabel = new JLabel("BB: "); rAndS.add(reproBBLabel);
+		reproACLabel = new JLabel("AC: "); rAndS.add(reproACLabel); 
+		reproBCLabel = new JLabel("BC: "); rAndS.add(reproBCLabel);
+		reproCCLabel = new JLabel("CC: "); rAndS.add(reproCCLabel);
 		reproAA = new JTextField(TEXT_LEN_LONG); rAndS.add(reproAA);
 		reproAB = new JTextField(TEXT_LEN_LONG); rAndS.add(reproAB);
 		reproBB = new JTextField(TEXT_LEN_LONG); rAndS.add(reproBB);
+		reproAC = new JTextField(TEXT_LEN_LONG); rAndS.add(reproAC);
+		reproBC = new JTextField(TEXT_LEN_LONG); rAndS.add(reproBC);
+		reproCC = new JTextField(TEXT_LEN_LONG); rAndS.add(reproCC);
 
 		// set input verifier
 		reproAA.setName(ANY_DOUBLE_ZERO_TO_TEN); reproAA.setInputVerifier(iv);

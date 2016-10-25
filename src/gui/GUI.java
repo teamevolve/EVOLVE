@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 import importexport.ExportFormat;
@@ -29,13 +31,18 @@ public class GUI extends EvoPane {
 	shared.SessionParameters parms;
 
 	JButton submit;
-		
+	JLabel numAllelesLabel;			// Number of Alleles
+	ButtonGroup numAlleles;
+	JRadioButton alleles2, alleles3;
 	JLabel seedLabel; 				// Seed
 	JTextField seedField;
-	JLabel initFreqALabel; 			// Initial frequencies
+	JLabel initFreqALabel, initFreqBLabel,		// Initial frequencies
+		initFreqCLabel; 			
 	JTextField initFreqA;
 	JLabel calcFreqAA, calcFreqAB, 
 		calcFreqBB;
+	JLabel calcFreqAC, calcFreqBC,
+		calcFreqCC;
 	JLabel numPopsLabel; 			// Number of Pops
 	JTextField numPops;	
 	JLabel numGensLabel; 			// Number of Gens
@@ -46,6 +53,8 @@ public class GUI extends EvoPane {
 	JCheckBox mutationCheck;
 	JCheckBox migrationCheck;
 	JCheckBox sexualSelectCheck;
+	
+	ArrayList<Component> numAllelesList = new ArrayList<Component>();
 	
 	/* Evolutionary Forces Panes *********************************************/
 	PopSizePane pp = new PopSizePane();
@@ -69,6 +78,22 @@ public class GUI extends EvoPane {
 		// left align
 		c.anchor = GridBagConstraints.WEST;
 		
+		/* num alleles stuff *****************************************************************************/
+		numAllelesLabel = new JLabel("Number of Alleles: ");
+		numAlleles = new ButtonGroup();
+		alleles2 = new JRadioButton("2");
+		alleles3 = new JRadioButton("3");
+		numAlleles.add(alleles2);
+		numAlleles.add(alleles3);
+		
+		c.gridx = 0; c.gridy = 1;
+		add(numAllelesLabel, c);
+		c.gridx = 1; c.gridy = 1;
+		add(alleles2, c);
+		c.gridx = 2; c.gridy = 1;
+		add(alleles3, c);
+		
+		
 		/* seed stuff *****************************************************************************/
 		seedLabel = new JLabel("Seed: ");
 		seedField = new JTextField(TEXT_LEN_LONG);
@@ -88,10 +113,10 @@ public class GUI extends EvoPane {
 		numPops.setName(INT);
 		numPops.setInputVerifier(iv);
 		
-		c.gridx = 0; c.gridy = 1;
+		c.gridx = 0; c.gridy = 2;
 		c.anchor = GridBagConstraints.EAST;
 		add(numPopsLabel, c);
-		c.gridx = 1; c.gridy = 1;
+		c.gridx = 1; c.gridy = 2;
 		add(numPops, c);
 
 		// num generations stuff **************************************************************/
@@ -100,15 +125,14 @@ public class GUI extends EvoPane {
 		numGens.setName(INT);
 		numGens.setInputVerifier(iv);
 		
-		c.gridx = 0; c.gridy = 2;
+		c.gridx = 0; c.gridy = 3;
 		c.anchor = GridBagConstraints.EAST;
 		add(numGensLabel, c);
-		c.gridx = 1; c.gridy = 2;
+		c.gridx = 1; c.gridy = 3;
 		add(numGens, c);
 		
 		
 		/* initial frequencies stuff ***********************************************************/
-		
 		initFreqALabel = new JLabel("Initial Frequency of Allele A: ");
 		initFreqA = new JTextField(TEXT_LEN_SHORT);
 		initFreqA.setName(RATE);
@@ -127,16 +151,31 @@ public class GUI extends EvoPane {
 		calcFreqAA = new JLabel("AA: ___");
 		calcFreqAB = new JLabel("AB: ___");
 		calcFreqBB = new JLabel("BB: ___");
-		c.gridwidth = 2;
+		calcFreqAC = new JLabel("AC: ___"); numAllelesList.add(calcFreqAC);
+		calcFreqBC = new JLabel("BC: ___"); numAllelesList.add(calcFreqBC);
+		calcFreqCC = new JLabel("CC: ___"); numAllelesList.add(calcFreqCC);
+		
+		//c.gridwidth = 2;
 		c.gridx = 1; c.gridy = 5;
 		c.anchor = GridBagConstraints.WEST;
 		add(calcFreqAA, c);
-		c.gridx = 1; c.gridy = 5;
-		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2; c.gridy = 5;
+		//c.anchor = GridBagConstraints.CENTER;
 		add(calcFreqAB, c);
-		c.gridx = 1; c.gridy = 5;
-		c.anchor = GridBagConstraints.EAST;
+		c.gridx = 3; c.gridy = 5;
+		//c.anchor = GridBagConstraints.EAST;
 		add(calcFreqBB, c);
+		
+		c.gridx = 4; c.gridy = 5;
+		//c.anchor = GridBagConstraints.CENTER;
+		add(calcFreqAC, c);
+		c.gridx = 5; c.gridy = 5;
+		//c.anchor = GridBagConstraints.CENTER;
+		add(calcFreqBC, c);
+		c.gridx = 6; c.gridy = 5;
+		//c.anchor = GridBagConstraints.EAST;
+		add(calcFreqCC, c);
+
 		
 		/* EVOLUTIONARY FORCES ***************************************************************/
 		JLabel evoForces = new JLabel("Select active evolutionary forces:");
@@ -225,14 +264,33 @@ public class GUI extends EvoPane {
 
 			}
 		});
-
+	
+		// Set actions for the NumAlleles radio buttons
+		alleles2.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeNumAlleles(true);
+			}
+		});
 		
+		alleles3.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeNumAlleles(false);
+			}
+		});
 	}
+		
+		private void modeNumAlleles(boolean b){
+			for(Component comp : numAllelesList) {
+				comp.setEnabled(!b);
+			}
+		}
+
 
 	public void submitInfo(SessionParameters parms) {
 
 		// Set SessionParameters NOT from the GUI pane
 		parms.setNumPops(Integer.parseInt(numPops.getText()));
+		parms.setThreeAlleles(alleles3.isSelected());
 		parms.setSeed(Integer.parseInt(seedField.getText()));
 		parms.setNumGens(Integer.parseInt(numGens.getText()));
 		
@@ -253,7 +311,7 @@ public class GUI extends EvoPane {
 		parms.setGenotypeFrequency(Genotype.BB, BBfreq);
 		
 		
-		// Get evolutionary force flags
+		// Set evolutionary force flags
 		parms.setPopSizeChecked(popSizeCheck.isSelected());
 		parms.setSelectChecked(selectCheck.isSelected());
 		parms.setMutationChecked(mutationCheck.isSelected());
