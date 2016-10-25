@@ -1,183 +1,362 @@
 package gui;
 
-import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
+
+import importexport.ExportFormat;
+import shared.DataManager;
+import shared.EvolveDirector;
+import shared.Genotype;
+import shared.SessionParameters;
+
+
 
 /**
  * @author linneasahlberg
  * @author jasonfortunato
  * Started 9/18/16
  */
-public class GUI extends JPanel {
-	static final int TEXT_LEN_LONG = 8;
-	final static int TEXT_LEN_SHORT = 3;
-	
-	// we'll dump our input into this guy/object
+public class GUI extends EvoPane {
+
+	/**
+	 * Unsure if we should change this -Jason
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	// we'll put args here
 	shared.SessionParameters parms;
-	
-	// eventually delete this for real time inputs
+
 	JButton submit;
-	
-	GridBagConstraints c = new GridBagConstraints();
-	JLabel seedLabel;
+	JLabel numAllelesLabel;			// Number of Alleles
+	ButtonGroup numAlleles;
+	JRadioButton alleles2, alleles3;
+	JLabel seedLabel; 				// Seed
 	JTextField seedField;
-	JLabel popSizeLabel;
-	JTextField popSizeField;
-	JLabel popConstLabel;
-	ButtonGroup popConstGroup;
-	JRadioButton popConstTrue;
-	JRadioButton popConstFalse;
-	JLabel initPopLabel;
-	JTextField initPop;
-	JLabel carryCapLabel;
-	JTextField carryCap;
-	JLabel numGensLabel;
-	JTextField numGens;
-	JLabel postCrashLabel;
-	JTextField postCrash;
-	JLabel initFreqALabel;
+	JLabel initFreqALabel, initFreqBLabel,		// Initial frequencies
+		initFreqCLabel; 			
 	JTextField initFreqA;
-	JLabel calcFreqAA;
-	JLabel calcFreqAB;
-	JLabel calcFreqBB;
+	JLabel calcFreqAA, calcFreqAB, 
+		calcFreqBB;
+	JLabel calcFreqAC, calcFreqBC,
+		calcFreqCC;
+	JLabel numPopsLabel; 			// Number of Pops
+	JTextField numPops;	
+	JLabel numGensLabel; 			// Number of Gens
+	JTextField numGens;
 	
+	JCheckBox popSizeCheck;
+	JCheckBox selectCheck;
+	JCheckBox mutationCheck;
+	JCheckBox migrationCheck;
+	JCheckBox sexualSelectCheck;
+	
+	ArrayList<Component> numAllelesList = new ArrayList<Component>();
+	
+	/* Evolutionary Forces Panes *********************************************/
+	PopSizePane pp = new PopSizePane();
+	SelectionPane sp = new SelectionPane();
+	MutationPane mp = new MutationPane();
+	MigrationPane mip = new MigrationPane();
+	SexSelectPane ssp = new SexSelectPane();
+
 	
 	/** 
 	 * This is the panel that will be added to the window (the frame)
 	 */
 	public GUI() {
-		// our input will go in this guy/object <-- lowkey offensive
-		parms = new shared.SessionParameters();
 		
-		setLayout(new GridBagLayout());
-	
-		// seed stuff
+		super();
+		
+		
+		// add spacing
+//		c.insets = new Insets(5, 10, 5, 0);
+		
+		// left align
+		c.anchor = GridBagConstraints.WEST;
+		
+		/* num alleles stuff *****************************************************************************/
+		numAllelesLabel = new JLabel("Number of Alleles: ");
+		numAlleles = new ButtonGroup();
+		alleles2 = new JRadioButton("2");
+		alleles3 = new JRadioButton("3");
+		numAlleles.add(alleles2);
+		numAlleles.add(alleles3);
+		
+		c.gridx = 0; c.gridy = 1;
+		add(numAllelesLabel, c);
+		c.gridx = 1; c.gridy = 1;
+		add(alleles2, c);
+		c.gridx = 2; c.gridy = 1;
+		add(alleles3, c);
+		
+		
+		/* seed stuff *****************************************************************************/
 		seedLabel = new JLabel("Seed: ");
 		seedField = new JTextField(TEXT_LEN_LONG);
+		seedField.setName(INT);
+		seedField.setInputVerifier(iv);
 		
-		c.gridx = 999990; c.gridy = 0;
+		c.gridx = 4; c.gridy = 1;
+		c.anchor = GridBagConstraints.WEST;
 		add(seedLabel, c);		
-		c.gridx = 999999; c.gridy = 0;
+		c.gridx = 4; c.gridy = 1;
+		c.anchor = GridBagConstraints.EAST;
 		add(seedField, c);	
 		
-		// population size stuff
-		popSizeLabel = new JLabel("Population Size: ");
-		popSizeField = new JTextField(TEXT_LEN_LONG);
+		// num populations stuff **************************************************************/
+		numPopsLabel = new JLabel("Number of Populations: ");
+		numPops = new JTextField(TEXT_LEN_LONG);
+		numPops.setName(INT);
+		numPops.setInputVerifier(iv);
 		
-		c.gridx = 0; c.gridy = 10;
-		add(popSizeLabel, c);
-		c.gridx = 10; c.gridy = 10;
-		add(popSizeField, c);
-		
-		// population constant radio button stuff
-		popConstLabel = new JLabel("Population Size is: ");
-		popConstGroup = new ButtonGroup();
-		popConstTrue = new JRadioButton("Constant");
-		popConstFalse = new JRadioButton("Varying");
-		popConstGroup.add(popConstTrue);
-		popConstGroup.add(popConstFalse);
-		
-		c.gridx = 0; c.gridy = 20;
-		add(popConstLabel, c);
-		c.gridx = 10; c.gridy = 20;
-		add(popConstTrue, c);
-		c.gridx = 20; c.gridy = 20;
-		add(popConstFalse, c);
-		
-		// initial population stuff - appears when popSize varying
-		initPopLabel = new JLabel("Init Pop(if vary): ");
-		initPop = new JTextField(TEXT_LEN_LONG);
-		
-		c.gridx = 10; c.gridy = 30;
-		add(initPopLabel, c);
-		c.gridx = 20; c.gridy = 30;
-		add(initPop, c);
-		
-		// carrying capacity stuff - appears when popSize varying
-		carryCapLabel = new JLabel("Carry Cap(if vary): ");
-		carryCap = new JTextField(TEXT_LEN_LONG);
-		
-		c.gridx = 10; c.gridy = 40;
-		add(carryCapLabel, c);
-		c.gridx = 20; c.gridy = 40;
-		add(carryCap, c);
-		
-		// post crash population size stuff - appears when popSize varying
-		postCrashLabel = new JLabel("Post crash pop size(if vary): ");
-		postCrash = new JTextField(TEXT_LEN_LONG);
-		
-		c.gridx = 10; c.gridy = 50;
-		add(postCrashLabel, c);
-		c.gridx = 20; c.gridy = 50;
-		add(postCrash, c);
-		
-		// num generations stuff
+		c.gridx = 0; c.gridy = 2;
+		c.anchor = GridBagConstraints.EAST;
+		add(numPopsLabel, c);
+		c.gridx = 1; c.gridy = 2;
+		add(numPops, c);
+
+		// num generations stuff **************************************************************/
 		numGensLabel = new JLabel("Number of Generations: ");
 		numGens = new JTextField(TEXT_LEN_LONG);
+		numGens.setName(INT);
+		numGens.setInputVerifier(iv);
 		
-		c.gridx = 0; c.gridy = 60;
+		c.gridx = 0; c.gridy = 3;
+		c.anchor = GridBagConstraints.EAST;
 		add(numGensLabel, c);
-		c.gridx = 10; c.gridy = 60;
+		c.gridx = 1; c.gridy = 3;
 		add(numGens, c);
 		
-		// initial frequencies stuff
+		
+		/* initial frequencies stuff ***********************************************************/
 		initFreqALabel = new JLabel("Initial Frequency of Allele A: ");
 		initFreqA = new JTextField(TEXT_LEN_SHORT);
-		
-		c.gridx = 0; c.gridy = 70;
+		initFreqA.setName(RATE);
+		initFreqA.setInputVerifier(iv);
+
+		c.gridx = 0; c.gridy = 4;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.WEST;
 		add(initFreqALabel, c);
-		c.gridx = 10; c.gridy = 70;
+		
+		c.gridx = 1; c.gridy = 4;
+		c.anchor = GridBagConstraints.EAST;
+		c.gridwidth = 1;
 		add(initFreqA, c);
 		
-		calcFreqAA = new JLabel("AA: ");
-		calcFreqAB = new JLabel("AB: ");
-		calcFreqBB = new JLabel("BB: ");
-		c.gridx = 10; c.gridy = 80;
+		calcFreqAA = new JLabel("AA: ___");
+		calcFreqAB = new JLabel("AB: ___");
+		calcFreqBB = new JLabel("BB: ___");
+		calcFreqAC = new JLabel("AC: ___"); numAllelesList.add(calcFreqAC);
+		calcFreqBC = new JLabel("BC: ___"); numAllelesList.add(calcFreqBC);
+		calcFreqCC = new JLabel("CC: ___"); numAllelesList.add(calcFreqCC);
+		
+		//c.gridwidth = 2;
+		c.gridx = 1; c.gridy = 5;
+		c.anchor = GridBagConstraints.WEST;
 		add(calcFreqAA, c);
-		c.gridx = 20; c.gridy = 80;
+		c.gridx = 2; c.gridy = 5;
+		//c.anchor = GridBagConstraints.CENTER;
 		add(calcFreqAB, c);
-		c.gridx = 30; c.gridy = 80;
+		c.gridx = 3; c.gridy = 5;
+		//c.anchor = GridBagConstraints.EAST;
 		add(calcFreqBB, c);
 		
-		// **************submit button- to be deleted later ***************
-		submit = new JButton(">> Submit <<");
+		c.gridx = 4; c.gridy = 5;
+		//c.anchor = GridBagConstraints.CENTER;
+		add(calcFreqAC, c);
+		c.gridx = 5; c.gridy = 5;
+		//c.anchor = GridBagConstraints.CENTER;
+		add(calcFreqBC, c);
+		c.gridx = 6; c.gridy = 5;
+		//c.anchor = GridBagConstraints.EAST;
+		add(calcFreqCC, c);
+
 		
-		c.gridx = 999999; c.gridy = 999999;
-		add(submit, c);		
+		/* EVOLUTIONARY FORCES ***************************************************************/
+		JLabel evoForces = new JLabel("Select active evolutionary forces:");
 		
-		submit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				parms.setSeed(Integer.parseInt(seedField.getText()));
-				parms.setPopSize(Integer.parseInt(popSizeField.getText()));
-				
-				System.out.println(parms.getSeed());
-				System.out.println(parms.getPopSize());
+		popSizeCheck = new JCheckBox("Population Size", true);
+		popSizeCheck.setEnabled(false);
+		
+		selectCheck = new JCheckBox("Natural Selection", true);
+		selectCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				sp.setEnabled(selectCheck.isSelected());
+			}
+		});	
+		
+		mutationCheck = new JCheckBox("Mutation", true);
+		mutationCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				mp.setEnabled(mutationCheck.isSelected());
+			}
+		});
+
+		
+		migrationCheck = new JCheckBox("Migration", true);
+		migrationCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				mip.setEnabled(migrationCheck.isSelected());
 			}
 		});
 		
-	}
+		sexualSelectCheck = new JCheckBox("Non-Random Mating", true);
+		sexualSelectCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				ssp.setEnabled(sexualSelectCheck.isSelected());
+			}
+		});
+		
+		c.gridx = 0; c.gridy = 7;
+		c.gridwidth = 3;
+		c.anchor = GridBagConstraints.WEST;
+		add(evoForces, c);
+		c.gridx = 0; c.gridy = 9;
+		c.gridwidth = 1;
+		add(popSizeCheck, c);
+		c.gridx = 1; c.gridy = 9;
+		add(selectCheck, c);
+		c.gridx = 2; c.gridy = 9;
+		add(mutationCheck, c);
+		c.gridx = 3; c.gridy = 9;
+		add(migrationCheck, c);
+		c.gridx = 4; c.gridy = 9;
+		add(sexualSelectCheck, c);
+		
+		/* Panes ****************************************************************************/
+		c.gridwidth = 6;
+		c.gridx = 0; c.gridy = 10;
+		add(pp, c);
 
+		c.gridx = 0; c.gridy = 20;
+		add(sp, c);
+
+		c.gridx = 0; c.gridy = 30;
+		add(mp, c);
+		
+		c.gridx = 0; c.gridy = 40;
+		add(mip, c);
+		
+		c.gridx = 0; c.gridy = 50;
+		add(ssp, c);
+		
+		
+		/* submit button***********************************************************/
+		submit = new JButton(">> Submit <<");
+		
+		c.gridx = 5; c.gridy = 999999;
+		add(submit, c);		
+		
+		/* Action Listener ********************************************************/
+		
+		submit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				// Create a new, blank sesh parms object on each submit click 
+				parms = new shared.SessionParameters();
+
+				submitInfo(parms);
+
+			}
+		});
+	
+		// Set actions for the NumAlleles radio buttons
+		alleles2.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeNumAlleles(true);
+			}
+		});
+		
+		alleles3.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeNumAlleles(false);
+			}
+		});
+	}
+		
+		private void modeNumAlleles(boolean b){
+			for(Component comp : numAllelesList) {
+				comp.setEnabled(!b);
+			}
+		}
+
+
+	public void submitInfo(SessionParameters parms) {
+
+		// Set SessionParameters NOT from the GUI pane
+		parms.setNumPops(Integer.parseInt(numPops.getText()));
+		parms.setThreeAlleles(alleles3.isSelected());
+		parms.setSeed(Integer.parseInt(seedField.getText()));
+		parms.setNumGens(Integer.parseInt(numGens.getText()));
+		
+		// Set Allele freqs
+		double alleleAfreq = Double.parseDouble(initFreqA.getText());
+		double alleleBfreq = 1 - alleleAfreq;
+
+		double AAfreq = alleleAfreq * alleleAfreq;
+		double ABfreq = 2 * alleleAfreq * alleleBfreq;
+		double BBfreq = alleleBfreq * alleleBfreq;
+		
+		calcFreqAA.setText(String.format("%.4f", AAfreq));
+		calcFreqAB.setText(String.format("%.4f", ABfreq));
+		calcFreqBB.setText(String.format("%.4f", BBfreq));
+		
+		parms.setGenotypeFrequency(Genotype.AA, AAfreq);
+		parms.setGenotypeFrequency(Genotype.AB, ABfreq);
+		parms.setGenotypeFrequency(Genotype.BB, BBfreq);
+		
+		
+		// Set evolutionary force flags
+		parms.setPopSizeChecked(popSizeCheck.isSelected());
+		parms.setSelectChecked(selectCheck.isSelected());
+		parms.setMutationChecked(mutationCheck.isSelected());
+		parms.setMigrationChecked(migrationCheck.isSelected());
+		parms.setSexSelectChecked(sexualSelectCheck.isSelected());
+		
+
+		// Submit info from the EvoPanes if necessary
+		if(parms.isPopSizeChecked())
+			pp.submit(parms);
+		if(parms.isSelectChecked())
+			sp.submit(parms);
+		if(parms.isMutationChecked())
+			mp.submit(parms);
+		if(parms.isMigrationChecked())
+			mip.submit(parms);
+		if(parms.isSexSelectChecked())
+			ssp.submit(parms);
+		
+		// Link datamanger to sesh parms, run sim, export
+		DataManager.getInstance().setSessionParams(parms);
+		EvolveDirector.getInstance().runSimulation();
+		EvolveDirector.getInstance().export(ExportFormat.CSV);
+
+		
+	}
+	
 	public static void createAndShowGUI() {
 
-		//make the panel
-		GUI g = new GUI();
-		//g.setLayout(new GridBagLayout());
+		//make the GUI panel and add evo force panels to GUI
+		GUI g = new GUI();		
 		
 		//make the window
 		JFrame frame = new JFrame();
 		frame.setTitle("EVOLVE - v0.0");
 		//frame.setSize(800, 640);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 
-		// add the panel to the window
-		frame.add(g);
+		//add the GUI to a scrollable pane
+		JScrollPane scrPane = new JScrollPane(g);
+
+		// add the scrollable pane to the window
+		frame.add(scrPane);
 		frame.pack();
 		frame.setVisible(true);
-		//System.out.println("done");
-
 	}
 	
 	public static void main(String[] args) {

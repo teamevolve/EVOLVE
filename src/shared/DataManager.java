@@ -1,6 +1,8 @@
 package shared;
 
+import java.util.ArrayList;
 
+import simulation.Population;
 
 /**
  * DataManager is a mostly (possibly wholly) passive data structure used by 
@@ -33,11 +35,10 @@ public class DataManager {
 	 * Holds parameters input by user
 	 */
 	private SessionParameters sessionParams = null;
-	
-	
-	
-	/* ********************************************************************* */
-	
+	/**
+	 * Holds simulation data once simulation has completed
+	 */
+	private ArrayList<Population> simulationData = null;
 	
 	
 	/**
@@ -86,5 +87,90 @@ public class DataManager {
 	 */
 	public SessionParameters getSessionParams() {
 		return sessionParams;
+	}
+	
+	
+	/**
+	 * Mutator for simulationData. Allows storage of simulation data.
+	 * 
+	 * @param data simulation data to store
+	 */
+	public void setSimilulationData(ArrayList<Population> data) {
+		simulationData = data;
+	}
+	
+	
+	/**
+	 * Accessor for simulationData.
+	 * 
+	 * @return data generated during simulation
+	 */
+	public ArrayList<Population> getSimulationData() {
+		return simulationData;
+	}
+	
+	
+	/**
+	 * Takes input parameters, and calculates constants used throughout
+	 * the simulation.
+	 */
+	public void processSessionParams() {
+		calculateMutationRates();
+		calculateGenotypeFrequencies();
+		calculateRelativeFitness();
+	}
+	
+	
+	/**
+	 * Calculates genotype mutation rates based on allele mutation rates.
+	 */
+	private void calculateMutationRates() {
+		// Populate self mutation data
+		for (Allele a1 : Allele.getValues()) {
+			double total = 0;
+			for (Allele a2 : Allele.getValues()) {
+				if (a1 != a2)
+					total += sessionParams.getAlleleMutationRate(a1, a2);
+			}
+			sessionParams.setAlleleMutationRate(a1, a1, 1 - total);
+		}
+		
+		// Generate genotype mutation data
+		for (Genotype gt1 : Genotype.getValues()) {
+			for (Genotype gt2 : Genotype.getValues()) {
+				Allele a1_0 = gt1.getFirstAllele(), a1_1 = gt1.getSecondAllele();
+				Allele a2_0 = gt2.getFirstAllele(), a2_1 = gt1.getSecondAllele();
+				
+				if (a1_0 == a1_1 && a2_0 == a2_1)
+					sessionParams.setMutationRate(gt1, gt2, 
+							Math.pow(sessionParams.getAlleleMutationRate(a1_0, a2_0), 2));
+				else
+					sessionParams.setMutationRate(gt1, gt2, 
+							sessionParams.getAlleleMutationRate(a1_0, a2_0) * sessionParams.getAlleleMutationRate(a1_1, a2_1) +
+							sessionParams.getAlleleMutationRate(a1_0, a2_1) * sessionParams.getAlleleMutationRate(a1_1, a2_0));
+			}
+		}
+	}
+	
+	
+	/**
+	 * Calculates genotype frequencies from allele frequencies.
+	 */
+	private void calculateGenotypeFrequencies() {
+		for (Genotype gt : Genotype.getValues()) {
+			Allele a1 = gt.getFirstAllele(), a2 = gt.getSecondAllele();
+			sessionParams.setGenotypeFrequency(gt, 
+					sessionParams.getAlleleFrequency(a1) * 
+					sessionParams.getAlleleFrequency(a2) *
+					((a1 == a2) ? 1 : 2));
+		}
+	}
+	
+	
+	/**
+	 * Calculate relative fitness based on either absolute fitness or 
+	 * reproduction and survival.
+	 */
+	private void calculateRelativeFitness() {
 	}
 }

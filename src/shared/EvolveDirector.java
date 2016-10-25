@@ -1,5 +1,9 @@
 package shared;
 
+import importexport.ExportFormat;
+import importexport.ImportExportEngine;
+import simulation.SimulationEngine;
+
 /*
 import shared.SessionParameters;
 */
@@ -41,6 +45,15 @@ public class EvolveDirector {
 			instance = new EvolveDirector();
 		}
 		return instance;
+	}
+	
+	public void runSimulation(){
+		DataManager.getInstance().getSessionParams().setThreeAlleles(false);
+		SimulationEngine.getInstance().runSimulation();
+	}
+	
+	public void export(ExportFormat format) {
+		ImportExportEngine.getInstance().export(format);
 	}
 	
 	
