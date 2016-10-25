@@ -51,6 +51,7 @@ public class SelectionPane extends EvoPane {
 	
 	ArrayList<Component> rAndS = new ArrayList<Component>();
 	ArrayList<Component> absFit = new ArrayList<Component>();
+	ArrayList<Component> threeAllelesList = new ArrayList<Component>();
 		
 	public SelectionPane() {
 		
@@ -79,15 +80,15 @@ public class SelectionPane extends EvoPane {
 		reproAALabel = new JLabel("AA: "); rAndS.add(reproAALabel);
 		reproABLabel = new JLabel("AB: "); rAndS.add(reproABLabel);
 		reproBBLabel = new JLabel("BB: "); rAndS.add(reproBBLabel);
-		reproACLabel = new JLabel("AC: "); rAndS.add(reproACLabel); 
-		reproBCLabel = new JLabel("BC: "); rAndS.add(reproBCLabel);
-		reproCCLabel = new JLabel("CC: "); rAndS.add(reproCCLabel);
+		reproACLabel = new JLabel("AC: "); rAndS.add(reproACLabel); threeAllelesList.add(reproACLabel); 
+		reproBCLabel = new JLabel("BC: "); rAndS.add(reproBCLabel); threeAllelesList.add(reproBCLabel); 
+		reproCCLabel = new JLabel("CC: "); rAndS.add(reproCCLabel); threeAllelesList.add(reproCCLabel); 
 		reproAA = new JTextField(TEXT_LEN_LONG); rAndS.add(reproAA);
 		reproAB = new JTextField(TEXT_LEN_LONG); rAndS.add(reproAB);
 		reproBB = new JTextField(TEXT_LEN_LONG); rAndS.add(reproBB);
-		reproAC = new JTextField(TEXT_LEN_LONG); rAndS.add(reproAC);
-		reproBC = new JTextField(TEXT_LEN_LONG); rAndS.add(reproBC);
-		reproCC = new JTextField(TEXT_LEN_LONG); rAndS.add(reproCC);
+		reproAC = new JTextField(TEXT_LEN_LONG); rAndS.add(reproAC); threeAllelesList.add(reproAC); 
+		reproBC = new JTextField(TEXT_LEN_LONG); rAndS.add(reproBC); threeAllelesList.add(reproBC); 
+		reproCC = new JTextField(TEXT_LEN_LONG); rAndS.add(reproCC); threeAllelesList.add(reproCC); 
 
 		// set input verifier
 		reproAA.setName(ANY_DOUBLE_ZERO_TO_TEN); reproAA.setInputVerifier(iv);
@@ -121,14 +122,41 @@ public class SelectionPane extends EvoPane {
 		c.anchor = GridBagConstraints.CENTER;
 		add(reproBB, c);
 		
+		c.gridx = 4; c.gridy = 110;
+		c.anchor = GridBagConstraints.WEST;
+		add(reproACLabel, c);
+		c.gridx = 4; c.gridy = 110;
+		c.anchor = GridBagConstraints.CENTER;
+		add(reproAC, c);
+		
+		c.gridx = 5; c.gridy = 110;
+		c.anchor = GridBagConstraints.WEST;
+		add(reproBCLabel, c);
+		c.gridx = 5; c.gridy = 110;
+		c.anchor = GridBagConstraints.CENTER;
+		add(reproBC, c);
+		
+		c.gridx = 6; c.gridy = 110;
+		c.anchor = GridBagConstraints.WEST;
+		add(reproCCLabel, c);
+		c.gridx = 6; c.gridy = 110;
+		c.anchor = GridBagConstraints.CENTER;
+		add(reproCC, c);
+		
 		// Survival Rates (visible if Repro and Surv is selected)
 		survRateLabel = new JLabel("Survival Rates (0 to 1): "); rAndS.add(survRateLabel);
 		survAALabel = new JLabel("AA: "); rAndS.add(survAALabel);
 		survABLabel = new JLabel("AB: "); rAndS.add(survABLabel);
 		survBBLabel = new JLabel("BB: "); rAndS.add(survBBLabel);
+		survACLabel = new JLabel("AC: "); rAndS.add(survACLabel); threeAllelesList.add(survACLabel);
+		survBCLabel = new JLabel("BC: "); rAndS.add(survBCLabel); threeAllelesList.add(survBCLabel);
+		survCCLabel = new JLabel("CC: "); rAndS.add(survCCLabel); threeAllelesList.add(survCCLabel);
 		survAA = new JTextField(TEXT_LEN_SHORT); rAndS.add(survAA);
 		survAB = new JTextField(TEXT_LEN_SHORT); rAndS.add(survAB);
 		survBB = new JTextField(TEXT_LEN_SHORT); rAndS.add(survBB);
+		survAC = new JTextField(TEXT_LEN_SHORT); rAndS.add(survAC); threeAllelesList.add(survAC);
+		survBC = new JTextField(TEXT_LEN_SHORT); rAndS.add(survBC); threeAllelesList.add(survBC);
+		survCC = new JTextField(TEXT_LEN_SHORT); rAndS.add(survCC); threeAllelesList.add(survCC);
 		
 		// set input names for our verifier
 		survAA.setName(RATE); survAA.setInputVerifier(iv);
@@ -163,14 +191,41 @@ public class SelectionPane extends EvoPane {
 		c.anchor = GridBagConstraints.CENTER;
 		add(survBB, c);
 		
+		c.gridx = 4; c.gridy = 130;
+		c.anchor = GridBagConstraints.WEST;
+		add(survACLabel, c);
+		c.gridx = 4; c.gridy = 130;
+		c.anchor = GridBagConstraints.CENTER;
+		add(survAC, c);
+		
+		c.gridx = 5; c.gridy = 130;
+		c.anchor = GridBagConstraints.WEST;
+		add(survBCLabel, c);
+		c.gridx = 5; c.gridy = 130;
+		c.anchor = GridBagConstraints.CENTER;
+		add(survBC, c);
+		
+		c.gridx = 6; c.gridy = 130;
+		c.anchor = GridBagConstraints.WEST;
+		add(survCCLabel, c);
+		c.gridx = 6; c.gridy = 130;
+		c.anchor = GridBagConstraints.CENTER;
+		add(survCC, c);
+		
 		// Absolute Fitness Rates (any number)
 		absFitLabel = new JLabel("Absolute Fitness (any number): "); absFit.add(absFitLabel);
 		absFitAALabel = new JLabel("AA: "); absFit.add(absFitAALabel);
 		absFitABLabel = new JLabel("AB: "); absFit.add(absFitABLabel);
 		absFitBBLabel = new JLabel("BB: "); absFit.add(absFitBBLabel);
+		absFitACLabel = new JLabel("AC: "); absFit.add(absFitAALabel); threeAllelesList.add(absFitACLabel);
+		absFitBCLabel = new JLabel("BC: "); absFit.add(absFitABLabel); threeAllelesList.add(absFitBCLabel);
+		absFitCCLabel = new JLabel("CC: "); absFit.add(absFitBBLabel); threeAllelesList.add(absFitCCLabel);
 		absFitAA = new JTextField(TEXT_LEN_LONG); absFit.add(absFitAA);
 		absFitAB = new JTextField(TEXT_LEN_LONG); absFit.add(absFitAB);
 		absFitBB = new JTextField(TEXT_LEN_LONG); absFit.add(absFitBB);
+		absFitAC = new JTextField(TEXT_LEN_LONG); absFit.add(absFitAC); threeAllelesList.add(absFitAC);
+		absFitBC = new JTextField(TEXT_LEN_LONG); absFit.add(absFitBC); threeAllelesList.add(absFitBC);
+		absFitCC = new JTextField(TEXT_LEN_LONG); absFit.add(absFitCC); threeAllelesList.add(absFitCC);
 		
 		// set names for our input verifier
 		absFitAA.setName(ANY_NUMBER); absFitAA.setInputVerifier(iv);
@@ -205,11 +260,35 @@ public class SelectionPane extends EvoPane {
 		c.anchor = GridBagConstraints.CENTER;
 		add(absFitBB, c);
 		
+		c.gridx = 4; c.gridy = 150;
+		c.anchor = GridBagConstraints.WEST;
+		add(absFitACLabel, c);
+		c.gridx = 4; c.gridy = 150;
+		c.anchor = GridBagConstraints.CENTER;
+		add(absFitAC, c);
+		
+		c.gridx = 5; c.gridy = 150;
+		c.anchor = GridBagConstraints.WEST;
+		add(absFitBCLabel, c);
+		c.gridx = 5; c.gridy = 150;
+		c.anchor = GridBagConstraints.CENTER;
+		add(absFitBC, c);
+		
+		c.gridx = 6; c.gridy = 150;
+		c.anchor = GridBagConstraints.WEST;
+		add(absFitCCLabel, c);
+		c.gridx = 6; c.gridy = 150;
+		c.anchor = GridBagConstraints.CENTER;
+		add(absFitCC, c);
+		
 		// Relative Fitness Rates (display only, 0 to 1)
 		relFitLabel = new JLabel("Relative Fitness: ");
 		relFitAALabel = new JLabel("AA: ___");
 		relFitABLabel = new JLabel("AB: ___");
 		relFitBBLabel = new JLabel("BB: ___");
+		relFitACLabel = new JLabel("AC: ___"); threeAllelesList.add(relFitACLabel);
+		relFitBCLabel = new JLabel("BC: ___"); threeAllelesList.add(relFitBCLabel);
+		relFitCCLabel = new JLabel("CC: ___"); threeAllelesList.add(relFitCCLabel);
 		
 		c.gridx = 1; c.gridy = 160;
 		c.gridwidth = 2;
@@ -218,7 +297,7 @@ public class SelectionPane extends EvoPane {
 		
 		// add label then field x3
 		c.gridx = 1; c.gridy = 170;
-		c.gridwidth = 2;
+		c.gridwidth = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(relFitAALabel, c);
 	
@@ -229,6 +308,16 @@ public class SelectionPane extends EvoPane {
 //		c.gridx = 3; c.gridy = 170;
 		c.anchor = GridBagConstraints.EAST;
 		add(relFitBBLabel, c);
+		
+		c.gridx = 2;
+		c.anchor = GridBagConstraints.WEST;
+		add(relFitACLabel, c);
+		
+		c.anchor = GridBagConstraints.CENTER;
+		add(relFitBCLabel, c);
+		
+		c.anchor = GridBagConstraints.EAST;
+		add(relFitCCLabel, c);
 
 		// Set listeners for real-time disabling of fields
 		
