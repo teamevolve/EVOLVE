@@ -34,6 +34,8 @@ public abstract class EvoPane extends JPanel {
 	public OurInputVerifier iv = new OurInputVerifier();
 	
 	private boolean enabled;
+	private boolean helpMode;
+	
 	
 	EvoPane() {
 		super();
@@ -41,8 +43,8 @@ public abstract class EvoPane extends JPanel {
 		Font font = dummy.getFont();
 		boldFont = new Font(font.getFontName(), Font.BOLD, font.getSize());
 		
-		
 		enabled = true;
+		setHelpMode(false);
 		
 		// set layout
 		setLayout(new GridBagLayout());
@@ -72,5 +74,18 @@ public abstract class EvoPane extends JPanel {
 	public boolean getEnabled() {
 		return enabled;
 	}
+
+
+	public boolean isHelpMode() {
+		return helpMode;
+	}
+
+
+	public void setHelpMode(boolean helpMode) {
+		this.helpMode = helpMode;
+	}
+	
+	// Each pane must implement this
+	public abstract void flavorTextMode(boolean enabled);
 	
 }
