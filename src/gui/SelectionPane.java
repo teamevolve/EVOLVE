@@ -53,7 +53,6 @@ public class SelectionPane extends EvoPane {
 	
 	ArrayList<Component> rAndS = new ArrayList<Component>();
 	ArrayList<Component> absFit = new ArrayList<Component>();
-	ArrayList<Component> threeAllelesList = new ArrayList<Component>();
 		
 	public SelectionPane() {
 		
@@ -315,27 +314,8 @@ public class SelectionPane extends EvoPane {
 		c.gridx = 1; c.gridy = 170;
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.WEST;
-//		add(relFitAALabel, c);
 		add(relFitPanel, c);
-/*		
-//		c.gridx = 2; c.gridy = 170;
-		c.anchor = GridBagConstraints.CENTER;
-		add(relFitABLabel, c);
-		
-//		c.gridx = 3; c.gridy = 170;
-		c.anchor = GridBagConstraints.EAST;
-		add(relFitBBLabel, c);
-		
-		c.gridx = 2;
-		c.anchor = GridBagConstraints.WEST;
-		add(relFitACLabel, c);
-		
-		c.anchor = GridBagConstraints.CENTER;
-		add(relFitBCLabel, c);
-		
-		c.anchor = GridBagConstraints.EAST;
-		add(relFitCCLabel, c);
-*/
+
 		// Set to two allele mode on start up
 		modeThreeAlleles(false);
 		
@@ -372,12 +352,6 @@ public class SelectionPane extends EvoPane {
 		}
 		else if (selectAbs.isSelected() && enabled == true){
 			modeRandS(false);
-		}
-	}
-	
-	public void modeThreeAlleles(boolean b){
-		for(Component comp : threeAllelesList) {
-			comp.setEnabled(b);
 		}
 	}
 	

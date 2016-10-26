@@ -305,11 +305,10 @@ public class GUI extends EvoPane {
 		});
 	}
 		
-	private void modeThreeAlleles(boolean b){
-		for(Component comp : numAllelesList) {
-			comp.setEnabled(b);
-		}
+	public void modeThreeAlleles(boolean b){
+		super.modeThreeAlleles(b);
 		sp.modeThreeAlleles(b);
+		ssp.modeThreeAlleles(b);
 	}
 
 

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -36,6 +37,7 @@ public abstract class EvoPane extends JPanel {
 	private boolean enabled;
 	private boolean helpMode;
 	
+	public ArrayList<Component> threeAllelesList = new ArrayList<Component>();
 	
 	EvoPane() {
 		super();
@@ -84,6 +86,15 @@ public abstract class EvoPane extends JPanel {
 	public void setHelpMode(boolean helpMode) {
 		this.helpMode = helpMode;
 	}
+	
+	
+	public void modeThreeAlleles(boolean b){
+		for(Component comp : this.threeAllelesList) {
+//			comp.setEnabled(b);
+			comp.setVisible(b);
+		}
+	}
+
 	
 	// Each pane must implement this
 //	public abstract void flavorTextMode(boolean enabled);
