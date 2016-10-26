@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -34,29 +37,34 @@ public class MigrationPane extends EvoPane {
 	JLabel fixedMigRateLabel;
 	JTextField fixedMigRate;
 	JLabel varMigRateLabel;
-	JLabel varMigRateAALabel, varMigRateABLabel, varMigRateBBLabel;
-	JTextField varMigRateAA, varMigRateAB, varMigRateBB;
+	JLabel varMigRateAALabel, varMigRateABLabel, varMigRateBBLabel,
+		varMigRateACLabel, varMigRateBCLabel, varMigRateCCLabel;
+	JTextField varMigRateAA, varMigRateAB, varMigRateBB,
+		varMigRateAC, varMigRateBC, varMigRateCC;
 	
 	ArrayList<Component> fixedList = new ArrayList<Component>();
 	ArrayList<Component> varyList = new ArrayList<Component>();
+	
+	ArrayList<Component> labels = new ArrayList<Component>();
+	ArrayList<Component> fields = new ArrayList<Component>();
 	
 	public MigrationPane() {
 		
 		// Migration radio buttons
 		migLabel = new JLabel("Migration: ");
 		migGroup = new ButtonGroup();
-		fixedMig = new JRadioButton("Fixed");
+		fixedMig = new JRadioButton("Universal Proportion");
 		varMig = new JRadioButton("Varies by Genotype");
 		migGroup.add(fixedMig);
 		migGroup.add(varMig);
 		
-		c.gridx = 0; c.gridy = 200;
+		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(migLabel, c);
-		c.gridx = 0; c.gridy = 200;
-		c.anchor = GridBagConstraints.EAST;
+		c.gridx = 1; c.gridy = 1;
+		c.anchor = GridBagConstraints.WEST;
 		add(fixedMig, c);
-		c.gridx = 1; c.gridy = 200;
+		c.gridx = 2; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(varMig, c);
 				
@@ -66,66 +74,56 @@ public class MigrationPane extends EvoPane {
 		
 		fixedMigRate.setName(RATE); fixedMigRate.setInputVerifier(iv);
 		
-		c.gridx = 1; c.gridy = 210;
+		c.gridx = 1; c.gridy = 2;
 		c.anchor = GridBagConstraints.WEST;
 		add(fixedMigRateLabel, c);
-		c.gridx = 1; c.gridy = 210;
+		c.gridx = 1; c.gridy = 2;
 		c.anchor = GridBagConstraints.EAST;
 		add(fixedMigRate, c);
 			
 		// Migration Rates by genotype - if varies
 		varMigRateLabel = new JLabel("Migration Rate (by genotype): ");
-		varMigRateAALabel = new JLabel("AA: ");
-		varMigRateABLabel = new JLabel("AB: ");
-		varMigRateBBLabel = new JLabel("BB: ");
+		varMigRateAALabel = new JLabel("AA");
+		varMigRateABLabel = new JLabel("AB");
+		varMigRateBBLabel = new JLabel("BB");
+		varMigRateACLabel = new JLabel("AC"); threeAllelesList.add(varMigRateACLabel);
+		varMigRateBCLabel = new JLabel("BC"); threeAllelesList.add(varMigRateBCLabel);
+		varMigRateCCLabel = new JLabel("CC"); threeAllelesList.add(varMigRateCCLabel);
 		varMigRateAA = new JTextField(TEXT_LEN_SHORT);
 		varMigRateAB = new JTextField(TEXT_LEN_SHORT);
 		varMigRateBB = new JTextField(TEXT_LEN_SHORT);
+		varMigRateAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateAC);
+		varMigRateBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateBC);
+		varMigRateCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateCC);
 
 		varMigRateAA.setName(RATE); varMigRateAA.setInputVerifier(iv);
 		varMigRateAB.setName(RATE); varMigRateAB.setInputVerifier(iv);
 		varMigRateBB.setName(RATE); varMigRateBB.setInputVerifier(iv);
 		
-		c.gridwidth = 3;
-		c.gridx = 1; c.gridy = 220;
-		c.anchor = GridBagConstraints.WEST;
-		add(varMigRateLabel, c);
-			
-		// add label then field x3
-		c.gridx = 1; c.gridy = 230;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.WEST;
-		add(varMigRateAALabel, c);
-		c.gridx = 1; c.gridy = 230;
-		c.anchor = GridBagConstraints.CENTER;
-		add(varMigRateAA, c);
-			
-		c.gridx = 2; c.gridy = 230;
-		c.anchor = GridBagConstraints.WEST;
-		add(varMigRateABLabel, c);
-		c.gridx = 2; c.gridy = 230;
-		c.anchor = GridBagConstraints.CENTER;
-		add(varMigRateAB, c);
-			
-		c.gridx = 3; c.gridy = 230;
-		c.anchor = GridBagConstraints.WEST;
-		add(varMigRateBBLabel, c);
-		c.gridx = 3; c.gridy = 230;
-		c.anchor = GridBagConstraints.CENTER;
-		add(varMigRateBB, c);
+		JPanel table = new JPanel();
+		table.setLayout(new GridBagLayout());
+		GridBagConstraints t = new GridBagConstraints();
+		t.insets = new Insets(0, 0, 3, 15);
 		
-		//add fixed elements to fixedList
-		fixedList.add(fixedMigRateLabel);
-		fixedList.add(fixedMigRate);
+		addToLists();
 		
-		//add vary-by-genotype to varyList
-		varyList.add(varMigRateLabel);
-		varyList.add(varMigRateAALabel);
-		varyList.add(varMigRateABLabel);
-		varyList.add(varMigRateBBLabel);
-		varyList.add(varMigRateAA);
-		varyList.add(varMigRateAB);
-		varyList.add(varMigRateBB);
+		int i = 0;
+		for (Component comp : labels) {
+			t.gridx = i; i++;
+			table.add(comp, t);
+		}
+		
+		t.gridy = 1;
+		i = 0;
+		for (Component comp : fields) {
+			t.gridx = i; i++;
+			table.add(comp, t);
+		}
+		
+		c.gridx = 1; c.gridy = 3;
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.WEST;
+		add(table, c);
 
 		// grey out all the elements-- prevents submit w.o radio button selected
 		for(Component c : fixedList) {
@@ -174,6 +172,45 @@ public class MigrationPane extends EvoPane {
 			p.setMigrationRate(Genotype.BB, Double.parseDouble(varMigRateBB.getText()));
 		}	
 	
+	}
+	
+	private void addToLists() {
+		
+		//add fixed elements to fixedList
+		fixedList.add(fixedMigRateLabel);
+		fixedList.add(fixedMigRate);
+		
+		//add vary-by-genotype to varyList
+		varyList.add(varMigRateLabel);
+		varyList.add(varMigRateAALabel);
+		varyList.add(varMigRateABLabel);
+		varyList.add(varMigRateBBLabel);
+		varyList.add(varMigRateACLabel);
+		varyList.add(varMigRateBCLabel);
+		varyList.add(varMigRateCCLabel);
+		
+		varyList.add(varMigRateAA);
+		varyList.add(varMigRateAB);
+		varyList.add(varMigRateBB);
+		varyList.add(varMigRateAC);
+		varyList.add(varMigRateBC);
+		varyList.add(varMigRateCC);
+		
+		// panel of migration labels and rates
+		labels.add(varMigRateAALabel); 
+		labels.add(varMigRateABLabel); 
+		labels.add(varMigRateBBLabel);
+		labels.add(varMigRateACLabel);
+		labels.add(varMigRateBCLabel);
+		labels.add(varMigRateCCLabel);
+		
+		fields.add(varMigRateAA);
+		fields.add(varMigRateAB);
+		fields.add(varMigRateBB);
+		fields.add(varMigRateAC);
+		fields.add(varMigRateBC);
+		fields.add(varMigRateCC);
+		
 	}
 	
 	@Override

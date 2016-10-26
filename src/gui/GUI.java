@@ -308,6 +308,7 @@ public class GUI extends EvoPane {
 	public void modeThreeAlleles(boolean b){
 		super.modeThreeAlleles(b);
 		sp.modeThreeAlleles(b);
+		mip.modeThreeAlleles(b);
 		ssp.modeThreeAlleles(b);
 	}
 

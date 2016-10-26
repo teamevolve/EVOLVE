@@ -109,9 +109,6 @@ public class SexSelectPane extends EvoPane {
 		GridBagConstraints t = new GridBagConstraints(); // t for temp constraints
 		t.insets = new Insets(0, 0, 3, 15);
 
-		System.out.println(labels.size());
-		
-
 		int k = 1; 
 		t.gridx = 0;
 		t.gridy = 1;
@@ -148,7 +145,7 @@ public class SexSelectPane extends EvoPane {
 		c.gridx = 1; c.gridy = 2;
 		c.anchor = GridBagConstraints.WEST;
 		c.gridwidth = 6;
-		AAPrefLabel.setFont(boldFont);
+		//AAPrefLabel.setFont(boldFont);
 		add(table, c);
 
 	}
