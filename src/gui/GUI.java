@@ -17,6 +17,8 @@ import shared.SessionParameters;
 /**
  * @author linneasahlberg
  * @author jasonfortunato
+ * @author richwenner
+ * 
  * Started 9/18/16
  */
 public class GUI extends EvoPane {
@@ -31,6 +33,7 @@ public class GUI extends EvoPane {
 	shared.SessionParameters parms;
 
 	JButton submit;
+	JToggleButton help;
 	JLabel numAllelesLabel;			// Number of Alleles
 	ButtonGroup numAlleles;
 	JRadioButton alleles2, alleles3;
@@ -62,7 +65,8 @@ public class GUI extends EvoPane {
 	MutationPane mp = new MutationPane();
 	MigrationPane mip = new MigrationPane();
 	SexSelectPane ssp = new SexSelectPane();
-
+	
+	ArrayList<EvoPane> forces = new ArrayList<EvoPane>();
 	
 	/** 
 	 * This is the panel that will be added to the window (the frame)
@@ -106,8 +110,14 @@ public class GUI extends EvoPane {
 		c.gridx = 4; c.gridy = 1;
 		c.anchor = GridBagConstraints.EAST;
 		add(seedField, c);	
+
+		/* help stuff *****************************************************************************/
+		help = new JToggleButton(">> Help!? <<");
+		c.gridx = 5; c.gridy = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		add(help, c);
 		
-		// num populations stuff **************************************************************/
+		/* num populations stuff **************************************************************/
 		numPopsLabel = new JLabel("Number of Populations: ");
 		numPops = new JTextField(TEXT_LEN_LONG);
 		numPops.setName(INT);
@@ -252,7 +262,7 @@ public class GUI extends EvoPane {
 		c.gridx = 5; c.gridy = 999999;
 		add(submit, c);		
 		
-		/* Action Listener ********************************************************/
+		/* Action Listeners ********************************************************/
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -264,7 +274,20 @@ public class GUI extends EvoPane {
 
 			}
 		});
-	
+
+/*		help.addActionListener(new ActionListener() {              // HELP MODE !@#@!@!#@!!@##@!!@#
+			public void actionPerformed(ActionEvent e) {
+				
+				setHelpMode(help.isSelected());
+				this.flavorTextMode(help.isSelected());
+				for(EvoPane pane : forces) {
+					pane.setHelpMode(help.isSelected());
+					pane.flavorTextMode(help.isSelected());
+				}
+				
+			}
+		}); */
+		
 		// Set actions for the NumAlleles radio buttons
 		alleles2.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -357,6 +380,18 @@ public class GUI extends EvoPane {
 		frame.add(scrPane);
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	/**
+	 * Set up clear panes that are clickable over the GUI 
+	 */
+	public void flavorTextMode(boolean enabled) {
+		if(enabled) {
+			
+		}
+		else {
+			
+		}
 	}
 	
 	public static void main(String[] args) {
