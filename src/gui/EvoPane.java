@@ -86,6 +86,6 @@ public abstract class EvoPane extends JPanel {
 	}
 	
 	// Each pane must implement this
-	public abstract void flavorTextMode(boolean enabled);
+//	public abstract void flavorTextMode(boolean enabled);
 	
 }
