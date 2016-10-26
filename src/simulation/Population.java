@@ -238,7 +238,7 @@ public class Population {
 		int numSurvived, subPopulation;
 		int totalAdults = 0; 
 		double crash;
-		int deaths = 0;
+		//int deaths = 0;
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
 
 

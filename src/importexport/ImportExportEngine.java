@@ -44,7 +44,7 @@ public class ImportExportEngine {
 	 * 
 	 * @param format format to export to
 	 */
-	public static void export(ExportFormat format) {
+	public void export(ExportFormat format) {
 		ExportManager.getInstance().exportTo(format);
 	}
 
