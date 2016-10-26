@@ -85,7 +85,7 @@ public class GUI extends EvoPane {
 		/* num alleles stuff *****************************************************************************/
 		numAllelesLabel = new JLabel("Number of Alleles: ");
 		numAlleles = new ButtonGroup();
-		alleles2 = new JRadioButton("2");
+		alleles2 = new JRadioButton("2", true);
 		alleles3 = new JRadioButton("3");
 		numAlleles.add(alleles2);
 		numAlleles.add(alleles3);
@@ -113,7 +113,7 @@ public class GUI extends EvoPane {
 
 		/* help stuff *****************************************************************************/
 		help = new JToggleButton(">> Help!? <<");
-		c.gridx = 5; c.gridy = 1;
+		c.gridx = 6; c.gridy = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		add(help, c);
 		
@@ -239,7 +239,7 @@ public class GUI extends EvoPane {
 		add(sexualSelectCheck, c);
 		
 		/* Panes ****************************************************************************/
-		c.gridwidth = 6;
+		c.gridwidth = 7;
 		c.gridx = 0; c.gridy = 10;
 		add(pp, c);
 
@@ -259,8 +259,11 @@ public class GUI extends EvoPane {
 		/* submit button***********************************************************/
 		submit = new JButton(">> Submit <<");
 		
-		c.gridx = 5; c.gridy = 999999;
+		c.gridx = 6; c.gridy = 999999;
 		add(submit, c);		
+		
+		/* Set to 2 alleles mode on startup ***************************************/
+		modeThreeAlleles(false);
 		
 		/* Action Listeners ********************************************************/
 		
@@ -291,22 +294,23 @@ public class GUI extends EvoPane {
 		// Set actions for the NumAlleles radio buttons
 		alleles2.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				modeNumAlleles(true);
+				modeThreeAlleles(false);
 			}
 		});
 		
 		alleles3.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				modeNumAlleles(false);
+				modeThreeAlleles(true);
 			}
 		});
 	}
 		
-		private void modeNumAlleles(boolean b){
-			for(Component comp : numAllelesList) {
-				comp.setEnabled(!b);
-			}
+	private void modeThreeAlleles(boolean b){
+		for(Component comp : numAllelesList) {
+			comp.setEnabled(b);
 		}
+		sp.modeThreeAlleles(b);
+	}
 
 
 	public void submitInfo(SessionParameters parms) {

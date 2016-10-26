@@ -1,13 +1,9 @@
 package gui;
 
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import shared.Genotype;
@@ -20,6 +16,7 @@ import shared.Genotype;
  */
 
 public class SexSelectPane extends EvoPane {
+	
 	static final int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 3;
 	
@@ -34,7 +31,7 @@ public class SexSelectPane extends EvoPane {
 	
 	
 	public SexSelectPane() {
-		mateFreqLabel = new JLabel("Mating Frequencies: ");
+		mateFreqLabel = new JLabel("Sexual Selection (Mating Preference): ");
 		AAPrefLabel = new JLabel("% AA Preference for:");
 		freqAAxAALabel = new JLabel("AA: ");
 		freqAAxABLabel = new JLabel("AB: ");
@@ -50,20 +47,24 @@ public class SexSelectPane extends EvoPane {
 		freqAAxAA = new JTextField(TEXT_LEN_SHORT);
 		freqAAxAB = new JTextField(TEXT_LEN_SHORT);
 		freqAAxBB = new JTextField(TEXT_LEN_SHORT);
+
 		freqABxAA = new JTextField(TEXT_LEN_SHORT);
 		freqABxAB = new JTextField(TEXT_LEN_SHORT);
 		freqABxBB = new JTextField(TEXT_LEN_SHORT);
+
 		freqBBxAA = new JTextField(TEXT_LEN_SHORT);
 		freqBBxAB = new JTextField(TEXT_LEN_SHORT);
 		freqBBxBB = new JTextField(TEXT_LEN_SHORT);
 			
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
+		c.gridwidth = 3;
 		add(mateFreqLabel, c);
 			
 		//AA x __
 		c.gridx = 1; c.gridy = 2;
 		c.anchor = GridBagConstraints.WEST;
+		c.gridwidth = 1;
 		AAPrefLabel.setFont(boldFont);
 		add(AAPrefLabel, c);
 		

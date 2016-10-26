@@ -3,12 +3,14 @@ package gui;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -290,17 +292,32 @@ public class SelectionPane extends EvoPane {
 		relFitBCLabel = new JLabel("BC: ___"); threeAllelesList.add(relFitBCLabel);
 		relFitCCLabel = new JLabel("CC: ___"); threeAllelesList.add(relFitCCLabel);
 		
+		
+		
 		c.gridx = 1; c.gridy = 160;
-		c.gridwidth = 2;
+		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.WEST;
 		add(relFitLabel, c);
+
+		JPanel relFitPanel = new JPanel();
+		relFitPanel.setLayout(new GridBagLayout());
+		GridBagConstraints tempCons = new GridBagConstraints();				
+		tempCons.insets = new Insets(0, 0, 0, 15);
+
+		relFitPanel.add(relFitAALabel, tempCons); 
+		relFitPanel.add(relFitABLabel, tempCons); 
+		relFitPanel.add(relFitBBLabel, tempCons);
+		relFitPanel.add(relFitACLabel, tempCons);
+		relFitPanel.add(relFitBCLabel, tempCons);
+		relFitPanel.add(relFitCCLabel, tempCons);
 		
 		// add label then field x3
 		c.gridx = 1; c.gridy = 170;
-		c.gridwidth = 1;
+		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.WEST;
-		add(relFitAALabel, c);
-	
+//		add(relFitAALabel, c);
+		add(relFitPanel, c);
+/*		
 //		c.gridx = 2; c.gridy = 170;
 		c.anchor = GridBagConstraints.CENTER;
 		add(relFitABLabel, c);
@@ -318,7 +335,10 @@ public class SelectionPane extends EvoPane {
 		
 		c.anchor = GridBagConstraints.EAST;
 		add(relFitCCLabel, c);
-
+*/
+		// Set to two allele mode on start up
+		modeThreeAlleles(false);
+		
 		// Set listeners for real-time disabling of fields
 		
 		selectRandS.addItemListener(new ItemListener() {
@@ -352,6 +372,12 @@ public class SelectionPane extends EvoPane {
 		}
 		else if (selectAbs.isSelected() && enabled == true){
 			modeRandS(false);
+		}
+	}
+	
+	public void modeThreeAlleles(boolean b){
+		for(Component comp : threeAllelesList) {
+			comp.setEnabled(b);
 		}
 	}
 	
