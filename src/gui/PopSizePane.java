@@ -21,123 +21,79 @@ import java.util.ArrayList;
  */
 public class PopSizePane extends EvoPane {
 
-	JLabel popSizeLabel;			// Population size
-	JTextField popSizeField;
-	JLabel popConstLabel;			// Population constant
-	ButtonGroup popConstGroup;
-	JRadioButton popConstTrue;
-	JRadioButton popConstFalse;
+	JLabel popLabel;			// Population size
+	//JTextField popSizeField;
+	ButtonGroup initPopVals;
+	JRadioButton alleleFreqs;
+	JRadioButton genotypeNums;
 	JLabel initPopLabel;  			// Initial population
 	JTextField initPop;
-	JLabel carryCapLabel;			// Carrying Capacity
-	JTextField carryCap;
-	JLabel postCrashLabel; 			// Crash
-	JTextField postCrash;
 
-	ArrayList<Component> vPopList = new ArrayList<Component>();
+	ArrayList<Component> alleleFreqsList = new ArrayList<Component>();
 	
 	public PopSizePane() {
 
 		super();
 		
-		popSizeLabel = new JLabel("Initial Population Size: ");
-		popSizeField = new JTextField(TEXT_LEN_LONG);
+		popLabel = new JLabel("Initial Population: ");
+		//popSizeField = new JTextField(TEXT_LEN_LONG);
 		
-		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
+		//popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
 		
 		c.gridx = 0; c.gridy = 10;
 		c.anchor = GridBagConstraints.WEST;
-		add(popSizeLabel, c);
+		add(popLabel, c);
+		/*
 		c.gridx = 1; c.gridy = 10;
-		add(popSizeField, c);
+		add(popSizeField, c);*/
 		
 		// population constant radio button stuff
-		popConstLabel = new JLabel("Population Size is: ");
-		popConstGroup = new ButtonGroup();
-		popConstTrue = new JRadioButton("Constant");
-		popConstFalse = new JRadioButton("Varying");
-		popConstGroup.add(popConstTrue);
-		popConstGroup.add(popConstFalse);
+		initPopVals = new ButtonGroup();
+		alleleFreqs = new JRadioButton("Enter Allele Frequncies");
+		genotypeNums = new JRadioButton("Enter Genotype Numbers");
+		initPopVals.add(alleleFreqs);
+		initPopVals.add(genotypeNums);
 		
-		c.gridx = 0; c.gridy = 20;
-		add(popConstLabel, c);
-		c.gridx = 1; c.gridy = 20;
-		add(popConstTrue, c);
-		c.gridx = 2; c.gridy = 20;
-		add(popConstFalse, c);	
+		c.gridx = 1; c.gridy = 10;
+		add(alleleFreqs, c);
+		c.gridx = 2; c.gridy = 10;
+		add(genotypeNums, c);	
 
-		// carrying capacity stuff - appears when popSize varying
-		carryCapLabel = new JLabel("Carrying Capacity: "); 
-		carryCap = new JTextField(TEXT_LEN_LONG);
-
-		carryCap.setName(INT); carryCap.setInputVerifier(iv);
-		
-		c.gridx = 1; c.gridy = 40;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.WEST;
-		add(carryCapLabel, c);
-		c.gridx = 2; c.gridy = 40;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(carryCap, c);
-		c.ipadx = 0;
-
-		// post crash population size stuff - appears when popSize varying
-		postCrashLabel = new JLabel("Post Crash Population Size: ");
-		postCrash = new JTextField(TEXT_LEN_LONG);
-		
-		postCrash.setName(INT); postCrash.setInputVerifier(iv);
-
-		c.gridx = 1; c.gridy = 50;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.WEST;
-		add(postCrashLabel, c);
-		c.gridx = 2; c.gridy = 50;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		//c.ipadx = -55;
-		add(postCrash, c);
-		c.ipadx = 0;
-		
-		// Add all that will be disabled when PopSize is constant to the vPopList
-		vPopList.add(carryCapLabel);
-		vPopList.add(carryCap);
-		vPopList.add(postCrashLabel);
-		vPopList.add(postCrash);
-		
 		// Set actions for the PopConstTrue/False radio buttons
-		popConstTrue.addItemListener(new ItemListener() {
+		alleleFreqs.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				modeConstPop(true);
+				modeAlleleFreqs(true);
 			}
 		});
 		
-		popConstFalse.addItemListener(new ItemListener() {
+		genotypeNums.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				modeConstPop(false);
+				modeAlleleFreqs(false);
 			}
 		});
 		
 		}
 	
-		private void modeConstPop(boolean b){
-			for(Component comp : vPopList) {
-				comp.setEnabled(!b);
+		private void modeAlleleFreqs(boolean b){
+			for(Component comp : alleleFreqsList) {
+				comp.setEnabled(b);
 			}
-			if(b == true) { // clear the two text fields
+		/*	if(b == true) { // clear the two text fields
 				carryCap.setText("");
 				postCrash.setText("");
 			}
+		*/
 		}
 
 		public void submit(shared.SessionParameters p) {
-			
-			p.setPopSize(Integer.parseInt(popSizeField.getText()));
+			System.out.println("hi");
+		/*	
+		p.setPopSize(Integer.parseInt(popSizeField.getText()));
 			p.setPopConst(popConstTrue.isSelected());
 			if(popConstFalse.isSelected()){
 				p.setPopCapacity(Integer.parseInt(carryCap.getText()));
 				p.setCrashCapacity(Integer.parseInt(postCrash.getText()));
+			*/
 			}
-		}	
+		}
 	
-}
