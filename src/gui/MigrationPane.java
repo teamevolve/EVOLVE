@@ -53,7 +53,7 @@ public class MigrationPane extends EvoPane {
 		// Migration radio buttons
 		migLabel = new JLabel("Migration: ");
 		migGroup = new ButtonGroup();
-		fixedMig = new JRadioButton("Universal Proportion");
+		fixedMig = new JRadioButton("Universal Proportion", true);
 		varMig = new JRadioButton("Varies by Genotype");
 		migGroup.add(fixedMig);
 		migGroup.add(varMig);
@@ -127,7 +127,7 @@ public class MigrationPane extends EvoPane {
 
 		// grey out all the elements-- prevents submit w.o radio button selected
 		for(Component c : fixedList) {
-			c.setEnabled(false);
+			c.setEnabled(true);
 		}
 		for(Component c : varyList) {
 			c.setEnabled(false);

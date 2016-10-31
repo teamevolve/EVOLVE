@@ -22,7 +22,7 @@ import shared.Genotype;
  */
 
 public class SexSelectPane extends EvoPane {
-	
+
 	static final int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 3;
 	
@@ -45,6 +45,7 @@ public class SexSelectPane extends EvoPane {
 
 	
 	public SexSelectPane() {
+		super();
 		mateFreqLabel = new JLabel("Sexual Selection (Mating Preference): ");
 		AAPrefLabel = new JLabel("% AA Preference for: ");
 		ABPrefLabel = new JLabel("% AB Preference for: ");

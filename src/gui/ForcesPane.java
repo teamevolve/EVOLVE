@@ -13,11 +13,27 @@ import shared.Genotype;
 import shared.SessionParameters;
 
 public class ForcesPane extends EvoPane {
+	JLabel seedLabel; 				// Seed
+	JTextField seedField;
 	JLabel numAllelesLabel;			// Number of Alleles
 	ButtonGroup numAlleles;
-	JRadioButton alleles2, alleles3;
+	static JRadioButton alleles2, alleles3;
 	
 	public ForcesPane() {
+		super();
+		/* seed stuff *****************************************************************************/
+		seedLabel = new JLabel("Seed: ");
+		seedField = new JTextField(TEXT_LEN_LONG);
+		seedField.setName(INT);
+		seedField.setInputVerifier(iv);
+		
+		c.gridx = 4; c.gridy = 1;
+		c.anchor = GridBagConstraints.WEST;
+		add(seedLabel, c);		
+		c.gridx = 4; c.gridy = 1;
+		c.anchor = GridBagConstraints.EAST;
+		add(seedField, c);	
+		
 		/* num alleles stuff *****************************************************************************/
 		numAllelesLabel = new JLabel("Number of Alleles: ");
 		numAlleles = new ButtonGroup();
@@ -32,22 +48,10 @@ public class ForcesPane extends EvoPane {
 		add(alleles2, c);
 		c.gridx = 2; c.gridy = 1;
 		add(alleles3, c);
-		
-		// Set actions for the NumAlleles radio buttons
-		alleles2.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				modeThreeAlleles(false);
-			}
-		});
-		
-		alleles3.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				modeThreeAlleles(true);
-			}
-		});
 	}
 	
 	void submit (shared.SessionParameters p) {
 		p.setThreeAlleles(alleles3.isSelected());
+		p.setSeed(Integer.parseInt(seedField.getText()));
 	}
 }

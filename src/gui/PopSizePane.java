@@ -49,7 +49,7 @@ public class PopSizePane extends EvoPane {
 		
 		// population constant radio button stuff
 		initPopVals = new ButtonGroup();
-		alleleFreqs = new JRadioButton("Enter Allele Frequncies");
+		alleleFreqs = new JRadioButton("Enter Allele Frequncies", true);
 		genotypeNums = new JRadioButton("Enter Genotype Numbers");
 		initPopVals.add(alleleFreqs);
 		initPopVals.add(genotypeNums);

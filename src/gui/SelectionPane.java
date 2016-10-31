@@ -59,7 +59,7 @@ public class SelectionPane extends EvoPane {
 		// Selection radio buttons
 		selectLabel = new JLabel("Selection: ");
 		selectGroup = new ButtonGroup();
-		selectRandS = new JRadioButton("Reproduction and Survival");
+		selectRandS = new JRadioButton("Reproduction and Survival", true);
 		selectAbs = new JRadioButton("Absolute Fitness");
 		selectGroup.add(selectRandS);
 		selectGroup.add(selectAbs);
@@ -218,9 +218,9 @@ public class SelectionPane extends EvoPane {
 		absFitAALabel = new JLabel("AA: "); absFit.add(absFitAALabel);
 		absFitABLabel = new JLabel("AB: "); absFit.add(absFitABLabel);
 		absFitBBLabel = new JLabel("BB: "); absFit.add(absFitBBLabel);
-		absFitACLabel = new JLabel("AC: "); absFit.add(absFitAALabel); threeAllelesList.add(absFitACLabel);
-		absFitBCLabel = new JLabel("BC: "); absFit.add(absFitABLabel); threeAllelesList.add(absFitBCLabel);
-		absFitCCLabel = new JLabel("CC: "); absFit.add(absFitBBLabel); threeAllelesList.add(absFitCCLabel);
+		absFitACLabel = new JLabel("AC: "); absFit.add(absFitACLabel); threeAllelesList.add(absFitACLabel);
+		absFitBCLabel = new JLabel("BC: "); absFit.add(absFitBCLabel); threeAllelesList.add(absFitBCLabel);
+		absFitCCLabel = new JLabel("CC: "); absFit.add(absFitCCLabel); threeAllelesList.add(absFitCCLabel);
 		absFitAA = new JTextField(TEXT_LEN_LONG); absFit.add(absFitAA);
 		absFitAB = new JTextField(TEXT_LEN_LONG); absFit.add(absFitAB);
 		absFitBB = new JTextField(TEXT_LEN_LONG); absFit.add(absFitBB);
@@ -291,8 +291,6 @@ public class SelectionPane extends EvoPane {
 		relFitBCLabel = new JLabel("BC: ___"); threeAllelesList.add(relFitBCLabel);
 		relFitCCLabel = new JLabel("CC: ___"); threeAllelesList.add(relFitCCLabel);
 		
-		
-		
 		c.gridx = 1; c.gridy = 160;
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.WEST;
@@ -315,10 +313,9 @@ public class SelectionPane extends EvoPane {
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.WEST;
 		add(relFitPanel, c);
-
-		// Set to two allele mode on start up
-		modeThreeAlleles(false);
 		
+		// default is rAndS
+		modeRandS(true);
 		// Set listeners for real-time disabling of fields
 		
 		selectRandS.addItemListener(new ItemListener() {
@@ -339,12 +336,13 @@ public class SelectionPane extends EvoPane {
 		for(Component comp : rAndS) {
 			comp.setEnabled(b);
 		}
+		
 		for(Component comp : absFit) {
 			comp.setEnabled(!b);
 		}			
 	}
 	
-	@Override
+/*	@Override
 	public void setEnabled(boolean enabled){
 		super.setEnabled(enabled);
 		if (selectRandS.isSelected() && enabled == true) {
@@ -353,7 +351,7 @@ public class SelectionPane extends EvoPane {
 		else if (selectAbs.isSelected() && enabled == true){
 			modeRandS(false);
 		}
-	}
+	}*/
 	
 	/**
 	 * Dumps absolute and relative fitnesses into session parameters.

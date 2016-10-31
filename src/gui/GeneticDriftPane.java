@@ -42,16 +42,16 @@ public class GeneticDriftPane extends EvoPane{
 		popConstLabel = new JLabel("Genetic Drift: ");
 		popConstGroup = new ButtonGroup();
 		popConstTrue = new JRadioButton("Constant");
-		popConstFalse = new JRadioButton("Varying");
+		popConstFalse = new JRadioButton("Varying", true);
 		popConstGroup.add(popConstTrue);
 		popConstGroup.add(popConstFalse);
 		
 		c.gridx = 0; c.gridy = 20;
 		add(popConstLabel, c);
 		c.gridx = 1; c.gridy = 20;
-		add(popConstTrue, c);
+		add(popConstFalse, c);
 		c.gridx = 2; c.gridy = 20;
-		add(popConstFalse, c);	
+		add(popConstTrue, c);	
 
 		// carrying capacity stuff - appears when popSize varying
 		carryCapLabel = new JLabel("Carrying Capacity: "); 

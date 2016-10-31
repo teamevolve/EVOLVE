@@ -34,8 +34,6 @@ public class GUI extends EvoPane {
 
 	JButton submit;
 	JToggleButton help;
-	JLabel seedLabel; 				// Seed
-	JTextField seedField;
 	JLabel initFreqALabel, initFreqBLabel,		// Initial frequencies
 		initFreqCLabel; 			
 	JTextField initFreqA;
@@ -53,9 +51,7 @@ public class GUI extends EvoPane {
 	JCheckBox mutationCheck;
 	JCheckBox migrationCheck;
 	JCheckBox sexualSelectCheck;
-	
-	ArrayList<Component> numAllelesList = new ArrayList<Component>();
-	
+		
 	/* Evolutionary Forces Panes *********************************************/
 	ForcesPane fp = new ForcesPane();
 	PopSizePane pp = new PopSizePane();
@@ -80,20 +76,6 @@ public class GUI extends EvoPane {
 		
 		// left align
 		c.anchor = GridBagConstraints.WEST;
-		
-		
-		/* seed stuff *****************************************************************************/
-		seedLabel = new JLabel("Seed: ");
-		seedField = new JTextField(TEXT_LEN_LONG);
-		seedField.setName(INT);
-		seedField.setInputVerifier(iv);
-		
-		c.gridx = 4; c.gridy = 1;
-		c.anchor = GridBagConstraints.WEST;
-		add(seedLabel, c);		
-		c.gridx = 4; c.gridy = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(seedField, c);	
 
 		/* help stuff *****************************************************************************/
 		help = new JToggleButton(">> Help!? <<");
@@ -192,10 +174,21 @@ public class GUI extends EvoPane {
 		modeThreeAlleles(false);
 		
 		/* Action Listeners ********************************************************/
+		// Set actions for the NumAlleles radio buttons
+		gui.ForcesPane.alleles2.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeThreeAlleles(false);
+			}
+		});
+		
+		gui.ForcesPane.alleles3.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeThreeAlleles(true);
+			}
+		});
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				// Create a new, blank sesh parms object on each submit click 
 				parms = new shared.SessionParameters();
 
@@ -203,6 +196,7 @@ public class GUI extends EvoPane {
 
 			}
 		});
+	}
 
 /*		help.addActionListener(new ActionListener() {              // HELP MODE !@#@!@!#@!!@##@!!@#
 			public void actionPerformed(ActionEvent e) {
@@ -216,7 +210,6 @@ public class GUI extends EvoPane {
 				
 			}
 		}); */
-	}
 		public void modeThreeAlleles(boolean b){
 			super.modeThreeAlleles(b);
 			sp.modeThreeAlleles(b);
@@ -224,12 +217,10 @@ public class GUI extends EvoPane {
 			ssp.modeThreeAlleles(b);
 		}
 
-
 	public void submitInfo(SessionParameters parms) {
 
 		// Set SessionParameters NOT from the GUI pane
 		parms.setNumPops(Integer.parseInt(numPops.getText()));
-		parms.setSeed(Integer.parseInt(seedField.getText()));
 		parms.setNumGens(Integer.parseInt(numGens.getText()));
 		
 		// Set Allele freqs
