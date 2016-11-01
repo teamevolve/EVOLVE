@@ -33,6 +33,10 @@ public class ForcesPane extends EvoPane {
 		c.gridx = 4; c.gridy = 1;
 		c.anchor = GridBagConstraints.EAST;
 		add(seedField, c);	
+
+		// Fill in a random seed
+		Integer randomNum = (int)(Math.random() * 9999); 		
+		seedField.setText(randomNum.toString());
 		
 		/* num alleles stuff *****************************************************************************/
 		numAllelesLabel = new JLabel("Number of Alleles: ");

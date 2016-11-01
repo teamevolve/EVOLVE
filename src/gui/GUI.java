@@ -207,8 +207,10 @@ public class GUI extends EvoPane {
 			super.modeThreeAlleles(b);
 			pp.modeThreeAlleles(b);
 			sp.modeThreeAlleles(b);
+			mp.modeThreeAlleles(b);
 			mip.modeThreeAlleles(b);
 			ssp.modeThreeAlleles(b);
+			
 		}
 
 	public void submitInfo(SessionParameters parms) {
@@ -240,9 +242,9 @@ public class GUI extends EvoPane {
 		parms.setMutationChecked(mutationCheck.isSelected());
 		parms.setMigrationChecked(migrationCheck.isSelected());
 		parms.setSexSelectChecked(sexualSelectCheck.isSelected());
-		
 
 		// Submit info from the EvoPanes if necessary
+		fp.submit(parms);
 		if(parms.isPopSizeChecked())
 			gd.submit(parms);
 		if(parms.isSelectChecked())
