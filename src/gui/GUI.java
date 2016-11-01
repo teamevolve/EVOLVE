@@ -34,13 +34,6 @@ public class GUI extends EvoPane {
 
 	JButton submit;
 	JToggleButton help;
-	JLabel initFreqALabel, initFreqBLabel,		// Initial frequencies
-		initFreqCLabel; 			
-	JTextField initFreqA;
-	JLabel calcFreqAA, calcFreqAB, 
-		calcFreqBB;
-	JLabel calcFreqAC, calcFreqBC,
-		calcFreqCC;
 	JLabel numPopsLabel; 			// Number of Pops
 	JTextField numPops;	
 	JLabel numGensLabel; 			// Number of Gens
@@ -54,7 +47,7 @@ public class GUI extends EvoPane {
 		
 	/* Evolutionary Forces Panes *********************************************/
 	ForcesPane fp = new ForcesPane();
-	PopSizePane pp = new PopSizePane();
+	InitPopPane pp = new InitPopPane();
 	GeneticDriftPane gd = new GeneticDriftPane();
 	SelectionPane sp = new SelectionPane();
 	MutationPane mp = new MutationPane();
@@ -212,6 +205,7 @@ public class GUI extends EvoPane {
 		}); */
 		public void modeThreeAlleles(boolean b){
 			super.modeThreeAlleles(b);
+			pp.modeThreeAlleles(b);
 			sp.modeThreeAlleles(b);
 			mip.modeThreeAlleles(b);
 			ssp.modeThreeAlleles(b);
@@ -223,7 +217,7 @@ public class GUI extends EvoPane {
 		parms.setNumPops(Integer.parseInt(numPops.getText()));
 		parms.setNumGens(Integer.parseInt(numGens.getText()));
 		
-		// Set Allele freqs
+		/*// Set Allele freqs
 		double alleleAfreq = Double.parseDouble(initFreqA.getText());
 		double alleleBfreq = 1 - alleleAfreq;
 
@@ -238,7 +232,7 @@ public class GUI extends EvoPane {
 		parms.setGenotypeFrequency(Genotype.AA, AAfreq);
 		parms.setGenotypeFrequency(Genotype.AB, ABfreq);
 		parms.setGenotypeFrequency(Genotype.BB, BBfreq);
-		
+		*/
 		
 		// Set evolutionary force flags
 		parms.setPopSizeChecked(popSizeCheck.isSelected());
