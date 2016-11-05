@@ -17,8 +17,11 @@ import javax.swing.JTextField;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -60,7 +63,7 @@ public class _2DGraphingManager {
 		JPanel controlPanel = generateControlPanel();
 		window.add(controlPanel, BorderLayout.SOUTH);
 		
-		updateSeries(DEFAULT_AXIS_TYPE);
+		updateSeries(DEFAULT_AXIS_TYPE, "", "", "", "");
 			
 	}
 	
@@ -69,9 +72,10 @@ public class _2DGraphingManager {
 		panel.setLayout(new FlowLayout());
 		
 		JLabel yaxisLabel = new JLabel("Y-Axis"); panel.add(yaxisLabel);
-		JComboBox<String> yaxis = new JComboBox(); panel.add(yaxis);
+		JComboBox<String> yaxis = new JComboBox<String>(); panel.add(yaxis);
 		for (AxisType type : AxisType.values())
 			yaxis.addItem(type.toString());
+		
 		yaxis.setSelectedItem(DEFAULT_AXIS_TYPE.toString());
 		JLabel yminLabel = new JLabel("Y-Min: "); panel.add(yminLabel);
 		JTextField ymin = new JTextField(TEXT_LEN); panel.add(ymin);
@@ -82,23 +86,39 @@ public class _2DGraphingManager {
 		JLabel xmaxLabel = new JLabel("X-Max: "); panel.add(xmaxLabel);
 		JTextField xmax = new JTextField(TEXT_LEN); panel.add(xmax);
 		JButton submit = new JButton(">> Apply <<"); panel.add(submit);
+	
+		
+		
+		yaxis.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ymin.setText("");
+				ymax.setText("");
+				xmin.setText("");
+				xmax.setText("");
+			}
+		});
+	
+		
+		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateSeries(AxisType.toEnum((String)yaxis.getSelectedItem()));
+				updateSeries(AxisType.toEnum((String)yaxis.getSelectedItem()), ymin.getText(), ymax.getText(), xmin.getText(), xmax.getText());	
 			}
 		});
 		
 		return panel;
 	}
 	
-	private void updateSeries(AxisType type) {
+	private void updateSeries(AxisType type, String ymin, String ymax, String xmin, String xmax) {
 		seriesCollection = new XYSeriesCollection();
+		
 		for (Population p : DataManager.getInstance().getSimulationData()) {
 			seriesCollection.addSeries(new XYSeries(p.getPopID()));
 			System.out.println(p.getPopID());
 		}
 		
 		win.invalidate();
+		
 		if (panel != null) {
 			win.remove(panel);
 			panel = null;
@@ -110,8 +130,18 @@ public class _2DGraphingManager {
 			generateSeries(type, p, series);
 		}
 		
-		JFreeChart chart = ChartFactory.createXYLineChart("Title", "Generations", type.toString(), seriesCollection);
+		JFreeChart chart = ChartFactory.createXYLineChart(type.toString() + " vs. Generation", "Generation", type.toString(), seriesCollection);
 		chart.removeLegend();
+		ValueAxis domain = chart.getXYPlot().getDomainAxis();
+		ValueAxis range = chart.getXYPlot().getRangeAxis();
+		Range domainRange = domain.getRange();
+		Range rangeRange = range.getRange();
+		double xMin = (xmin.equals("")) ? domainRange.getLowerBound() : Double.parseDouble(xmin);
+		double xMax = (xmax.equals("")) ? domainRange.getUpperBound() : Double.parseDouble(xmax);
+		double yMin = (ymin.equals("")) ? rangeRange.getLowerBound() : Double.parseDouble(ymin);
+		double yMax = (ymax.equals("")) ? rangeRange.getUpperBound() : Double.parseDouble(ymax);
+		domain.setRange(xMin, xMax);
+		range.setRange(yMin,yMax);
 		ChartPanel newPanel = new ChartPanel(chart);
 		
 		panel = newPanel;
