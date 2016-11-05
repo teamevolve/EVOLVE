@@ -1,7 +1,10 @@
 package graphing;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -14,6 +17,8 @@ import javax.swing.JTextField;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -34,6 +39,8 @@ public class _2DGraphingManager {
 	private static final int TEXT_LEN = 3;
 	private static final AxisType DEFAULT_AXIS_TYPE = AxisType.ALLELEFREQ;
 	private XYSeriesCollection seriesCollection = new XYSeriesCollection();
+	private XYPlot plot = null;
+	private JFreeChart chart = null;
 	
 	private static _2DGraphingManager instance = null;
 	
@@ -48,6 +55,7 @@ public class _2DGraphingManager {
 	}
 	
 	public void construct(JFrame window) {
+		updateSeries(DEFAULT_AXIS_TYPE);
 		ChartPanel graphPanel = generateGraphPanel();
 		window.add(graphPanel, BorderLayout.NORTH);
 		JPanel controlPanel = generateControlPanel();
@@ -56,7 +64,6 @@ public class _2DGraphingManager {
 		for (Population p : DataManager.getInstance().getSimulationData())
 			seriesCollection.addSeries(new XYSeries(p.getPopID()));
 			
-		updateSeries(DEFAULT_AXIS_TYPE);
 	}
 	
 	private JPanel generateControlPanel() {
@@ -77,23 +84,33 @@ public class _2DGraphingManager {
 		JLabel xmaxLabel = new JLabel("X-Max: "); panel.add(xmaxLabel);
 		JTextField xmax = new JTextField(TEXT_LEN); panel.add(xmax);
 		JButton submit = new JButton(">> Apply <<"); panel.add(submit);
+		submit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateSeries(AxisType.toEnum((String)yaxis.getSelectedItem()));
+			}
+		});
 		
 		return panel;
 	}
 	
 	private ChartPanel generateGraphPanel() {
-		JFreeChart chart = ChartFactory.createXYLineChart("Title", "Generations", "yAxisLabel", seriesCollection);
+		chart = ChartFactory.createXYLineChart("Title", "Generations", "yAxisLabel", seriesCollection);
 		ChartPanel panel = new ChartPanel(chart);
-		
+		chart.removeLegend();
+		plot = (XYPlot) chart.getPlot();
 		return panel;
 	}
 	
 	private void updateSeries(AxisType type) {
+		chart.setNotify(false);
+		plot.getRangeAxis().setLabel(type.toString());
 		for (Population p : DataManager.getInstance().getSimulationData()) {
+			System.out.println(p.getPopID());
 			XYSeries series = seriesCollection.getSeries(p.getPopID());
 			series.clear();
 			generateSeries(type, p, series);
 		}
+		chart.setNotify(true);
 	}
 	
 	private void generateSeries(AxisType type, Population p, XYSeries series) {
@@ -162,9 +179,6 @@ public class _2DGraphingManager {
 				perAllele.put(gt.getSecondAllele(), perAllele.get(gt.getSecondAllele()) + gr.getGenotypeSubpopulationSize(gt));			
 			}
 			
-			for (Allele a : Allele.getValues()) {
-				System.out.printf("%.2f,", perAllele.get(a) / (gr.getPopulationSize() * 2));
-			}	
 			return (perAllele.get(Allele.A) - perAllele.get(Allele.B)) / (gr.getPopulationSize() * 2);
 			
 		default: return 0;		

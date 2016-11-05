@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import graphing.GraphType;
+import graphing.GraphingEngine;
 import importexport.ExportFormat;
 import shared.DataManager;
 import shared.EvolveDirector;
@@ -360,8 +362,8 @@ public class GUI extends EvoPane {
 		// Link datamanger to sesh parms, run sim, export
 		DataManager.getInstance().setSessionParams(parms);
 		EvolveDirector.getInstance().runSimulation();
-		EvolveDirector.getInstance().export(ExportFormat.CSV);
-
+		//EvolveDirector.getInstance().export(ExportFormat.CSV);
+		GraphingEngine.getInstance().generateGraph(GraphType._2D);
 		
 	}
 	

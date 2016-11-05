@@ -35,10 +35,13 @@ public class SimulationEngine {
 	}
 
 	public void runSimulation() {
+		System.out.println("Starting simulation...");
 		for (int i = 0; i < DataManager.getInstance().getSessionParams().getNumGens(); i++) {
 			PopulationManager.getInstance().processGeneration();
 		}
+		System.out.println("Finishing simulation...");
 		DataManager.getInstance().setSimilulationData(PopulationManager.getInstance().getPopulationList());
+		System.out.println(DataManager.getInstance().getSimulationData());
 	}
 
 	/**

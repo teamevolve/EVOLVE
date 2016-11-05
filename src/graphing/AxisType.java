@@ -18,4 +18,28 @@ public enum AxisType {
 	public String toString() {
 		return value;
 	}
+	
+	public static AxisType toEnum(String s) {
+		switch(s) {
+		case "Population Size":
+			return POPSIZE;
+		case "Immigration":
+			return IMMIGRATION;
+		case "Emigration":
+			return EMIGRATION;
+		case "Net Migration":
+			return NETMIGRATION;
+		case "Num Mutations":
+			return MUTATION;
+		case "Births":
+			return BIRTHS;
+		case "Deaths":
+			return DEATHS;
+		case "Allele Frequency":
+			return ALLELEFREQ;
+		default:
+			return ALLELEFREQ;	
+		}
+		
+	}
 }

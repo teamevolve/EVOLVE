@@ -34,7 +34,7 @@ public class GraphingEngine {
 	public void generateGraph(GraphType type) {
 		JFrame window = new JFrame();
 		window.setTitle("PUT TITLE HERE, ASSHOLES");
-		window.setSize(800, 600);
+		window.setSize(1500, 900);
 		window.setLayout(new BorderLayout());
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -48,13 +48,5 @@ public class GraphingEngine {
 		}
 		
 		window.setVisible(true);
-	}
-	
-	public static void main(String[] args) {
-		gui.GUI.main(args);
-		while (DataManager.getInstance().getSimulationData() == null);
-		System.out.println("you suck");
-		GraphingEngine.getInstance().generateGraph(GraphType._2D);
-
-	}
+	}	
 }
