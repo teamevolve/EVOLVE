@@ -40,6 +40,7 @@ public class GraphingEngine {
 		
 		switch(type) {
 		case _2D : 
+			System.out.println("everything is terrible");
 			_2DGraphingManager.getInstance().construct(window);
 			break;
 			

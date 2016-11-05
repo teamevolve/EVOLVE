@@ -38,9 +38,10 @@ import simulation.Population;
 public class _2DGraphingManager {
 	private static final int TEXT_LEN = 3;
 	private static final AxisType DEFAULT_AXIS_TYPE = AxisType.ALLELEFREQ;
-	private XYSeriesCollection seriesCollection = new XYSeriesCollection();
-	private XYPlot plot = null;
-	private JFreeChart chart = null;
+	private XYSeriesCollection seriesCollection = null;
+	private JFrame win = null;
+	private ChartPanel panel = null;
+	
 	
 	private static _2DGraphingManager instance = null;
 	
@@ -55,14 +56,11 @@ public class _2DGraphingManager {
 	}
 	
 	public void construct(JFrame window) {
-		updateSeries(DEFAULT_AXIS_TYPE);
-		ChartPanel graphPanel = generateGraphPanel();
-		window.add(graphPanel, BorderLayout.NORTH);
+		win = window;
 		JPanel controlPanel = generateControlPanel();
 		window.add(controlPanel, BorderLayout.SOUTH);
 		
-		for (Population p : DataManager.getInstance().getSimulationData())
-			seriesCollection.addSeries(new XYSeries(p.getPopID()));
+		updateSeries(DEFAULT_AXIS_TYPE);
 			
 	}
 	
@@ -93,24 +91,32 @@ public class _2DGraphingManager {
 		return panel;
 	}
 	
-	private ChartPanel generateGraphPanel() {
-		chart = ChartFactory.createXYLineChart("Title", "Generations", "yAxisLabel", seriesCollection);
-		ChartPanel panel = new ChartPanel(chart);
-		chart.removeLegend();
-		plot = (XYPlot) chart.getPlot();
-		return panel;
-	}
-	
 	private void updateSeries(AxisType type) {
-		chart.setNotify(false);
-		plot.getRangeAxis().setLabel(type.toString());
+		seriesCollection = new XYSeriesCollection();
+		for (Population p : DataManager.getInstance().getSimulationData()) {
+			seriesCollection.addSeries(new XYSeries(p.getPopID()));
+			System.out.println(p.getPopID());
+		}
+		
+		win.invalidate();
+		if (panel != null) {
+			win.remove(panel);
+			panel = null;
+		}
 		for (Population p : DataManager.getInstance().getSimulationData()) {
 			System.out.println(p.getPopID());
 			XYSeries series = seriesCollection.getSeries(p.getPopID());
 			series.clear();
 			generateSeries(type, p, series);
 		}
-		chart.setNotify(true);
+		
+		JFreeChart chart = ChartFactory.createXYLineChart("Title", "Generations", type.toString(), seriesCollection);
+		chart.removeLegend();
+		ChartPanel newPanel = new ChartPanel(chart);
+		
+		panel = newPanel;
+		win.add(panel, BorderLayout.NORTH);
+		win.validate();
 	}
 	
 	private void generateSeries(AxisType type, Population p, XYSeries series) {
