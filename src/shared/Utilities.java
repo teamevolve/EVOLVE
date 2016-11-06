@@ -29,6 +29,7 @@ public class Utilities {
 	 * @param stdDev standard deviation of values produced
 	 * 
 	 * @return random number with a normal distribution
+	 * 
 	 */
 	public static double nextGaussianRand(Random rng, double mean, double stdDev) {
 		assert(rng != null);
@@ -45,6 +46,7 @@ public class Utilities {
 	 * @param gt2 second genotype in pairing
 	 * 
 	 * @return true iff gt1 is first alphabetically
+	 * 
 	 */
 	public static boolean isValidPairing(Genotype gt1, Genotype gt2) {
 		return (gt1.getPairingIndex() <= gt2.getPairingIndex());
@@ -58,6 +60,7 @@ public class Utilities {
 	 * @param gt1 first genotype
 	 * @param gt2 second genotype
 	 * @return Multiset of possible genotypes
+	 * 
 	 */
 	public static ArrayList<Genotype> getOffspringGenotypes(Genotype gt1, Genotype gt2){
 		Allele a1_0 = gt1.getFirstAllele(), a1_1 = gt1.getSecondAllele();
@@ -73,6 +76,14 @@ public class Utilities {
 	}
 	
 	
+	/**
+	 * Creates a save dialog and returns the selected file.
+	 * 
+	 * @param parent component to inherit look and feel from; can be null
+	 * @param filters list of file extensions to filter on
+	 * @return File object if selection was successful, null otherwise
+	 * 
+	 */
 	public static File generateSaveDialog(Component parent, String... filters){
 		JFileChooser chooser = new JFileChooser();
 		chooser.setMultiSelectionEnabled(false);
@@ -83,6 +94,14 @@ public class Utilities {
 		return null;
 	}
 	
+	/**
+	 * Creates open dialog and returns the selected file.
+	 * 
+	 * @param parent component to inherit look and feel from; can be null
+	 * @param filters list of file extensions to filter on
+	 * @return File object if selection was successful, null otherwise
+	 * 
+	 */
 	public static File generateOpenDialog(Component parent, String... filters){
 		JFileChooser chooser = new JFileChooser();
 		chooser.setMultiSelectionEnabled(false);
