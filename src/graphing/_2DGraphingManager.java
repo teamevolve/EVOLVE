@@ -74,6 +74,7 @@ public class _2DGraphingManager {
 	/** Enables singelton class **/
 	private static _2DGraphingManager instance = null;
 	
+	
 	/**
 	 * Enable singelton class.
 	 * 
@@ -85,6 +86,7 @@ public class _2DGraphingManager {
 			instance = new _2DGraphingManager();
 		return instance;
 	}
+	
 	
 	/**
 	 * Private constructor enables singleton class.
