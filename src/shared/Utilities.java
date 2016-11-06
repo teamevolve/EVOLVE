@@ -1,6 +1,13 @@
 package shared;
 
 
+import java.awt.Component;
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -64,4 +71,26 @@ public class Utilities {
 		
 		return offspringGenotypes;	
 	}
+	
+	
+	public static File generateSaveDialog(Component parent, String... filters){
+		JFileChooser chooser = new JFileChooser();
+		chooser.setMultiSelectionEnabled(false);
+		chooser.setFileFilter(new FileNameExtensionFilter("", filters));
+		if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+			return chooser.getSelectedFile();
+		}
+		return null;
+	}
+	
+	public static File generateOpenDialog(Component parent, String... filters){
+		JFileChooser chooser = new JFileChooser();
+		chooser.setMultiSelectionEnabled(false);
+		chooser.setFileFilter(new FileNameExtensionFilter("", filters));
+		if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+			return chooser.getSelectedFile();
+		}
+		return null;
+	}
+	
 }
