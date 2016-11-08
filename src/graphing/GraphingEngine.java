@@ -31,7 +31,7 @@ public class GraphingEngine {
 	
 	public void generateGraph(GraphType type) {
 		JFrame window = new JFrame();
-		window.setTitle("PUT TITLE HERE, ASSHOLES");
+		window.setTitle("PUT TITLE HERE");
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		switch(type) {
