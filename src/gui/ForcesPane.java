@@ -46,6 +46,7 @@ public class ForcesPane extends EvoPane {
 		numAlleles.add(alleles2);
 		numAlleles.add(alleles3);
 		
+		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0; c.gridy = 1;
 		add(numAllelesLabel, c);
 		c.gridx = 1; c.gridy = 1;
