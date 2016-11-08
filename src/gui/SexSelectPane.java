@@ -42,7 +42,7 @@ public class SexSelectPane extends EvoPane {
 	ArrayList<Component> labels = new ArrayList<Component>();
 	ArrayList<Component> fields = new ArrayList<Component>();
 
-
+	JPanel table;
 	
 	public SexSelectPane() {
 		super();
@@ -105,7 +105,7 @@ public class SexSelectPane extends EvoPane {
 
 		addToLists();
 		
-		JPanel table = new JPanel();
+		table = new JPanel();
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); // t for temp constraints
 		t.insets = new Insets(0, 0, 3, 15);
@@ -182,6 +182,14 @@ public class SexSelectPane extends EvoPane {
 		fields.add(freqCCxAA); fields.add(freqCCxAB); fields.add(freqCCxBB);
 		fields.add(freqCCxAC); fields.add(freqCCxBC); fields.add(freqCCxCC);
 		
+	}
+	
+	@Override
+	public void setEnabled(boolean enable) {
+		super.setEnabled(enable);
+		for(Component c : table.getComponents()) {
+			c.setEnabled(enable);
+		}
 	}
 	
 	public void submit(shared.SessionParameters p) {
