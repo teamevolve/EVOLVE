@@ -73,6 +73,7 @@ public class SelectionPane extends EvoPane {
 		add(selectRandS, c);
 		c.gridx = 2; c.gridy = 1;
 		c.gridwidth = 1;
+		c.anchor = GridBagConstraints.CENTER;
 		add(selectAbs, c);
 		
 		AALabel = new JLabel("AA");
