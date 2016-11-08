@@ -2,5 +2,6 @@
 .metadata
 doc/
 .DS_Store
+.settings
 /output/
 *.csv
