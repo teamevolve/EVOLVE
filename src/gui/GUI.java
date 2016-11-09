@@ -32,8 +32,18 @@ public class GUI extends EvoPane {
 	// we'll put args here
 	shared.SessionParameters parms;
 
+	// Lab report stuff
+	JLabel titleLabel; JTextField title;
+	JLabel questionLabel; JTextField question;
+	JLabel experLabel; JTextField exper;
+	JLabel resultsLabel; JTextField results;
+	JLabel discussionLabel; JTextField discussion;
+
+	// GUI buttons
+	JButton apply;
 	JButton submit;
 	JToggleButton help;
+	
 	JLabel numPopsLabel; 			// Number of Pops
 	JTextField numPops;	
 	JLabel numGensLabel; 			// Number of Gens
@@ -45,11 +55,6 @@ public class GUI extends EvoPane {
 	JCheckBox migrationCheck;
 	JCheckBox sexualSelectCheck;
 	
-	JLabel titleLabel; JTextField title;
-	JLabel questionLabel; JTextField question;
-	JLabel experLabel; JTextField exper;
-	JLabel resultsLabel; JTextField results;
-	JLabel discussionLabel; JTextField discussion;
 		
 	/* Evolutionary Forces Panes *********************************************/
 	TitlePane tp = new TitlePane();
@@ -123,7 +128,7 @@ public class GUI extends EvoPane {
 		JLabel evoForces = new JLabel("Select active evolutionary forces:");
 		
 		popSizeCheck = new JCheckBox("Drift (Population Size)", true);
-		//popSizeCheck.setEnabled(false);
+		popSizeCheck.setEnabled(false);
 		popSizeCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				gd.setEnabled(popSizeCheck.isSelected());
@@ -131,6 +136,7 @@ public class GUI extends EvoPane {
 		});	
 		
 		selectCheck = new JCheckBox("Natural Selection", true);
+		selectCheck.setEnabled(false);
 		selectCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				sp.setEnabled(selectCheck.isSelected());
@@ -202,9 +208,12 @@ public class GUI extends EvoPane {
 		add(ssp, c);
 		
 		
-		/* submit button***********************************************************/
-		submit = new JButton(">> Submit <<");
+		/* apply and submit buttons ***********************************************/
+		apply = new JButton(">> Apply <<");
+		c.gridx = 5; c.gridy = 999999;
+		add(apply, c);
 		
+		submit = new JButton(">> Submit <<");	
 		c.gridx = 6; c.gridy = 999999;
 		add(submit, c);		
 		
@@ -230,8 +239,21 @@ public class GUI extends EvoPane {
 				// Create a new, blank sesh parms object on each submit click 
 				parms = new shared.SessionParameters();
 
-				submitInfo(parms);
-
+//				try {
+					applyInfo();				
+//				} catch (Exception e1) {
+//					// TODO Auto-generated catch block
+	//				System.out.println("Exception in submission! Check your inputs!");
+		//			e1.printStackTrace();
+			//	}
+					startSim();
+			}
+		});
+		
+		apply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				parms = new shared.SessionParameters();
+				applyInfo();
 			}
 		});
 	}
@@ -258,28 +280,8 @@ public class GUI extends EvoPane {
 			
 		}
 
-	public void submitInfo(SessionParameters parms) {
-
-		// Set SessionParameters NOT from the GUI pane
-		parms.setNumPops(Integer.parseInt(numPops.getText()));
-		parms.setNumGens(Integer.parseInt(numGens.getText()));
-		
-		/*// Set Allele freqs
-		double alleleAfreq = Double.parseDouble(initFreqA.getText());
-		double alleleBfreq = 1 - alleleAfreq;
-
-		double AAfreq = alleleAfreq * alleleAfreq;
-		double ABfreq = 2 * alleleAfreq * alleleBfreq;
-		double BBfreq = alleleBfreq * alleleBfreq;
-		
-		calcFreqAA.setText(String.format("%.4f", AAfreq));
-		calcFreqAB.setText(String.format("%.4f", ABfreq));
-		calcFreqBB.setText(String.format("%.4f", BBfreq));
-		
-		parms.setGenotypeFrequency(Genotype.AA, AAfreq);
-		parms.setGenotypeFrequency(Genotype.AB, ABfreq);
-		parms.setGenotypeFrequency(Genotype.BB, BBfreq);
-		*/
+		// pushes data to sesh parms
+	public void applyInfo() { //throws Exception {
 		
 		// Set evolutionary force flags
 		parms.setPopSizeChecked(popSizeCheck.isSelected());
@@ -290,6 +292,7 @@ public class GUI extends EvoPane {
 
 		// Submit info from the EvoPanes if necessary
 		fp.submit(parms);
+		pp.submit(parms);
 		if(parms.isPopSizeChecked())
 			gd.submit(parms);
 		if(parms.isSelectChecked())
@@ -301,12 +304,14 @@ public class GUI extends EvoPane {
 		if(parms.isSexSelectChecked())
 			ssp.submit(parms);
 		
+	}
+
+	// starts the simulation
+	public void startSim() {
 		// Link datamanger to sesh parms, run sim, export
 		DataManager.getInstance().setSessionParams(parms);
 		EvolveDirector.getInstance().runSimulation();
-		EvolveDirector.getInstance().export(ExportFormat.CSV);
-
-		
+		EvolveDirector.getInstance().export(ExportFormat.CSV);		
 	}
 	
 	public static void createAndShowGUI() {

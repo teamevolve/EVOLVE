@@ -105,12 +105,12 @@ public class SelectionPane extends EvoPane {
 		absFitBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(absFitBC);
 		absFitCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(absFitCC);
 		relFitLabel = new JLabel("Relative Fitness: ");
-		relFitAA = new JLabel("AA: ___");
-		relFitAB = new JLabel("AB: ___");
-		relFitBB = new JLabel("BB: ___");
-		relFitAC = new JLabel("AC: ___"); threeAllelesList.add(relFitAC);
-		relFitBC = new JLabel("BC: ___"); threeAllelesList.add(relFitBC);
-		relFitCC = new JLabel("CC: ___"); threeAllelesList.add(relFitCC);
+		relFitAA = new JLabel("___");
+		relFitAB = new JLabel("___");
+		relFitBB = new JLabel("___");
+		relFitAC = new JLabel("___"); threeAllelesList.add(relFitAC);
+		relFitBC = new JLabel("___"); threeAllelesList.add(relFitBC);
+		relFitCC = new JLabel("___"); threeAllelesList.add(relFitCC);
 		
 		table = new JPanel();
 		table.setLayout(new GridBagLayout());
@@ -299,9 +299,9 @@ public class SelectionPane extends EvoPane {
 		p.setRelativeFitness(Genotype.AB, rfAB);
 		p.setRelativeFitness(Genotype.BB, rfBB);
 		
-		relFitAA.setText("AA:   " + String.format("%.4f", rfAA));
-		relFitAB.setText("AB:   " + String.format("%.4f", rfAB));
-		relFitBB.setText("BB:   " + String.format("%.4f", rfBB));
+		relFitAA.setText(String.format("%.4f", rfAA));
+		relFitAB.setText(String.format("%.4f", rfAB));
+		relFitBB.setText(String.format("%.4f", rfBB));
 	}
 	
 	/**
