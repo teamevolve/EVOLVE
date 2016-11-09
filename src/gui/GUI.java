@@ -34,20 +34,18 @@ public class GUI extends EvoPane {
 	// we'll put args here
 	shared.SessionParameters parms;
 
+	// Lab report stuff
+	JLabel titleLabel; JTextField title;
+	JLabel questionLabel; JTextField question;
+	JLabel experLabel; JTextField exper;
+	JLabel resultsLabel; JTextField results;
+	JLabel discussionLabel; JTextField discussion;
+
+	// GUI buttons
+	JButton apply;
 	JButton submit;
 	JToggleButton help;
-	JLabel numAllelesLabel;			// Number of Alleles
-	ButtonGroup numAlleles;
-	JRadioButton alleles2, alleles3;
-	JLabel seedLabel; 				// Seed
-	JTextField seedField;
-	JLabel initFreqALabel, initFreqBLabel,		// Initial frequencies
-		initFreqCLabel; 			
-	JTextField initFreqA;
-	JLabel calcFreqAA, calcFreqAB, 
-		calcFreqBB;
-	JLabel calcFreqAC, calcFreqBC,
-		calcFreqCC;
+	
 	JLabel numPopsLabel; 			// Number of Pops
 	JTextField numPops;	
 	JLabel numGensLabel; 			// Number of Gens
@@ -59,10 +57,12 @@ public class GUI extends EvoPane {
 	JCheckBox migrationCheck;
 	JCheckBox sexualSelectCheck;
 	
-	ArrayList<Component> numAllelesList = new ArrayList<Component>();
-	
+		
 	/* Evolutionary Forces Panes *********************************************/
-	PopSizePane pp = new PopSizePane();
+	TitlePane tp = new TitlePane();
+	ForcesPane fp = new ForcesPane();
+	InitPopPane pp = new InitPopPane();
+	GeneticDriftPane gd = new GeneticDriftPane();
 	SelectionPane sp = new SelectionPane();
 	MutationPane mp = new MutationPane();
 	MigrationPane mip = new MigrationPane();
@@ -77,125 +77,68 @@ public class GUI extends EvoPane {
 		
 		super();
 		
-		
 		// add spacing
 //		c.insets = new Insets(5, 10, 5, 0);
 		
 		// left align
 		c.anchor = GridBagConstraints.WEST;
 		
-		/* num alleles stuff *****************************************************************************/
-		numAllelesLabel = new JLabel("Number of Alleles: ");
-		numAlleles = new ButtonGroup();
-		alleles2 = new JRadioButton("2", true);
-		alleles3 = new JRadioButton("3");
-		numAlleles.add(alleles2);
-		numAlleles.add(alleles3);
+		titleLabel = new JLabel("Title:");
+		title = new JTextField(TEXT_LEN_LONG);
+		questionLabel = new JLabel("Question:"); 
+		question = new JTextField(TEXT_LEN_LONG);
+		experLabel = new JLabel("Experimental Design:"); 
+		exper = new JTextField(TEXT_LEN_LONG);
+		resultsLabel = new JLabel("Results:");
+		results = new JTextField(TEXT_LEN_LONG);
+		discussionLabel = new JLabel("Discussion:");
+		discussion = new JTextField(TEXT_LEN_LONG);
 		
 		c.gridx = 0; c.gridy = 1;
-		add(numAllelesLabel, c);
+		add(titleLabel, c);
 		c.gridx = 1; c.gridy = 1;
-		add(alleles2, c);
-		c.gridx = 2; c.gridy = 1;
-		add(alleles3, c);
+		add(title, c);
 		
+		c.gridx = 0; c.gridy = 2;
+		add(questionLabel, c);
+		c.gridx = 1; c.gridy = 2;
+		add(question, c);
 		
-		/* seed stuff *****************************************************************************/
-		seedLabel = new JLabel("Seed: ");
-		seedField = new JTextField(TEXT_LEN_LONG);
-		seedField.setName(INT);
-		seedField.setInputVerifier(iv);
+		c.gridx = 0; c.gridy = 3;
+		add(experLabel, c);
+		c.gridx = 1; c.gridy = 3;
+		add(exper, c);
 		
-		c.gridx = 4; c.gridy = 1;
-		c.anchor = GridBagConstraints.WEST;
-		add(seedLabel, c);		
-		c.gridx = 4; c.gridy = 1;
-		c.anchor = GridBagConstraints.EAST;
-		add(seedField, c);	
+		c.gridx = 0; c.gridy = 4;
+		add(resultsLabel, c);
+		c.gridx = 1; c.gridy = 4;
+		add(results, c);
+		
+		c.gridx = 0; c.gridy = 5;
+		add(discussionLabel, c);
+		c.gridx = 1; c.gridy = 5;
+		add(discussion, c);
 
 		/* help stuff *****************************************************************************/
 		help = new JToggleButton(">> Help!? <<");
 		c.gridx = 6; c.gridy = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		add(help, c);
-		
-		/* num populations stuff **************************************************************/
-		numPopsLabel = new JLabel("Number of Populations: ");
-		numPops = new JTextField(TEXT_LEN_LONG);
-		numPops.setName(INT);
-		numPops.setInputVerifier(iv);
-		
-		c.gridx = 0; c.gridy = 2;
-		c.anchor = GridBagConstraints.EAST;
-		add(numPopsLabel, c);
-		c.gridx = 1; c.gridy = 2;
-		add(numPops, c);
 
-		// num generations stuff **************************************************************/
-		numGensLabel = new JLabel("Number of Generations: ");
-		numGens = new JTextField(TEXT_LEN_LONG);
-		numGens.setName(INT);
-		numGens.setInputVerifier(iv);
-		
-		c.gridx = 0; c.gridy = 3;
-		c.anchor = GridBagConstraints.EAST;
-		add(numGensLabel, c);
-		c.gridx = 1; c.gridy = 3;
-		add(numGens, c);
-		
-		
-		/* initial frequencies stuff ***********************************************************/
-		initFreqALabel = new JLabel("Initial Frequency of Allele A: ");
-		initFreqA = new JTextField(TEXT_LEN_SHORT);
-		initFreqA.setName(RATE);
-		initFreqA.setInputVerifier(iv);
 
-		c.gridx = 0; c.gridy = 4;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.WEST;
-		add(initFreqALabel, c);
-		
-		c.gridx = 1; c.gridy = 4;
-		c.anchor = GridBagConstraints.EAST;
-		c.gridwidth = 1;
-		add(initFreqA, c);
-		
-		calcFreqAA = new JLabel("AA: ___");
-		calcFreqAB = new JLabel("AB: ___");
-		calcFreqBB = new JLabel("BB: ___");
-		calcFreqAC = new JLabel("AC: ___"); numAllelesList.add(calcFreqAC);
-		calcFreqBC = new JLabel("BC: ___"); numAllelesList.add(calcFreqBC);
-		calcFreqCC = new JLabel("CC: ___"); numAllelesList.add(calcFreqCC);
-		
-		//c.gridwidth = 2;
-		c.gridx = 1; c.gridy = 5;
-		c.anchor = GridBagConstraints.WEST;
-		add(calcFreqAA, c);
-		c.gridx = 2; c.gridy = 5;
-		//c.anchor = GridBagConstraints.CENTER;
-		add(calcFreqAB, c);
-		c.gridx = 3; c.gridy = 5;
-		//c.anchor = GridBagConstraints.EAST;
-		add(calcFreqBB, c);
-		
-		c.gridx = 4; c.gridy = 5;
-		//c.anchor = GridBagConstraints.CENTER;
-		add(calcFreqAC, c);
-		c.gridx = 5; c.gridy = 5;
-		//c.anchor = GridBagConstraints.CENTER;
-		add(calcFreqBC, c);
-		c.gridx = 6; c.gridy = 5;
-		//c.anchor = GridBagConstraints.EAST;
-		add(calcFreqCC, c);
-
-		
 		/* EVOLUTIONARY FORCES ***************************************************************/
 		JLabel evoForces = new JLabel("Select active evolutionary forces:");
 		
-		popSizeCheck = new JCheckBox("Population Size", true);
+		popSizeCheck = new JCheckBox("Drift (Population Size)", true);
 		popSizeCheck.setEnabled(false);
+		popSizeCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				gd.setEnabled(popSizeCheck.isSelected());
+			}
+		});	
 		
 		selectCheck = new JCheckBox("Natural Selection", true);
+		selectCheck.setEnabled(false);
 		selectCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				sp.setEnabled(selectCheck.isSelected());
@@ -242,8 +185,17 @@ public class GUI extends EvoPane {
 		
 		/* Panes ****************************************************************************/
 		c.gridwidth = 7;
+		//c.gridx = 0; c.gridy = 3;
+		//add(tp, c);
+		
+		c.gridx = 0; c.gridy = 6;
+		add(fp, c);
+		
 		c.gridx = 0; c.gridy = 10;
 		add(pp, c);
+		
+		c.gridx = 0; c.gridy = 15;
+		add(gd, c);
 
 		c.gridx = 0; c.gridy = 20;
 		add(sp, c);
@@ -258,9 +210,12 @@ public class GUI extends EvoPane {
 		add(ssp, c);
 		
 		
-		/* submit button***********************************************************/
-		submit = new JButton(">> Submit <<");
+		/* apply and submit buttons ***********************************************/
+		apply = new JButton(">> Apply <<");
+		c.gridx = 5; c.gridy = 999999;
+		add(apply, c);
 		
+		submit = new JButton(">> Submit <<");	
 		c.gridx = 6; c.gridy = 999999;
 		add(submit, c);		
 		
@@ -268,17 +223,42 @@ public class GUI extends EvoPane {
 		modeThreeAlleles(false);
 		
 		/* Action Listeners ********************************************************/
+		// Set actions for the NumAlleles radio buttons
+		gui.ForcesPane.alleles2.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeThreeAlleles(false);
+			}
+		});
+		
+		gui.ForcesPane.alleles3.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				modeThreeAlleles(true);
+			}
+		});
 		
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				// Create a new, blank sesh parms object on each submit click 
 				parms = new shared.SessionParameters();
 
-				submitInfo(parms);
-
+//				try {
+					applyInfo();				
+//				} catch (Exception e1) {
+//					// TODO Auto-generated catch block
+	//				System.out.println("Exception in submission! Check your inputs!");
+		//			e1.printStackTrace();
+			//	}
+					startSim();
 			}
 		});
+		
+		apply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				parms = new shared.SessionParameters();
+				applyInfo();
+			}
+		});
+	}
 
 /*		help.addActionListener(new ActionListener() {              // HELP MODE !@#@!@!#@!!@##@!!@#
 			public void actionPerformed(ActionEvent e) {
@@ -292,53 +272,18 @@ public class GUI extends EvoPane {
 				
 			}
 		}); */
-		
-		// Set actions for the NumAlleles radio buttons
-		alleles2.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				modeThreeAlleles(false);
-			}
-		});
-		
-		alleles3.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				modeThreeAlleles(true);
-			}
-		});
-	}
-		
-	public void modeThreeAlleles(boolean b){
-		super.modeThreeAlleles(b);
-		sp.modeThreeAlleles(b);
-		mip.modeThreeAlleles(b);
-		ssp.modeThreeAlleles(b);
-	}
+		public void modeThreeAlleles(boolean b){
+			super.modeThreeAlleles(b);
+			pp.modeThreeAlleles(b);
+			sp.modeThreeAlleles(b);
+			mp.modeThreeAlleles(b);
+			mip.modeThreeAlleles(b);
+			ssp.modeThreeAlleles(b);
+			
+		}
 
-
-	public void submitInfo(SessionParameters parms) {
-
-		// Set SessionParameters NOT from the GUI pane
-		parms.setNumPops(Integer.parseInt(numPops.getText()));
-		parms.setThreeAlleles(alleles3.isSelected());
-		parms.setSeed(Integer.parseInt(seedField.getText()));
-		parms.setNumGens(Integer.parseInt(numGens.getText()));
-		
-		// Set Allele freqs
-		double alleleAfreq = Double.parseDouble(initFreqA.getText());
-		double alleleBfreq = 1 - alleleAfreq;
-
-		double AAfreq = alleleAfreq * alleleAfreq;
-		double ABfreq = 2 * alleleAfreq * alleleBfreq;
-		double BBfreq = alleleBfreq * alleleBfreq;
-		
-		calcFreqAA.setText(String.format("%.4f", AAfreq));
-		calcFreqAB.setText(String.format("%.4f", ABfreq));
-		calcFreqBB.setText(String.format("%.4f", BBfreq));
-		
-		parms.setGenotypeFrequency(Genotype.AA, AAfreq);
-		parms.setGenotypeFrequency(Genotype.AB, ABfreq);
-		parms.setGenotypeFrequency(Genotype.BB, BBfreq);
-		
+		// pushes data to sesh parms
+	public void applyInfo() { //throws Exception {
 		
 		// Set evolutionary force flags
 		parms.setPopSizeChecked(popSizeCheck.isSelected());
@@ -346,11 +291,12 @@ public class GUI extends EvoPane {
 		parms.setMutationChecked(mutationCheck.isSelected());
 		parms.setMigrationChecked(migrationCheck.isSelected());
 		parms.setSexSelectChecked(sexualSelectCheck.isSelected());
-		
 
 		// Submit info from the EvoPanes if necessary
+		fp.submit(parms);
+		pp.submit(parms);
 		if(parms.isPopSizeChecked())
-			pp.submit(parms);
+			gd.submit(parms);
 		if(parms.isSelectChecked())
 			sp.submit(parms);
 		if(parms.isMutationChecked())
@@ -360,6 +306,10 @@ public class GUI extends EvoPane {
 		if(parms.isSexSelectChecked())
 			ssp.submit(parms);
 		
+	}
+
+	// starts the simulation
+	public void startSim() {
 		// Link datamanger to sesh parms, run sim, export
 		DataManager.getInstance().setSessionParams(parms);
 		EvolveDirector.getInstance().runSimulation();

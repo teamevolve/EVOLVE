@@ -20,42 +20,83 @@ import shared.Genotype;
 public class MutationPane extends EvoPane {
 
 	JLabel mutLabel,					// Mutation (0 to 1)
-		mutAtoBLabel, mutBtoALabel;
-	JTextField mutAtoB, mutBtoA;
+		mutAtoBLabel, mutBtoALabel,
+		mutAtoCLabel, mutCtoALabel,
+		mutBtoCLabel, mutCtoBLabel;
+	
+	JTextField mutAtoB, mutBtoA,
+		mutAtoC, mutCtoA,
+		mutBtoC, mutCtoB;
 	
 	public MutationPane(){
 		
 		super();
 		
 		// Mutation (0 to 1)
-		mutLabel = new JLabel("Mutation (0 to 1): ");
-		mutAtoBLabel = new JLabel("A to B: ");
-		mutBtoALabel = new JLabel("B to A: ");
-		mutAtoB = new JTextField(TEXT_LEN_SHORT);
-		mutBtoA = new JTextField(TEXT_LEN_SHORT);
+		mutLabel = new JLabel("Mutation (0 to 1):");
+		mutAtoBLabel = new JLabel("A to B:");
+		mutBtoALabel = new JLabel("B to A:");
+		mutAtoCLabel = new JLabel("A to C:"); threeAllelesList.add(mutAtoCLabel);
+		mutCtoALabel = new JLabel("C to A:"); threeAllelesList.add(mutCtoALabel);
+		mutBtoCLabel = new JLabel("B to C:"); threeAllelesList.add(mutBtoCLabel);
+		mutCtoBLabel = new JLabel("C to B:"); threeAllelesList.add(mutCtoBLabel);
+		mutAtoB = new JTextField(TEXT_LEN_LONG);
+		mutBtoA = new JTextField(TEXT_LEN_LONG);
+		mutAtoC = new JTextField(TEXT_LEN_LONG); threeAllelesList.add(mutAtoC);
+		mutCtoA = new JTextField(TEXT_LEN_LONG); threeAllelesList.add(mutCtoA);
+		mutBtoC = new JTextField(TEXT_LEN_LONG); threeAllelesList.add(mutBtoC);
+		mutCtoB = new JTextField(TEXT_LEN_LONG); threeAllelesList.add(mutCtoB);
+
+		// Set input verifiers
 		
 		mutAtoB.setName(RATE); mutAtoB.setInputVerifier(iv);
 		mutBtoA.setName(RATE); mutBtoA.setInputVerifier(iv);
+		mutAtoC.setName(RATE); mutBtoA.setInputVerifier(iv);
+		mutCtoA.setName(RATE); mutBtoA.setInputVerifier(iv);
+		mutBtoC.setName(RATE); mutBtoA.setInputVerifier(iv);
+		mutCtoB.setName(RATE); mutBtoA.setInputVerifier(iv);
 		
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(mutLabel, c);
 		
-		// add label then field x3
+		// add label then field for each mutation possibility
 		c.gridx = 1; c.gridy = 2;
 		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.CENTER;
+		c.anchor = GridBagConstraints.WEST;
 		add(mutAtoBLabel, c);
-		c.gridx = 1;
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(mutAtoB, c);
 	
 		c.gridx = 2;
-		c.anchor = GridBagConstraints.CENTER;
+		c.anchor = GridBagConstraints.WEST;
 		add(mutBtoALabel, c);
-		c.gridx = 2;
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(mutBtoA, c);
+		
+		c.gridx = 3;
+		c.anchor = GridBagConstraints.WEST;
+		add(mutAtoCLabel, c);
+		c.anchor = GridBagConstraints.CENTER;
+		add(mutAtoC, c);
+		
+		c.gridx = 4;
+		c.anchor = GridBagConstraints.WEST;
+		add(mutCtoALabel, c);
+		c.anchor = GridBagConstraints.CENTER;
+		add(mutCtoA, c);
+		
+		c.gridx = 5;
+		c.anchor = GridBagConstraints.WEST;
+		add(mutBtoCLabel, c);
+		c.anchor = GridBagConstraints.CENTER;
+		add(mutBtoC, c);
+		
+		c.gridx = 6;
+		c.anchor = GridBagConstraints.WEST;
+		add(mutCtoBLabel, c);
+		c.anchor = GridBagConstraints.CENTER;
+		add(mutCtoB, c);
 		
 	}
 

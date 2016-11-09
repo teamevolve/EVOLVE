@@ -28,6 +28,8 @@ public abstract class EvoPane extends JPanel {
 	final static String ANY_DOUBLE_ZERO_TO_TEN = "double zero to ten";
 	final static String ANY_NUMBER = "any number";
 	
+	public boolean threeAlleles;
+	
 	public Font boldFont;
 	
 	public GridBagConstraints c;
@@ -45,6 +47,7 @@ public abstract class EvoPane extends JPanel {
 		Font font = dummy.getFont();
 		boldFont = new Font(font.getFontName(), Font.BOLD, font.getSize());
 		
+		threeAlleles = false;
 		enabled = true;
 		setHelpMode(false);
 		
@@ -89,8 +92,8 @@ public abstract class EvoPane extends JPanel {
 	
 	
 	public void modeThreeAlleles(boolean b){
+		threeAlleles = b;
 		for(Component comp : this.threeAllelesList) {
-//			comp.setEnabled(b);
 			comp.setVisible(b);
 		}
 	}

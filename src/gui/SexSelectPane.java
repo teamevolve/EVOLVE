@@ -22,7 +22,7 @@ import shared.Genotype;
  */
 
 public class SexSelectPane extends EvoPane {
-	
+
 	static final int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 3;
 	
@@ -42,9 +42,10 @@ public class SexSelectPane extends EvoPane {
 	ArrayList<Component> labels = new ArrayList<Component>();
 	ArrayList<Component> fields = new ArrayList<Component>();
 
-
+	JPanel table;
 	
 	public SexSelectPane() {
+		super();
 		mateFreqLabel = new JLabel("Sexual Selection (Mating Preference): ");
 		AAPrefLabel = new JLabel("% AA Preference for: ");
 		ABPrefLabel = new JLabel("% AB Preference for: ");
@@ -104,7 +105,7 @@ public class SexSelectPane extends EvoPane {
 
 		addToLists();
 		
-		JPanel table = new JPanel();
+		table = new JPanel();
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); // t for temp constraints
 		t.insets = new Insets(0, 0, 3, 15);
@@ -181,6 +182,14 @@ public class SexSelectPane extends EvoPane {
 		fields.add(freqCCxAA); fields.add(freqCCxAB); fields.add(freqCCxBB);
 		fields.add(freqCCxAC); fields.add(freqCCxBC); fields.add(freqCCxCC);
 		
+	}
+	
+	@Override
+	public void setEnabled(boolean enable) {
+		super.setEnabled(enable);
+		for(Component c : table.getComponents()) {
+			c.setEnabled(enable);
+		}
 	}
 	
 	public void submit(shared.SessionParameters p) {

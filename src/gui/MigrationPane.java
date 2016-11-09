@@ -48,12 +48,14 @@ public class MigrationPane extends EvoPane {
 	ArrayList<Component> labels = new ArrayList<Component>();
 	ArrayList<Component> fields = new ArrayList<Component>();
 	
+	JPanel table;
+	
 	public MigrationPane() {
 		
 		// Migration radio buttons
 		migLabel = new JLabel("Migration: ");
 		migGroup = new ButtonGroup();
-		fixedMig = new JRadioButton("Universal Proportion");
+		fixedMig = new JRadioButton("Universal Proportion", true);
 		varMig = new JRadioButton("Varies by Genotype");
 		migGroup.add(fixedMig);
 		migGroup.add(varMig);
@@ -100,7 +102,7 @@ public class MigrationPane extends EvoPane {
 		varMigRateAB.setName(RATE); varMigRateAB.setInputVerifier(iv);
 		varMigRateBB.setName(RATE); varMigRateBB.setInputVerifier(iv);
 		
-		JPanel table = new JPanel();
+		table = new JPanel();
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 3, 15);
@@ -127,7 +129,7 @@ public class MigrationPane extends EvoPane {
 
 		// grey out all the elements-- prevents submit w.o radio button selected
 		for(Component c : fixedList) {
-			c.setEnabled(false);
+			c.setEnabled(true);
 		}
 		for(Component c : varyList) {
 			c.setEnabled(false);
@@ -148,7 +150,7 @@ public class MigrationPane extends EvoPane {
 
 		
 	}
-	
+		
 	private void modeFixed(boolean b) {
 		for(Component comp : fixedList) {
 			comp.setEnabled(b);		
@@ -216,6 +218,9 @@ public class MigrationPane extends EvoPane {
 	@Override
 	public void setEnabled(boolean enabled){
 		super.setEnabled(enabled);
+		for(Component c : table.getComponents()) {
+			c.setEnabled(enabled);
+		}
 		if (fixedMig.isSelected() && enabled == true) {
 			modeFixed(true);
 		}

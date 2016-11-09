@@ -19,10 +19,8 @@ import java.util.ArrayList;
  * @author linneasahlberg
  * 
  */
-public class PopSizePane extends EvoPane {
 
-	JLabel popSizeLabel;			// Population size
-	JTextField popSizeField;
+public class GeneticDriftPane extends EvoPane{
 	JLabel popConstLabel;			// Population constant
 	ButtonGroup popConstGroup;
 	JRadioButton popConstTrue;
@@ -36,35 +34,24 @@ public class PopSizePane extends EvoPane {
 
 	ArrayList<Component> vPopList = new ArrayList<Component>();
 	
-	public PopSizePane() {
+	public GeneticDriftPane() {
 
 		super();
 		
-		popSizeLabel = new JLabel("Initial Population Size: ");
-		popSizeField = new JTextField(TEXT_LEN_LONG);
-		
-		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
-		
-		c.gridx = 0; c.gridy = 10;
-		c.anchor = GridBagConstraints.WEST;
-		add(popSizeLabel, c);
-		c.gridx = 1; c.gridy = 10;
-		add(popSizeField, c);
-		
 		// population constant radio button stuff
-		popConstLabel = new JLabel("Population Size is: ");
+		popConstLabel = new JLabel("Genetic Drift: ");
 		popConstGroup = new ButtonGroup();
 		popConstTrue = new JRadioButton("Constant");
-		popConstFalse = new JRadioButton("Varying");
+		popConstFalse = new JRadioButton("Varying", true);
 		popConstGroup.add(popConstTrue);
 		popConstGroup.add(popConstFalse);
 		
 		c.gridx = 0; c.gridy = 20;
 		add(popConstLabel, c);
 		c.gridx = 1; c.gridy = 20;
-		add(popConstTrue, c);
+		add(popConstFalse, c);
 		c.gridx = 2; c.gridy = 20;
-		add(popConstFalse, c);	
+		add(popConstTrue, c);	
 
 		// carrying capacity stuff - appears when popSize varying
 		carryCapLabel = new JLabel("Carrying Capacity: "); 
@@ -132,7 +119,7 @@ public class PopSizePane extends EvoPane {
 
 		public void submit(shared.SessionParameters p) {
 			
-			p.setPopSize(Integer.parseInt(popSizeField.getText()));
+			//p.setPopSize(Integer.parseInt(popSizeField.getText()));
 			p.setPopConst(popConstTrue.isSelected());
 			if(popConstFalse.isSelected()){
 				p.setPopCapacity(Integer.parseInt(carryCap.getText()));
@@ -140,4 +127,4 @@ public class PopSizePane extends EvoPane {
 			}
 		}	
 	
-}
+	}
