@@ -70,7 +70,6 @@ public class GUI extends EvoPane {
 		
 		super();
 		
-		
 		// add spacing
 //		c.insets = new Insets(5, 10, 5, 0);
 		

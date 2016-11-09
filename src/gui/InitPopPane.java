@@ -76,7 +76,6 @@ public class InitPopPane extends EvoPane {
 		// population constant radio button stuff
 		initPopVals = new ButtonGroup();
 		alleleFreqs = new JRadioButton("Enter Allele Frequncies", true);
-		modeAlleleFreqs(true);
 		genotypeNums = new JRadioButton("Enter Genotype Numbers");
 		initPopVals.add(alleleFreqs);
 		initPopVals.add(genotypeNums);
@@ -233,17 +232,22 @@ public class InitPopPane extends EvoPane {
 		
 		
 		addToLists();
+		modeAlleleFreqs(true);
 		
 		// Set actions for the PopConstTrue/False radio buttons
 		alleleFreqs.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeAlleleFreqs(true);
+				initFreqC.setEnabled(false);
+				initFreqCLabel.setEnabled(false);
 			}
 		});
 		
 		genotypeNums.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeAlleleFreqs(false);
+				initFreqC.setEnabled(false);
+				initFreqCLabel.setEnabled(false);
 			}
 		});
 		
@@ -261,6 +265,15 @@ public class InitPopPane extends EvoPane {
 			
 			for(Component comp : gtNumList) 
 				comp.setEnabled(!b);
+		}
+		
+		@Override
+		public void modeThreeAlleles(boolean b){
+			super.modeThreeAlleles(b);
+			initFreqB.setEnabled(b);
+			initFreqBLabel.setEnabled(b);
+			initFreqC.setEnabled(false);
+			initFreqCLabel.setEnabled(false);
 		}
 
 		public void submit(shared.SessionParameters p) {
