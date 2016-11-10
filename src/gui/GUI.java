@@ -13,6 +13,7 @@ import shared.DataManager;
 import shared.EvolveDirector;
 import shared.Genotype;
 import shared.SessionParameters;
+import simulation.PopulationManager;
 
 
 
@@ -30,7 +31,8 @@ public class GUI extends EvoPane {
 	 */
 	private static final long serialVersionUID = 1L;
 
-
+	boolean firstRun = true;
+	
 	// we'll put args here
 	shared.SessionParameters parms;
 
@@ -241,14 +243,14 @@ public class GUI extends EvoPane {
 				// Create a new, blank sesh parms object on each submit click 
 				parms = new shared.SessionParameters();
 
-//				try {
+				try {
 					applyInfo();				
-//				} catch (Exception e1) {
-//					// TODO Auto-generated catch block
-	//				System.out.println("Exception in submission! Check your inputs!");
-		//			e1.printStackTrace();
-			//	}
-					startSim();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					System.out.println("Exception in submission! Check your inputs!");
+					e1.printStackTrace();
+				}
+					runSim();
 			}
 		});
 		
@@ -258,20 +260,17 @@ public class GUI extends EvoPane {
 				applyInfo();
 			}
 		});
-	}
+	
 
-/*		help.addActionListener(new ActionListener() {              // HELP MODE !@#@!@!#@!!@##@!!@#
+		help.addActionListener(new ActionListener() {              // HELP MODE !@#@!@!#@!!@##@!!@#
 			public void actionPerformed(ActionEvent e) {
 				
-				setHelpMode(help.isSelected());
-				this.flavorTextMode(help.isSelected());
-				for(EvoPane pane : forces) {
-					pane.setHelpMode(help.isSelected());
-					pane.flavorTextMode(help.isSelected());
-				}
-				
+				System.out.println("You just pressed the info button");				
 			}
-		}); */
+		}); 
+
+	} // end of constructor
+	
 		public void modeThreeAlleles(boolean b){
 			super.modeThreeAlleles(b);
 			pp.modeThreeAlleles(b);
@@ -282,7 +281,7 @@ public class GUI extends EvoPane {
 			
 		}
 
-		// pushes data to sesh parms
+	// pushes data to sesh parms
 	public void applyInfo() { //throws Exception {
 		
 		// Set evolutionary force flags
@@ -309,13 +308,18 @@ public class GUI extends EvoPane {
 	}
 
 	// starts the simulation
-	public void startSim() {
+	public void runSim() {
+		if(!firstRun) {
+			PopulationManager.getInstance().clearPopulationManager();
+			PopulationManager.getInstance().setupPopulationManager(); //
+			DataManager.getInstance().flushSimulationData();
+		}
 		// Link datamanger to sesh parms, run sim, export
 		DataManager.getInstance().setSessionParams(parms);
 		EvolveDirector.getInstance().runSimulation();
 		EvolveDirector.getInstance().export(ExportFormat.CSV);
-		GraphingEngine.getInstance().generateGraph(GraphType._2D);
-		
+		GraphingEngine.getInstance().generateGraph(GraphType._2D);		
+		firstRun = false;
 	}
 	
 	public static void createAndShowGUI() {
@@ -325,8 +329,7 @@ public class GUI extends EvoPane {
 		
 		//make the window
 		JFrame frame = new JFrame();
-		frame.setTitle("EVOLVE - v0.0");
-		//frame.setSize(800, 640);
+		frame.setTitle("EVOLVE - v0.1");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//add the GUI to a scrollable pane
@@ -336,18 +339,7 @@ public class GUI extends EvoPane {
 		frame.add(scrPane);
 		frame.pack();
 		frame.setVisible(true);
-	}
-	
-	/**
-	 * Set up clear panes that are clickable over the GUI 
-	 */
-	public void flavorTextMode(boolean enabled) {
-		if(enabled) {
-			
-		}
-		else {
-			
-		}
+
 	}
 	
 	public static void main(String[] args) {

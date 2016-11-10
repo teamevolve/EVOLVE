@@ -109,6 +109,13 @@ public class DataManager {
 		return simulationData;
 	}
 	
+	/**
+	 * Clears simulation data for multiple runs --Jason
+	 */
+	public void flushSimulationData() {
+		simulationData = new ArrayList<Population>();
+	}
+	
 	
 	/**
 	 * Takes input parameters, and calculates constants used throughout

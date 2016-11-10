@@ -276,9 +276,9 @@ public class SelectionPane extends EvoPane {
 			afAB = ABrr * ABsr;                 // ########## Ensure these are correct calculations??
 			afBB = BBrr * BBsr;
 
-			absFitAA.setText(String.format("%.4f", afAA));
-			absFitAB.setText(String.format("%.4f", afAB));
-			absFitBB.setText(String.format("%.4f", afBB));
+			absFitAA.setText(String.format("%.3f", afAA));
+			absFitAB.setText(String.format("%.3f", afAB));
+			absFitBB.setText(String.format("%.3f", afBB));
 			
 		}
 		else if(selectAbs.isSelected()) {
