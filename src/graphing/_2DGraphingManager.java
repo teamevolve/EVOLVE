@@ -220,6 +220,7 @@ public class _2DGraphingManager {
 			
 			chart = ChartFactory.createXYLineChart(type.toString() + " vs. Generation", "Generation", type.toString(), seriesCollection);
 			chart.removeLegend();
+			chart.setTitle(DataManager.getInstance().getSessionParams().getTitle());
 			
 			cachedCharts.put(type, chart);
 		}
@@ -227,13 +228,13 @@ public class _2DGraphingManager {
 		// Adjust chart's axis bounds based on value of text fields in conrtol panel
 		ValueAxis domain = chart.getXYPlot().getDomainAxis();
 		Range domainRange = domain.getRange();
-		double xMin = (xmin.equals("")) ? domainRange.getLowerBound() : Double.parseDouble(xmin);
+		double xMin = (xmin.equals("")) ? ((domainRange.getLowerBound() < 0) ? 0 : domainRange.getLowerBound()) : Double.parseDouble(xmin);
 		double xMax = (xmax.equals("")) ? domainRange.getUpperBound() : Double.parseDouble(xmax);
 		domain.setRange(xMin, xMax);
 
 		ValueAxis range = chart.getXYPlot().getRangeAxis();
 		Range rangeRange = range.getRange();
-		double yMin = (ymin.equals("")) ? rangeRange.getLowerBound() : Double.parseDouble(ymin);
+		double yMin = (ymin.equals("")) ? ((rangeRange.getLowerBound() < 0) ? 0 : rangeRange.getLowerBound()) : Double.parseDouble(ymin);
 		double yMax = (ymax.equals("")) ? rangeRange.getUpperBound() : Double.parseDouble(ymax);
 		range.setRange(yMin,yMax);
 
