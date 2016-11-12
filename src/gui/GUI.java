@@ -38,11 +38,11 @@ public class GUI extends EvoPane {
 
 	// Lab report stuff
 	JLabel titleLabel; JTextField title;
-	JLabel questionLabel; JTextArea questionArea;
-	JLabel experLabel; JTextArea exper;
-	JLabel resultsLabel; JTextArea results;
-	JLabel discussionLabel; JTextArea discussion;
-	JToggleButton showLabInfo;
+	JLabel questionLabel; JTextArea question; JScrollPane questionPane;
+	JLabel experLabel; JTextArea exper; JScrollPane experPane;
+	JLabel resultsLabel; JTextArea results; JScrollPane resultsPane;
+	JLabel discussionLabel; JTextArea discussion; JScrollPane discussionPane;
+	JCheckBox showLabInfo;
 
 	// GUI buttons
 	JButton apply;
@@ -89,14 +89,14 @@ public class GUI extends EvoPane {
 		titleLabel = new JLabel("Title:");
 		title = new JTextField(TEXT_LEN_EXTRA_LONG / 2);
 		
-		showLabInfo = new JToggleButton("Show lab report fields");
+		showLabInfo = new JCheckBox("Show lab report fields", true);
 		
 		questionLabel = new JLabel("Question:"); 
-		questionArea = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
-		JScrollPane question = new JScrollPane(questionArea);
-		question.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		questionArea.setLineWrap(true);
-		questionArea.setWrapStyleWord(true);
+		question = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
+		questionPane = new JScrollPane(question);
+		questionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		question.setLineWrap(true);
+		question.setWrapStyleWord(true);
 		
 		experLabel = new JLabel("Experimental Design:"); 
 		exper = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
@@ -125,12 +125,12 @@ public class GUI extends EvoPane {
 		c.gridx = 1; c.gridy = 1;
 		add(title, c);
 		c.gridx = 4; c.gridy = 1;
-		add(showLabInfo, c);
+//		add(showLabInfo, c);
 		
 		c.gridx = 0; c.gridy = 2;
 		add(questionLabel, c);
 		c.gridx = 1; c.gridy = 2;
-		add(question, c);
+		add(questionPane, c);
 		
 		c.gridx = 0; c.gridy = 3;
 		add(experLabel, c);
@@ -158,7 +158,7 @@ public class GUI extends EvoPane {
 		JLabel evoForces = new JLabel("Select active evolutionary forces:");
 		
 		popSizeCheck = new JCheckBox("Drift (Population Size)", true);
-		popSizeCheck.setEnabled(false);
+
 		popSizeCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				gd.setEnabled(popSizeCheck.isSelected());
@@ -166,7 +166,6 @@ public class GUI extends EvoPane {
 		});	
 		
 		selectCheck = new JCheckBox("Natural Selection", true);
-		selectCheck.setEnabled(false);
 		selectCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				sp.setEnabled(selectCheck.isSelected());
@@ -255,8 +254,7 @@ public class GUI extends EvoPane {
 		// Show additional lab info
 		showLabInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-			}
+				hideLabInfo(showLabInfo.isSelected());			}
 		});
 		
 		// Set actions for the NumAlleles radio buttons
@@ -304,16 +302,54 @@ public class GUI extends EvoPane {
 		}); 
 
 	} // end of constructor
+
+	private void hideLabInfo(boolean b) {		
+		questionLabel.setVisible(b);
+		experLabel.setVisible(b);
+		resultsLabel.setVisible(b);
+		discussionLabel.setVisible(b);
+
+		question.setVisible(b);
+		exper.setVisible(b);
+		results.setVisible(b);
+		discussion.setVisible(b);
+		
+		questionPane.setVisible(b);
+//		questionPane.revalidate(); questionPane.repaint(); 
+//		getRootPane().revalidate(); getRootPane().repaint();		
+//		revalidate(); repaint();
+
+		System.out.println("line 325");		
+		experPane.setVisible(b);
+		System.out.println("line 327");
+//		experPane.revalidate(); experPane.repaint(); 
+//		getRootPane().revalidate(); getRootPane().repaint();		
+//		revalidate(); repaint();
+
+		
+		resultsPane.setVisible(b);
+//		resultsPane.revalidate(); resultsPane.repaint(); 
+//		getRootPane().revalidate(); getRootPane().repaint();		
+//		revalidate(); repaint();
+		
+		discussionPane.setVisible(b);		
+//		discussionPane.revalidate(); discussionPane.repaint(); 
+//		getRootPane().revalidate(); getRootPane().repaint();		
+//		revalidate(); repaint();
+
+	}
 	
-		public void modeThreeAlleles(boolean b){
-			super.modeThreeAlleles(b);
-			pp.modeThreeAlleles(b);
-			sp.modeThreeAlleles(b);
-			mp.modeThreeAlleles(b);
-			mip.modeThreeAlleles(b);
-			ssp.modeThreeAlleles(b);
-			
-		}
+	
+	
+	public void modeThreeAlleles(boolean b){
+		super.modeThreeAlleles(b);
+		pp.modeThreeAlleles(b);
+		sp.modeThreeAlleles(b);
+		mp.modeThreeAlleles(b);
+		mip.modeThreeAlleles(b);
+		ssp.modeThreeAlleles(b);
+		
+	}
 
 	// pushes data to sesh parms
 	public void applyInfo() { //throws Exception {
@@ -344,7 +380,7 @@ public class GUI extends EvoPane {
 
 	private void submitTitle() {
 		parms.setTitle(title.getText());
-		parms.setQuestion(questionArea.getText());
+		parms.setQuestion(question.getText());
 		parms.setDesign(exper.getText());
 		parms.setResults(results.getText());
 		parms.setDiscuss(discussion.getText());

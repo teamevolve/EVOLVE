@@ -231,16 +231,23 @@ public class SelectionPane extends EvoPane {
 			comp.setEnabled(!b);	
 	}
 	
-/*	@Override
-	public void setEnabled(boolean enabled){
-		super.setEnabled(enabled);
-		if (selectRandS.isSelected() && enabled == true) {
+	@Override
+	public void setEnabled(boolean enable){
+		super.setEnabled(enable);
+		for(Component comp : table.getComponents()){
+			comp.setEnabled(enable);
+		}
+		if (selectRandS.isSelected() && enable) {
 			modeRandS(true);
 		}
-		else if (selectAbs.isSelected() && enabled == true){
+		else if (selectAbs.isSelected() && enable){
 			modeRandS(false);
 		}
-	}*/
+
+	
+	
+	
+	}
 	
 	/**
 	 * Dumps absolute and relative fitnesses into session parameters.
