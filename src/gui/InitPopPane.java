@@ -350,10 +350,16 @@ public class InitPopPane extends EvoPane {
 			
 			if(threeAlleles) {
 				freqB = Double.parseDouble(initFreqB.getText());
-				freqC = Double.parseDouble(initFreqC.getText());
-
-				// How do we calculate the 6 frequencies for this?    #@~#@~#@~#@~
-				
+				freqC = 1 - freqA - freqB;
+						
+				//calc 6 freqs
+				AAfreq = freqA * freqA;
+				ABfreq = 2 * freqA * freqB;
+				BBfreq = freqB * freqB;
+				ACfreq = 2 * freqA * freqC;
+				BCfreq = 2 * freqB * freqC;
+				CCfreq = freqC * freqC;
+			
 				p.setGenotypeFrequency(Genotype.AC, ACfreq);
 				p.setGenotypeFrequency(Genotype.BC, BCfreq);
 				p.setGenotypeFrequency(Genotype.CC, CCfreq);
@@ -365,20 +371,19 @@ public class InitPopPane extends EvoPane {
 				AAfreq = freqA * freqA;
 				ABfreq = 2 * freqA * freqB;
 				BBfreq = freqB * freqB;
-				
-				
+
 			}
 			
 			// Set the allele freq text fields
-			initFreqB.setText(Double.toString(freqB));
-			initFreqC.setText(Double.toString(freqC));
-			// Set the genotype frequency labels
-			calcFreqAALabel.setText("AA: " + String.format("%.4f",  AAfreq));
-			calcFreqABLabel.setText("AB: " + String.format("%.4f",  ABfreq));
-			calcFreqBBLabel.setText("BB: " + String.format("%.4f",  BBfreq));
-			calcFreqACLabel.setText("AC: " + String.format("%.4f",  ACfreq));
-			calcFreqBCLabel.setText("BC: " + String.format("%.4f",  BCfreq));
-			calcFreqCCLabel.setText("CC: " + String.format("%.4f",  CCfreq));
+			initFreqB.setText(String.format("%.3f", freqB));
+			initFreqC.setText(String.format("%.3f", freqC));
+			
+			calcFreqAALabel.setText("AA: " + String.format("%.3f",  AAfreq));
+			calcFreqABLabel.setText("AB: " + String.format("%.3f",  ABfreq));
+			calcFreqBBLabel.setText("BB: " + String.format("%.3f",  BBfreq));
+			calcFreqACLabel.setText("AC: " + String.format("%.3f",  ACfreq));
+			calcFreqBCLabel.setText("BC: " + String.format("%.3f",  BCfreq));
+			calcFreqCCLabel.setText("CC: " + String.format("%.3f",  CCfreq));
 
 			// Set the number text boxes
 			int totalPop = p.getPopSize();
@@ -401,7 +406,6 @@ public class InitPopPane extends EvoPane {
 			p.setGenotypeFrequency(Genotype.BB, BBfreq);
 			
 		}
-
 
 } // class
 		
