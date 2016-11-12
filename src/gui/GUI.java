@@ -38,10 +38,11 @@ public class GUI extends EvoPane {
 
 	// Lab report stuff
 	JLabel titleLabel; JTextField title;
-	JLabel questionLabel; JTextField question;
-	JLabel experLabel; JTextField exper;
-	JLabel resultsLabel; JTextField results;
-	JLabel discussionLabel; JTextField discussion;
+	JLabel questionLabel; JTextArea questionArea;
+	JLabel experLabel; JTextArea exper;
+	JLabel resultsLabel; JTextArea results;
+	JLabel discussionLabel; JTextArea discussion;
+	JToggleButton showLabInfo;
 
 	// GUI buttons
 	JButton apply;
@@ -86,20 +87,45 @@ public class GUI extends EvoPane {
 		c.anchor = GridBagConstraints.WEST;
 		
 		titleLabel = new JLabel("Title:");
-		title = new JTextField(TEXT_LEN_LONG);
-		questionLabel = new JLabel("Question:"); 
-		question = new JTextField(TEXT_LEN_LONG);
-		experLabel = new JLabel("Experimental Design:"); 
-		exper = new JTextField(TEXT_LEN_LONG);
-		resultsLabel = new JLabel("Results:");
-		results = new JTextField(TEXT_LEN_LONG);
-		discussionLabel = new JLabel("Discussion:");
-		discussion = new JTextField(TEXT_LEN_LONG);
+		title = new JTextField(TEXT_LEN_EXTRA_LONG / 2);
 		
+		showLabInfo = new JToggleButton("Show lab report fields");
+		
+		questionLabel = new JLabel("Question:"); 
+		questionArea = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
+		JScrollPane question = new JScrollPane(questionArea);
+		question.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		questionArea.setLineWrap(true);
+		questionArea.setWrapStyleWord(true);
+		
+		experLabel = new JLabel("Experimental Design:"); 
+		exper = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
+		JScrollPane experPane = new JScrollPane(exper);
+		experPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		exper.setLineWrap(true);
+		exper.setWrapStyleWord(true);
+		
+		resultsLabel = new JLabel("Results:");
+		results = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
+		JScrollPane resultsPane = new JScrollPane(results);
+		resultsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		results.setLineWrap(true);
+		results.setWrapStyleWord(true);
+		
+		discussionLabel = new JLabel("Discussion:");
+		discussion = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
+		JScrollPane discussionPane = new JScrollPane(discussion);
+		discussionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		discussion.setLineWrap(true);
+		discussion.setWrapStyleWord(true);
+		
+		c.gridwidth = 5;
 		c.gridx = 0; c.gridy = 1;
 		add(titleLabel, c);
 		c.gridx = 1; c.gridy = 1;
 		add(title, c);
+		c.gridx = 4; c.gridy = 1;
+		add(showLabInfo, c);
 		
 		c.gridx = 0; c.gridy = 2;
 		add(questionLabel, c);
@@ -109,17 +135,17 @@ public class GUI extends EvoPane {
 		c.gridx = 0; c.gridy = 3;
 		add(experLabel, c);
 		c.gridx = 1; c.gridy = 3;
-		add(exper, c);
+		add(experPane, c);
 		
 		c.gridx = 0; c.gridy = 4;
 		add(resultsLabel, c);
 		c.gridx = 1; c.gridy = 4;
-		add(results, c);
+		add(resultsPane, c);
 		
 		c.gridx = 0; c.gridy = 5;
 		add(discussionLabel, c);
 		c.gridx = 1; c.gridy = 5;
-		add(discussion, c);
+		add(discussionPane, c);
 
 		/* help stuff *****************************************************************************/
 		help = new JToggleButton(">> Help!? <<");
@@ -225,6 +251,14 @@ public class GUI extends EvoPane {
 		modeThreeAlleles(false);
 		
 		/* Action Listeners ********************************************************/
+		
+		// Show additional lab info
+		showLabInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
 		// Set actions for the NumAlleles radio buttons
 		gui.ForcesPane.alleles2.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -291,6 +325,8 @@ public class GUI extends EvoPane {
 		parms.setMigrationChecked(migrationCheck.isSelected());
 		parms.setSexSelectChecked(sexualSelectCheck.isSelected());
 
+		submitTitle();
+		
 		// Submit info from the EvoPanes if necessary
 		fp.submit(parms);
 		pp.submit(parms);
@@ -304,9 +340,16 @@ public class GUI extends EvoPane {
 			mip.submit(parms);
 		if(parms.isSexSelectChecked())
 			ssp.submit(parms);
-		parms.setTitle(title.getText());
 	}
 
+	private void submitTitle() {
+		parms.setTitle(title.getText());
+		parms.setQuestion(questionArea.getText());
+		parms.setDesign(exper.getText());
+		parms.setResults(results.getText());
+		parms.setDiscuss(discussion.getText());
+	}
+	
 	// starts the simulation
 	public void runSim() {
 		if(!firstRun) {
