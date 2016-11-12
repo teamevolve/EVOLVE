@@ -304,7 +304,7 @@ public class GUI extends EvoPane {
 			mip.submit(parms);
 		if(parms.isSexSelectChecked())
 			ssp.submit(parms);
-		
+		parms.setTitle(title.getText());
 	}
 
 	// starts the simulation

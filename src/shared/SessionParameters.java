@@ -36,6 +36,7 @@ public class SessionParameters implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int popSize, numPops, numGens, popCapacity, crashCapacity;
 	private long seed;
+	private String title;
 	private boolean popConst, fixedMig;
 	private HashMap<Allele, Double> alleleFrequencies;
 	private HashMap<Genotype, Double> reproductionRates;
@@ -238,6 +239,14 @@ public class SessionParameters implements Serializable {
 	
 	public void setAlleleFrequency(Allele a, double freq) {
 		alleleFrequencies.put(a, freq);
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }
