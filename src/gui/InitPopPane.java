@@ -65,8 +65,8 @@ public class InitPopPane extends EvoPane {
 
 		super();
 		popLabel = new JLabel("Initial Population:");
-		popSizeLabel = new JLabel("Population Size:");
-		popSizeField = new JTextField(TEXT_LEN_LONG);
+		popSizeLabel = new JLabel("Population Size:"); alFreqList.add(popSizeLabel);
+		popSizeField = new JTextField(TEXT_LEN_LONG); alFreqList.add(popSizeField);
 		
 		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
 		
@@ -75,11 +75,12 @@ public class InitPopPane extends EvoPane {
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(popLabel, c);
-		
-		c.gridx = 1;
-		add(popSizeLabel, c);
-		c.gridx = 2;
-		add(popSizeField, c);
+	
+		// Moved to afFreq table
+//		c.gridx = 1;
+//		add(popSizeLabel, c);
+//		c.gridx = 2;
+//		add(popSizeField, c);
 		
 		// num gens and pops
 		numGensLabel = new JLabel("Number of Generations:");
@@ -87,7 +88,7 @@ public class InitPopPane extends EvoPane {
 		numPopsLabel = new JLabel("Number of Populations:");
 		numPops = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 1; c.gridy++;
+		c.gridx = 1;
 		add(numGensLabel, c);
 		c.gridx++;
 		add(numGens, c);
@@ -128,7 +129,7 @@ public class InitPopPane extends EvoPane {
 		add(alleleFreqs, c);
 		c.gridx = 2;
 		add(genotypeNums, c);
-
+		
 		afPane = new JPanel();
 		afPane.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); 	// t for temp constraints
@@ -153,6 +154,11 @@ public class InitPopPane extends EvoPane {
 		afPane.add(initFreqCLabel, t);
 		t.gridx = 11; t.gridy = 0;
 		afPane.add(initFreqC, t);
+		
+		t.gridx = 12;
+		afPane.add(popSizeLabel);
+		t.gridx++;
+		afPane.add(popSizeField);
 		
 		t.gridx = 3; t.gridy = 1;
 		afPane.add(calcFreqAALabel, t);
@@ -282,6 +288,9 @@ public class InitPopPane extends EvoPane {
 			
 			for(Component comp : gtNumList) 
 				comp.setEnabled(!b);
+			if(!threeAlleles) {
+				initFreqBLabel.setEnabled(false);
+			}
 		}
 		
 		@Override
@@ -294,16 +303,17 @@ public class InitPopPane extends EvoPane {
 		}
 
 		public void submit(shared.SessionParameters p) {
-			Double Afreq;
-			Double Bfreq;
-			Double Cfreq;
+			double Afreq;
+			double Bfreq;
+			double Cfreq;
 
 			p.setNumPops(Integer.parseInt(numPops.getText()));
 			p.setNumGens(Integer.parseInt(numGens.getText()));			
-			p.setPopSize(Integer.parseInt(popSizeField.getText()));
-
+			
 			if(alleleFreqs.isSelected()) {
 
+				p.setPopSize(Integer.parseInt(popSizeField.getText()));
+				
 				Afreq = Double.parseDouble(initFreqA.getText());
 				if(threeAlleles) {
 					Bfreq = Double.parseDouble(initFreqB.getText());
@@ -323,21 +333,53 @@ public class InitPopPane extends EvoPane {
 			else if(genotypeNums.isSelected()) {
 				// Here we have to:
 					// Given the hard numbers, calculate the frequencies
-				
-				
-			}
-			else {
-				System.out.println("Be sure to check a radio button");
-//				throw new Exception();
-			}
+				double AA = 0;
+				double AB = 0;
+				double BB = 0;
+				double AC = 0;
+				double BC = 0;
+				double CC = 0;
+				int total = 0;
+
+				AA = Double.parseDouble(genoAA.getText());
+				AB = Double.parseDouble(genoAB.getText());
+				BB = Double.parseDouble(genoBB.getText());				
+				if(threeAlleles) {
+					AC = Double.parseDouble(genoAC.getText());
+					BC = Double.parseDouble(genoBC.getText());
+					CC = Double.parseDouble(genoCC.getText());				
+				}
+				total = (int) (AA + AB + BB + AC + BC + CC);
+				p.setPopSize(total);
+				popSizeField.setText(Double.toString(total));
+
+				// set init allele freqs
+				// call updateGenotypeNums 
+				int totalA = (int) (2 * AA + AB + AC);
+				int totalB = (int) (2 * BB + AB + BC);
+				int totalC = (int) (2 * CC + AC + BC);
 			
+				double totalAlleles = totalA + totalB + totalC;
+				
+				double fa = (double) totalA / totalAlleles;
+				double fb = (double) totalB / totalAlleles;
+				double fc = (double) totalC / totalAlleles;
+				
+				initFreqA.setText(String.format("%.3f", fa));
+				initFreqB.setText(String.format("%.3f", fb));
+				initFreqC.setText(String.format("%.3f", fc));
+					
+			}
+
+			
+			updateGenotypeNums(p);
 			
 		}
 		
 		// update the labels and boxes to reflect the A B and C allele freqs
 		// update the sesh parms object too
 		private void updateGenotypeNums(SessionParameters p) {
-
+System.out.println("##########################");
 			double freqA = Double.parseDouble(initFreqA.getText());
 			double freqB = 0; 
 			double freqC = 0;
@@ -386,20 +428,22 @@ public class InitPopPane extends EvoPane {
 			calcFreqCCLabel.setText("CC: " + String.format("%.3f",  CCfreq));
 
 			// Set the number text boxes
-			int totalPop = p.getPopSize();
-			int numAA = (int) (AAfreq * totalPop);
-			int numAB = (int) (ABfreq * totalPop);
-			int numBB = (int) (BBfreq * totalPop);
-			int numAC = (int) (ACfreq * totalPop);
-			int numBC = (int) (BCfreq * totalPop);
-			int numCC = (int) (CCfreq * totalPop);
+			if(!genotypeNums.isSelected()) {
+				int totalPop = p.getPopSize();
+				int numAA = (int) (AAfreq * totalPop);
+				int numAB = (int) (ABfreq * totalPop);
+				int numBB = (int) (BBfreq * totalPop);
+				int numAC = (int) (ACfreq * totalPop);
+				int numBC = (int) (BCfreq * totalPop);
+				int numCC = (int) (CCfreq * totalPop);
 			
-			genoAA.setText(Integer.toString(numAA));
-			genoAB.setText(Integer.toString(numAB));
-			genoBB.setText(Integer.toString(numBB));
-			genoAC.setText(Integer.toString(numAC));
-			genoBC.setText(Integer.toString(numBC));
-			genoCC.setText(Integer.toString(numCC));
+				genoAA.setText(Integer.toString(numAA));
+				genoAB.setText(Integer.toString(numAB));
+				genoBB.setText(Integer.toString(numBB));
+				genoAC.setText(Integer.toString(numAC));
+				genoBC.setText(Integer.toString(numBC));
+				genoCC.setText(Integer.toString(numCC));
+			}
 			
 			p.setGenotypeFrequency(Genotype.AA, AAfreq);
 			p.setGenotypeFrequency(Genotype.AB, ABfreq);
