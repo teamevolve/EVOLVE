@@ -71,7 +71,7 @@ public class MigrationPane extends EvoPane {
 		add(varMig, c);
 				
 		// Migration rate - if fixed
-		fixedMigRateLabel = new JLabel("Migration Rate: ");
+		fixedMigRateLabel = new JLabel("Migration Rate (0.0-0.9): ");
 		fixedMigRate = new JTextField(TEXT_LEN_SHORT);
 		
 		fixedMigRate.setName(RATE); fixedMigRate.setInputVerifier(iv);
@@ -172,6 +172,12 @@ public class MigrationPane extends EvoPane {
 			p.setMigrationRate(Genotype.AA, Double.parseDouble(varMigRateAA.getText()));
 			p.setMigrationRate(Genotype.AB, Double.parseDouble(varMigRateAB.getText()));
 			p.setMigrationRate(Genotype.BB, Double.parseDouble(varMigRateBB.getText()));
+			
+			if (threeAlleles) {
+				p.setMigrationRate(Genotype.AC, Double.parseDouble(varMigRateAC.getText()));
+				p.setMigrationRate(Genotype.BC, Double.parseDouble(varMigRateBC.getText()));
+				p.setMigrationRate(Genotype.CC, Double.parseDouble(varMigRateCC.getText()));
+			}
 		}	
 	
 	}
