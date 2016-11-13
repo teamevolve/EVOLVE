@@ -81,33 +81,33 @@ public class GUI extends EvoPane {
 		// left align
 		c.anchor = GridBagConstraints.WEST;
 		
-		titleLabel = new JLabel("Title:");
+		titleLabel = new JLabel("<html><b>Title:</b>");
 		title = new JTextField(TEXT_LEN_EXTRA_LONG / 2);
 		
 		showLabInfo = new JCheckBox("Show lab report fields", true);
 		
-		questionLabel = new JLabel("Question:"); 
+		questionLabel = new JLabel("<html><b>Question:</b>"); 
 		question = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
 		questionPane = new JScrollPane(question);
 		questionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		question.setLineWrap(true);
 		question.setWrapStyleWord(true);
 		
-		experLabel = new JLabel("Experimental Design:"); 
+		experLabel = new JLabel("<html><b>Experimental Design:</b>"); 
 		exper = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
 		JScrollPane experPane = new JScrollPane(exper);
 		experPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		exper.setLineWrap(true);
 		exper.setWrapStyleWord(true);
 		
-		resultsLabel = new JLabel("Results:");
+		resultsLabel = new JLabel("<html><b>Results:</b>");
 		results = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
 		JScrollPane resultsPane = new JScrollPane(results);
 		resultsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		results.setLineWrap(true);
 		results.setWrapStyleWord(true);
 		
-		discussionLabel = new JLabel("Discussion:");
+		discussionLabel = new JLabel("<html><b>Discussion:</b>");
 		discussion = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
 		JScrollPane discussionPane = new JScrollPane(discussion);
 		discussionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -150,9 +150,10 @@ public class GUI extends EvoPane {
 
 
 		/* EVOLUTIONARY FORCES ***************************************************************/
-		JLabel evoForces = new JLabel("Select active evolutionary forces:");
+		JLabel evoForces = new JLabel("<html><b>Active Evolutionary Forces:");
 		
-		popSizeCheck = new JCheckBox("Drift (Population Size)", true);
+		popSizeCheck = new JCheckBox("<html><b>Drift</b> (Population Size)", true);
+		popSizeCheck.setEnabled(false);
 
 		popSizeCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
@@ -160,14 +161,14 @@ public class GUI extends EvoPane {
 			}
 		});	
 		
-		selectCheck = new JCheckBox("Natural Selection", true);
+		selectCheck = new JCheckBox("<html><b>Natural Selection", true);
 		selectCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				sp.setEnabled(selectCheck.isSelected());
 			}
 		});	
 		
-		mutationCheck = new JCheckBox("Mutation", true);
+		mutationCheck = new JCheckBox("<html><b>Mutation", true);
 		mutationCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				mp.setEnabled(mutationCheck.isSelected());
@@ -175,14 +176,14 @@ public class GUI extends EvoPane {
 		});
 
 		
-		migrationCheck = new JCheckBox("Migration", true);
+		migrationCheck = new JCheckBox("<html><b>Migration </b>(Gene Flow)", true);
 		migrationCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				mip.setEnabled(migrationCheck.isSelected());
 			}
 		});
 		
-		sexualSelectCheck = new JCheckBox("Non-Random Mating", true);
+		sexualSelectCheck = new JCheckBox("<html><b>Non-Random Mating", true);
 		sexualSelectCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				ssp.setEnabled(sexualSelectCheck.isSelected());
@@ -398,7 +399,7 @@ public class GUI extends EvoPane {
 		JFrame frame = new JFrame();
 		frame.setTitle("EVOLVE - v0.1");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		//add the GUI to a scrollable pane
 		JScrollPane scrPane = new JScrollPane(g);
 
@@ -406,6 +407,7 @@ public class GUI extends EvoPane {
 		frame.add(scrPane);
 		frame.pack();
 		frame.setVisible(true);
+		
 
 	}
 	

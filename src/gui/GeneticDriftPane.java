@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -39,18 +40,21 @@ public class GeneticDriftPane extends EvoPane{
 		super();
 		
 		// population constant radio button stuff
-		popConstLabel = new JLabel("Genetic Drift: ");
+		popConstLabel = new JLabel("<html><span style='font-size:11px'><b>Genetic Drift: </span>");
 		popConstGroup = new ButtonGroup();
-		popConstTrue = new JRadioButton("Constant");
-		popConstFalse = new JRadioButton("Varying", true);
+		popConstTrue = new JRadioButton("Constant: ");
+		popConstFalse = new JRadioButton("Varying: ", true);
 		popConstGroup.add(popConstTrue);
 		popConstGroup.add(popConstFalse);
 		
+		
 		c.gridx = 0; c.gridy = 20;
 		add(popConstLabel, c);
-		c.gridx = 1; c.gridy = 20;
+		
+		c.insets = new Insets(0, 20, 0, 0);
+		c.gridx = 0; c.gridy++;
 		add(popConstFalse, c);
-		c.gridx = 2; c.gridy = 20;
+		c.gridx = 0; c.gridy++;
 		add(popConstTrue, c);	
 
 		// carrying capacity stuff - appears when popSize varying
@@ -59,15 +63,15 @@ public class GeneticDriftPane extends EvoPane{
 
 		carryCap.setName(INT); carryCap.setInputVerifier(iv);
 		
-		c.gridx = 1; c.gridy = 40;
-		c.gridwidth = 2;
+		c.gridx = 1; c.gridy = 21;
 		c.anchor = GridBagConstraints.WEST;
+		c.gridwidth = 2;
 		add(carryCapLabel, c);
-		c.gridx = 2; c.gridy = 40;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
+		//c.gridwidth = 1;
+		//c.gridx++; c.gridy = 21;
+		c.anchor = GridBagConstraints.CENTER;
 		add(carryCap, c);
-		c.ipadx = 0;
+		//c.ipadx = 0;
 
 		// post crash population size stuff - appears when popSize varying
 		postCrashLabel = new JLabel("Post Crash Population Size: ");
@@ -75,13 +79,11 @@ public class GeneticDriftPane extends EvoPane{
 		
 		postCrash.setName(INT); postCrash.setInputVerifier(iv);
 
-		c.gridx = 1; c.gridy = 50;
-		c.gridwidth = 2;
+		c.gridx = 3;
 		c.anchor = GridBagConstraints.WEST;
 		add(postCrashLabel, c);
-		c.gridx = 2; c.gridy = 50;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
+		c.gridx++;
+		//c.anchor = GridBagConstraints.EAST;
 		//c.ipadx = -55;
 		add(postCrash, c);
 		c.ipadx = 0;

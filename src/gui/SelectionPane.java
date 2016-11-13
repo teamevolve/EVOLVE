@@ -56,7 +56,7 @@ public class SelectionPane extends EvoPane {
 	public SelectionPane() {
 		
 		// Selection radio buttons
-		selectLabel = new JLabel("Natural Selection: ");
+		selectLabel = new JLabel("<html><b><span style='font-size:11px'>Natural Selection: </span> </b>");
 		selectGroup = new ButtonGroup();
 		selectRandS = new JRadioButton("Reproduction and Survival", true);
 		selectAbs = new JRadioButton("Absolute Fitness");
@@ -156,7 +156,8 @@ public class SelectionPane extends EvoPane {
 			table.add(c, t);
 		}
 		
-		c.gridx = 1; c.gridy = 2;
+		c.insets = new Insets(0, 20, 0, 0);
+		c.gridx = 0; c.gridy = 2;
 		c.gridwidth = 7;
 		c.anchor = GridBagConstraints.WEST;
 		add(table, c);

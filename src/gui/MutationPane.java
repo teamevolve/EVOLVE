@@ -33,7 +33,7 @@ public class MutationPane extends EvoPane {
 		super();
 		
 		// Mutation (0 to 1)
-		mutLabel = new JLabel("Mutation (0.0-0.01):");
+		mutLabel = new JLabel("<html><b><span style='font-size:11px'>Mutation (0.0-0.01):");
 		mutAtoBLabel = new JLabel("A to B:");
 		mutBtoALabel = new JLabel("B to A:");
 		mutAtoCLabel = new JLabel("A to C:"); threeAllelesList.add(mutAtoCLabel);
@@ -61,7 +61,7 @@ public class MutationPane extends EvoPane {
 		add(mutLabel, c);
 		
 		// add label then field for each mutation possibility
-		c.gridx = 1; c.gridy = 2;
+		c.gridx = 1; c.gridy = 1;
 		c.gridwidth = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(mutAtoBLabel, c);

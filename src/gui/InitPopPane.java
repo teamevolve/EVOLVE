@@ -64,7 +64,7 @@ public class InitPopPane extends EvoPane {
 	public InitPopPane() {
 
 		super();
-		popLabel = new JLabel("Initial Population:");
+		popLabel = new JLabel("<html><b><span style='font-size:11px'>Initial Population:</span></b>");
 		popSizeLabel = new JLabel("Population Size:"); alFreqList.add(popSizeLabel);
 		popSizeField = new JTextField(TEXT_LEN_LONG); alFreqList.add(popSizeField);
 		
@@ -75,24 +75,19 @@ public class InitPopPane extends EvoPane {
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(popLabel, c);
-	
-		// Moved to afFreq table
-//		c.gridx = 1;
-//		add(popSizeLabel, c);
-//		c.gridx = 2;
-//		add(popSizeField, c);
 		
 		// num gens and pops
-		numGensLabel = new JLabel("Number of Generations:");
+		numGensLabel = new JLabel("<html><b>Number of Generations:");
 		numGens = new JTextField(TEXT_LEN_LONG);
-		numPopsLabel = new JLabel("Number of Populations:");
+		numPopsLabel = new JLabel("<html><b>Number of Populations:");
 		numPops = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 1;
+		c.insets = new Insets(0, 20, 0, 0);
+		c.gridx = 0; c.gridy++;
 		add(numGensLabel, c);
 		c.gridx++;
 		add(numGens, c);
-		c.gridx = 1; c.gridy++;
+		c.gridx = 0; c.gridy++;
 		add(numPopsLabel, c);
 		c.gridx++;
 		add(numPops, c);
@@ -105,7 +100,7 @@ public class InitPopPane extends EvoPane {
 		initPopVals.add(genotypeNums);
 
 		
-		alleleFreqsLabel = new JLabel("Allele frequencies (0-1):"); alFreqList.add(alleleFreqsLabel);
+		alleleFreqsLabel = new JLabel("<html><b>Allele frequencies</b> (0-1):"); alFreqList.add(alleleFreqsLabel);
 		initFreqALabel = new JLabel("A:"); alFreqList.add(initFreqALabel);
 		initFreqBLabel = new JLabel("B:"); alFreqList.add(initFreqBLabel);
 		initFreqCLabel = new JLabel("C:"); alFreqList.add(initFreqCLabel); threeAllelesList.add(initFreqCLabel);
@@ -125,9 +120,9 @@ public class InitPopPane extends EvoPane {
 		calcFreqCCLabel = new JLabel("CC: ___"); threeAllelesList.add(calcFreqCCLabel);
 		
 		c.gridwidth = 2;
-		c.gridx = 1; c.gridy++;
+		c.gridx = 0; c.gridy++;
 		add(alleleFreqs, c);
-		c.gridx = 2;
+		c.gridx++;
 		add(genotypeNums, c);
 		
 		afPane = new JPanel();
@@ -160,42 +155,42 @@ public class InitPopPane extends EvoPane {
 		t.gridx++;
 		afPane.add(popSizeField);
 		
-		t.gridx = 3; t.gridy = 1;
+		/*t.gridx = 4; t.gridy = 1;
 		afPane.add(calcFreqAALabel, t);
 		//t.gridx = 2; t.gridy = 2;
 		//afPane.add(calcFreqAA, t);
 		
-		t.gridx = 4; t.gridy = 1;
+		t.gridx = 5; t.gridy = 1;
 		afPane.add(calcFreqABLabel, t);
 		//t.gridx = 3; t.gridy = 2;
 		//afPane.add(calcFreqAB, t);
 		
-		t.gridx = 5; t.gridy = 1;
+		t.gridx = 6; t.gridy = 1;
 		afPane.add(calcFreqBBLabel, t);
 		//t.gridx = 4; t.gridy = 2;
 		//afPane.add(calcFreqBB, t);
 		
-		t.gridx = 6; t.gridy = 1;
+		t.gridx = 7; t.gridy = 1;
 		afPane.add(calcFreqACLabel, t);
 		//t.gridx = 5; t.gridy = 2;
 		//afPane.add(calcFreqAC, t);
 		
-		t.gridx = 7; t.gridy = 1;
+		t.gridx = 8; t.gridy = 1;
 		afPane.add(calcFreqBCLabel, t);
 		//t.gridx = 6; t.gridy = 2;
 		//afPane.add(calcFreqBC, t);
 		
-		t.gridx = 8; t.gridy = 1;
+		t.gridx = 9; t.gridy = 1;
 		afPane.add(calcFreqCCLabel, t);
 		//t.gridx = 7; t.gridy = 2;
 		//afPane.add(calcFreqCC, t);
-		
-		c.gridx = 1; c.gridy++;
+		*/
+		c.gridx = 0; c.gridy++;
 		c.gridwidth = 7;
 		add(afPane, c);
 		
 		/*Genotype Number Pane********************************/
-		genoNumsLabel = new JLabel("Genotype Numbers:"); gtNumList.add(genoNumsLabel);
+		genoNumsLabel = new JLabel("<html><b>Genotype Numbers:"); gtNumList.add(genoNumsLabel);
 		genoAALabel = new JLabel("AA"); gtNumList.add(genoAALabel);
 		genoABLabel = new JLabel("AB"); gtNumList.add(genoABLabel);
 		genoBBLabel = new JLabel("BB"); gtNumList.add(genoBBLabel);
@@ -215,7 +210,7 @@ public class InitPopPane extends EvoPane {
 		t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 0, 15);
 		
-		t.gridwidth = 4;
+		t.gridwidth = 3;
 		t.gridx = 0; t.gridy = 0;
 		gnPane.add(genoNumsLabel, t);
 		
@@ -250,7 +245,7 @@ public class InitPopPane extends EvoPane {
 		t.gridx = 6; t.gridy = 2;
 		gnPane.add(genoCC, t);
 		
-		c.gridx = 1; c.gridy++;
+		c.gridx = 0; c.gridy++;
 		add(gnPane, c);
 		
 		

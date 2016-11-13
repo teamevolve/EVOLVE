@@ -53,20 +53,21 @@ public class MigrationPane extends EvoPane {
 	public MigrationPane() {
 		
 		// Migration radio buttons
-		migLabel = new JLabel("Migration: ");
+		migLabel = new JLabel("<html><b><span style='font-size:11px'>Migration: ");
 		migGroup = new ButtonGroup();
-		fixedMig = new JRadioButton("Universal Proportion", true);
-		varMig = new JRadioButton("Varies by Genotype");
+		fixedMig = new JRadioButton("Genotypes Equal (0.0-0.9): ", true);
+		varMig = new JRadioButton("Genotypes Vary: ");
 		migGroup.add(fixedMig);
 		migGroup.add(varMig);
 		
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(migLabel, c);
-		c.gridx = 1; c.gridy = 1;
+		c.insets = new Insets(0, 20, 0, 0);
+		c.gridy = 2;
 		c.anchor = GridBagConstraints.WEST;
 		add(fixedMig, c);
-		c.gridx = 2; c.gridy = 1;
+		c.gridy = 3;
 		c.anchor = GridBagConstraints.WEST;
 		add(varMig, c);
 				
@@ -76,11 +77,11 @@ public class MigrationPane extends EvoPane {
 		
 		fixedMigRate.setName(RATE); fixedMigRate.setInputVerifier(iv);
 		
+		//c.gridx = 1; c.gridy = 2;
+		//c.anchor = GridBagConstraints.WEST;
+		//add(fixedMigRateLabel, c);
 		c.gridx = 1; c.gridy = 2;
 		c.anchor = GridBagConstraints.WEST;
-		add(fixedMigRateLabel, c);
-		c.gridx = 1; c.gridy = 2;
-		c.anchor = GridBagConstraints.EAST;
 		add(fixedMigRate, c);
 			
 		// Migration Rates by genotype - if varies
@@ -105,23 +106,23 @@ public class MigrationPane extends EvoPane {
 		table = new JPanel();
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
-		t.insets = new Insets(0, 0, 3, 15);
+		//t.insets = new Insets(0, 0, 3, 15);
 		
 		addToLists();
-		
+		t.gridy = 1;
 		int i = 0;
 		for (Component comp : labels) {
 			t.gridx = i; i++;
 			table.add(comp, t);
 		}
 		
-		t.gridy = 1;
+		t.gridy = 2;
 		i = 0;
 		for (Component comp : fields) {
 			t.gridx = i; i++;
 			table.add(comp, t);
 		}
-		
+		c.gridheight = 10;
 		c.gridx = 1; c.gridy = 3;
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.WEST;
