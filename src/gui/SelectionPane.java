@@ -246,6 +246,26 @@ public class SelectionPane extends EvoPane {
 	}
 	
 	/**
+	 * @author jason
+	 * PRE: this pane is disabled in the GUI
+	 */
+	public void fillWithOnes() {
+		survAA.setText("1");
+		survAB.setText("1");
+		survBB.setText("1");
+		survAC.setText("1");
+		survBC.setText("1");
+		survCC.setText("1");
+		
+		reproAA.setText("1");
+		reproAB.setText("1");
+		reproBB.setText("1");
+		reproAC.setText("1");
+		reproBC.setText("1");
+		reproCC.setText("1");
+	}
+	
+	/**
 	 * Dumps absolute and relative fitnesses into session parameters.
 	 * If Reproductioin and Survival radiobutton is checked, it also dumps Repro and Surv rates
 	 * @param p = sesh parms
@@ -356,21 +376,5 @@ public class SelectionPane extends EvoPane {
 			relFitCC.setText(String.format("%.4f", rfCC));
 		}
 	}
-	
-	/**
-	 * 
-	 * Little test guy 
-	 */
-	public static void main(String[] args){
-		JFrame window = new JFrame();
-		
-		SelectionPane test = new SelectionPane();
-		
-		window.add(test);
-		window.pack();
-		window.setVisible(true);
-	}
-
-	
 	
 }
