@@ -285,14 +285,17 @@ public class GUI extends EvoPane {
 				EvolveDirector.getInstance().graph();
 			}
 		});
-		
+
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				parms = new shared.SessionParameters();
+				if(!selectCheck.isSelected()) {
+					sp.fillWithOnes();
+				}
 				applyInfo();
 			}
 		});
-	
+
 
 		help.addActionListener(new ActionListener() {              // HELP MODE !@#@!@!#@!!@##@!!@#
 			public void actionPerformed(ActionEvent e) {
@@ -368,8 +371,7 @@ public class GUI extends EvoPane {
 		pp.submit(parms);
 		if(parms.isPopSizeChecked())
 			gd.submit(parms);
-		if(parms.isSelectChecked())
-			sp.submit(parms);
+		sp.submit(parms); // Is not checked b/c is filled with ones in apply
 		if(parms.isMutationChecked())
 			mp.submit(parms);
 		if(parms.isMigrationChecked())

@@ -242,11 +242,27 @@ public class SelectionPane extends EvoPane {
 		}
 		else if (selectAbs.isSelected() && enable){
 			modeRandS(false);
-		}
-
+		}	
+	}
 	
-	
-	
+	/**
+	 * @author jason
+	 * PRE: this pane is disabled in the GUI
+	 */
+	public void fillWithOnes() {
+		survAA.setText("1");
+		survAB.setText("1");
+		survBB.setText("1");
+		survAC.setText("1");
+		survBC.setText("1");
+		survCC.setText("1");
+		
+		reproAA.setText("1");
+		reproAB.setText("1");
+		reproBB.setText("1");
+		reproAC.setText("1");
+		reproBC.setText("1");
+		reproCC.setText("1");
 	}
 	
 	/**
@@ -256,51 +272,88 @@ public class SelectionPane extends EvoPane {
 	 */
 	public void submit(shared.SessionParameters p){
 
-		double afAA = 0, afAB = 0, afBB = 0;
+		double afAA = 0; double afAB = 0; double afBB = 0; 
+		double afAC = 0; double afBC = 0; double afCC = 0;
 
-		double rfAA, rfAB, rfBB;
+		double rfAA, rfAB, rfBB, rfAC, rfBC, rfCC;
 		
 		// if repro and surv is selected
 		if(selectRandS.isSelected()) {
 			double AArr = Double.parseDouble(reproAA.getText());
 			double ABrr = Double.parseDouble(reproAB.getText());
 			double BBrr = Double.parseDouble(reproBB.getText());
+			double ACrr = 0;
+			double BCrr = 0;
+			double CCrr = 0;
 
 			double AAsr = Double.parseDouble(survAA.getText());
 			double ABsr = Double.parseDouble(survAB.getText());
 			double BBsr = Double.parseDouble(survBB.getText());
+			double ACsr = 0;
+			double BCsr = 0;
+			double CCsr = 0;
+			
+			if(threeAlleles) {
+				ACrr = Double.parseDouble(reproAC.getText());
+				BCrr = Double.parseDouble(reproBC.getText());
+				CCrr = Double.parseDouble(reproCC.getText());
+
+				ACsr = Double.parseDouble(survAC.getText());
+				BCsr = Double.parseDouble(survBC.getText());
+				CCsr = Double.parseDouble(survCC.getText());
+			}
 			
 			p.setReproductionRate(Genotype.AA, AArr);
 			p.setReproductionRate(Genotype.AB, ABrr);
 			p.setReproductionRate(Genotype.BB, BBrr);
+			p.setReproductionRate(Genotype.AC, ACrr);
+			p.setReproductionRate(Genotype.BC, BCrr);
+			p.setReproductionRate(Genotype.CC, CCrr);
 
 			p.setSurvivalRate(Genotype.AA, AAsr);
 			p.setSurvivalRate(Genotype.AB, ABsr);
 			p.setSurvivalRate(Genotype.BB, BBsr);
+			p.setSurvivalRate(Genotype.AC, ACsr);
+			p.setSurvivalRate(Genotype.BC, BCsr);
+			p.setSurvivalRate(Genotype.CC, CCsr);
 
 			// Calculate absolute fitness of each genotype
 			afAA = AArr * AAsr;
 			afAB = ABrr * ABsr;
 			afBB = BBrr * BBsr;
-
+			afAC = ACrr * ACsr;
+			afBC = BCrr * BCsr;
+			afCC = CCrr * CCsr;
+			
 			absFitAA.setText(String.format("%.3f", afAA));
 			absFitAB.setText(String.format("%.3f", afAB));
 			absFitBB.setText(String.format("%.3f", afBB));
-
+			if(threeAlleles) {
+				absFitAC.setText(String.format("%.3f", afAC));
+				absFitBC.setText(String.format("%.3f", afBC));
+				absFitCC.setText(String.format("%.3f", afCC));
+			}
 		}
 		else if(selectAbs.isSelected()) {
 			afAA = Double.parseDouble(absFitAA.getText());
 			afAB = Double.parseDouble(absFitAB.getText());
 			afBB = Double.parseDouble(absFitBB.getText());
+			if(threeAlleles) {
+				afAC = Double.parseDouble(absFitAC.getText());
+				afBC = Double.parseDouble(absFitBC.getText());
+				afCC = Double.parseDouble(absFitCC.getText());
+			}
 		}
 
 		p.setAbsoluteFitness(Genotype.AA, afAA);
 		p.setAbsoluteFitness(Genotype.AA, afAB);
 		p.setAbsoluteFitness(Genotype.AA, afBB);
 		
-		rfAA = afAA / (afAA + afAB + afBB);
-		rfAB = afAB / (afAA + afAB + afBB);
-		rfBB = afBB / (afAA + afAB + afBB);
+		double afTotal = afAA + afAB + afBB + afAC + afBC + afCC;
+		
+		rfAA = afAA / afTotal;
+		rfAB = afAB / afTotal;
+		rfBB = afBB / afTotal;
 		
 		p.setRelativeFitness(Genotype.AA, rfAA);
 		p.setRelativeFitness(Genotype.AB, rfAB);
@@ -309,22 +362,19 @@ public class SelectionPane extends EvoPane {
 		relFitAA.setText(String.format("%.4f", rfAA));
 		relFitAB.setText(String.format("%.4f", rfAB));
 		relFitBB.setText(String.format("%.4f", rfBB));
-	}
-	
-	/**
-	 * 
-	 * Little test guy 
-	 */
-	public static void main(String[] args){
-		JFrame window = new JFrame();
-		
-		SelectionPane test = new SelectionPane();
-		
-		window.add(test);
-		window.pack();
-		window.setVisible(true);
-	}
+		if(threeAlleles) {
+			rfAC = afAC / afTotal;
+			rfBC = afBC / afTotal;
+			rfCC = afCC / afTotal;
 
-	
+			p.setRelativeFitness(Genotype.AC, rfAC);
+			p.setRelativeFitness(Genotype.BC, rfBC);
+			p.setRelativeFitness(Genotype.CC, rfCC);
+			
+			relFitAC.setText(String.format("%.4f", rfAC));
+			relFitBC.setText(String.format("%.4f", rfBC));
+			relFitCC.setText(String.format("%.4f", rfCC));
+		}
+	}
 	
 }
