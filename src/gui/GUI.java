@@ -6,15 +6,9 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import graphing.GraphType;
-import graphing.GraphingEngine;
 import importexport.ExportFormat;
 import shared.DataManager;
 import shared.EvolveDirector;
-import shared.Genotype;
-import shared.SessionParameters;
-import simulation.Population;
-import simulation.PopulationManager;
 
 
 
@@ -283,7 +277,12 @@ public class GUI extends EvoPane {
 					System.out.println("Exception in submission! Check your inputs!");
 					e1.printStackTrace();
 				}
-					runSim();
+				// Link datamanger to sesh parms, run sim, export
+				EvolveDirector.getInstance().resetSimulationEngine();
+				EvolveDirector.getInstance().storeSessionParameters(parms);
+				EvolveDirector.getInstance().runSimulation();
+				EvolveDirector.getInstance().export(ExportFormat.CSV);
+				EvolveDirector.getInstance().graph();
 			}
 		});
 		
@@ -387,21 +386,6 @@ public class GUI extends EvoPane {
 		parms.setDiscuss(discussion.getText());
 	}
 	
-	// starts the simulation
-	public void runSim() {
-		if(!firstRun) {
-			PopulationManager.getInstance().clearPopulationManager();
-			PopulationManager.getInstance().setupPopulationManager(); //
-			DataManager.getInstance().flushSimulationData();
-			Population.resetPopulationCounter();
-		}
-		// Link datamanger to sesh parms, run sim, export
-		DataManager.getInstance().setSessionParams(parms);
-		EvolveDirector.getInstance().runSimulation();
-		EvolveDirector.getInstance().export(ExportFormat.CSV);
-		GraphingEngine.getInstance().generateGraph(GraphType._2D);		
-		firstRun = false;
-	}
 	
 	public static void createAndShowGUI() {
 
