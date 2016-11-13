@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 
@@ -134,7 +136,8 @@ public class _2DGraphingManager {
 		
 		JPanel quantitiesPanel = new JPanel();
 		quantitiesPanel.setLayout(new BoxLayout(quantitiesPanel, BoxLayout.Y_AXIS));
-		quantitiesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		quantitiesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		quantitiesPanel.setAlignmentX(0);
 		
 		for (QuantityType qt : QuantityType.values()) {
 			JCheckBox box = new JCheckBox(qt.toString());
@@ -153,6 +156,7 @@ public class _2DGraphingManager {
 		
 		JPanel frequenciesPanel = new JPanel();
 		frequenciesPanel.setLayout(new BoxLayout(frequenciesPanel, BoxLayout.Y_AXIS));
+		frequenciesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		frequenciesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		for (Allele a : Allele.getValues()) {
 			AxisType at = FrequencyType.toEnum(a);
@@ -240,7 +244,7 @@ public class _2DGraphingManager {
 		containerPanel.add(quantitiesButton);
 		containerPanel.add(quantitiesPanel);
 		containerPanel.add(frequenciesButton);
-		containerPanel.add(quantitiesPanel);
+		containerPanel.add(frequenciesPanel);
 		containerPanel.add(rangesPanel);
 		containerPanel.add(buttonPanel);
 		
