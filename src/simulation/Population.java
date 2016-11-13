@@ -75,6 +75,13 @@ public class Population {
 
 	}
 
+	/**
+	 * Resets the population counter 
+	 * @author jasonfortunato
+	 */
+	public static void resetPopulationCounter() {
+		populationCounter = 0;
+	}
 
 	/**
 	 * Determine whether population has gone extinct

@@ -13,6 +13,7 @@ import shared.DataManager;
 import shared.EvolveDirector;
 import shared.Genotype;
 import shared.SessionParameters;
+import simulation.Population;
 import simulation.PopulationManager;
 
 
@@ -392,6 +393,7 @@ public class GUI extends EvoPane {
 			PopulationManager.getInstance().clearPopulationManager();
 			PopulationManager.getInstance().setupPopulationManager(); //
 			DataManager.getInstance().flushSimulationData();
+			Population.resetPopulationCounter();
 		}
 		// Link datamanger to sesh parms, run sim, export
 		DataManager.getInstance().setSessionParams(parms);
