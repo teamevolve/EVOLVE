@@ -125,9 +125,10 @@ public class _2DGraphingManager {
 	 */
 	private JPanel generateControlPanel() {
 		JPanel containerPanel = new JPanel();
-		containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+		containerPanel.setLayout(new FlowLayout());
+		containerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		ButtonGroup graphingTypes = new ButtonGroup();
-		
+			
 		JRadioButton quantitiesButton = new JRadioButton("Graph Quantities");
 		quantitiesButton.setSelected(true);
 		quantitiesButton.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -137,7 +138,7 @@ public class _2DGraphingManager {
 		JPanel quantitiesPanel = new JPanel();
 		quantitiesPanel.setLayout(new BoxLayout(quantitiesPanel, BoxLayout.Y_AXIS));
 		quantitiesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		quantitiesPanel.setAlignmentX(0);
+		quantitiesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		for (QuantityType qt : QuantityType.values()) {
 			JCheckBox box = new JCheckBox(qt.toString());
@@ -247,8 +248,6 @@ public class _2DGraphingManager {
 		containerPanel.add(frequenciesPanel);
 		containerPanel.add(rangesPanel);
 		containerPanel.add(buttonPanel);
-		
-		//containerPanel.setMaximumSize(new Dimension(CONTROL_PANEL_WIDTH, Integer.MAX_VALUE));
 
 		return containerPanel;
 	}
