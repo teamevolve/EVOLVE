@@ -82,10 +82,9 @@ public class SelectionPane extends EvoPane {
 		ACLabel = new JLabel("AC"); threeAllelesList.add(ACLabel);
 		BCLabel = new JLabel("BC"); threeAllelesList.add(BCLabel);
 		CCLabel = new JLabel("CC"); threeAllelesList.add(CCLabel);
-		survLabel = new JLabel("Survival Rates:");
-		reproLabel = new JLabel("Reproductive Rates:");
-		absFitLabel = new JLabel("Absolute Fitness:");
-		relFitLabel = new JLabel("Relative Fitness:");
+		survLabel = new JLabel("<html><b>Survival Rates </b> (0.0-1.0):");
+		reproLabel = new JLabel("<html><b>Reproductive Rates </b> (0.0-10.0):");
+		absFitLabel = new JLabel("<html><b>Absolute Fitness </b> (0.0-5.0):");
 		survAA = new JTextField(TEXT_LEN_SHORT);
 		survAB = new JTextField(TEXT_LEN_SHORT);
 		survBB = new JTextField(TEXT_LEN_SHORT);
@@ -104,7 +103,7 @@ public class SelectionPane extends EvoPane {
 		absFitAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(absFitAC);
 		absFitBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(absFitBC);
 		absFitCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(absFitCC);
-		relFitLabel = new JLabel("Relative Fitness: ");
+		relFitLabel = new JLabel("<html><b>Relative Fitness: ");
 		relFitAA = new JLabel("___");
 		relFitAB = new JLabel("___");
 		relFitBB = new JLabel("___");

@@ -43,8 +43,8 @@ public class GeneticDriftPane extends EvoPane{
 		// population constant radio button stuff
 		popConstLabel = new JLabel("<html><span style='font-size:11px'><b>Genetic Drift: </span>");
 		popConstGroup = new ButtonGroup();
-		popConstTrue = new JRadioButton("Constant: ");
-		popConstFalse = new JRadioButton("Varying: ", true);
+		popConstTrue = new JRadioButton("<html><b>Constant");
+		popConstFalse = new JRadioButton("<html><b>Varying: ", true);
 		popConstGroup.add(popConstTrue);
 		popConstGroup.add(popConstFalse);
 		
@@ -80,6 +80,7 @@ public class GeneticDriftPane extends EvoPane{
 		
 		postCrash.setName(INT); postCrash.setInputVerifier(iv);
 
+		c.gridwidth = 1;
 		c.gridx = 3;
 		c.anchor = GridBagConstraints.WEST;
 		add(postCrashLabel, c);
@@ -95,14 +96,14 @@ public class GeneticDriftPane extends EvoPane{
 		vPopList.add(postCrashLabel);
 		vPopList.add(postCrash);
 		
-		initPopLabel = new JLabel("Population Size: ");
-		initPop = new JTextField(TEXT_LEN_LONG);
+		//initPopLabel = new JLabel("Population Size: ");
+		//initPop = new JTextField(TEXT_LEN_LONG);
 		c.gridx = 1; c.gridy = 22;
 		c.anchor = GridBagConstraints.WEST;
 		c.gridwidth = 2;
-		add(initPopLabel, c);
+		//add(initPopLabel, c);
 		c.anchor = GridBagConstraints.CENTER;
-		add(initPop, c);
+		//add(initPop, c);
 		
 		cPopList.add(initPopLabel);
 		cPopList.add(initPop);
@@ -128,16 +129,16 @@ public class GeneticDriftPane extends EvoPane{
 				comp.setEnabled(!b);
 			}
 			
-			for(Component comp : cPopList) {
-				comp.setEnabled(b);
-			}
+			//for(Component comp : cPopList) {
+				//comp.setEnabled(b);
+			//}
 			
 			if(b == true) { // clear the two text fields
 				carryCap.setText("");
 				postCrash.setText("");
 			}
-			else
-				initPop.setText("");
+			//else
+				//initPop.setText("");
 		}
 
 		public void submit(shared.SessionParameters p) {

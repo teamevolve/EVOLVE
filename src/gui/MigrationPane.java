@@ -60,13 +60,16 @@ public class MigrationPane extends EvoPane {
 		migGroup.add(fixedMig);
 		migGroup.add(varMig);
 		
+		
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(migLabel, c);
 		c.insets = new Insets(0, 20, 0, 0);
 		c.gridy = 2;
 		c.anchor = GridBagConstraints.WEST;
+		c.gridwidth=3;
 		add(fixedMig, c);
+		c.gridwidth=1;
 		c.gridy = 3;
 		c.anchor = GridBagConstraints.WEST;
 		add(varMig, c);

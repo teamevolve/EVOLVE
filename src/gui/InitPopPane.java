@@ -65,8 +65,8 @@ public class InitPopPane extends EvoPane {
 
 		super();
 		popLabel = new JLabel("<html><b><span style='font-size:11px'>Initial Population:</span></b>");
-		popSizeLabel = new JLabel("Population Size:"); alFreqList.add(popSizeLabel);
-		popSizeField = new JTextField(TEXT_LEN_LONG); alFreqList.add(popSizeField);
+		popSizeLabel = new JLabel("<html><b>Population Size:"); //alFreqList.add(popSizeLabel);
+		popSizeField = new JTextField(TEXT_LEN_LONG); //alFreqList.add(popSizeField);
 		
 		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
 		
@@ -91,11 +91,15 @@ public class InitPopPane extends EvoPane {
 		add(numPopsLabel, c);
 		c.gridx++;
 		add(numPops, c);
+		c.gridx = 0; c.gridy++;
+		add(popSizeLabel, c);
+		c.gridx++;
+		add(popSizeField, c);
 		
 		// population constant radio button stuff
 		initPopVals = new ButtonGroup();
-		alleleFreqs = new JRadioButton("Enter Allele Frequncies", true);
-		genotypeNums = new JRadioButton("Enter Genotype Numbers");
+		alleleFreqs = new JRadioButton("<html><b>Enter Allele Frequncies", true);
+		genotypeNums = new JRadioButton("<html><b>Enter Genotype Numbers");
 		initPopVals.add(alleleFreqs);
 		initPopVals.add(genotypeNums);
 
@@ -122,9 +126,6 @@ public class InitPopPane extends EvoPane {
 		c.gridwidth = 2;
 		c.gridx = 0; c.gridy++;
 		add(alleleFreqs, c);
-		c.gridx++;
-		add(genotypeNums, c);
-		
 		afPane = new JPanel();
 		afPane.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); 	// t for temp constraints
@@ -132,7 +133,7 @@ public class InitPopPane extends EvoPane {
 				
 		t.gridwidth = 6;
 		t.gridx = 0; t.gridy = 0;
-		afPane.add(alleleFreqsLabel, t);
+		//afPane.add(alleleFreqsLabel, t);
 		
 		t.gridwidth = 1;
 		t.gridx = 6; t.gridy = 0;
@@ -149,11 +150,6 @@ public class InitPopPane extends EvoPane {
 		afPane.add(initFreqCLabel, t);
 		t.gridx = 11; t.gridy = 0;
 		afPane.add(initFreqC, t);
-		
-		t.gridx = 12;
-		afPane.add(popSizeLabel);
-		t.gridx++;
-		afPane.add(popSizeField);
 		
 		/*t.gridx = 4; t.gridy = 1;
 		afPane.add(calcFreqAALabel, t);
@@ -185,9 +181,12 @@ public class InitPopPane extends EvoPane {
 		//t.gridx = 7; t.gridy = 2;
 		//afPane.add(calcFreqCC, t);
 		*/
-		c.gridx = 0; c.gridy++;
+		c.gridx = 1;
 		c.gridwidth = 7;
 		add(afPane, c);
+		
+		c.gridx = 0; c.gridy++;
+		add(genotypeNums, c);
 		
 		/*Genotype Number Pane********************************/
 		genoNumsLabel = new JLabel("<html><b>Genotype Numbers:"); gtNumList.add(genoNumsLabel);
@@ -212,7 +211,7 @@ public class InitPopPane extends EvoPane {
 		
 		t.gridwidth = 3;
 		t.gridx = 0; t.gridy = 0;
-		gnPane.add(genoNumsLabel, t);
+		//gnPane.add(genoNumsLabel, t);
 		
 		t.gridwidth = 1;
 		t.gridx = 1; t.gridy = 1;
@@ -245,7 +244,7 @@ public class InitPopPane extends EvoPane {
 		t.gridx = 6; t.gridy = 2;
 		gnPane.add(genoCC, t);
 		
-		c.gridx = 0; c.gridy++;
+		c.gridx = 1;
 		add(gnPane, c);
 		
 		

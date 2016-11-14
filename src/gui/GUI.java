@@ -87,28 +87,28 @@ public class GUI extends EvoPane {
 		showLabInfo = new JCheckBox("Show lab report fields", true);
 		
 		questionLabel = new JLabel("<html><b>Question:</b>"); 
-		question = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
+		question = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
 		questionPane = new JScrollPane(question);
 		questionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		question.setLineWrap(true);
 		question.setWrapStyleWord(true);
 		
 		experLabel = new JLabel("<html><b>Experimental Design:</b>"); 
-		exper = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
+		exper = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
 		experPane = new JScrollPane(exper);
 		experPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		exper.setLineWrap(true);
 		exper.setWrapStyleWord(true);
 		
 		resultsLabel = new JLabel("<html><b>Results:</b>");
-		results = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
+		results = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
 		resultsPane = new JScrollPane(results);
 		resultsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		results.setLineWrap(true);
 		results.setWrapStyleWord(true);
 		
-		discussionLabel = new JLabel("<html><b>Discussion:</b>");
-		discussion = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
+		discussionLabel = new JLabel("<html><b>Notes:</b>");
+		discussion = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
 		discussionPane = new JScrollPane(discussion);
 		discussionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		discussion.setLineWrap(true);
