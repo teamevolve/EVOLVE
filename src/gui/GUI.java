@@ -95,21 +95,21 @@ public class GUI extends EvoPane {
 		
 		experLabel = new JLabel("<html><b>Experimental Design:</b>"); 
 		exper = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
-		JScrollPane experPane = new JScrollPane(exper);
+		experPane = new JScrollPane(exper);
 		experPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		exper.setLineWrap(true);
 		exper.setWrapStyleWord(true);
 		
 		resultsLabel = new JLabel("<html><b>Results:</b>");
 		results = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
-		JScrollPane resultsPane = new JScrollPane(results);
+		resultsPane = new JScrollPane(results);
 		resultsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		results.setLineWrap(true);
 		results.setWrapStyleWord(true);
 		
 		discussionLabel = new JLabel("<html><b>Discussion:</b>");
 		discussion = new JTextArea(2, TEXT_LEN_EXTRA_LONG);
-		JScrollPane discussionPane = new JScrollPane(discussion);
+		discussionPane = new JScrollPane(discussion);
 		discussionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		discussion.setLineWrap(true);
 		discussion.setWrapStyleWord(true);
@@ -120,7 +120,7 @@ public class GUI extends EvoPane {
 		c.gridx = 1; c.gridy = 1;
 		add(title, c);
 		c.gridx = 4; c.gridy = 1;
-//		add(showLabInfo, c);
+		add(showLabInfo, c);
 		
 		c.gridx = 0; c.gridy = 2;
 		add(questionLabel, c);
@@ -307,40 +307,16 @@ public class GUI extends EvoPane {
 
 	} // end of constructor
 
-	private void hideLabInfo(boolean b) {		
+	private void hideLabInfo(boolean b) {	
+		//setLayout(null);
 		questionLabel.setVisible(b);
 		experLabel.setVisible(b);
 		resultsLabel.setVisible(b);
 		discussionLabel.setVisible(b);
-
-		question.setVisible(b);
-		exper.setVisible(b);
-		results.setVisible(b);
-		discussion.setVisible(b);
-		
 		questionPane.setVisible(b);
-//		questionPane.revalidate(); questionPane.repaint(); 
-//		getRootPane().revalidate(); getRootPane().repaint();		
-//		revalidate(); repaint();
-
-		System.out.println("line 325");		
-		experPane.setVisible(b);
-		System.out.println("line 327");
-//		experPane.revalidate(); experPane.repaint(); 
-//		getRootPane().revalidate(); getRootPane().repaint();		
-//		revalidate(); repaint();
-
-		
+		experPane.setVisible(b);		
 		resultsPane.setVisible(b);
-//		resultsPane.revalidate(); resultsPane.repaint(); 
-//		getRootPane().revalidate(); getRootPane().repaint();		
-//		revalidate(); repaint();
-		
 		discussionPane.setVisible(b);		
-//		discussionPane.revalidate(); discussionPane.repaint(); 
-//		getRootPane().revalidate(); getRootPane().repaint();		
-//		revalidate(); repaint();
-
 	}
 	
 	

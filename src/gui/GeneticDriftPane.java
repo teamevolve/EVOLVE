@@ -34,6 +34,7 @@ public class GeneticDriftPane extends EvoPane{
 	JTextField postCrash;
 
 	ArrayList<Component> vPopList = new ArrayList<Component>();
+	ArrayList<Component> cPopList = new ArrayList<Component>();
 	
 	public GeneticDriftPane() {
 
@@ -94,6 +95,19 @@ public class GeneticDriftPane extends EvoPane{
 		vPopList.add(postCrashLabel);
 		vPopList.add(postCrash);
 		
+		initPopLabel = new JLabel("Population Size: ");
+		initPop = new JTextField(TEXT_LEN_LONG);
+		c.gridx = 1; c.gridy = 22;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridwidth = 2;
+		add(initPopLabel, c);
+		c.anchor = GridBagConstraints.CENTER;
+		add(initPop, c);
+		
+		cPopList.add(initPopLabel);
+		cPopList.add(initPop);
+		modeConstPop(false);
+		
 		// Set actions for the PopConstTrue/False radio buttons
 		popConstTrue.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -113,10 +127,17 @@ public class GeneticDriftPane extends EvoPane{
 			for(Component comp : vPopList) {
 				comp.setEnabled(!b);
 			}
+			
+			for(Component comp : cPopList) {
+				comp.setEnabled(b);
+			}
+			
 			if(b == true) { // clear the two text fields
 				carryCap.setText("");
 				postCrash.setText("");
 			}
+			else
+				initPop.setText("");
 		}
 
 		public void submit(shared.SessionParameters p) {
