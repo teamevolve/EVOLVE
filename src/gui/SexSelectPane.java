@@ -46,13 +46,13 @@ public class SexSelectPane extends EvoPane {
 	
 	public SexSelectPane() {
 		super();
-		mateFreqLabel = new JLabel("Sexual Selection (Mating Preference): ");
-		AAPrefLabel = new JLabel("% AA Preference for: ");
-		ABPrefLabel = new JLabel("% AB Preference for: ");
-		BBPrefLabel = new JLabel("% BB Preference for: ");
-		ACPrefLabel = new JLabel("% AC Preference for: "); threeAllelesList.add(ACPrefLabel);
-		BCPrefLabel = new JLabel("% BC Preference for: "); threeAllelesList.add(BCPrefLabel);
-		CCPrefLabel = new JLabel("% CC Preference for: "); threeAllelesList.add(CCPrefLabel);
+		mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Mating Preference, 0.0-1.0): ");
+		AAPrefLabel = new JLabel("AA Preference for:");
+		ABPrefLabel = new JLabel("AB Preference for:");
+		BBPrefLabel = new JLabel("BB Preference for:");
+		ACPrefLabel = new JLabel("AC Preference for:"); threeAllelesList.add(ACPrefLabel);
+		BCPrefLabel = new JLabel("BC Preference for:"); threeAllelesList.add(BCPrefLabel);
+		CCPrefLabel = new JLabel("CC Preference for:"); threeAllelesList.add(CCPrefLabel);
 
 		AALabel = new JLabel("AA");
 		ABLabel = new JLabel("AB");

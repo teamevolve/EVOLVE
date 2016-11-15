@@ -75,6 +75,13 @@ public class Population {
 
 	}
 
+	/**
+	 * Resets the population counter 
+	 * @author jasonfortunato
+	 */
+	public static void resetPopulationCounter() {
+		populationCounter = 0;
+	}
 
 	/**
 	 * Determine whether population has gone extinct
@@ -124,7 +131,6 @@ public class Population {
 		reproduce(getLastGeneration(), newGeneration);
 		if (DataManager.getInstance().getSessionParams().isMutationChecked()) 
 			mutate(newGeneration);
-		if (DataManager.getInstance().getSessionParams().isSelectChecked()) 
 			survive(newGeneration);
 		generationHistory.add(newGeneration);
 	}

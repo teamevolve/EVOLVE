@@ -22,7 +22,7 @@ public class ForcesPane extends EvoPane {
 	public ForcesPane() {
 		super();
 		/* seed stuff *****************************************************************************/
-		seedLabel = new JLabel("Seed: ");
+		seedLabel = new JLabel("<html><b>Seed: </b>");
 		seedField = new JTextField(TEXT_LEN_LONG);
 		seedField.setName(INT);
 		seedField.setInputVerifier(iv);
@@ -31,7 +31,7 @@ public class ForcesPane extends EvoPane {
 		c.anchor = GridBagConstraints.WEST;
 		add(seedLabel, c);		
 		c.gridx = 4; c.gridy = 1;
-		c.anchor = GridBagConstraints.EAST;
+		c.anchor = GridBagConstraints.CENTER;
 		add(seedField, c);	
 
 		// Fill in a random seed
@@ -39,7 +39,7 @@ public class ForcesPane extends EvoPane {
 		seedField.setText(randomNum.toString());
 		
 		/* num alleles stuff *****************************************************************************/
-		numAllelesLabel = new JLabel("Number of Alleles: ");
+		numAllelesLabel = new JLabel("<html><b>Number of Alleles: </b>");
 		numAlleles = new ButtonGroup();
 		alleles2 = new JRadioButton("2", true);
 		alleles3 = new JRadioButton("3");

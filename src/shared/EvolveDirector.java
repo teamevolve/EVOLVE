@@ -1,7 +1,11 @@
 package shared;
 
+import graphing.GraphType;
+import graphing.GraphingEngine;
 import importexport.ExportFormat;
 import importexport.ImportExportEngine;
+import simulation.Population;
+import simulation.PopulationManager;
 import simulation.SimulationEngine;
 
 /*
@@ -32,7 +36,7 @@ public class EvolveDirector {
 	 * Member to enable singleton class
 	 */
 	private static EvolveDirector instance = null;
-	
+	private boolean isInitialRun = true;
 	
 	
 	/**
@@ -46,12 +50,7 @@ public class EvolveDirector {
 		}
 		return instance;
 	}
-	
-	public void runSimulation(){
-		DataManager.getInstance().getSessionParams().setThreeAlleles(false);
-		SimulationEngine.getInstance().runSimulation();
-	}
-	
+		
 	public void export(ExportFormat format) {
 		ImportExportEngine.getInstance().export(format);
 	}
@@ -64,5 +63,25 @@ public class EvolveDirector {
 		
 	}
 	
-
+	public void runSimulation() {
+		SimulationEngine.getInstance().runSimulation();
+	}
+	
+	public void resetSimulationEngine() {
+		if (isInitialRun)
+			isInitialRun = false;
+		else {
+			PopulationManager.getInstance().reset();
+			DataManager.getInstance().reset();
+			Population.resetPopulationCounter();		
+		}
+	}
+	
+	public void graph() {
+		GraphingEngine.getInstance().generateGraph(GraphType._2D);		
+	}
+	
+	public void storeSessionParameters(SessionParameters sp) {
+		DataManager.getInstance().setSessionParams(sp);
+	}
 }

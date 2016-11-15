@@ -64,9 +64,9 @@ public class InitPopPane extends EvoPane {
 	public InitPopPane() {
 
 		super();
-		popLabel = new JLabel("Initial Population:");
-		popSizeLabel = new JLabel("Population Size:");
-		popSizeField = new JTextField(TEXT_LEN_LONG);
+		popLabel = new JLabel("<html><b><span style='font-size:11px'>Initial Population:</span></b>");
+		popSizeLabel = new JLabel("<html><b>Population Size:"); //alFreqList.add(popSizeLabel);
+		popSizeField = new JTextField(TEXT_LEN_LONG); //alFreqList.add(popSizeField);
 		
 		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
 		
@@ -76,35 +76,35 @@ public class InitPopPane extends EvoPane {
 		c.anchor = GridBagConstraints.WEST;
 		add(popLabel, c);
 		
-		c.gridx = 1;
-		add(popSizeLabel, c);
-		c.gridx = 2;
-		add(popSizeField, c);
-		
 		// num gens and pops
-		numGensLabel = new JLabel("Number of Generations:");
+		numGensLabel = new JLabel("<html><b>Number of Generations:");
 		numGens = new JTextField(TEXT_LEN_LONG);
-		numPopsLabel = new JLabel("Number of Populations:");
+		numPopsLabel = new JLabel("<html><b>Number of Populations:");
 		numPops = new JTextField(TEXT_LEN_LONG);
 		
-		c.gridx = 1; c.gridy++;
+		c.insets = new Insets(0, 20, 0, 0);
+		c.gridx = 0; c.gridy++;
 		add(numGensLabel, c);
 		c.gridx++;
 		add(numGens, c);
-		c.gridx = 1; c.gridy++;
+		c.gridx = 0; c.gridy++;
 		add(numPopsLabel, c);
 		c.gridx++;
 		add(numPops, c);
+		c.gridx = 0; c.gridy++;
+		add(popSizeLabel, c);
+		c.gridx++;
+		add(popSizeField, c);
 		
 		// population constant radio button stuff
 		initPopVals = new ButtonGroup();
-		alleleFreqs = new JRadioButton("Enter Allele Frequncies", true);
-		genotypeNums = new JRadioButton("Enter Genotype Numbers");
+		alleleFreqs = new JRadioButton("<html><b>Enter Allele Frequncies", true);
+		genotypeNums = new JRadioButton("<html><b>Enter Genotype Numbers");
 		initPopVals.add(alleleFreqs);
 		initPopVals.add(genotypeNums);
 
 		
-		alleleFreqsLabel = new JLabel("Allele frequencies (0-1):"); alFreqList.add(alleleFreqsLabel);
+		alleleFreqsLabel = new JLabel("<html><b>Allele frequencies</b> (0-1):"); alFreqList.add(alleleFreqsLabel);
 		initFreqALabel = new JLabel("A:"); alFreqList.add(initFreqALabel);
 		initFreqBLabel = new JLabel("B:"); alFreqList.add(initFreqBLabel);
 		initFreqCLabel = new JLabel("C:"); alFreqList.add(initFreqCLabel); threeAllelesList.add(initFreqCLabel);
@@ -124,11 +124,8 @@ public class InitPopPane extends EvoPane {
 		calcFreqCCLabel = new JLabel("CC: ___"); threeAllelesList.add(calcFreqCCLabel);
 		
 		c.gridwidth = 2;
-		c.gridx = 1; c.gridy++;
+		c.gridx = 0; c.gridy++;
 		add(alleleFreqs, c);
-		c.gridx = 2;
-		add(genotypeNums, c);
-
 		afPane = new JPanel();
 		afPane.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); 	// t for temp constraints
@@ -136,7 +133,7 @@ public class InitPopPane extends EvoPane {
 				
 		t.gridwidth = 6;
 		t.gridx = 0; t.gridy = 0;
-		afPane.add(alleleFreqsLabel, t);
+		//afPane.add(alleleFreqsLabel, t);
 		
 		t.gridwidth = 1;
 		t.gridx = 6; t.gridy = 0;
@@ -154,42 +151,45 @@ public class InitPopPane extends EvoPane {
 		t.gridx = 11; t.gridy = 0;
 		afPane.add(initFreqC, t);
 		
-		t.gridx = 3; t.gridy = 1;
+		/*t.gridx = 4; t.gridy = 1;
 		afPane.add(calcFreqAALabel, t);
 		//t.gridx = 2; t.gridy = 2;
 		//afPane.add(calcFreqAA, t);
 		
-		t.gridx = 4; t.gridy = 1;
+		t.gridx = 5; t.gridy = 1;
 		afPane.add(calcFreqABLabel, t);
 		//t.gridx = 3; t.gridy = 2;
 		//afPane.add(calcFreqAB, t);
 		
-		t.gridx = 5; t.gridy = 1;
+		t.gridx = 6; t.gridy = 1;
 		afPane.add(calcFreqBBLabel, t);
 		//t.gridx = 4; t.gridy = 2;
 		//afPane.add(calcFreqBB, t);
 		
-		t.gridx = 6; t.gridy = 1;
+		t.gridx = 7; t.gridy = 1;
 		afPane.add(calcFreqACLabel, t);
 		//t.gridx = 5; t.gridy = 2;
 		//afPane.add(calcFreqAC, t);
 		
-		t.gridx = 7; t.gridy = 1;
+		t.gridx = 8; t.gridy = 1;
 		afPane.add(calcFreqBCLabel, t);
 		//t.gridx = 6; t.gridy = 2;
 		//afPane.add(calcFreqBC, t);
 		
-		t.gridx = 8; t.gridy = 1;
+		t.gridx = 9; t.gridy = 1;
 		afPane.add(calcFreqCCLabel, t);
 		//t.gridx = 7; t.gridy = 2;
 		//afPane.add(calcFreqCC, t);
-		
-		c.gridx = 1; c.gridy++;
+		*/
+		c.gridx = 1;
 		c.gridwidth = 7;
 		add(afPane, c);
 		
+		c.gridx = 0; c.gridy++;
+		add(genotypeNums, c);
+		
 		/*Genotype Number Pane********************************/
-		genoNumsLabel = new JLabel("Genotype Numbers:"); gtNumList.add(genoNumsLabel);
+		genoNumsLabel = new JLabel("<html><b>Genotype Numbers:"); gtNumList.add(genoNumsLabel);
 		genoAALabel = new JLabel("AA"); gtNumList.add(genoAALabel);
 		genoABLabel = new JLabel("AB"); gtNumList.add(genoABLabel);
 		genoBBLabel = new JLabel("BB"); gtNumList.add(genoBBLabel);
@@ -209,9 +209,9 @@ public class InitPopPane extends EvoPane {
 		t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 0, 15);
 		
-		t.gridwidth = 4;
+		t.gridwidth = 3;
 		t.gridx = 0; t.gridy = 0;
-		gnPane.add(genoNumsLabel, t);
+		//gnPane.add(genoNumsLabel, t);
 		
 		t.gridwidth = 1;
 		t.gridx = 1; t.gridy = 1;
@@ -244,7 +244,7 @@ public class InitPopPane extends EvoPane {
 		t.gridx = 6; t.gridy = 2;
 		gnPane.add(genoCC, t);
 		
-		c.gridx = 1; c.gridy++;
+		c.gridx = 1;
 		add(gnPane, c);
 		
 		
@@ -282,6 +282,9 @@ public class InitPopPane extends EvoPane {
 			
 			for(Component comp : gtNumList) 
 				comp.setEnabled(!b);
+			if(!threeAlleles) {
+				initFreqBLabel.setEnabled(false);
+			}
 		}
 		
 		@Override
@@ -294,16 +297,17 @@ public class InitPopPane extends EvoPane {
 		}
 
 		public void submit(shared.SessionParameters p) {
-			Double Afreq;
-			Double Bfreq;
-			Double Cfreq;
+			double Afreq;
+			double Bfreq;
+			double Cfreq;
 
 			p.setNumPops(Integer.parseInt(numPops.getText()));
 			p.setNumGens(Integer.parseInt(numGens.getText()));			
-			p.setPopSize(Integer.parseInt(popSizeField.getText()));
-
+			
 			if(alleleFreqs.isSelected()) {
 
+				p.setPopSize(Integer.parseInt(popSizeField.getText()));
+				
 				Afreq = Double.parseDouble(initFreqA.getText());
 				if(threeAlleles) {
 					Bfreq = Double.parseDouble(initFreqB.getText());
@@ -323,21 +327,53 @@ public class InitPopPane extends EvoPane {
 			else if(genotypeNums.isSelected()) {
 				// Here we have to:
 					// Given the hard numbers, calculate the frequencies
-				
-				
-			}
-			else {
-				System.out.println("Be sure to check a radio button");
-//				throw new Exception();
-			}
+				double AA = 0;
+				double AB = 0;
+				double BB = 0;
+				double AC = 0;
+				double BC = 0;
+				double CC = 0;
+				int total = 0;
+
+				AA = Double.parseDouble(genoAA.getText());
+				AB = Double.parseDouble(genoAB.getText());
+				BB = Double.parseDouble(genoBB.getText());				
+				if(threeAlleles) {
+					AC = Double.parseDouble(genoAC.getText());
+					BC = Double.parseDouble(genoBC.getText());
+					CC = Double.parseDouble(genoCC.getText());				
+				}
+				total = (int) (AA + AB + BB + AC + BC + CC);
+				p.setPopSize(total);
+				popSizeField.setText(Double.toString(total));
+
+				// set init allele freqs
+				// call updateGenotypeNums 
+				int totalA = (int) (2 * AA + AB + AC);
+				int totalB = (int) (2 * BB + AB + BC);
+				int totalC = (int) (2 * CC + AC + BC);
 			
+				double totalAlleles = totalA + totalB + totalC;
+				
+				double fa = (double) totalA / totalAlleles;
+				double fb = (double) totalB / totalAlleles;
+				double fc = (double) totalC / totalAlleles;
+				
+				initFreqA.setText(String.format("%.3f", fa));
+				initFreqB.setText(String.format("%.3f", fb));
+				initFreqC.setText(String.format("%.3f", fc));
+					
+			}
+
+			
+			updateGenotypeNums(p);
 			
 		}
 		
 		// update the labels and boxes to reflect the A B and C allele freqs
 		// update the sesh parms object too
 		private void updateGenotypeNums(SessionParameters p) {
-
+System.out.println("##########################");
 			double freqA = Double.parseDouble(initFreqA.getText());
 			double freqB = 0; 
 			double freqC = 0;
@@ -350,10 +386,16 @@ public class InitPopPane extends EvoPane {
 			
 			if(threeAlleles) {
 				freqB = Double.parseDouble(initFreqB.getText());
-				freqC = Double.parseDouble(initFreqC.getText());
-
-				// How do we calculate the 6 frequencies for this?    #@~#@~#@~#@~
-				
+				freqC = 1 - freqA - freqB;
+						
+				//calc 6 freqs
+				AAfreq = freqA * freqA;
+				ABfreq = 2 * freqA * freqB;
+				BBfreq = freqB * freqB;
+				ACfreq = 2 * freqA * freqC;
+				BCfreq = 2 * freqB * freqC;
+				CCfreq = freqC * freqC;
+			
 				p.setGenotypeFrequency(Genotype.AC, ACfreq);
 				p.setGenotypeFrequency(Genotype.BC, BCfreq);
 				p.setGenotypeFrequency(Genotype.CC, CCfreq);
@@ -365,43 +407,43 @@ public class InitPopPane extends EvoPane {
 				AAfreq = freqA * freqA;
 				ABfreq = 2 * freqA * freqB;
 				BBfreq = freqB * freqB;
-				
-				
+
 			}
 			
 			// Set the allele freq text fields
-			initFreqB.setText(Double.toString(freqB));
-			initFreqC.setText(Double.toString(freqC));
-			// Set the genotype frequency labels
-			calcFreqAALabel.setText("AA: " + String.format("%.4f",  AAfreq));
-			calcFreqABLabel.setText("AB: " + String.format("%.4f",  ABfreq));
-			calcFreqBBLabel.setText("BB: " + String.format("%.4f",  BBfreq));
-			calcFreqACLabel.setText("AC: " + String.format("%.4f",  ACfreq));
-			calcFreqBCLabel.setText("BC: " + String.format("%.4f",  BCfreq));
-			calcFreqCCLabel.setText("CC: " + String.format("%.4f",  CCfreq));
+			initFreqB.setText(String.format("%.3f", freqB));
+			initFreqC.setText(String.format("%.3f", freqC));
+			
+			calcFreqAALabel.setText("AA: " + String.format("%.3f",  AAfreq));
+			calcFreqABLabel.setText("AB: " + String.format("%.3f",  ABfreq));
+			calcFreqBBLabel.setText("BB: " + String.format("%.3f",  BBfreq));
+			calcFreqACLabel.setText("AC: " + String.format("%.3f",  ACfreq));
+			calcFreqBCLabel.setText("BC: " + String.format("%.3f",  BCfreq));
+			calcFreqCCLabel.setText("CC: " + String.format("%.3f",  CCfreq));
 
 			// Set the number text boxes
-			int totalPop = p.getPopSize();
-			int numAA = (int) (AAfreq * totalPop);
-			int numAB = (int) (ABfreq * totalPop);
-			int numBB = (int) (BBfreq * totalPop);
-			int numAC = (int) (ACfreq * totalPop);
-			int numBC = (int) (BCfreq * totalPop);
-			int numCC = (int) (CCfreq * totalPop);
+			if(!genotypeNums.isSelected()) {
+				int totalPop = p.getPopSize();
+				int numAA = (int) (AAfreq * totalPop);
+				int numAB = (int) (ABfreq * totalPop);
+				int numBB = (int) (BBfreq * totalPop);
+				int numAC = (int) (ACfreq * totalPop);
+				int numBC = (int) (BCfreq * totalPop);
+				int numCC = (int) (CCfreq * totalPop);
 			
-			genoAA.setText(Integer.toString(numAA));
-			genoAB.setText(Integer.toString(numAB));
-			genoBB.setText(Integer.toString(numBB));
-			genoAC.setText(Integer.toString(numAC));
-			genoBC.setText(Integer.toString(numBC));
-			genoCC.setText(Integer.toString(numCC));
+				genoAA.setText(Integer.toString(numAA));
+				genoAB.setText(Integer.toString(numAB));
+				genoBB.setText(Integer.toString(numBB));
+				genoAC.setText(Integer.toString(numAC));
+				genoBC.setText(Integer.toString(numBC));
+				genoCC.setText(Integer.toString(numCC));
+			}
 			
 			p.setGenotypeFrequency(Genotype.AA, AAfreq);
 			p.setGenotypeFrequency(Genotype.AB, ABfreq);
 			p.setGenotypeFrequency(Genotype.BB, BBfreq);
 			
 		}
-
 
 } // class
 		

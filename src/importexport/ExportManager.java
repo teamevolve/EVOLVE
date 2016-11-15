@@ -37,11 +37,7 @@ public class ExportManager {
 	public void exportTo(ExportFormat format) {
 		switch(format) {
 		case CSV:
-			for (Population p : DataManager.getInstance().getSimulationData()) {
-				CSVExport.getInstance().export(p);
-				System.out.println();
-			}
+			CSVExport.getInstance().export(DataManager.getInstance().getSimulationData());
 		}
 	}
-
 }

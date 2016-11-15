@@ -59,26 +59,14 @@ public class PopulationManager {
 		}
 	}
 	
+	
 	/**
 	 * Clears population manager, allowing for multiple runs off same gui --Jason
 	 */
-	public void clearPopulationManager() {
-		if(instance != null) {
-			populationList = new ArrayList<Population>();
-			extinctList = new ArrayList<Population>();
-		}
+	public void reset() {
+		instance = null;
 	}
 	
-	/**
-	 * Sets up population manager for any rounds other than the first --Jason
-	 * This and the above clear method can be removed if we make this class not static -- Jason
-	 */
-	public void setupPopulationManager() {
-		int numPops = DataManager.getInstance().getSessionParams().getNumPops();
-		for (int i=0; i < numPops; i++) {
-			populationList.add(new Population(INTERNAL_RNG.nextLong()));
-		}		
-	}
 	
 	/**
 	 * Accessor for populationList. Merges living and extinct populations.

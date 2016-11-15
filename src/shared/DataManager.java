@@ -112,8 +112,8 @@ public class DataManager {
 	/**
 	 * Clears simulation data for multiple runs --Jason
 	 */
-	public void flushSimulationData() {
-		simulationData = new ArrayList<Population>();
+	public void reset() {
+		instance = null;
 	}
 	
 	
