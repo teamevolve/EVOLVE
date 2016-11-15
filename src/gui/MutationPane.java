@@ -68,31 +68,31 @@ public class MutationPane extends EvoPane {
 		c.anchor = GridBagConstraints.CENTER;
 		add(mutAtoB, c);
 	
-		c.gridx = 2;
+		c.gridx++;
 		c.anchor = GridBagConstraints.WEST;
 		add(mutBtoALabel, c);
 		c.anchor = GridBagConstraints.CENTER;
 		add(mutBtoA, c);
 		
-		c.gridx = 3;
+		c.gridx++;
 		c.anchor = GridBagConstraints.WEST;
 		add(mutAtoCLabel, c);
 		c.anchor = GridBagConstraints.CENTER;
 		add(mutAtoC, c);
 		
-		c.gridx = 4;
+		c.gridx = 1; c.gridy++;
 		c.anchor = GridBagConstraints.WEST;
 		add(mutCtoALabel, c);
 		c.anchor = GridBagConstraints.CENTER;
 		add(mutCtoA, c);
 		
-		c.gridx = 5;
+		c.gridx++;
 		c.anchor = GridBagConstraints.WEST;
 		add(mutBtoCLabel, c);
 		c.anchor = GridBagConstraints.CENTER;
 		add(mutBtoC, c);
 		
-		c.gridx = 6;
+		c.gridx++;
 		c.anchor = GridBagConstraints.WEST;
 		add(mutCtoBLabel, c);
 		c.anchor = GridBagConstraints.CENTER;

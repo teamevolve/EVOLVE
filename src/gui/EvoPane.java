@@ -60,7 +60,7 @@ public abstract class EvoPane extends JPanel {
 	//	c.insets = new Insets(1, 10, 0, 0);
 
 		// standardize column widths
-		for(int i = 0; i < 7; i++) {
+		for(int i = 0; i < 5; i++) {
 			c.gridx = i; c.gridy = 0;
 			c.anchor = GridBagConstraints.WEST;
 			add(new JLabel("_______________________________"), c);

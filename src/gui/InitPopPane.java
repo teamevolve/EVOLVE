@@ -83,8 +83,10 @@ public class InitPopPane extends EvoPane {
 		numPops = new JTextField(TEXT_LEN_LONG);
 		
 		c.insets = new Insets(0, 20, 0, 0);
+		c.gridwidth = 2;
 		c.gridx = 0; c.gridy++;
 		add(numGensLabel, c);
+		c.gridwidth = 2;
 		c.gridx++;
 		add(numGens, c);
 		c.gridx = 0; c.gridy++;
@@ -104,10 +106,10 @@ public class InitPopPane extends EvoPane {
 		initPopVals.add(genotypeNums);
 
 		
-		alleleFreqsLabel = new JLabel("<html><b>Allele frequencies</b> (0-1):"); alFreqList.add(alleleFreqsLabel);
-		initFreqALabel = new JLabel("A:"); alFreqList.add(initFreqALabel);
-		initFreqBLabel = new JLabel("B:"); alFreqList.add(initFreqBLabel);
-		initFreqCLabel = new JLabel("C:"); alFreqList.add(initFreqCLabel); threeAllelesList.add(initFreqCLabel);
+		alleleFreqsLabel = new JLabel("<html><b>Allele frequencies</b> (0-1):");
+		initFreqALabel = new JLabel("A:"); 
+		initFreqBLabel = new JLabel("B:"); 
+		initFreqCLabel = new JLabel("C:"); threeAllelesList.add(initFreqCLabel);
 		initFreqA = new JTextField(TEXT_LEN_SHORT);
 		initFreqB = new JTextField(TEXT_LEN_SHORT);
 		initFreqC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(initFreqC);
@@ -125,7 +127,6 @@ public class InitPopPane extends EvoPane {
 		
 		c.gridwidth = 2;
 		c.gridx = 0; c.gridy++;
-		add(alleleFreqs, c);
 		afPane = new JPanel();
 		afPane.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); 	// t for temp constraints
@@ -133,8 +134,9 @@ public class InitPopPane extends EvoPane {
 				
 		t.gridwidth = 6;
 		t.gridx = 0; t.gridy = 0;
+		afPane.add(alleleFreqs, t);
 		//afPane.add(alleleFreqsLabel, t);
-		
+
 		t.gridwidth = 1;
 		t.gridx = 6; t.gridy = 0;
 		afPane.add(initFreqALabel, t);
@@ -181,42 +183,40 @@ public class InitPopPane extends EvoPane {
 		//t.gridx = 7; t.gridy = 2;
 		//afPane.add(calcFreqCC, t);
 		*/
-		c.gridx = 1;
+		c.gridx = 0;
 		c.gridwidth = 7;
 		add(afPane, c);
 		
-		c.gridx = 0; c.gridy++;
-		add(genotypeNums, c);
 		
 		/*Genotype Number Pane********************************/
-		genoNumsLabel = new JLabel("<html><b>Genotype Numbers:"); gtNumList.add(genoNumsLabel);
-		genoAALabel = new JLabel("AA"); gtNumList.add(genoAALabel);
-		genoABLabel = new JLabel("AB"); gtNumList.add(genoABLabel);
-		genoBBLabel = new JLabel("BB"); gtNumList.add(genoBBLabel);
-		genoACLabel = new JLabel("AC"); gtNumList.add(genoACLabel); threeAllelesList.add(genoACLabel);
-		genoBCLabel = new JLabel("BC"); gtNumList.add(genoBCLabel); threeAllelesList.add(genoBCLabel);
-		genoCCLabel = new JLabel("CC"); gtNumList.add(genoCCLabel); threeAllelesList.add(genoCCLabel);
+		genoNumsLabel = new JLabel("<html><b>Genotype Numbers:"); 
+		genoAALabel = new JLabel("AA");
+		genoABLabel = new JLabel("AB"); 
+		genoBBLabel = new JLabel("BB"); 
+		genoACLabel = new JLabel("AC"); threeAllelesList.add(genoACLabel);
+		genoBCLabel = new JLabel("BC"); threeAllelesList.add(genoBCLabel);
+		genoCCLabel = new JLabel("CC"); threeAllelesList.add(genoCCLabel);
 		
-		genoAA = new JTextField(TEXT_LEN_SHORT); gtNumList.add(genoAA);
-		genoAB = new JTextField(TEXT_LEN_SHORT); gtNumList.add(genoAB);
-		genoBB = new JTextField(TEXT_LEN_SHORT); gtNumList.add(genoBB);
-		genoAC = new JTextField(TEXT_LEN_SHORT); gtNumList.add(genoAC); threeAllelesList.add(genoAC);
-		genoBC = new JTextField(TEXT_LEN_SHORT); gtNumList.add(genoBC); threeAllelesList.add(genoBC);
-		genoCC = new JTextField(TEXT_LEN_SHORT); gtNumList.add(genoCC); threeAllelesList.add(genoCC);
+		genoAA = new JTextField(TEXT_LEN_SHORT); 
+		genoAB = new JTextField(TEXT_LEN_SHORT); 
+		genoBB = new JTextField(TEXT_LEN_SHORT); 
+		genoAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(genoAC);
+		genoBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(genoBC);
+		genoCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(genoCC);
 		
 		gnPane = new JPanel();
 		gnPane.setLayout(new GridBagLayout());
 		t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 0, 15);
 		
-		t.gridwidth = 3;
-		t.gridx = 0; t.gridy = 0;
-		//gnPane.add(genoNumsLabel, t);
+		t.gridwidth = 1;
+		t.gridx = 0; t.gridy = 1;
+		gnPane.add(genotypeNums, t);
 		
 		t.gridwidth = 1;
-		t.gridx = 1; t.gridy = 1;
+		t.gridx++; t.gridy = 1;
 		gnPane.add(genoAALabel, t);
-		t.gridx = 1; t.gridy = 2;
+		t.gridy = 2;
 		gnPane.add(genoAA, t);
 		
 		t.gridx = 2; t.gridy = 1;
@@ -244,7 +244,7 @@ public class InitPopPane extends EvoPane {
 		t.gridx = 6; t.gridy = 2;
 		gnPane.add(genoCC, t);
 		
-		c.gridx = 1;
+		c.gridx = 0; c.gridy++; 
 		add(gnPane, c);
 		
 		
@@ -255,24 +255,43 @@ public class InitPopPane extends EvoPane {
 		alleleFreqs.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeAlleleFreqs(true);
-				initFreqC.setEnabled(false);
-				initFreqCLabel.setEnabled(false);
 			}
 		});
 		
 		genotypeNums.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeAlleleFreqs(false);
-				initFreqC.setEnabled(false);
-				initFreqCLabel.setEnabled(false);
 			}
 		});
 		
 		}
 
-		//	adds components to the alFreqList and gtNumList
+		/**
+		 * 	adds components to the alFreqList and gtNumList
+		 */
 		private void addToLists() {
+			alFreqList.add(alleleFreqsLabel);
+			alFreqList.add(initFreqALabel);
+			alFreqList.add(initFreqBLabel);
+//			alFreqList.add(initFreqCLabel);
+			alFreqList.add(initFreqA);
+			alFreqList.add(initFreqB);
+//			alFreqList.add(initFreqC);
 			
+			gtNumList.add(genoNumsLabel);
+			gtNumList.add(genoAALabel);
+			gtNumList.add(genoABLabel);
+			gtNumList.add(genoBBLabel);
+			gtNumList.add(genoACLabel);
+			gtNumList.add(genoBCLabel);
+			gtNumList.add(genoCCLabel);
+			
+			gtNumList.add(genoAA);
+			gtNumList.add(genoAB);
+			gtNumList.add(genoBB);
+			gtNumList.add(genoAC);
+			gtNumList.add(genoBC);
+			gtNumList.add(genoCC);
 		}
 	
 		private void modeAlleleFreqs(boolean b) {

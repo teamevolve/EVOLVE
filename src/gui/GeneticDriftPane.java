@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ItemEvent;
@@ -9,6 +10,7 @@ import java.awt.event.ItemListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -63,16 +65,6 @@ public class GeneticDriftPane extends EvoPane{
 		carryCap = new JTextField(TEXT_LEN_LONG);
 
 		carryCap.setName(INT); carryCap.setInputVerifier(iv);
-		
-		c.gridx = 1; c.gridy = 21;
-		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = 2;
-		add(carryCapLabel, c);
-		//c.gridwidth = 1;
-		//c.gridx++; c.gridy = 21;
-		c.anchor = GridBagConstraints.CENTER;
-		add(carryCap, c);
-		//c.ipadx = 0;
 
 		// post crash population size stuff - appears when popSize varying
 		postCrashLabel = new JLabel("Post Crash Population Size: ");
@@ -80,15 +72,16 @@ public class GeneticDriftPane extends EvoPane{
 		
 		postCrash.setName(INT); postCrash.setInputVerifier(iv);
 
-		c.gridwidth = 1;
-		c.gridx = 3;
-		c.anchor = GridBagConstraints.WEST;
-		add(postCrashLabel, c);
-		c.gridx++;
-		//c.anchor = GridBagConstraints.EAST;
-		//c.ipadx = -55;
-		add(postCrash, c);
-		c.ipadx = 0;
+		JPanel fields = new JPanel();
+		fields.setLayout(new FlowLayout());
+		fields.add(carryCapLabel);
+		fields.add(carryCap);
+		fields.add(postCrashLabel);
+		fields.add(postCrash);
+		
+		c.gridx = 1; c.gridy = 21;
+		c.gridwidth = 3;
+		add(fields, c);
 		
 		// Add all that will be disabled when PopSize is constant to the vPopList
 		vPopList.add(carryCapLabel);
@@ -96,14 +89,10 @@ public class GeneticDriftPane extends EvoPane{
 		vPopList.add(postCrashLabel);
 		vPopList.add(postCrash);
 		
-		//initPopLabel = new JLabel("Population Size: ");
-		//initPop = new JTextField(TEXT_LEN_LONG);
 		c.gridx = 1; c.gridy = 22;
 		c.anchor = GridBagConstraints.WEST;
 		c.gridwidth = 2;
-		//add(initPopLabel, c);
 		c.anchor = GridBagConstraints.CENTER;
-		//add(initPop, c);
 		
 		cPopList.add(initPopLabel);
 		cPopList.add(initPop);

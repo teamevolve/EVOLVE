@@ -3,6 +3,7 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -35,7 +36,7 @@ public class ForcesPane extends EvoPane {
 		add(seedField, c);	
 
 		// Fill in a random seed
-		Integer randomNum = (int)(Math.random() * 9999); 		
+		Long randomNum = (new Random()).nextLong(); 		
 		seedField.setText(randomNum.toString());
 		
 		/* num alleles stuff *****************************************************************************/

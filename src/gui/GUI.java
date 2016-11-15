@@ -29,6 +29,7 @@ public class GUI extends EvoPane {
 
 	boolean firstRun = true;
 	
+	
 	// we'll put args here
 	shared.SessionParameters parms;
 
@@ -145,7 +146,7 @@ public class GUI extends EvoPane {
 
 		/* help stuff *****************************************************************************/
 		help = new JToggleButton(">> Help!? <<");
-		c.gridx = 6; c.gridy = 1;
+		c.gridx = 4; c.gridy = 3;
 		c.anchor = GridBagConstraints.CENTER;
 		add(help, c);
 
@@ -236,11 +237,11 @@ public class GUI extends EvoPane {
 		
 		/* apply and submit buttons ***********************************************/
 		apply = new JButton(">> Apply <<");
-		c.gridx = 5; c.gridy = 999999;
+		c.gridx = 3; c.gridy = 999999;
 		add(apply, c);
 		
 		submit = new JButton(">> Submit <<");	
-		c.gridx = 6; c.gridy = 999999;
+		c.gridx = 4; c.gridy = 999999;
 		add(submit, c);		
 		
 		/* Set to 2 alleles mode on startup ***************************************/
@@ -258,6 +259,7 @@ public class GUI extends EvoPane {
 		gui.ForcesPane.alleles2.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeThreeAlleles(false);
+				
 			}
 		});
 		
@@ -374,7 +376,7 @@ public class GUI extends EvoPane {
 		
 		//make the window
 		JFrame frame = new JFrame();
-		frame.setTitle("EVOLVE - v0.1");
+		frame.setTitle("EVOLVE - v0.2");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//add the GUI to a scrollable pane
