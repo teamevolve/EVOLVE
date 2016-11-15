@@ -1,4 +1,6 @@
+
 package gui;
+
 
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
@@ -13,6 +15,11 @@ public class OurInputVerifier extends InputVerifier {
 
 	@Override
 	public boolean verify(JComponent input) {
+		
+		//######################
+		return true;
+		//#####################
+		
 		String text = ((JTextField) (input)).getText().trim();
 	    String type = input.getName();
 	    
@@ -64,4 +71,4 @@ public class OurInputVerifier extends InputVerifier {
 		}
 		return true;
 	}
-}
+} 

@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import importexport.ExportFormat;
 import shared.DataManager;
@@ -381,6 +382,20 @@ public class GUI extends EvoPane {
 
 		// add the scrollable pane to the window
 		frame.add(scrPane);
+		
+        try {
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        
+        SwingUtilities.updateComponentTreeUI(frame);
+		
 		frame.pack();
 		frame.setVisible(true);
 		
