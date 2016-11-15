@@ -131,7 +131,6 @@ public class Population {
 		reproduce(getLastGeneration(), newGeneration);
 		if (DataManager.getInstance().getSessionParams().isMutationChecked()) 
 			mutate(newGeneration);
-		if (DataManager.getInstance().getSessionParams().isSelectChecked()) 
 			survive(newGeneration);
 		generationHistory.add(newGeneration);
 	}
