@@ -17,7 +17,7 @@ public class OurInputVerifier extends InputVerifier {
 	public boolean verify(JComponent input) {
 		
 		//######################
-		return true;
+//		return true;
 		//#####################
 		
 		String text = ((JTextField) (input)).getText().trim();
