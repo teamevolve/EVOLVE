@@ -25,7 +25,7 @@ public enum FrequencyType implements AxisType {
 	}
 	
 	public boolean isGenotype() {
-		if (this != ALLELE_FREQ_A && this != ALLELE_FREQ_B || this != ALLELE_FREQ_C)
+		if (this != ALLELE_FREQ_A && this != ALLELE_FREQ_B && this != ALLELE_FREQ_C)
 			return true;
 		else
 			return false;
@@ -63,31 +63,6 @@ public enum FrequencyType implements AxisType {
 			return Genotype.BC;
 		case GT_FREQ_CC:
 			return Genotype.CC;
-		default:
-			return null;
-		}
-	}
-	
-	public static FrequencyType toEnum(String s) {
-		switch(s) {
-		case "Allele Freq. A":
-			return ALLELE_FREQ_A;
-		case "Allele Freq. B":
-			return ALLELE_FREQ_B;
-		case "Allele Freq. C":
-			return ALLELE_FREQ_C;
-		case "Genotype Freq. AA":
-			return GT_FREQ_AA;
-		case "Genotype Freq. AB":
-			return  GT_FREQ_AB;
-		case "Genotype Freq. AC":
-			return GT_FREQ_AC;
-		case "Genotype Freq. BB":
-			return GT_FREQ_BB;
-		case "Genotype Freq. BC":
-			return GT_FREQ_BC;
-		case "Genotype Freq. CC":
-			return GT_FREQ_CC;
 		default:
 			return null;
 		}

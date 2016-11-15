@@ -75,6 +75,7 @@ public class _2DGraphingManager {
 	/** Default range-component, to show on first graph generation **/
 	/** Holds cached versions of graphs to avoid extra computation **/
 	private static final AxisType DEFAULT_RANGE_METRIC = QuantityType.POPSIZE;
+	private static final Class<?> DEFAULT_ACTIVE_SECTION = QuantityType.class;
 	private Container win = null;
 	private ChartPanel panel = null;
 	
@@ -125,46 +126,49 @@ public class _2DGraphingManager {
 	 */
 	private JPanel generateControlPanel() {
 		JPanel containerPanel = new JPanel();
-		containerPanel.setLayout(new FlowLayout());
-		containerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+		
 		ButtonGroup graphingTypes = new ButtonGroup();
 			
 		JRadioButton quantitiesButton = new JRadioButton("Graph Quantities");
 		quantitiesButton.setSelected(true);
-		quantitiesButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 		graphingTypes.add(quantitiesButton);
 		
 		
 		JPanel quantitiesPanel = new JPanel();
 		quantitiesPanel.setLayout(new BoxLayout(quantitiesPanel, BoxLayout.Y_AXIS));
 		quantitiesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		quantitiesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		for (QuantityType qt : QuantityType.values()) {
 			JCheckBox box = new JCheckBox(qt.toString());
 			if (qt == DEFAULT_RANGE_METRIC) {
 				box.setSelected(true);
 			}
-			box.setAlignmentX(Component.LEFT_ALIGNMENT);
+			if (DEFAULT_ACTIVE_SECTION != QuantityType.class) {
+				box.setEnabled(false);
+			}
+				
+			//box.setAlignmentX(Component.LEFT_ALIGNMENT);
 			quantitiesPanel.add(box);
 		}
 		
 		
 		JRadioButton frequenciesButton = new JRadioButton("Graph Frequencies");
-		frequenciesButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 		graphingTypes.add(frequenciesButton);
 
 		
 		JPanel frequenciesPanel = new JPanel();
 		frequenciesPanel.setLayout(new BoxLayout(frequenciesPanel, BoxLayout.Y_AXIS));
 		frequenciesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		frequenciesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
 		for (Allele a : Allele.getValues()) {
 			AxisType at = FrequencyType.toEnum(a);
 			JCheckBox box = new JCheckBox(at.toString());
 			if (at == DEFAULT_RANGE_METRIC)
 				box.setSelected(true);
-			box.setAlignmentX(Component.LEFT_ALIGNMENT);
+			if (DEFAULT_ACTIVE_SECTION != FrequencyType.class)
+				box.setEnabled(false);
+			//box.setAlignmentX(Component.LEFT_ALIGNMENT);
 			frequenciesPanel.add(box);
 		}
 		for (Genotype gt : Genotype.getValues()) {
@@ -172,7 +176,9 @@ public class _2DGraphingManager {
 			JCheckBox box = new JCheckBox(at.toString());
 			if (at == DEFAULT_RANGE_METRIC)
 				box.setSelected(true);
-			box.setAlignmentX(Component.LEFT_ALIGNMENT);
+			if (DEFAULT_ACTIVE_SECTION != FrequencyType.class)
+				box.setEnabled(false);
+			//box.setAlignmentX(Component.LEFT_ALIGNMENT);
 			frequenciesPanel.add(box);
 		}
 		
@@ -205,6 +211,10 @@ public class _2DGraphingManager {
 				for (Component box : quantitiesPanel.getComponents()) {
 					box.setEnabled(quantitiesButton.isSelected());
 				}
+				for (Component box : frequenciesPanel.getComponents()) {
+					box.setEnabled(frequenciesButton.isSelected());
+					((JCheckBox) box).setSelected(false);
+				}
 			}
 		});
 		
@@ -213,6 +223,10 @@ public class _2DGraphingManager {
 				for (Component box : frequenciesPanel.getComponents()) {
 					box.setEnabled(frequenciesButton.isSelected());
 				}
+				for (Component box : quantitiesPanel.getComponents()) {
+					box.setEnabled(quantitiesButton.isSelected());
+					((JCheckBox) box).setSelected(false);
+				}
 			}
 		});
 		
@@ -220,8 +234,10 @@ public class _2DGraphingManager {
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<AxisType> axisTypes = new ArrayList<AxisType>();
-				for (JCheckBox box : (JCheckBox[]) (quantitiesButton.isSelected() ? quantitiesPanel.getComponents() : frequenciesPanel.getComponents())) {
-					if (box.isSelected()) axisTypes.add(AxisType.toEnum(box.getText()));
+				for (Component box : quantitiesButton.isSelected() ? quantitiesPanel.getComponents() : frequenciesPanel.getComponents()) {
+					if (((JCheckBox)box).isSelected()) {
+						axisTypes.add(AxisType.toEnum(((JCheckBox) box).getText()));
+					}
 				}
 				updateSeries(axisTypes, rangeLowerBound.getText(), rangeUpperBound.getText(), domainLowerBound.getText(), domainUpperBound.getText());	
 			}
@@ -248,6 +264,16 @@ public class _2DGraphingManager {
 		containerPanel.add(frequenciesPanel);
 		containerPanel.add(rangesPanel);
 		containerPanel.add(buttonPanel);
+		
+		//containerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		//quantitiesButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+		//quantitiesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		//frequenciesButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+		//frequenciesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+
+
+
 
 		return containerPanel;
 	}
@@ -296,16 +322,17 @@ public class _2DGraphingManager {
 		// Adjust chart's axis bounds based on value of text fields in conrtol panel
 		ValueAxis domain = chart.getXYPlot().getDomainAxis();
 		Range domainRange = domain.getRange();
-		double xMin = (xmin.equals("")) ? ((domainRange.getLowerBound() < 0) ? 0 : domainRange.getLowerBound()) : Double.parseDouble(xmin);
+		double xMin = (xmin.equals("")) ? domainRange.getLowerBound() : Double.parseDouble(xmin);
 		double xMax = (xmax.equals("")) ? domainRange.getUpperBound() : Double.parseDouble(xmax);
 		domain.setRange(xMin, xMax);
 
+		
 		ValueAxis range = chart.getXYPlot().getRangeAxis();
 		Range rangeRange = range.getRange();
-		double yMin = (ymin.equals("")) ? ((rangeRange.getLowerBound() < 0) ? 0 : rangeRange.getLowerBound()) : Double.parseDouble(ymin);
+		double yMin = (ymin.equals("")) ? rangeRange.getLowerBound() : Double.parseDouble(ymin);
 		double yMax = (ymax.equals("")) ? rangeRange.getUpperBound() : Double.parseDouble(ymax);
 		range.setRange(yMin,yMax);
-
+	
 	
 		// Create panel and set its dimensions to avoid text stretching on labels
 		ChartPanel newPanel = new ChartPanel(chart);

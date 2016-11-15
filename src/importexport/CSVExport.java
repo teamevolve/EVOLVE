@@ -45,13 +45,6 @@ public class CSVExport {
 	 * a file to more easily import data into a spreadsheet application
 	 */
 	private CSVExport() {
-		try {
-			PrintStream out = new PrintStream("output.csv");
-			System.setOut(out);
-		} 
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 	
@@ -61,6 +54,15 @@ public class CSVExport {
 	 * @param p population to export
 	 */
 	public void export(Population p) {
+		PrintStream original = System.out;
+		try{
+			PrintStream out = new PrintStream("output.csv");
+			System.setOut(out);
+		} 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		
 		printHeader(p);
@@ -87,6 +89,7 @@ public class CSVExport {
 			
 			System.out.printf("%d\n", netChange);
 		}
+		System.setOut(original);
 	}
 
 	
