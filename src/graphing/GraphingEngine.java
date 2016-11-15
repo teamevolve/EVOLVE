@@ -3,6 +3,8 @@ package graphing;
 
 import javax.swing.JFrame;
 
+import shared.DataManager;
+
 
 /**
  * GraphingEngine is the top of level class of the graphing component of EVOLVE.
@@ -31,7 +33,7 @@ public class GraphingEngine {
 	
 	public void generateGraph(GraphType type) {
 		JFrame window = new JFrame();
-		window.setTitle("PUT TITLE HERE");
+		window.setTitle(DataManager.getInstance().getSessionParams().getTitle());
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		switch(type) {

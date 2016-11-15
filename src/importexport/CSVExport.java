@@ -241,6 +241,14 @@ public class CSVExport {
 	 */
 	private static void printHeader(Population p) {
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
+		
+		System.out.println(sp.getTitle());
+		System.out.println(sp.getQuestion());
+		System.out.println(sp.getDesign());
+		System.out.println(sp.getResults());
+		System.out.println(sp.getDiscuss());
+		
+		
 		int popID = p.getPopID();
 
 		System.out.printf("Population %d\n", popID);

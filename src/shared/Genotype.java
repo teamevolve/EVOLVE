@@ -91,7 +91,8 @@ public enum Genotype {
 			case A: return AA;
 			case B: return BB;
 			case C: return CC;
-			default: return null;
+			default:
+				return null;
 			}
 		else {
 			switch (a1) {
@@ -105,7 +106,13 @@ public enum Genotype {
 					return AB;
 				else
 					return BC;
-			default: return null;
+			case C:
+				if (a2 == Allele.A)
+					return AC;
+				else 
+					return BC;
+			default:
+				return null;
 			}
 		}
 			
