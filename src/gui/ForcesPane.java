@@ -58,6 +58,6 @@ public class ForcesPane extends EvoPane {
 	
 	void submit (shared.SessionParameters p) {
 		p.setThreeAlleles(alleles3.isSelected());
-		p.setSeed(Integer.parseInt(seedField.getText()));
+		p.setSeed(Long.parseLong(seedField.getText()));
 	}
 }

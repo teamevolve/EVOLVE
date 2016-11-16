@@ -1,5 +1,6 @@
 package importexport;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import shared.Allele;
 import shared.DataManager;
 import shared.Genotype;
 import shared.SessionParameters;
+import shared.Utilities;
 import simulation.GenerationRecord;
 import simulation.Population;
 
@@ -54,13 +56,12 @@ public class CSVExport {
 	 */
 	public void export(ArrayList<Population> popList) {
 		PrintStream original = System.out;
-		try {
-			PrintStream out = new PrintStream(
-					DataManager.getInstance().getSessionParams().getTitle() + "_" + runCounter++ + ".csv");
-			System.setOut(out);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+			try {
+				System.setOut(new PrintStream(Utilities.generateSaveDialog(null, "csv")));
+			} 
+			catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		printLabInfo();

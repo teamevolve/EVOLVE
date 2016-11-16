@@ -285,7 +285,6 @@ public class GUI extends EvoPane {
 				EvolveDirector.getInstance().resetSimulationEngine();
 				EvolveDirector.getInstance().storeSessionParameters(parms);
 				EvolveDirector.getInstance().runSimulation();
-				EvolveDirector.getInstance().export(ExportFormat.CSV);
 				EvolveDirector.getInstance().graph();
 			}
 		});

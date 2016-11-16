@@ -34,8 +34,10 @@ import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import importexport.ExportFormat;
 import shared.Allele;
 import shared.DataManager;
+import shared.EvolveDirector;
 import shared.Genotype;
 import shared.Utilities;
 import simulation.GenerationRecord;
@@ -168,7 +170,6 @@ public class _2DGraphingManager {
 				box.setSelected(true);
 			if (DEFAULT_ACTIVE_SECTION != FrequencyType.class)
 				box.setEnabled(false);
-			//box.setAlignmentX(Component.LEFT_ALIGNMENT);
 			frequenciesPanel.add(box);
 		}
 		for (Genotype gt : Genotype.getValues()) {
@@ -178,7 +179,6 @@ public class _2DGraphingManager {
 				box.setSelected(true);
 			if (DEFAULT_ACTIVE_SECTION != FrequencyType.class)
 				box.setEnabled(false);
-			//box.setAlignmentX(Component.LEFT_ALIGNMENT);
 			frequenciesPanel.add(box);
 		}
 		
@@ -203,8 +203,10 @@ public class _2DGraphingManager {
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		JButton apply = new JButton("Apply");
 		buttonPanel.add(apply);
-		JButton export = new JButton("Export Graph");
-		buttonPanel.add(export);
+		JButton exportImage = new JButton("Export Graph");
+		buttonPanel.add(exportImage);
+		JButton exportCSV = new JButton("Export Data");
+		buttonPanel.add(exportCSV);
 		
 		quantitiesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -244,7 +246,7 @@ public class _2DGraphingManager {
 		});
 		
 		// Action listener to export graph as png
-		export.addActionListener(new ActionListener() {
+		exportImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				File target = Utilities.generateSaveDialog(win, "png");
 				if (target != null) {
@@ -257,6 +259,12 @@ public class _2DGraphingManager {
 				}
 			}
 		});
+		
+		exportCSV.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EvolveDirector.getInstance().export(ExportFormat.CSV);
+			}
+		});
 
 		containerPanel.add(quantitiesButton);
 		containerPanel.add(quantitiesPanel);
@@ -265,16 +273,6 @@ public class _2DGraphingManager {
 		containerPanel.add(rangesPanel);
 		containerPanel.add(buttonPanel);
 		
-		//containerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		//quantitiesButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-		//quantitiesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		//frequenciesButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-		//frequenciesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-
-
-
-
 		return containerPanel;
 	}
 		
