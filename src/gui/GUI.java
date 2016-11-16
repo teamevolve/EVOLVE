@@ -10,6 +10,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import importexport.ExportFormat;
 import shared.DataManager;
 import shared.EvolveDirector;
+import simulation.SimulationEngine;
 
 
 
@@ -32,7 +33,8 @@ public class GUI extends EvoPane {
 	
 	// we'll put args here
 	shared.SessionParameters parms;
-
+	JLabel running;
+	
 	// Lab report stuff
 	JLabel titleLabel; JTextField title;
 	JLabel questionLabel; JTextArea question; JScrollPane questionPane;
@@ -40,7 +42,6 @@ public class GUI extends EvoPane {
 	JLabel resultsLabel; JTextArea results; JScrollPane resultsPane;
 	JLabel discussionLabel; JTextArea discussion; JScrollPane discussionPane;
 	JCheckBox showLabInfo;
-
 	// GUI buttons
 	JButton apply;
 	JButton submit;
@@ -242,7 +243,7 @@ public class GUI extends EvoPane {
 		/* apply and submit buttons ***********************************************/
 		apply = new JButton(">> Apply <<");
 		c.gridx = 3; c.gridy = 60;
-		add(apply, c);
+		//add(apply, c);
 		
 		submit = new JButton(">> Submit <<");	
 		c.gridx = 4; c.gridy = 60;

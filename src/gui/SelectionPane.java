@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import shared.Genotype;
+import shared.SessionParameters;
 
 /**
  * 
@@ -43,6 +45,7 @@ public class SelectionPane extends EvoPane {
 		absFitAC, absFitBC, absFitCC;
 	JLabel relFitAA, relFitAB, relFitBB,
 		relFitAC, relFitBC, relFitCC;
+	JButton apply;
 	
 	ArrayList<Component> labelsList = new ArrayList<Component>();
 	ArrayList<Component> survList = new ArrayList<Component>();
@@ -161,6 +164,10 @@ public class SelectionPane extends EvoPane {
 		c.anchor = GridBagConstraints.WEST;
 		add(table, c);
 		
+		apply = new JButton("Apply");
+		c.gridx = 4; c.gridy = 1;
+		add(apply, c);
+		
 		// default is rAndS
 		modeRandS(true);
 		// Set listeners for real-time disabling of fields
@@ -174,6 +181,15 @@ public class SelectionPane extends EvoPane {
 		selectAbs.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeRandS(false);
+			}
+		});
+		
+		apply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SessionParameters parms = new shared.SessionParameters();
+				//if(!parms.isSelectChecked())
+					//fillWithOnes();
+				submit(parms);
 			}
 		});
 		

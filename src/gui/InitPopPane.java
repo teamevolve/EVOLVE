@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -266,6 +268,13 @@ public class InitPopPane extends EvoPane {
 		genotypeNums.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeAlleleFreqs(false);
+			}
+		});
+		
+		apply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SessionParameters parms = new shared.SessionParameters();
+				submit(parms);
 			}
 		});
 		
