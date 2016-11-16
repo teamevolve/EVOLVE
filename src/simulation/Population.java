@@ -144,21 +144,21 @@ public class Population {
 	 * @param popSize target size to scale population to
 	 */
 	public void scale(int popSize) {
+		//are they extinct or are we below the population size?  if so, return
+		if (getLastGeneration().getPopulationSize() < popSize) {
+			return;
+		}
 		double scaleRatio = (double)popSize / (double)getLastGeneration().getPopulationSize();
-		//have to initialize to something
-		Genotype maxGenotype = Genotype.AA;
+		Genotype maxGenotype = null;
 		int maxPopulation = 0;
-
-		//are they extinct? dunno what we should do if this happens
-		assert (scaleRatio != 0);
-
-		for (Genotype gt: Genotype.values()) {
+		for (Genotype gt: Genotype.getValues()) {
 			if (getLastGeneration().getGenotypeSubpopulationSize(gt) > maxPopulation) {
 				maxPopulation = getLastGeneration().getGenotypeSubpopulationSize(gt);
 				maxGenotype = gt;	
 			}
 			getLastGeneration().setGenotypeSubpopulationSize(gt, (int)Math.round((double)getLastGeneration().getGenotypeSubpopulationSize(gt) * scaleRatio));
 		}
+		//fix population if it's off by a few numbers by rounding the highest genotype
 		getLastGeneration().setGenotypeSubpopulationSize(maxGenotype, getLastGeneration().getGenotypeSubpopulationSize(maxGenotype) + (popSize - getLastGeneration().getPopulationSize()));
 	}
 
@@ -244,9 +244,7 @@ public class Population {
 		int numSurvived, subPopulation;
 		int totalAdults = 0; 
 		double crash;
-		//int deaths = 0;
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-
 
 		//Calculate the number of each genotype surviving
 		for (Genotype gt: Genotype.getValues()) {
@@ -254,7 +252,6 @@ public class Population {
 			//Typecasting to int in java is analogous to flooring
 			numSurvived = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, SURVIVAL_MEAN, SURVIVAL_STDDEV) * 
 					subPopulation * sp.getSurvivalRate(gt));
-
 
 			if (numSurvived <= 0) {
 				numSurvived = 0;
@@ -268,10 +265,12 @@ public class Population {
 		}
 
 		//Kill off populations if larger than carrying capacity
-		if (totalAdults > sp.getPopCapacity()) {
-			crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
-			for (Genotype gt: Genotype.getValues()) {
-				current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
+		if (!sp.isPopConst()) {
+			if (totalAdults > sp.getPopCapacity()) {
+				crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
+				for (Genotype gt: Genotype.getValues()) {
+					current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
+				}
 			}
 		}		
 	}
