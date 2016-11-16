@@ -67,6 +67,7 @@ public class GUI extends EvoPane {
 	MutationPane mp = new MutationPane();
 	MigrationPane mip = new MigrationPane();
 	SexSelectPane ssp = new SexSelectPane();
+	NextPane np = new NextPane();
 	
 	ArrayList<EvoPane> forces = new ArrayList<EvoPane>();
 	
@@ -208,6 +209,7 @@ public class GUI extends EvoPane {
 		c.gridx = 4; c.gridy = 9;
 		add(sexualSelectCheck, c);
 		
+		
 		/* Panes ****************************************************************************/
 		c.gridwidth = 7;
 		//c.gridx = 0; c.gridy = 3;
@@ -234,14 +236,16 @@ public class GUI extends EvoPane {
 		c.gridx = 0; c.gridy = 50;
 		add(ssp, c);
 		
+		c.gridx = 0; c.gridy = 70;
+		add(np, c);
 		
 		/* apply and submit buttons ***********************************************/
 		apply = new JButton(">> Apply <<");
-		c.gridx = 3; c.gridy = 999999;
+		c.gridx = 3; c.gridy = 60;
 		add(apply, c);
 		
 		submit = new JButton(">> Submit <<");	
-		c.gridx = 4; c.gridy = 999999;
+		c.gridx = 4; c.gridy = 60;
 		add(submit, c);		
 		
 		/* Set to 2 alleles mode on startup ***************************************/

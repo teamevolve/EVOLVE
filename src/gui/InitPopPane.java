@@ -8,6 +8,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -57,7 +58,8 @@ public class InitPopPane extends EvoPane {
 		genoBB, genoAC, genoBC,
 		genoCC;
 	JPanel afPane, gnPane;
-
+	JButton apply;
+	
 	ArrayList<Component> alFreqList = new ArrayList<Component>();
 	ArrayList<Component> gtNumList = new ArrayList<Component>();
 	
@@ -247,6 +249,9 @@ public class InitPopPane extends EvoPane {
 		c.gridx = 0; c.gridy++; 
 		add(gnPane, c);
 		
+		apply = new JButton("Apply");
+		c.gridx = 4; c.gridy = 1;
+		add(apply, c);
 		
 		addToLists();
 		modeAlleleFreqs(true);
