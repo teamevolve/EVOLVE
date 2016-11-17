@@ -29,11 +29,10 @@ public class GUI extends EvoPane {
 	private static final long serialVersionUID = 1L;
 
 	boolean firstRun = true;
-	
+	ImageIcon loading = new ImageIcon(getClass().getResource("/gui/loading7_navy_blue.gif"));
 	
 	// we'll put args here
 	shared.SessionParameters parms;
-	JLabel running;
 	
 	// Lab report stuff
 	JLabel titleLabel; JTextField title;
@@ -58,7 +57,6 @@ public class GUI extends EvoPane {
 	JCheckBox migrationCheck;
 	JCheckBox sexualSelectCheck;
 	
-		
 	/* Evolutionary Forces Panes *********************************************/
 	TitlePane tp = new TitlePane();
 	ForcesPane fp = new ForcesPane();
@@ -238,7 +236,7 @@ public class GUI extends EvoPane {
 		add(ssp, c);
 		
 		c.gridx = 0; c.gridy = 70;
-		add(np, c);
+		//add(np, c);
 		
 		/* apply and submit buttons ***********************************************/
 		apply = new JButton(">> Apply <<");
@@ -248,6 +246,14 @@ public class GUI extends EvoPane {
 		submit = new JButton(">> Submit <<");	
 		c.gridx = 4; c.gridy = 60;
 		add(submit, c);		
+		
+		// add loading to JPanel
+		JLabel loadingPic = new JLabel(loading);
+		loadingPic.setVisible(false);
+		c.gridx--;
+		add(loadingPic, c);
+		
+		// add JPanel to left of submit
 		
 		/* Set to 2 alleles mode on startup ***************************************/
 		modeThreeAlleles(false);

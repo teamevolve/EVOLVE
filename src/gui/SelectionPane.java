@@ -186,13 +186,15 @@ public class SelectionPane extends EvoPane {
 		
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SessionParameters parms = new shared.SessionParameters();
-				//if(!parms.isSelectChecked())
-					//fillWithOnes();
-				submit(parms);
+				applyInfo();
 			}
 		});
 		
+	}
+	
+	public void applyInfo() {
+		SessionParameters parms = new shared.SessionParameters();
+		submit(parms);
 	}
 	
 	private void addToLists() {
@@ -259,6 +261,9 @@ public class SelectionPane extends EvoPane {
 		else if (selectAbs.isSelected() && enable){
 			modeRandS(false);
 		}	
+		if (!enable) {
+			fillWithOnes();
+		}
 	}
 	
 	/**
@@ -279,6 +284,7 @@ public class SelectionPane extends EvoPane {
 		reproAC.setText("1");
 		reproBC.setText("1");
 		reproCC.setText("1");
+		applyInfo();
 	}
 	
 	/**
