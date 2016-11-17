@@ -103,10 +103,6 @@ public class MutationPane extends EvoPane {
 	public void submit(shared.SessionParameters p) {
 		double mutA_B = Double.parseDouble(mutAtoB.getText());
 		double mutB_A = Double.parseDouble(mutBtoA.getText());
-		double mutA_C = Double.parseDouble(mutAtoC.getText());
-		double mutC_A = Double.parseDouble(mutCtoA.getText());
-		double mutB_C = Double.parseDouble(mutBtoC.getText());
-		double mutC_B = Double.parseDouble(mutCtoB.getText());
 		double mutA_A = 1 - mutA_B;
 		double mutB_B = 1 - mutB_A;
 
@@ -135,6 +131,11 @@ public class MutationPane extends EvoPane {
 		p.setMutationRate(Genotype.BB, Genotype.BB, mutBB_BB);
 	
 		if (threeAlleles) {
+			double mutA_C = Double.parseDouble(mutAtoC.getText());
+			double mutC_A = Double.parseDouble(mutCtoA.getText());
+			double mutB_C = Double.parseDouble(mutBtoC.getText());
+			double mutC_B = Double.parseDouble(mutCtoB.getText());
+			
 			double mutC_C = 1 - mutC_A - mutC_B;
 			mutA_A -= mutA_C;
 			mutB_B -= mutB_C;

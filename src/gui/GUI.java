@@ -280,6 +280,9 @@ public class GUI extends EvoPane {
 				parms = new shared.SessionParameters();
 
 				try {
+					if(!selectCheck.isSelected()) {
+						sp.fillWithOnes();
+					}
 					applyInfo();				
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
