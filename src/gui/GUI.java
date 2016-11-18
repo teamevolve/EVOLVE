@@ -2,6 +2,9 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -11,6 +14,7 @@ import importexport.ExportFormat;
 import shared.DataManager;
 import shared.EvolveDirector;
 import simulation.SimulationEngine;
+
 
 
 
@@ -316,8 +320,20 @@ public class GUI extends EvoPane {
 
 		help.addActionListener(new ActionListener() {              // HELP MODE !@#@!@!#@!!@##@!!@#
 			public void actionPerformed(ActionEvent e) {
-				
-				System.out.println("You just pressed the info button");				
+				try {
+					File pdfFile = new File("//EVOLVE/src/gui/evolveInfo.pdf");
+					if (pdfFile.exists()) {
+						if (Desktop.isDesktopSupported()) {
+							Desktop.getDesktop().open(pdfFile);
+						} else {
+							System.out.println("Awt Desktop is not supported!");
+						}
+					} else {
+						System.out.println("File does not exist!");
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}		
 			}
 		}); 
 
