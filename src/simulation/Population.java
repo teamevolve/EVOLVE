@@ -1,8 +1,11 @@
 package simulation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+
+import org.omg.CORBA.INTERNAL;
 
 import shared.DataManager;
 import shared.Genotype;
@@ -163,7 +166,14 @@ public class Population {
 	}
 
 
-
+	private void reproduce(GenerationRecord previous, GenerationRecord current) {
+		///*DEBUG*/long start = System.currentTimeMillis();
+		HashMap<Genotype, HashMap<Genotype, Integer>> pairings = mateIterativeIntegers(previous);
+		///*DEBUG*/System.out.println(System.currentTimeMillis() - start);
+		generateOffspring(current, pairings);
+	}
+	
+	
 	/**
 	 * Simulates production of juveniles in a population.
 	 *
@@ -172,7 +182,8 @@ public class Population {
 	 * @param current  GenerationRecord representing the current generation,
 	 *                 will be modified by reproduce() to reflect reproduction
 	 */
-	private void reproduce(GenerationRecord previous, GenerationRecord current) {
+	@Deprecated
+	private void reproduce_old(GenerationRecord previous, GenerationRecord current) {
 		// Constants and persistent objects we'll use
 		final double previousSize = previous.getPopulationSize();
 		final double numParings = previousSize / 2;
@@ -223,13 +234,152 @@ public class Population {
 		}
 	}
 
+	private HashMap<Genotype, HashMap<Genotype, Integer>> mateIterativeList(GenerationRecord previous) {
+		ArrayList<Genotype> individuals = new ArrayList<Genotype>();
+		HashMap<Genotype, HashMap<Genotype, Integer>> results = new HashMap<Genotype, HashMap<Genotype, Integer>>();
+		for (Genotype gt : Genotype.getValues()) {
+			for (int i=0; i < previous.getGenotypeSubpopulationSize(gt); i++) {
+				individuals.add(gt);
+			}
+		}
+		Collections.shuffle(individuals);
+		while(individuals.size() > 1) {
+			Genotype gt1;
+			Genotype gt2;
+			if (Utilities.isValidPairing(individuals.get(0), individuals.get(1))) {
+				gt1 = individuals.remove(0);
+				gt2 = individuals.remove(0);
+			}
+			else {
+				gt2 = individuals.remove(0);
+				gt1 = individuals.remove(0);
+			}
+			
+			if (results.get(gt1) == null)
+				results.put(gt1, new HashMap<Genotype, Integer>());
+			if (results.get(gt1).get(gt2) == null)
+				results.get(gt1).put(gt2,  0);
+			results.get(gt1).put(gt2, results.get(gt1).get(gt2) + 1);			
+		}
+		
+		if (!individuals.isEmpty()) {
+			Genotype gt = individuals.remove(0);
+			if (results.get(gt) == null)
+				results.put(gt, new HashMap<Genotype, Integer>());
+			if (results.get(gt).get(gt) == null)
+				results.get(gt).put(gt,  0);
+			results.get(gt).put(gt, results.get(gt).get(gt) + 1);			
+		}
+			
+		return results;
+	}
+	
+	private HashMap<Genotype, HashMap<Genotype, Integer>> mateIterativeIntegers(GenerationRecord previous) {
+		HashMap<Genotype, HashMap<Genotype, Integer>> results = new HashMap<Genotype, HashMap<Genotype, Integer>>();
+		for (Genotype gt1 : Genotype.getValues()) {
+			results.put(gt1, new HashMap<Genotype, Integer>());
+			for (Genotype gt2 : Genotype.getValues()) {
+				if (!Utilities.isValidPairing(gt1, gt2)) continue;
+				results.get(gt1).put(gt2, 0);
+			}
+		}
+		
+		HashMap<Genotype, Integer> subpopSizes = new HashMap<Genotype, Integer>();
+		for (Genotype gt : Genotype.getValues()) {
+			subpopSizes.put(gt, previous.getGenotypeSubpopulationSize(gt));
+		}
+		
+		int total = previous.getPopulationSize();
+		HashMap<Genotype, Double> probabilities = new HashMap<Genotype, Double>();
+
+	
+		while (total > 1) {
+			double accumulator = 0.0;
+
+			for (Genotype gt : Genotype.getValues()) {
+				accumulator += (double)subpopSizes.get(gt) / (double)total;
+				probabilities.put(gt, accumulator);
+			}
+			
+			double r1 = INTERNAL_RNG.nextDouble();
+			double r2 = INTERNAL_RNG.nextDouble();
+			Genotype gt1 = null;
+			Genotype gt2 = null;
+			
+			for (Genotype gt : Genotype.getValues()) {
+				if (r1 < probabilities.get(gt)) {
+					gt1 = gt;
+					break;
+				}
+			}
+			
+			for (Genotype gt : Genotype.getValues()) {	
+				if (r2 < probabilities.get(gt)) {
+					gt2 = gt;
+					break;
+				}
+			}
+
+			if (!Utilities.isValidPairing(gt1, gt2)) {
+				Genotype temp = gt1;
+				gt1 = gt2;
+				gt2 = temp;
+			}
+			
+			results.get(gt1).put(gt2, results.get(gt1).get(gt2) + 1);
+	
+			subpopSizes.put(gt1, subpopSizes.get(gt1) - 1);
+			subpopSizes.put(gt2, subpopSizes.get(gt2) - 1);
+			total -= 2;
+		}
+		
+		if (total == 1) {
+			Genotype gt = null;
+			for (Genotype g : Genotype.getValues()) {
+				if (subpopSizes.get(g) != 0) {
+					gt = g;
+					break;
+				}
+			}
+
+			results.get(gt).put(gt, results.get(gt).get(gt) + 1);
+		}
+		
+		return results;
+	}
+	
+	
+	private void generateOffspring(GenerationRecord current, HashMap<Genotype, HashMap<Genotype, Integer>> pairings) {
+		HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
+		SessionParameters sp = DataManager.getInstance().getSessionParams();
+		for (Genotype gt : Genotype.getValues()) {
+			offspring.put(gt, 0.0);
+		}
+
+		for (Genotype gt1 : Genotype.getValues()) {
+			for (Genotype gt2 : Genotype.getValues()) {
+				if (!Utilities.isValidPairing(gt1, gt2)) continue;
+				for (Genotype off : Utilities.getOffspringGenotypes(gt1, gt2)) {
+					offspring.put( off,
+							offspring.get(off) + 
+							(sp.getReproductionRate(gt1) + sp.getReproductionRate(gt2)) * .25 *
+							pairings.get(gt1).get(gt2) *
+							Utilities.nextGaussianRand(INTERNAL_RNG, REPRODUCTION_MEAN, REPRODUCTION_STDDEV));
+				}
+			}
+		}
+		
+		for (Genotype gt : Genotype.getValues()) {
+			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
+			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
+		}
+	}
 
 	/**
 	 * Simulates survival of members of a population.  Each allele combination has a
 	 * survival rate that will determine how many live/die, modified by a gaussian RNG.
 	 * If the population goes over the populationCapacity, we set the population down
 	 * to a crashCapacity level.
-	 * TODO: talk to Frank about constant populations & their implementation 
 	 * 
 	 *
 	 * @param previous GenerationRecord representing the previous generation
