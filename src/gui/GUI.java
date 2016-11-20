@@ -48,7 +48,7 @@ public class GUI extends EvoPane {
 	// GUI buttons
 	JButton apply;
 	JButton submit;
-	JToggleButton help;
+	JButton help;
 	
 	JLabel numPopsLabel; 			// Number of Pops
 	JTextField numPops;	
@@ -149,7 +149,7 @@ public class GUI extends EvoPane {
 		add(discussionPane, c);
 
 		/* help stuff *****************************************************************************/
-		help = new JToggleButton(">> Help!? <<");
+		help = new JButton(">> Info <<");
 		c.gridx = 4; c.gridy = 3;
 		c.anchor = GridBagConstraints.CENTER;
 		add(help, c);
@@ -318,10 +318,19 @@ public class GUI extends EvoPane {
 		});
 
 
-		help.addActionListener(new ActionListener() {              // HELP MODE !@#@!@!#@!!@##@!!@#
+		/**
+		 * @author jasonfortunato
+		 * @author linneasahlberg
+		 * 
+		 * help mode opens a pdf to be provided by frank
+		 */
+		help.addActionListener(new ActionListener() {              
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
-					File pdfFile = new File("//EVOLVE/src/gui/evolveInfo.pdf");
+					String absolutePath = new File("src/gui/evolveInfo.pdf").getAbsolutePath();
+					System.out.println(absolutePath);
+					File pdfFile = new File(absolutePath);
 					if (pdfFile.exists()) {
 						if (Desktop.isDesktopSupported()) {
 							Desktop.getDesktop().open(pdfFile);
