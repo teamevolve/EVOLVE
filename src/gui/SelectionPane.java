@@ -170,8 +170,8 @@ public class SelectionPane extends EvoPane {
 		
 		// default is rAndS
 		modeRandS(true);
-		// Set listeners for real-time disabling of fields
 		
+		// Set listeners for real-time disabling of fields		
 		selectRandS.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeRandS(true);
@@ -371,11 +371,19 @@ public class SelectionPane extends EvoPane {
 		p.setAbsoluteFitness(Genotype.AA, afAB);
 		p.setAbsoluteFitness(Genotype.AA, afBB);
 		
-		double afTotal = afAA + afAB + afBB + afAC + afBC + afCC;
+		// get the highest absolute fitness
+		double afMax = 0;
+
+		double[] afArray = {afAA, afAB, afBB, afAC, afBC, afCC};
+
+		for(double af : afArray) {
+			afMax = Math.max(afMax, af);
+		}
 		
-		rfAA = afAA / afTotal;
-		rfAB = afAB / afTotal;
-		rfBB = afBB / afTotal;
+		
+		rfAA = afAA / afMax;
+		rfAB = afAB / afMax;
+		rfBB = afBB / afMax;
 		
 		p.setRelativeFitness(Genotype.AA, rfAA);
 		p.setRelativeFitness(Genotype.AB, rfAB);
@@ -385,9 +393,9 @@ public class SelectionPane extends EvoPane {
 		relFitAB.setText(String.format("%.4f", rfAB));
 		relFitBB.setText(String.format("%.4f", rfBB));
 		if(threeAlleles) {
-			rfAC = afAC / afTotal;
-			rfBC = afBC / afTotal;
-			rfCC = afCC / afTotal;
+			rfAC = afAC / afMax;
+			rfBC = afBC / afMax;
+			rfCC = afCC / afMax;
 
 			p.setRelativeFitness(Genotype.AC, rfAC);
 			p.setRelativeFitness(Genotype.BC, rfBC);
