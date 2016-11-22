@@ -3,25 +3,16 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import importexport.ExportFormat;
-import shared.DataManager;
 import shared.EvolveDirector;
-import simulation.SimulationEngine;
-
-
-
 
 /**
  * @author linneasahlberg
  * @author jasonfortunato
- * @author richwenner
  * 
  * Started 9/18/16
  */
@@ -80,9 +71,6 @@ public class GUI extends EvoPane {
 	public GUI() {
 		
 		super();
-		
-		// add spacing
-//		c.insets = new Insets(5, 10, 5, 0);
 		
 		// left align
 		c.anchor = GridBagConstraints.WEST;
@@ -359,8 +347,6 @@ public class GUI extends EvoPane {
 		resultsPane.setVisible(b);
 		discussionPane.setVisible(b);		
 	}
-	
-	
 	
 	public void modeThreeAlleles(boolean b){
 		super.modeThreeAlleles(b);
