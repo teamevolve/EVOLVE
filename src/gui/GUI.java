@@ -3,12 +3,17 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import shared.EvolveDirector;
+import simulation.SimulationEngine;
 
 /**
  * @author linneasahlberg
@@ -24,7 +29,6 @@ public class GUI extends EvoPane {
 	private static final long serialVersionUID = 1L;
 
 	boolean firstRun = true;
-	ImageIcon loading = new ImageIcon(getClass().getResource("/gui/loading7_navy_blue.gif"));
 	
 	// we'll put args here
 	shared.SessionParameters parms;
@@ -64,11 +68,27 @@ public class GUI extends EvoPane {
 	NextPane np = new NextPane();
 	
 	ArrayList<EvoPane> forces = new ArrayList<EvoPane>();
+
+	/**
+	 * Member to enable singleton class
+	 */
+	public static GUI instance = null;
+
+	/**
+	 * Returns singleton instance of SimulationEngine
+	 * @return singleton instance of SimulationEngine
+	 */
+	public static GUI getInstance() {
+		if (instance == null) {
+			instance  = new GUI();
+		}
+		return instance;
+	}
 	
 	/** 
 	 * This is the panel that will be added to the window (the frame)
 	 */
-	public GUI() {
+	private GUI() {
 		
 		super();
 		
@@ -137,7 +157,7 @@ public class GUI extends EvoPane {
 		add(discussionPane, c);
 
 		/* help stuff *****************************************************************************/
-		help = new JButton(">> Info <<");
+		help = new JButton("Info");
 		c.gridx = 4; c.gridy = 3;
 		c.anchor = GridBagConstraints.CENTER;
 		add(help, c);
@@ -231,22 +251,14 @@ public class GUI extends EvoPane {
 		//add(np, c);
 		
 		/* apply and submit buttons ***********************************************/
-		apply = new JButton(">> Apply <<");
+		apply = new JButton("Apply");
 		c.gridx = 3; c.gridy = 60;
 		//add(apply, c);
 		
-		submit = new JButton(">> Submit <<");	
+		submit = new JButton("Run Simulation");	
 		c.gridx = 4; c.gridy = 60;
 		add(submit, c);		
-		
-		// add loading to JPanel
-		JLabel loadingPic = new JLabel(loading);
-		loadingPic.setVisible(false);
-		c.gridx--;
-		add(loadingPic, c);
-		
-		// add JPanel to left of submit
-		
+				
 		/* Set to 2 alleles mode on startup ***************************************/
 		modeThreeAlleles(false);
 		
@@ -277,6 +289,9 @@ public class GUI extends EvoPane {
 				// Create a new, blank sesh parms object on each submit click 
 				parms = new shared.SessionParameters();
 
+				
+				
+				
 				try {
 					if(!selectCheck.isSelected()) {
 						sp.fillWithOnes();
@@ -287,12 +302,21 @@ public class GUI extends EvoPane {
 					System.out.println("Exception in submission! Check your inputs!");
 					e1.printStackTrace();
 				}
+				
+				/*************************************************************
+				// use a swing worker for this following stuff: 
+				***********************************************************/				
 				// Link datamanger to sesh parms, run sim, export
 				EvolveDirector.getInstance().resetSimulationEngine();
 				EvolveDirector.getInstance().storeSessionParameters(parms);
-				EvolveDirector.getInstance().runSimulation();
-				EvolveDirector.getInstance().graph();
+				new SimWorker().execute();
+				/***************************************************************/
 			}
+			
+			
+			
+			
+			
 		});
 
 		apply.addActionListener(new ActionListener() {
@@ -336,6 +360,7 @@ public class GUI extends EvoPane {
 
 	} // end of constructor
 
+	
 	private void hideLabInfo(boolean b) {	
 		//setLayout(null);
 		questionLabel.setVisible(b);
@@ -396,7 +421,7 @@ public class GUI extends EvoPane {
 	public static void createAndShowGUI() {
 
 		//make the GUI panel and add evo force panels to GUI
-		GUI g = new GUI();		
+		GUI g = GUI.getInstance();		
 		
 		//make the window
 		JFrame frame = new JFrame();
