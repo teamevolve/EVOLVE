@@ -3,17 +3,12 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import shared.EvolveDirector;
-import simulation.SimulationEngine;
 
 /**
  * @author linneasahlberg
@@ -23,9 +18,6 @@ import simulation.SimulationEngine;
  */
 public class GUI extends EvoPane {
 
-	/**
-	 * Unsure if we should change this -Jason
-	 */
 	private static final long serialVersionUID = 1L;
 
 	boolean firstRun = true;
@@ -223,8 +215,6 @@ public class GUI extends EvoPane {
 		
 		/* Panes ****************************************************************************/
 		c.gridwidth = 7;
-		//c.gridx = 0; c.gridy = 3;
-		//add(tp, c);
 		
 		c.gridx = 0; c.gridy = 6;
 		add(fp, c);
@@ -331,13 +321,14 @@ public class GUI extends EvoPane {
 		 * @author linneasahlberg
 		 * 
 		 * help mode opens a pdf to be provided by frank
+		 * 
+		 * This does not work! This relies on the jar being run from the /EVOLVE/ directory
 		 */
 		help.addActionListener(new ActionListener() {              
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
 					String absolutePath = new File("src/gui/evolveInfo.pdf").getAbsolutePath();
-					System.out.println(absolutePath);
 					File pdfFile = new File(absolutePath);
 					if (pdfFile.exists()) {
 						if (Desktop.isDesktopSupported()) {
@@ -347,6 +338,7 @@ public class GUI extends EvoPane {
 						}
 					} else {
 						System.out.println("File does not exist!");
+						System.out.println("Path used: " + absolutePath);
 					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -369,6 +361,7 @@ public class GUI extends EvoPane {
 		discussionPane.setVisible(b);		
 	}
 	
+	
 	public void modeThreeAlleles(boolean b){
 		super.modeThreeAlleles(b);
 		pp.modeThreeAlleles(b);
@@ -379,7 +372,10 @@ public class GUI extends EvoPane {
 		
 	}
 
-	// pushes data to sesh parms
+	
+	/**
+	 *  pushes data to sesh parms
+	 */
 	public void applyInfo() { //throws Exception {
 		
 		// Set evolutionary force flags
@@ -396,7 +392,7 @@ public class GUI extends EvoPane {
 		pp.submit(parms);
 		if(parms.isPopSizeChecked())
 			gd.submit(parms);
-		sp.submit(parms); // Is not checked b/c is filled with ones in apply
+		sp.submit(parms); // Is not checked b/c is filled with ones if unchecked
 		if(parms.isMutationChecked())
 			mp.submit(parms);
 		if(parms.isMigrationChecked())
@@ -405,6 +401,10 @@ public class GUI extends EvoPane {
 			ssp.submit(parms);
 	}
 
+	
+	/**
+	 * Submits title and lab info
+	 */
 	private void submitTitle() {
 		parms.setTitle(title.getText());
 		parms.setQuestion(question.getText());
@@ -414,6 +414,9 @@ public class GUI extends EvoPane {
 	}
 	
 	
+	/**
+	 * Called in main
+	 */
 	public static void createAndShowGUI() {
 
 		//make the GUI panel and add evo force panels to GUI
@@ -445,7 +448,6 @@ public class GUI extends EvoPane {
 		
 		frame.pack();
 		frame.setVisible(true);
-		
 
 	}
 	
