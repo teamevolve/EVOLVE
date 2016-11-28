@@ -303,14 +303,10 @@ public class GUI extends EvoPane {
 					e1.printStackTrace();
 				}
 				
-				/*************************************************************
-				// use a swing worker for this following stuff: 
-				***********************************************************/				
 				// Link datamanger to sesh parms, run sim, export
 				EvolveDirector.getInstance().resetSimulationEngine();
 				EvolveDirector.getInstance().storeSessionParameters(parms);
 				new SimWorker().execute();
-				/***************************************************************/
 			}
 			
 			

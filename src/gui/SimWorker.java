@@ -4,8 +4,18 @@ import javax.swing.SwingWorker;
 
 import shared.EvolveDirector;
 
+/**
+ * Use an instance of this class to run the sim so you won't lock the GUI up
+ * @author jasonfortunato
+ * 11/27/17
+ */
 public class SimWorker extends SwingWorker<Object, Object> {
 
+	/**
+	 * PRE:	Session parameters in Evolve Director are set 
+	 *		using EvolveDirector.getInstance().storeSessionParameters(parms);
+	 * POST: Run Simulation button is re-enabled 
+	 */
 	@Override
 	protected Object doInBackground() throws Exception {
 		// TODO Auto-generated method stub
@@ -17,6 +27,9 @@ public class SimWorker extends SwingWorker<Object, Object> {
 		return null;
 	}
 
+	/**
+	 * This will do run once doInBackground() is completed
+	 */
     protected void done()
     {
         try
