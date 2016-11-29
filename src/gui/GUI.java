@@ -328,8 +328,9 @@ public class GUI extends EvoPane {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					String absolutePath = new File("src/gui/evolveInfo.pdf").getAbsolutePath();
+					String absolutePath = new File("evolveInfo.pdf").getAbsolutePath();
 					File pdfFile = new File(absolutePath);
+					System.out.println("Path used: " + absolutePath);
 					if (pdfFile.exists()) {
 						if (Desktop.isDesktopSupported()) {
 							Desktop.getDesktop().open(pdfFile);
