@@ -330,7 +330,6 @@ public class GUI extends EvoPane {
 				try {
 					String absolutePath = new File("evolveInfo.pdf").getAbsolutePath();
 					File pdfFile = new File(absolutePath);
-					System.out.println("Path used: " + absolutePath);
 					if (pdfFile.exists()) {
 						if (Desktop.isDesktopSupported()) {
 							Desktop.getDesktop().open(pdfFile);
