@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.border.Border;
 
 import shared.EvolveDirector;
 
@@ -290,6 +291,21 @@ public class GUI extends EvoPane {
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					System.out.println("Exception in submission! Check your inputs!");
+					JFrame errorFrame = new JFrame();
+					JLabel errorText = new JLabel("Input not formatted correctly.  Verify every active box has appropriate input.");
+					errorText.setFont(new Font("Serif", Font.PLAIN, 32));
+					errorFrame.setTitle("Check Your Inputs!");
+					errorFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					
+					Border padding = BorderFactory.createEmptyBorder(100, 100, 100, 100);
+					errorText.setBorder(padding);
+	
+					
+					errorFrame.getContentPane().add(errorText);
+					errorFrame.pack();
+					errorFrame.setVisible(true);
+					
+					
 					e1.printStackTrace();
 				}
 				
