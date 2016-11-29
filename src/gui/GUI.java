@@ -279,15 +279,15 @@ public class GUI extends EvoPane {
 			public void actionPerformed(ActionEvent e) {
 				// Create a new, blank sesh parms object on each submit click 
 				parms = new shared.SessionParameters();
-
-				
-				
-				
 				try {
 					if(!selectCheck.isSelected()) {
 						sp.fillWithOnes();
 					}
 					applyInfo();				
+					EvolveDirector.getInstance().resetSimulationEngine();
+					EvolveDirector.getInstance().storeSessionParameters(parms);
+					new SimWorker().execute();
+
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					System.out.println("Exception in submission! Check your inputs!");
@@ -295,7 +295,7 @@ public class GUI extends EvoPane {
 					JLabel errorText = new JLabel("Input not formatted correctly.  Verify every active box has appropriate input.");
 					errorText.setFont(new Font("Serif", Font.PLAIN, 32));
 					errorFrame.setTitle("Check Your Inputs!");
-					errorFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					
 					Border padding = BorderFactory.createEmptyBorder(100, 100, 100, 100);
 					errorText.setBorder(padding);
@@ -310,9 +310,6 @@ public class GUI extends EvoPane {
 				}
 				
 				// Link datamanger to sesh parms, run sim, export
-				EvolveDirector.getInstance().resetSimulationEngine();
-				EvolveDirector.getInstance().storeSessionParameters(parms);
-				new SimWorker().execute();
 			}
 			
 			

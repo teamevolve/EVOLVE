@@ -316,6 +316,7 @@ public class _2DGraphingManager {
 
 		JFreeChart chart = ChartFactory.createXYLineChart(DataManager.getInstance().getSessionParams().getTitle(), "Generation", "", seriesCollection);
 		chart.setTitle(DataManager.getInstance().getSessionParams().getTitle());
+		chart.removeLegend();
 		
 		// Adjust chart's axis bounds based on value of text fields in conrtol panel
 		ValueAxis domain = chart.getXYPlot().getDomainAxis();
