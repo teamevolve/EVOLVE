@@ -22,7 +22,6 @@ public class SimulationEngine {
 	 */
 	public static SimulationEngine instance = null;
 
-
 	/**
 	 * Returns singleton instance of SimulationEngine
 	 * @return singleton instance of SimulationEngine

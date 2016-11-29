@@ -2,37 +2,29 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import importexport.ExportFormat;
-import shared.DataManager;
 import shared.EvolveDirector;
-
-
 
 /**
  * @author linneasahlberg
  * @author jasonfortunato
- * @author richwenner
  * 
  * Started 9/18/16
  */
 public class GUI extends EvoPane {
 
-	/**
-	 * Unsure if we should change this -Jason
-	 */
 	private static final long serialVersionUID = 1L;
 
 	boolean firstRun = true;
 	
-	
 	// we'll put args here
 	shared.SessionParameters parms;
-
+	
 	// Lab report stuff
 	JLabel titleLabel; JTextField title;
 	JLabel questionLabel; JTextArea question; JScrollPane questionPane;
@@ -40,11 +32,10 @@ public class GUI extends EvoPane {
 	JLabel resultsLabel; JTextArea results; JScrollPane resultsPane;
 	JLabel discussionLabel; JTextArea discussion; JScrollPane discussionPane;
 	JCheckBox showLabInfo;
-
 	// GUI buttons
 	JButton apply;
 	JButton submit;
-	JToggleButton help;
+	JButton help;
 	
 	JLabel numPopsLabel; 			// Number of Pops
 	JTextField numPops;	
@@ -57,7 +48,6 @@ public class GUI extends EvoPane {
 	JCheckBox migrationCheck;
 	JCheckBox sexualSelectCheck;
 	
-		
 	/* Evolutionary Forces Panes *********************************************/
 	TitlePane tp = new TitlePane();
 	ForcesPane fp = new ForcesPane();
@@ -67,18 +57,32 @@ public class GUI extends EvoPane {
 	MutationPane mp = new MutationPane();
 	MigrationPane mip = new MigrationPane();
 	SexSelectPane ssp = new SexSelectPane();
+	NextPane np = new NextPane();
 	
 	ArrayList<EvoPane> forces = new ArrayList<EvoPane>();
+
+	/**
+	 * Member to enable singleton class
+	 */
+	public static GUI instance = null;
+
+	/**
+	 * Returns singleton instance of SimulationEngine
+	 * @return singleton instance of SimulationEngine
+	 */
+	public static GUI getInstance() {
+		if (instance == null) {
+			instance  = new GUI();
+		}
+		return instance;
+	}
 	
 	/** 
 	 * This is the panel that will be added to the window (the frame)
 	 */
-	public GUI() {
+	private GUI() {
 		
 		super();
-		
-		// add spacing
-//		c.insets = new Insets(5, 10, 5, 0);
 		
 		// left align
 		c.anchor = GridBagConstraints.WEST;
@@ -145,7 +149,7 @@ public class GUI extends EvoPane {
 		add(discussionPane, c);
 
 		/* help stuff *****************************************************************************/
-		help = new JToggleButton(">> Help!? <<");
+		help = new JButton("Info");
 		c.gridx = 4; c.gridy = 3;
 		c.anchor = GridBagConstraints.CENTER;
 		add(help, c);
@@ -208,10 +212,9 @@ public class GUI extends EvoPane {
 		c.gridx = 4; c.gridy = 9;
 		add(sexualSelectCheck, c);
 		
+		
 		/* Panes ****************************************************************************/
 		c.gridwidth = 7;
-		//c.gridx = 0; c.gridy = 3;
-		//add(tp, c);
 		
 		c.gridx = 0; c.gridy = 6;
 		add(fp, c);
@@ -234,16 +237,18 @@ public class GUI extends EvoPane {
 		c.gridx = 0; c.gridy = 50;
 		add(ssp, c);
 		
+		c.gridx = 0; c.gridy = 70;
+		//add(np, c);
 		
 		/* apply and submit buttons ***********************************************/
-		apply = new JButton(">> Apply <<");
-		c.gridx = 3; c.gridy = 999999;
-		add(apply, c);
+		apply = new JButton("Apply");
+		c.gridx = 3; c.gridy = 60;
+		//add(apply, c);
 		
-		submit = new JButton(">> Submit <<");	
-		c.gridx = 4; c.gridy = 999999;
+		submit = new JButton("Run Simulation");	
+		c.gridx = 4; c.gridy = 60;
 		add(submit, c);		
-		
+				
 		/* Set to 2 alleles mode on startup ***************************************/
 		modeThreeAlleles(false);
 		
@@ -274,19 +279,30 @@ public class GUI extends EvoPane {
 				// Create a new, blank sesh parms object on each submit click 
 				parms = new shared.SessionParameters();
 
+				
+				
+				
 				try {
+					if(!selectCheck.isSelected()) {
+						sp.fillWithOnes();
+					}
 					applyInfo();				
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					System.out.println("Exception in submission! Check your inputs!");
 					e1.printStackTrace();
 				}
+				
 				// Link datamanger to sesh parms, run sim, export
 				EvolveDirector.getInstance().resetSimulationEngine();
 				EvolveDirector.getInstance().storeSessionParameters(parms);
-				EvolveDirector.getInstance().runSimulation();
-				EvolveDirector.getInstance().graph();
+				new SimWorker().execute();
 			}
+			
+			
+			
+			
+			
 		});
 
 		apply.addActionListener(new ActionListener() {
@@ -300,15 +316,39 @@ public class GUI extends EvoPane {
 		});
 
 
-		help.addActionListener(new ActionListener() {              // HELP MODE !@#@!@!#@!!@##@!!@#
+		/**
+		 * @author jasonfortunato
+		 * @author linneasahlberg
+		 * 
+		 * help mode opens a pdf to be provided by frank
+		 * 
+		 * This does not work! This relies on the jar being run from the /EVOLVE/ directory
+		 */
+		help.addActionListener(new ActionListener() {              
 			public void actionPerformed(ActionEvent e) {
 				
-				System.out.println("You just pressed the info button");				
+				try {
+					String absolutePath = new File("src/gui/evolveInfo.pdf").getAbsolutePath();
+					File pdfFile = new File(absolutePath);
+					if (pdfFile.exists()) {
+						if (Desktop.isDesktopSupported()) {
+							Desktop.getDesktop().open(pdfFile);
+						} else {
+							System.out.println("Awt Desktop is not supported!");
+						}
+					} else {
+						System.out.println("File does not exist!");
+						System.out.println("Path used: " + absolutePath);
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}		
 			}
 		}); 
 
 	} // end of constructor
 
+	
 	private void hideLabInfo(boolean b) {	
 		//setLayout(null);
 		questionLabel.setVisible(b);
@@ -322,7 +362,6 @@ public class GUI extends EvoPane {
 	}
 	
 	
-	
 	public void modeThreeAlleles(boolean b){
 		super.modeThreeAlleles(b);
 		pp.modeThreeAlleles(b);
@@ -333,7 +372,10 @@ public class GUI extends EvoPane {
 		
 	}
 
-	// pushes data to sesh parms
+	
+	/**
+	 *  pushes data to sesh parms
+	 */
 	public void applyInfo() { //throws Exception {
 		
 		// Set evolutionary force flags
@@ -350,7 +392,7 @@ public class GUI extends EvoPane {
 		pp.submit(parms);
 		if(parms.isPopSizeChecked())
 			gd.submit(parms);
-		sp.submit(parms); // Is not checked b/c is filled with ones in apply
+		sp.submit(parms); // Is not checked b/c is filled with ones if unchecked
 		if(parms.isMutationChecked())
 			mp.submit(parms);
 		if(parms.isMigrationChecked())
@@ -359,6 +401,10 @@ public class GUI extends EvoPane {
 			ssp.submit(parms);
 	}
 
+	
+	/**
+	 * Submits title and lab info
+	 */
 	private void submitTitle() {
 		parms.setTitle(title.getText());
 		parms.setQuestion(question.getText());
@@ -368,10 +414,13 @@ public class GUI extends EvoPane {
 	}
 	
 	
+	/**
+	 * Called in main
+	 */
 	public static void createAndShowGUI() {
 
 		//make the GUI panel and add evo force panels to GUI
-		GUI g = new GUI();		
+		GUI g = GUI.getInstance();		
 		
 		//make the window
 		JFrame frame = new JFrame();
@@ -399,7 +448,6 @@ public class GUI extends EvoPane {
 		
 		frame.pack();
 		frame.setVisible(true);
-		
 
 	}
 	

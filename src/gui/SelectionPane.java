@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import shared.Genotype;
+import shared.SessionParameters;
 
 /**
  * 
@@ -43,6 +45,7 @@ public class SelectionPane extends EvoPane {
 		absFitAC, absFitBC, absFitCC;
 	JLabel relFitAA, relFitAB, relFitBB,
 		relFitAC, relFitBC, relFitCC;
+	JButton apply;
 	
 	ArrayList<Component> labelsList = new ArrayList<Component>();
 	ArrayList<Component> survList = new ArrayList<Component>();
@@ -161,10 +164,14 @@ public class SelectionPane extends EvoPane {
 		c.anchor = GridBagConstraints.WEST;
 		add(table, c);
 		
+		apply = new JButton("Apply");
+		c.gridx = 4; c.gridy = 1;
+		add(apply, c);
+		
 		// default is rAndS
 		modeRandS(true);
-		// Set listeners for real-time disabling of fields
 		
+		// Set listeners for real-time disabling of fields		
 		selectRandS.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeRandS(true);
@@ -177,6 +184,17 @@ public class SelectionPane extends EvoPane {
 			}
 		});
 		
+		apply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				applyInfo();
+			}
+		});
+		
+	}
+	
+	public void applyInfo() {
+		SessionParameters parms = new shared.SessionParameters();
+		submit(parms);
 	}
 	
 	private void addToLists() {
@@ -243,6 +261,9 @@ public class SelectionPane extends EvoPane {
 		else if (selectAbs.isSelected() && enable){
 			modeRandS(false);
 		}	
+		if (!enable) {
+			fillWithOnes();
+		}
 	}
 	
 	/**
@@ -263,6 +284,7 @@ public class SelectionPane extends EvoPane {
 		reproAC.setText("1");
 		reproBC.setText("1");
 		reproCC.setText("1");
+		applyInfo();
 	}
 	
 	/**
@@ -349,11 +371,19 @@ public class SelectionPane extends EvoPane {
 		p.setAbsoluteFitness(Genotype.AA, afAB);
 		p.setAbsoluteFitness(Genotype.AA, afBB);
 		
-		double afTotal = afAA + afAB + afBB + afAC + afBC + afCC;
+		// get the highest absolute fitness
+		double afMax = 0;
+
+		double[] afArray = {afAA, afAB, afBB, afAC, afBC, afCC};
+
+		for(double af : afArray) {
+			afMax = Math.max(afMax, af);
+		}
 		
-		rfAA = afAA / afTotal;
-		rfAB = afAB / afTotal;
-		rfBB = afBB / afTotal;
+		
+		rfAA = afAA / afMax;
+		rfAB = afAB / afMax;
+		rfBB = afBB / afMax;
 		
 		p.setRelativeFitness(Genotype.AA, rfAA);
 		p.setRelativeFitness(Genotype.AB, rfAB);
@@ -363,9 +393,9 @@ public class SelectionPane extends EvoPane {
 		relFitAB.setText(String.format("%.4f", rfAB));
 		relFitBB.setText(String.format("%.4f", rfBB));
 		if(threeAlleles) {
-			rfAC = afAC / afTotal;
-			rfBC = afBC / afTotal;
-			rfCC = afCC / afTotal;
+			rfAC = afAC / afMax;
+			rfBC = afBC / afMax;
+			rfCC = afCC / afMax;
 
 			p.setRelativeFitness(Genotype.AC, rfAC);
 			p.setRelativeFitness(Genotype.BC, rfBC);

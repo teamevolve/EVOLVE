@@ -4,10 +4,13 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -57,7 +60,8 @@ public class InitPopPane extends EvoPane {
 		genoBB, genoAC, genoBC,
 		genoCC;
 	JPanel afPane, gnPane;
-
+	JButton apply;
+	
 	ArrayList<Component> alFreqList = new ArrayList<Component>();
 	ArrayList<Component> gtNumList = new ArrayList<Component>();
 	
@@ -247,6 +251,9 @@ public class InitPopPane extends EvoPane {
 		c.gridx = 0; c.gridy++; 
 		add(gnPane, c);
 		
+		apply = new JButton("Apply");
+		c.gridx = 4; c.gridy = 1;
+		add(apply, c);
 		
 		addToLists();
 		modeAlleleFreqs(true);
@@ -261,6 +268,13 @@ public class InitPopPane extends EvoPane {
 		genotypeNums.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeAlleleFreqs(false);
+			}
+		});
+		
+		apply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SessionParameters parms = new shared.SessionParameters();
+				submit(parms);
 			}
 		});
 		
