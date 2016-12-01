@@ -21,6 +21,8 @@ import java.util.ArrayList;
  * @author jasonfortunato
  * @author linneasahlberg
  * 
+ * A pane in the GUI that allows the user to enter information about a constant or varying population.
+ * 
  */
 
 public class GeneticDriftPane extends EvoPane{

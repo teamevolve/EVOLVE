@@ -101,6 +101,7 @@ public class GUI extends EvoPane {
 		titleLabel = new JLabel("<html><b>Title:</b>");
 		title = new JTextField(TEXT_LEN_EXTRA_LONG / 2);
 		
+		// checkbox to show/hide lab report fields
 		showLabInfo = new JCheckBox("Show lab report fields", true);
 		
 		questionLabel = new JLabel("<html><b>Question:</b>"); 
@@ -256,7 +257,9 @@ public class GUI extends EvoPane {
 		c.gridx = 3; c.gridy = 60;
 		//add(apply, c);
 		
-		submit = new JButton("Run Simulation");	
+		submit = new JButton("<html><span style='font-size:13px'>Run Simulation");	
+		Color buttonColor = new Color (40, 160, 255);
+		submit.setBackground(buttonColor);
 		c.gridx = 4; c.gridy = 60;
 		add(submit, c);		
 				
