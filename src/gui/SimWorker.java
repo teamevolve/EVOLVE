@@ -20,7 +20,7 @@ public class SimWorker extends SwingWorker<Object, Object> {
 	protected Object doInBackground() throws Exception {
 		// TODO Auto-generated method stub
 
-        GUI.getInstance().submit.setText("Running. . . . .");
+        GUI.getInstance().submit.setText("<html><span style='font-size:13px'>Running. . . . .");
         GUI.getInstance().submit.setEnabled(false);
         EvolveDirector.getInstance().runSimulation();
 		
@@ -34,7 +34,7 @@ public class SimWorker extends SwingWorker<Object, Object> {
     {
         try
         {
-            GUI.getInstance().submit.setText("Run Simulation");
+            GUI.getInstance().submit.setText("<html><span style='font-size:13px'>Run Simulation");
 			EvolveDirector.getInstance().graph();
 	        GUI.getInstance().submit.setEnabled(true);
         }

@@ -59,7 +59,7 @@ public class GUI extends EvoPane {
 	
 	// Error stuff for invalid inputs
 	JFrame errorFrame;
-	JButton okay = new JButton("Okay");
+	JButton okay;
 	
 	/* Evolutionary Forces Panes *********************************************/
 	ForcesPane fp = new ForcesPane();
@@ -308,27 +308,24 @@ public class GUI extends EvoPane {
 					errorFrame.setTitle("Invalid input");
 					errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					
-					Border padding = BorderFactory.createEmptyBorder(50, 50, 50, 50);
+					Border padding = BorderFactory.createEmptyBorder(20, 20, 20, 20);
 					errorText.setBorder(padding);
 					errorFrame.add(errorText, BorderLayout.NORTH);
+					okay = new JButton("Okay");
 					errorFrame.add(okay, BorderLayout.EAST);
 					errorFrame.pack();
 					errorFrame.setVisible(true);
-					
-					//e1.printStackTrace();
+					okay.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							errorFrame.dispatchEvent(new WindowEvent(errorFrame, WindowEvent.WINDOW_CLOSING));
+						}
+					});
 				}
 				
 				// Link datamanger to sesh parms, run sim, export
 			}
 		});
 
-		
-		okay.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				errorFrame.dispatchEvent(new WindowEvent(errorFrame, WindowEvent.WINDOW_CLOSING));
-			}
-		});
-		
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				parms = new shared.SessionParameters();
