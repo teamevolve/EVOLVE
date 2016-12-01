@@ -3,6 +3,8 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -349,18 +351,7 @@ public class GUI extends EvoPane {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					String absolutePath = new File("evolveInfo.pdf").getAbsolutePath();
-					File pdfFile = new File(absolutePath);
-					if (pdfFile.exists()) {
-						if (Desktop.isDesktopSupported()) {
-							Desktop.getDesktop().open(pdfFile);
-						} else {
-							System.out.println("Awt Desktop is not supported!");
-						}
-					} else {
-						System.out.println("File does not exist!");
-						System.out.println("Path used: " + absolutePath);
-					}
+					openHelp();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}		
@@ -369,6 +360,34 @@ public class GUI extends EvoPane {
 
 	} // end of constructor
 
+	private void openHelp() throws Exception {
+
+		InputStream pdfStream = GUI.class.getResourceAsStream("evolveInfo.pdf");		
+		
+		File pdfTemp = new File("evolveTempManual.pdf");
+		pdfTemp.deleteOnExit();
+		
+		FileOutputStream fos = new FileOutputStream(pdfTemp);
+		
+		while(pdfStream.available() > 0) {
+			fos.write(pdfStream.read());
+		}
+		
+		fos.close(); 
+		pdfStream.close();
+		
+		if (pdfTemp.exists()) {
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(pdfTemp);
+			} else {
+				System.out.println("Awt Desktop is not supported!");
+			}
+		} else {
+			System.out.println("File does not exist!");
+			System.out.println("Path used: " + pdfStream);
+		}
+
+	}	
 	
 	private void hideLabInfo(boolean b) {	
 		//setLayout(null);
