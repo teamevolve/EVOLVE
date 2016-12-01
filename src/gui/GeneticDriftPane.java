@@ -42,18 +42,19 @@ public class GeneticDriftPane extends EvoPane{
 
 		super();
 		
-		// population constant radio button stuff
+		/* pop const stuff *****************************************************************************/
 		popConstLabel = new JLabel("<html><span style='font-size:11px'><b>Genetic Drift: </span>");
+		
+		// pop const and pop varying radio buttons
 		popConstGroup = new ButtonGroup();
 		popConstTrue = new JRadioButton("<html><b>Constant");
 		popConstFalse = new JRadioButton("<html><b>Varying: ", true);
 		popConstGroup.add(popConstTrue);
 		popConstGroup.add(popConstFalse);
 		
-		
+		// add radio buttons to pane
 		c.gridx = 0; c.gridy = 20;
 		add(popConstLabel, c);
-		
 		c.insets = new Insets(0, 20, 0, 0);
 		c.gridx = 0; c.gridy++;
 		add(popConstFalse, c);
@@ -63,15 +64,14 @@ public class GeneticDriftPane extends EvoPane{
 		// carrying capacity stuff - appears when popSize varying
 		carryCapLabel = new JLabel("Carrying Capacity: "); 
 		carryCap = new JTextField(TEXT_LEN_LONG);
-
 		carryCap.setName(INT); carryCap.setInputVerifier(iv);
 
 		// post crash population size stuff - appears when popSize varying
 		postCrashLabel = new JLabel("Post Crash Population Size: ");
 		postCrash = new JTextField(TEXT_LEN_LONG);
-		
 		postCrash.setName(INT); postCrash.setInputVerifier(iv);
 
+		// add carrying capacity and post crash stuff to separate panel for formatting
 		JPanel fields = new JPanel();
 		fields.setLayout(new FlowLayout());
 		fields.add(carryCapLabel);
@@ -79,65 +79,54 @@ public class GeneticDriftPane extends EvoPane{
 		fields.add(postCrashLabel);
 		fields.add(postCrash);
 		
+		// add new panel to the pane
 		c.gridx = 1; c.gridy = 21;
 		c.gridwidth = 3;
 		add(fields, c);
 		
-		// Add all that will be disabled when PopSize is constant to the vPopList
+		// add all that will be disabled when PopSize is constant to the vPopList
 		vPopList.add(carryCapLabel);
 		vPopList.add(carryCap);
 		vPopList.add(postCrashLabel);
 		vPopList.add(postCrash);
-		
-		c.gridx = 1; c.gridy = 22;
-		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.CENTER;
-		
+
+		// add all that will be disabled when PopSize is varying to the cPopList
 		cPopList.add(initPopLabel);
 		cPopList.add(initPop);
 		modeConstPop(false);
 		
-		// Set actions for the PopConstTrue/False radio buttons
+		// set actions for the PopConstTrue radio button
 		popConstTrue.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeConstPop(true);
 			}
 		});
 		
+		// set actions for the PopConstFalse radio button
 		popConstFalse.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeConstPop(false);
 			}
 		});
-		
-		}
+	}
 	
-		private void modeConstPop(boolean b){
-			for(Component comp : vPopList) {
-				comp.setEnabled(!b);
-			}
-			
-			//for(Component comp : cPopList) {
-				//comp.setEnabled(b);
-			//}
-			
-			if(b == true) { // clear the two text fields
-				carryCap.setText("");
-				postCrash.setText("");
-			}
-			//else
-				//initPop.setText("");
+	// for toggling between pop const and pop varying settings
+	private void modeConstPop(boolean b){
+		for(Component comp : vPopList) {
+			comp.setEnabled(!b);
 		}
 
-		public void submit(shared.SessionParameters p) {
-			
-			//p.setPopSize(Integer.parseInt(popSizeField.getText()));
-			p.setPopConst(popConstTrue.isSelected());
-			if(popConstFalse.isSelected()){
-				p.setPopCapacity(Integer.parseInt(carryCap.getText()));
-				p.setCrashCapacity(Integer.parseInt(postCrash.getText()));
-			}
-		}	
-	
+		if(b == true) { // clear the two text fields
+			carryCap.setText("");
+			postCrash.setText("");
+		}
 	}
+
+	public void submit(shared.SessionParameters p) {
+		p.setPopConst(popConstTrue.isSelected());
+		if(popConstFalse.isSelected()){
+			p.setPopCapacity(Integer.parseInt(carryCap.getText()));
+			p.setCrashCapacity(Integer.parseInt(postCrash.getText()));
+		}
+	}		
+}

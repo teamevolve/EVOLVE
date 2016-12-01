@@ -16,7 +16,10 @@ import shared.EvolveDirector;
  * @author jasonfortunato
  * 
  * Started 9/18/16
+ * The main GUI class. Combines all of the panes into one JFrame.
+ * 
  */
+
 public class GUI extends EvoPane {
 
 	private static final long serialVersionUID = 1L;
@@ -33,24 +36,32 @@ public class GUI extends EvoPane {
 	JLabel resultsLabel; JTextArea results; JScrollPane resultsPane;
 	JLabel discussionLabel; JTextArea discussion; JScrollPane discussionPane;
 	JCheckBox showLabInfo;
+	
 	// GUI buttons
 	JButton apply;
 	JButton submit;
 	JButton help;
 	
-	JLabel numPopsLabel; 			// Number of Pops
+	// Number of Pops
+	JLabel numPopsLabel;
 	JTextField numPops;	
-	JLabel numGensLabel; 			// Number of Gens
+	
+	// Number of Gens
+	JLabel numGensLabel;
 	JTextField numGens;
 	
+	// Evolutionary forces checkboxes
 	JCheckBox popSizeCheck;
 	JCheckBox selectCheck;
 	JCheckBox mutationCheck;
 	JCheckBox migrationCheck;
 	JCheckBox sexualSelectCheck;
 	
+	// Error stuff for invalid inputs
+	JFrame errorFrame;
+	JButton okay = new JButton("Okay");
+	
 	/* Evolutionary Forces Panes *********************************************/
-	TitlePane tp = new TitlePane();
 	ForcesPane fp = new ForcesPane();
 	InitPopPane pp = new InitPopPane();
 	GeneticDriftPane gd = new GeneticDriftPane();
@@ -84,10 +95,9 @@ public class GUI extends EvoPane {
 	private GUI() {
 		
 		super();
-		
-		// left align
 		c.anchor = GridBagConstraints.WEST;
 		
+		/* Lab report fields *******************************************************/
 		titleLabel = new JLabel("<html><b>Title:</b>");
 		title = new JTextField(TEXT_LEN_EXTRA_LONG / 2);
 		
@@ -289,35 +299,33 @@ public class GUI extends EvoPane {
 					new SimWorker().execute();
 
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					System.out.println("Exception in submission! Check your inputs!");
-					JFrame errorFrame = new JFrame();
-					JLabel errorText = new JLabel("Input not formatted correctly.  Verify every active box has appropriate input.");
-					errorText.setFont(new Font("Serif", Font.PLAIN, 32));
-					errorFrame.setTitle("Check Your Inputs!");
+					errorFrame = new JFrame();
+					JLabel errorText = new JLabel("<html><font color = red> <b> One or more inputs are incorrect.  Verify every active box has the appropriate input.");
+					//errorText.setFont(new Font("Serif", Font.PLAIN, 32));
+					errorFrame.setTitle("Invalid input");
 					errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					
-					Border padding = BorderFactory.createEmptyBorder(100, 100, 100, 100);
+					Border padding = BorderFactory.createEmptyBorder(50, 50, 50, 50);
 					errorText.setBorder(padding);
-	
-					
-					errorFrame.getContentPane().add(errorText);
+					errorFrame.add(errorText, BorderLayout.NORTH);
+					errorFrame.add(okay, BorderLayout.EAST);
 					errorFrame.pack();
 					errorFrame.setVisible(true);
 					
-					
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 				
 				// Link datamanger to sesh parms, run sim, export
 			}
-			
-			
-			
-			
-			
 		});
 
+		
+		okay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				errorFrame.dispatchEvent(new WindowEvent(errorFrame, WindowEvent.WINDOW_CLOSING));
+			}
+		});
+		
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				parms = new shared.SessionParameters();
@@ -437,7 +445,7 @@ public class GUI extends EvoPane {
 		
 		//make the window
 		JFrame frame = new JFrame();
-		frame.setTitle("EVOLVE - v0.2");
+		frame.setTitle("EVOLVE - Hamilton College Computer Science");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//add the GUI to a scrollable pane

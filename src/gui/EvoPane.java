@@ -15,7 +15,8 @@ import javax.swing.JPanel;
  * @author jasonfortunato
  * @author linneasahlberg
  *
- * This is the superclass for the evolutionary forces panes
+ * The superclass for the evolutionary forces panes. Allows for three allele mode. 
+ * Sets the layout and standardizes column widths.
  */
 
 public abstract class EvoPane extends JPanel {
@@ -44,20 +45,13 @@ public abstract class EvoPane extends JPanel {
 	
 	EvoPane() {
 		super();
-		JLabel dummy = new JLabel("we're getting the default font");
-		Font font = dummy.getFont();
-		boldFont = new Font(font.getFontName(), Font.BOLD, font.getSize());
-		
+		// initialize default settings
 		threeAlleles = false;
 		enabled = true;
-		setHelpMode(false);
 		
 		// set layout
 		setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
-
-		// add spacing
-	//	c.insets = new Insets(1, 10, 0, 0);
 
 		// standardize column widths
 		for(int i = 0; i < 5; i++) {
@@ -66,7 +60,6 @@ public abstract class EvoPane extends JPanel {
 			add(new JLabel("_______________________________"), c);
 		}
 	}
-	
 	
 	@Override
 	public void setEnabled(boolean enable) {
@@ -81,26 +74,10 @@ public abstract class EvoPane extends JPanel {
 		return enabled;
 	}
 
-
-	public boolean isHelpMode() {
-		return helpMode;
-	}
-
-
-	public void setHelpMode(boolean helpMode) {
-		this.helpMode = helpMode;
-	}
-	
-	
 	public void modeThreeAlleles(boolean b){
 		threeAlleles = b;
 		for(Component comp : this.threeAllelesList) {
 			comp.setVisible(b);
 		}
 	}
-
-	
-	// Each pane must implement this
-//	public abstract void flavorTextMode(boolean enabled);
-	
 }
