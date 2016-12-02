@@ -287,8 +287,16 @@ public class SelectionPane extends EvoPane {
 		reproBC.setText("1.02");
 		reproCC.setText("1.02");
 		
+		JLabel[] relFits = {relFitAA, relFitAB, relFitBB, 
+				relFitAC, relFitBC, relFitCC};
+		
+
+		
 		selectRandS.setSelected(true);
 		applyInfo();
+		for(JLabel rf : relFits) {
+			rf.setText("1.000");
+		}
 	}
 	
 	/**
