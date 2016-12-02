@@ -224,7 +224,7 @@ public class GUI extends EvoPane {
 		c.gridx = 3; c.gridy = 9;
 		add(migrationCheck, c);
 		c.gridx = 4; c.gridy = 9;
-		add(sexualSelectCheck, c);
+//		add(sexualSelectCheck, c); // SEXUAL SELECTION NOT BEING ADDED !! (unimplemented)
 		
 		
 		/* Panes ****************************************************************************/
@@ -248,8 +248,8 @@ public class GUI extends EvoPane {
 		c.gridx = 0; c.gridy = 40;
 		add(mip, c);
 		
-		c.gridx = 0; c.gridy = 50;
-		add(ssp, c);
+		c.gridx = 0; c.gridy = 50;    // SEXUAL SELECTION NOT BEING ADDED !! (unimplemented)
+//		add(ssp, c);
 		
 		c.gridx = 0; c.gridy = 70;
 		//add(np, c);
