@@ -278,12 +278,12 @@ public class SelectionPane extends EvoPane {
 		survBC.setText("1");
 		survCC.setText("1");
 		
-		reproAA.setText("1");
-		reproAB.setText("1");
-		reproBB.setText("1");
-		reproAC.setText("1");
-		reproBC.setText("1");
-		reproCC.setText("1");
+		reproAA.setText("1.02");
+		reproAB.setText("1.02");
+		reproBB.setText("1.02");
+		reproAC.setText("1.02");
+		reproBC.setText("1.02");
+		reproCC.setText("1.02");
 		applyInfo();
 	}
 	
