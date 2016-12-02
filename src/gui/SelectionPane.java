@@ -47,7 +47,7 @@ public class SelectionPane extends EvoPane {
 		relFitAC, relFitBC, relFitCC;
 	JButton apply;
 	
-	double ABS_FIT_DEFAULT = 5;
+	double REPRO_DEFAULT = 5;
 	
 	ArrayList<Component> labelsList = new ArrayList<Component>();
 	ArrayList<Component> survList = new ArrayList<Component>();
@@ -321,14 +321,14 @@ public class SelectionPane extends EvoPane {
 			afAB = Double.parseDouble(absFitAB.getText());
 			afBB = Double.parseDouble(absFitBB.getText());
 			
-			reproAA.setText(Double.toString(ABS_FIT_DEFAULT));
-			reproAB.setText(Double.toString(ABS_FIT_DEFAULT));
-			reproBB.setText(Double.toString(ABS_FIT_DEFAULT));
+			reproAA.setText(Double.toString(REPRO_DEFAULT));
+			reproAB.setText(Double.toString(REPRO_DEFAULT));
+			reproBB.setText(Double.toString(REPRO_DEFAULT));
 			
 			if(threeAlleles) {
-				reproAC.setText(Double.toString(ABS_FIT_DEFAULT));
-				reproBC.setText(Double.toString(ABS_FIT_DEFAULT));
-				reproCC.setText(Double.toString(ABS_FIT_DEFAULT));
+				reproAC.setText(Double.toString(REPRO_DEFAULT));
+				reproBC.setText(Double.toString(REPRO_DEFAULT));
+				reproCC.setText(Double.toString(REPRO_DEFAULT));
 				
 				afAC = Double.parseDouble(absFitAC.getText());
 				afBC = Double.parseDouble(absFitBC.getText());
@@ -464,14 +464,14 @@ public class SelectionPane extends EvoPane {
 	
 	private void calcSurvRates(double aa, double ab, double bb, double ac, double bc, double cc) {
 		
-		survAA.setText(String.format("%.4f", ABS_FIT_DEFAULT/aa));
-		survAB.setText(String.format("%.4f", ABS_FIT_DEFAULT/ab));
-		survBB.setText(String.format("%.4f", ABS_FIT_DEFAULT/bb));
+		survAA.setText(String.format("%.4f", aa/REPRO_DEFAULT));
+		survAB.setText(String.format("%.4f", ab/REPRO_DEFAULT));
+		survBB.setText(String.format("%.4f", bb/REPRO_DEFAULT));
 		
 		if(threeAlleles){
-			survAC.setText(String.format("%.4f", ABS_FIT_DEFAULT/ac));
-			survBC.setText(String.format("%.4f", ABS_FIT_DEFAULT/bc));
-			survCC.setText(String.format("%.4f", ABS_FIT_DEFAULT/cc));		
+			survAC.setText(String.format("%.4f", ac/REPRO_DEFAULT));
+			survBC.setText(String.format("%.4f", bc/REPRO_DEFAULT));
+			survCC.setText(String.format("%.4f", cc/REPRO_DEFAULT));		
 		}
 	}
 	
