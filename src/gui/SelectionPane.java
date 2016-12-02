@@ -47,6 +47,8 @@ public class SelectionPane extends EvoPane {
 		relFitAC, relFitBC, relFitCC;
 	JButton apply;
 	
+	double ABS_FIT_DEFAULT = 5;
+	
 	ArrayList<Component> labelsList = new ArrayList<Component>();
 	ArrayList<Component> survList = new ArrayList<Component>();
 	ArrayList<Component> reproList = new ArrayList<Component>();
@@ -284,6 +286,8 @@ public class SelectionPane extends EvoPane {
 		reproAC.setText("1.02");
 		reproBC.setText("1.02");
 		reproCC.setText("1.02");
+		
+		selectRandS.setSelected(true);
 		applyInfo();
 	}
 	
@@ -301,70 +305,30 @@ public class SelectionPane extends EvoPane {
 		
 		// if repro and surv is selected
 		if(selectRandS.isSelected()) {
-			double AArr = Double.parseDouble(reproAA.getText());
-			double ABrr = Double.parseDouble(reproAB.getText());
-			double BBrr = Double.parseDouble(reproBB.getText());
-			double ACrr = 0;
-			double BCrr = 0;
-			double CCrr = 0;
-
-			double AAsr = Double.parseDouble(survAA.getText());
-			double ABsr = Double.parseDouble(survAB.getText());
-			double BBsr = Double.parseDouble(survBB.getText());
-			double ACsr = 0;
-			double BCsr = 0;
-			double CCsr = 0;
-			
-			if(threeAlleles) {
-				ACrr = Double.parseDouble(reproAC.getText());
-				BCrr = Double.parseDouble(reproBC.getText());
-				CCrr = Double.parseDouble(reproCC.getText());
-
-				ACsr = Double.parseDouble(survAC.getText());
-				BCsr = Double.parseDouble(survBC.getText());
-				CCsr = Double.parseDouble(survCC.getText());
-			}
-			
-			p.setReproductionRate(Genotype.AA, AArr);
-			p.setReproductionRate(Genotype.AB, ABrr);
-			p.setReproductionRate(Genotype.BB, BBrr);
-			p.setReproductionRate(Genotype.AC, ACrr);
-			p.setReproductionRate(Genotype.BC, BCrr);
-			p.setReproductionRate(Genotype.CC, CCrr);
-
-			p.setSurvivalRate(Genotype.AA, AAsr);
-			p.setSurvivalRate(Genotype.AB, ABsr);
-			p.setSurvivalRate(Genotype.BB, BBsr);
-			p.setSurvivalRate(Genotype.AC, ACsr);
-			p.setSurvivalRate(Genotype.BC, BCsr);
-			p.setSurvivalRate(Genotype.CC, CCsr);
-
-			// Calculate absolute fitness of each genotype
-			afAA = AArr * AAsr;
-			afAB = ABrr * ABsr;
-			afBB = BBrr * BBsr;
-			afAC = ACrr * ACsr;
-			afBC = BCrr * BCsr;
-			afCC = CCrr * CCsr;
-			
-			absFitAA.setText(String.format("%.3f", afAA));
-			absFitAB.setText(String.format("%.3f", afAB));
-			absFitBB.setText(String.format("%.3f", afBB));
-			if(threeAlleles) {
-				absFitAC.setText(String.format("%.3f", afAC));
-				absFitBC.setText(String.format("%.3f", afBC));
-				absFitCC.setText(String.format("%.3f", afCC));
-			}
+			submitRandS(p);
+			calcAbsFit();
 		}
 		else if(selectAbs.isSelected()) {
 			afAA = Double.parseDouble(absFitAA.getText());
 			afAB = Double.parseDouble(absFitAB.getText());
 			afBB = Double.parseDouble(absFitBB.getText());
+			
+			reproAA.setText(Double.toString(ABS_FIT_DEFAULT));
+			reproAB.setText(Double.toString(ABS_FIT_DEFAULT));
+			reproBB.setText(Double.toString(ABS_FIT_DEFAULT));
+			
 			if(threeAlleles) {
+				reproAC.setText(Double.toString(ABS_FIT_DEFAULT));
+				reproBC.setText(Double.toString(ABS_FIT_DEFAULT));
+				reproCC.setText(Double.toString(ABS_FIT_DEFAULT));
+				
 				afAC = Double.parseDouble(absFitAC.getText());
 				afBC = Double.parseDouble(absFitBC.getText());
 				afCC = Double.parseDouble(absFitCC.getText());
 			}
+			
+			calcSurvRates(afAA, afAB, afBB, afAC, afBC, afCC);
+			submitRandS(p);
 		}
 
 		p.setAbsoluteFitness(Genotype.AA, afAA);
@@ -404,6 +368,102 @@ public class SelectionPane extends EvoPane {
 			relFitAC.setText(String.format("%.4f", rfAC));
 			relFitBC.setText(String.format("%.4f", rfBC));
 			relFitCC.setText(String.format("%.4f", rfCC));
+		}
+	}
+	
+	private void submitRandS(SessionParameters p) {
+		double AArr = Double.parseDouble(reproAA.getText());
+		double ABrr = Double.parseDouble(reproAB.getText());
+		double BBrr = Double.parseDouble(reproBB.getText());
+		double ACrr = 0;
+		double BCrr = 0;
+		double CCrr = 0;
+
+		double AAsr = Double.parseDouble(survAA.getText());
+		double ABsr = Double.parseDouble(survAB.getText());
+		double BBsr = Double.parseDouble(survBB.getText());
+		double ACsr = 0;
+		double BCsr = 0;
+		double CCsr = 0;
+		
+		if(threeAlleles) {
+			ACrr = Double.parseDouble(reproAC.getText());
+			BCrr = Double.parseDouble(reproBC.getText());
+			CCrr = Double.parseDouble(reproCC.getText());
+
+			ACsr = Double.parseDouble(survAC.getText());
+			BCsr = Double.parseDouble(survBC.getText());
+			CCsr = Double.parseDouble(survCC.getText());
+		}
+		
+		p.setReproductionRate(Genotype.AA, AArr);
+		p.setReproductionRate(Genotype.AB, ABrr);
+		p.setReproductionRate(Genotype.BB, BBrr);
+		p.setReproductionRate(Genotype.AC, ACrr);
+		p.setReproductionRate(Genotype.BC, BCrr);
+		p.setReproductionRate(Genotype.CC, CCrr);
+
+		p.setSurvivalRate(Genotype.AA, AAsr);
+		p.setSurvivalRate(Genotype.AB, ABsr);
+		p.setSurvivalRate(Genotype.BB, BBsr);
+		p.setSurvivalRate(Genotype.AC, ACsr);
+		p.setSurvivalRate(Genotype.BC, BCsr);
+		p.setSurvivalRate(Genotype.CC, CCsr);
+
+	}
+
+	private void calcAbsFit() {
+		double AArr = Double.parseDouble(reproAA.getText());
+		double ABrr = Double.parseDouble(reproAB.getText());
+		double BBrr = Double.parseDouble(reproBB.getText());
+		double ACrr = 0;
+		double BCrr = 0;
+		double CCrr = 0;
+		
+		double AAsr = Double.parseDouble(survAA.getText());
+		double ABsr = Double.parseDouble(survAB.getText());
+		double BBsr = Double.parseDouble(survBB.getText());
+		double ACsr = 0;
+		double BCsr = 0;
+		double CCsr = 0;
+			
+		if(threeAlleles) {
+			ACrr = Double.parseDouble(reproAC.getText());
+			BCrr = Double.parseDouble(reproBC.getText());
+			CCrr = Double.parseDouble(reproCC.getText());
+	
+			ACsr = Double.parseDouble(survAC.getText());
+			BCsr = Double.parseDouble(survBC.getText());
+			CCsr = Double.parseDouble(survCC.getText());
+		}	
+		// Calculate absolute fitness of each genotype
+		double afAA = AArr * AAsr;
+		double afAB = ABrr * ABsr;
+		double afBB = BBrr * BBsr;
+		double afAC = ACrr * ACsr;
+		double afBC = BCrr * BCsr;
+		double afCC = CCrr * CCsr;
+	
+		absFitAA.setText(String.format("%.3f", afAA));
+		absFitAB.setText(String.format("%.3f", afAB));
+		absFitBB.setText(String.format("%.3f", afBB));
+		if(threeAlleles) {
+			absFitAC.setText(String.format("%.3f", afAC));
+			absFitBC.setText(String.format("%.3f", afBC));
+			absFitCC.setText(String.format("%.3f", afCC));
+		}
+	}
+	
+	private void calcSurvRates(double aa, double ab, double bb, double ac, double bc, double cc) {
+		
+		survAA.setText(String.format("%.4f", ABS_FIT_DEFAULT/aa));
+		survAB.setText(String.format("%.4f", ABS_FIT_DEFAULT/ab));
+		survBB.setText(String.format("%.4f", ABS_FIT_DEFAULT/bb));
+		
+		if(threeAlleles){
+			survAC.setText(String.format("%.4f", ABS_FIT_DEFAULT/ac));
+			survBC.setText(String.format("%.4f", ABS_FIT_DEFAULT/bc));
+			survCC.setText(String.format("%.4f", ABS_FIT_DEFAULT/cc));		
 		}
 	}
 	
