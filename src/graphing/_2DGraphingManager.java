@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -76,8 +77,8 @@ public class _2DGraphingManager {
 	private static final String DEFAULT_BOUND = "";
 	/** Default range-component, to show on first graph generation **/
 	/** Holds cached versions of graphs to avoid extra computation **/
-	private static final AxisType DEFAULT_RANGE_METRIC = QuantityType.POPSIZE;
-	private static final Class<?> DEFAULT_ACTIVE_SECTION = QuantityType.class;
+	private static final ArrayList<AxisType> DEFAULT_RANGE_METRIC = new ArrayList<AxisType>(Arrays.asList(FrequencyType.ALLELE_FREQ_A, FrequencyType.ALLELE_FREQ_B));
+	private static final Class<?> DEFAULT_ACTIVE_SECTION = FrequencyType.class;
 	private Container win = null;
 	private ChartPanel panel = null;
 	
@@ -114,7 +115,7 @@ public class _2DGraphingManager {
 	public void construct(Container container) {
 		win = container;
 		win.setLayout(new BorderLayout());
-		updateSeries(null, DEFAULT_BOUND, DEFAULT_BOUND, DEFAULT_BOUND, DEFAULT_BOUND);
+		updateSeries(DEFAULT_RANGE_METRIC, DEFAULT_BOUND, DEFAULT_BOUND, DEFAULT_BOUND, DEFAULT_BOUND);
 		win.add(generateControlPanel(), BorderLayout.WEST);
 	}
 	
@@ -143,7 +144,7 @@ public class _2DGraphingManager {
 		
 		for (QuantityType qt : QuantityType.values()) {
 			JCheckBox box = new JCheckBox(qt.toString());
-			if (qt == DEFAULT_RANGE_METRIC) {
+			if (DEFAULT_RANGE_METRIC.contains(qt)) {
 				box.setSelected(true);
 			}
 			if (DEFAULT_ACTIVE_SECTION != QuantityType.class) {
@@ -166,7 +167,7 @@ public class _2DGraphingManager {
 		for (Allele a : Allele.getValues()) {
 			AxisType at = FrequencyType.toEnum(a);
 			JCheckBox box = new JCheckBox(at.toString());
-			if (at == DEFAULT_RANGE_METRIC)
+			if (DEFAULT_RANGE_METRIC.contains(at))
 				box.setSelected(true);
 			if (DEFAULT_ACTIVE_SECTION != FrequencyType.class)
 				box.setEnabled(false);
@@ -175,7 +176,7 @@ public class _2DGraphingManager {
 		for (Genotype gt : Genotype.getValues()) {
 			AxisType at = FrequencyType.toEnum(gt);
 			JCheckBox box = new JCheckBox(at.toString());
-			if (at == DEFAULT_RANGE_METRIC)
+			if (DEFAULT_RANGE_METRIC.contains(at))
 				box.setSelected(true);
 			if (DEFAULT_ACTIVE_SECTION != FrequencyType.class)
 				box.setEnabled(false);
@@ -266,10 +267,10 @@ public class _2DGraphingManager {
 			}
 		});
 
-		containerPanel.add(quantitiesButton);
-		containerPanel.add(quantitiesPanel);
 		containerPanel.add(frequenciesButton);
 		containerPanel.add(frequenciesPanel);
+		containerPanel.add(quantitiesButton);
+		containerPanel.add(quantitiesPanel);
 		containerPanel.add(rangesPanel);
 		containerPanel.add(buttonPanel);
 		
@@ -293,24 +294,13 @@ public class _2DGraphingManager {
 		win.invalidate();
 				
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
-		if (types == null) {
+		for (AxisType at : types) {
 			for (Population p : DataManager.getInstance().getSimulationData()) {
-				XYSeries series = new XYSeries(DEFAULT_RANGE_METRIC.toString() + " " + p.getPopID());
+				XYSeries series = new XYSeries(at.toString() + " " + p.getPopID());
 				for (GenerationRecord gr : p.getGenerationHistory()) {
-					series.add(gr.getGenerationNumber(), getDataPoint(gr, DEFAULT_RANGE_METRIC));
+					series.add(gr.getGenerationNumber(), getDataPoint(gr, at));
 				}
 				seriesCollection.addSeries(series);
-			}
-		}
-		else {
-			for (AxisType at : types) {
-				for (Population p : DataManager.getInstance().getSimulationData()) {
-					XYSeries series = new XYSeries(at.toString() + " " + p.getPopID());
-					for (GenerationRecord gr : p.getGenerationHistory()) {
-						series.add(gr.getGenerationNumber(), getDataPoint(gr, at));
-					}
-					seriesCollection.addSeries(series);
-				}
 			}
 		}
 
@@ -330,6 +320,9 @@ public class _2DGraphingManager {
 		Range rangeRange = range.getRange();
 		double yMin = (ymin.equals("")) ? rangeRange.getLowerBound() : Double.parseDouble(ymin);
 		double yMax = (ymax.equals("")) ? rangeRange.getUpperBound() : Double.parseDouble(ymax);
+		if (types.size() > 0 && Enum.IsDefined(FrequencyType.class, types.get(0)) {
+		}
+
 		range.setRange(yMin,yMax);
 	
 	

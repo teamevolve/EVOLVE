@@ -322,6 +322,7 @@ public class GUI extends EvoPane {
 							errorFrame.dispatchEvent(new WindowEvent(errorFrame, WindowEvent.WINDOW_CLOSING));
 						}
 					});
+					e1.printStackTrace();
 				}
 				
 				// Link datamanger to sesh parms, run sim, export
@@ -423,7 +424,7 @@ public class GUI extends EvoPane {
 		parms.setSelectChecked(selectCheck.isSelected());
 		parms.setMutationChecked(mutationCheck.isSelected());
 		parms.setMigrationChecked(migrationCheck.isSelected());
-		parms.setSexSelectChecked(sexualSelectCheck.isSelected());
+		//parms.setSexSelectChecked(sexualSelectCheck.isSelected());
 
 		submitTitle();
 		
@@ -437,8 +438,8 @@ public class GUI extends EvoPane {
 			mp.submit(parms);
 		if(parms.isMigrationChecked())
 			mip.submit(parms);
-		if(parms.isSexSelectChecked())
-			ssp.submit(parms);
+//		if(parms.isSexSelectChecked())
+//			ssp.submit(parms);
 	}
 
 	
