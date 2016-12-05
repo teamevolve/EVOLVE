@@ -1,6 +1,7 @@
 package graphing;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -8,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Paint;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,6 +36,7 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.chart.plot.XYPlot;
 
 import importexport.ExportFormat;
 import shared.Allele;
@@ -81,6 +84,7 @@ public class _2DGraphingManager {
 	private static final Class<?> DEFAULT_ACTIVE_SECTION = FrequencyType.class;
 	private Container win = null;
 	private ChartPanel panel = null;
+	private boolean usingFrequencies = true; 
 	
 	/** Enables singelton class **/
 	private static _2DGraphingManager instance = null;
@@ -134,7 +138,7 @@ public class _2DGraphingManager {
 		ButtonGroup graphingTypes = new ButtonGroup();
 			
 		JRadioButton quantitiesButton = new JRadioButton("Graph Quantities");
-		quantitiesButton.setSelected(true);
+		quantitiesButton.setSelected(!usingFrequencies);
 		graphingTypes.add(quantitiesButton);
 		
 		
@@ -150,13 +154,12 @@ public class _2DGraphingManager {
 			if (DEFAULT_ACTIVE_SECTION != QuantityType.class) {
 				box.setEnabled(false);
 			}
-				
-			//box.setAlignmentX(Component.LEFT_ALIGNMENT);
 			quantitiesPanel.add(box);
 		}
 		
 		
 		JRadioButton frequenciesButton = new JRadioButton("Graph Frequencies");
+		frequenciesButton.setSelected(usingFrequencies);
 		graphingTypes.add(frequenciesButton);
 
 		
@@ -167,6 +170,7 @@ public class _2DGraphingManager {
 		for (Allele a : Allele.getValues()) {
 			AxisType at = FrequencyType.toEnum(a);
 			JCheckBox box = new JCheckBox(at.toString());
+			box.setForeground(FrequencyType.getColor(at));
 			if (DEFAULT_RANGE_METRIC.contains(at))
 				box.setSelected(true);
 			if (DEFAULT_ACTIVE_SECTION != FrequencyType.class)
@@ -176,6 +180,7 @@ public class _2DGraphingManager {
 		for (Genotype gt : Genotype.getValues()) {
 			AxisType at = FrequencyType.toEnum(gt);
 			JCheckBox box = new JCheckBox(at.toString());
+			box.setForeground(FrequencyType.getColor(at));
 			if (DEFAULT_RANGE_METRIC.contains(at))
 				box.setSelected(true);
 			if (DEFAULT_ACTIVE_SECTION != FrequencyType.class)
@@ -218,6 +223,7 @@ public class _2DGraphingManager {
 					box.setEnabled(frequenciesButton.isSelected());
 					((JCheckBox) box).setSelected(false);
 				}
+				usingFrequencies = false;
 			}
 		});
 		
@@ -230,6 +236,7 @@ public class _2DGraphingManager {
 					box.setEnabled(quantitiesButton.isSelected());
 					((JCheckBox) box).setSelected(false);
 				}
+				usingFrequencies = true;
 			}
 		});
 		
@@ -294,6 +301,11 @@ public class _2DGraphingManager {
 		win.invalidate();
 				
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
+		JFreeChart chart = ChartFactory.createXYLineChart(DataManager.getInstance().getSessionParams().getTitle(), "Generation", "", seriesCollection);
+		chart.setTitle(DataManager.getInstance().getSessionParams().getTitle());
+		chart.removeLegend();
+
+
 		for (AxisType at : types) {
 			for (Population p : DataManager.getInstance().getSimulationData()) {
 				XYSeries series = new XYSeries(at.toString() + " " + p.getPopID());
@@ -301,13 +313,10 @@ public class _2DGraphingManager {
 					series.add(gr.getGenerationNumber(), getDataPoint(gr, at));
 				}
 				seriesCollection.addSeries(series);
+				((XYPlot)chart.getPlot()).getRenderer().setSeriesPaint(seriesCollection.getSeriesIndex(at.toString() + " " + p.getPopID()), FrequencyType.getColor(at));
 			}
 		}
 
-		JFreeChart chart = ChartFactory.createXYLineChart(DataManager.getInstance().getSessionParams().getTitle(), "Generation", "", seriesCollection);
-		chart.setTitle(DataManager.getInstance().getSessionParams().getTitle());
-		chart.removeLegend();
-		
 		// Adjust chart's axis bounds based on value of text fields in conrtol panel
 		ValueAxis domain = chart.getXYPlot().getDomainAxis();
 		Range domainRange = domain.getRange();
@@ -318,10 +327,8 @@ public class _2DGraphingManager {
 		
 		ValueAxis range = chart.getXYPlot().getRangeAxis();
 		Range rangeRange = range.getRange();
-		double yMin = (ymin.equals("")) ? rangeRange.getLowerBound() : Double.parseDouble(ymin);
-		double yMax = (ymax.equals("")) ? rangeRange.getUpperBound() : Double.parseDouble(ymax);
-		if (types.size() > 0 && Enum.IsDefined(FrequencyType.class, types.get(0)) {
-		}
+		double yMin = (ymin.equals("")) ? (usingFrequencies) ? 0 : rangeRange.getLowerBound() : Double.parseDouble(ymin);
+		double yMax = (ymax.equals("")) ? (usingFrequencies) ? 1 : rangeRange.getUpperBound() : Double.parseDouble(ymax);
 
 		range.setRange(yMin,yMax);
 	

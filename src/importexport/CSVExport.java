@@ -158,7 +158,6 @@ public class CSVExport {
 			for (Genotype gt2 : Genotype.getValues()) {
 				if (gt1 == gt2)
 					continue;
-				System.out.printf("%s -> %s", gt1, gt2);
 				System.out.printf("%d,", rec.getMutationCount(gt1, gt2));
 				total += rec.getMutationCount(gt1, gt2);
 			}
@@ -313,6 +312,33 @@ public class CSVExport {
 		System.out.println(sp.getDesign());
 		System.out.println(sp.getResults());
 		System.out.println(sp.getDiscuss());
+		System.out.printf("Seed:,%d\n",sp.getSeed());
+		System.out.printf("# Generations:,%d,,# Populations:,%d,,Population Size:,%d\n", sp.getNumGens(),sp.getNumPops(),sp.getPopSize());
+		for (Allele a : Allele.getValues()) {
+			System.out.printf("Allele Freq. %s:,%f,,", a.toString(), sp.getAlleleFrequency(a));
+		}
+		System.out.println();
+		if (!sp.isPopConst()) {
+			System.out.printf("Carrying Capacity:, %d,,Post-Crash Size:,%d\n",sp.getPopCapacity(),sp.getCrashCapacity());
+		}
+		for (Genotype gt : Genotype.getValues()) {
+			System.out.printf("Survival Rate %s,%f,,", gt.toString(), sp.getSurvivalRate(gt));
+		}
+		System.out.println();
+		for (Genotype gt : Genotype.getValues()) {
+			System.out.printf("Reproductive Rate %s,%f,,", gt.toString(), sp.getReproductionRate(gt));
+		}
+		System.out.println();
+		if (sp.isMutationChecked()) {
+			for (Allele a1 : Allele.getValues()) {
+				for (Allele a2 : Allele.getValues()) {
+					if (a1 == a2) continue;
+					System.out.printf("Mutation Rate %s->%s:,%f,,", a1.toString(), a2.toString(), sp.getAlleleMutationRate(a1, a2));
+				}
+				System.out.println();
+			}
+		}
+
 		System.out.println("\n");
 
 	}
