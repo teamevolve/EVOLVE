@@ -315,6 +315,15 @@ public class SelectionPane extends EvoPane {
 		if(selectRandS.isSelected()) {
 			submitRandS(p);
 			calcAbsFit();
+
+			afAA = Double.parseDouble(absFitAA.getText());
+			afAB = Double.parseDouble(absFitAB.getText());
+			afBB = Double.parseDouble(absFitBB.getText());
+			if(threeAlleles) {
+				afAC = Double.parseDouble(absFitAC.getText());
+				afBC = Double.parseDouble(absFitBC.getText());
+				afCC = Double.parseDouble(absFitCC.getText());
+			}
 		}
 		else if(selectAbs.isSelected()) {
 			afAA = Double.parseDouble(absFitAA.getText());
