@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -133,8 +135,11 @@ public class _2DGraphingManager {
 	 */
 	private JPanel generateControlPanel() {
 		JPanel containerPanel = new JPanel();
-		containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
 		
+		containerPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
 		ButtonGroup graphingTypes = new ButtonGroup();
 			
 		JRadioButton quantitiesButton = new JRadioButton("Graph Quantities");
@@ -191,19 +196,29 @@ public class _2DGraphingManager {
 		
 		
 		
-		JPanel rangesPanel = new JPanel(new GridLayout(2,4));
-		rangesPanel.add(new JLabel("X-Min: "));
+		JPanel rangesPanel = new JPanel();
+		rangesPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c1 = new GridBagConstraints();
+		c1.gridx = 0; c1.gridy = 0;
+		rangesPanel.add(new JLabel("X-Min: "), c1);
 		JTextField domainLowerBound = new JTextField(BOUND_BOX_WIDTH); 
-		rangesPanel.add(domainLowerBound);
-		rangesPanel.add(new JLabel("X-Max: "));
+		c1.gridx++;
+		rangesPanel.add(domainLowerBound, c1);
+		c1.gridx++;
+		rangesPanel.add(new JLabel("X-Max: "), c1);
 		JTextField domainUpperBound = new JTextField(BOUND_BOX_WIDTH);
-		rangesPanel.add(domainUpperBound);
-		rangesPanel.add(new JLabel("Y-Min: "));
+		c1.gridx++;
+		rangesPanel.add(domainUpperBound, c1);
+		c1.gridx = 0; c1.gridy++;
+		rangesPanel.add(new JLabel("Y-Min: "), c1);
 		JTextField rangeLowerBound  = new JTextField(BOUND_BOX_WIDTH);
-		rangesPanel.add(rangeLowerBound);
-		rangesPanel.add(new JLabel("Y-Max: "));
-		JTextField rangeUpperBound  = new JTextField(BOUND_BOX_WIDTH);  
-		rangesPanel.add(rangeUpperBound);
+		c1.gridx++;
+		rangesPanel.add(rangeLowerBound, c1);
+		c1.gridx++;
+		rangesPanel.add(new JLabel("Y-Max: "), c1);
+		JTextField rangeUpperBound  = new JTextField(BOUND_BOX_WIDTH); 
+		c1.gridx++;
+		rangesPanel.add(rangeUpperBound, c1);
 		
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -274,12 +289,17 @@ public class _2DGraphingManager {
 			}
 		});
 
-		containerPanel.add(frequenciesButton);
-		containerPanel.add(frequenciesPanel);
-		containerPanel.add(quantitiesButton);
-		containerPanel.add(quantitiesPanel);
-		containerPanel.add(rangesPanel);
-		containerPanel.add(buttonPanel);
+		containerPanel.add(frequenciesButton, c);
+		c.gridy++;
+		containerPanel.add(frequenciesPanel,c);
+		c.gridy++;
+		containerPanel.add(quantitiesButton,c);
+		c.gridy++;
+		containerPanel.add(quantitiesPanel,c);
+		c.gridy++;
+		containerPanel.add(rangesPanel,c);
+		c.gridy++;
+		containerPanel.add(buttonPanel,c);
 		
 		return containerPanel;
 	}
