@@ -17,10 +17,10 @@ public class OurInputVerifier extends InputVerifier {
 	public boolean verify(JComponent input) {
 		
 		//######################
-//		return true;
+		return true;
 		//#####################
 		
-		String text = ((JTextField) (input)).getText().trim();
+/*		String text = ((JTextField) (input)).getText().trim();
 	    String type = input.getName();
 	    
 		switch (type) {
@@ -44,7 +44,7 @@ public class OurInputVerifier extends InputVerifier {
 			default: 
 				return true;
 		}
-				
+	*/			
 	}
 	/**
 	 * Using exceptions to check if the string is an int (lol)
