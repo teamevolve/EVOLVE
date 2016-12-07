@@ -82,7 +82,7 @@ public class _2DGraphingManager {
 	private static final String DEFAULT_BOUND = "";
 	/** Default range-component, to show on first graph generation **/
 	/** Holds cached versions of graphs to avoid extra computation **/
-	private static final ArrayList<AxisType> DEFAULT_RANGE_METRIC = new ArrayList<AxisType>(Arrays.asList(FrequencyType.ALLELE_FREQ_A, FrequencyType.ALLELE_FREQ_B));
+	private static final ArrayList<AxisType> DEFAULT_RANGE_METRIC = new ArrayList<AxisType>();
 	private static final Class<?> DEFAULT_ACTIVE_SECTION = FrequencyType.class;
 	private Container win = null;
 	private ChartPanel panel = null;
@@ -108,8 +108,21 @@ public class _2DGraphingManager {
 	/**
 	 * Private constructor enables singleton class.
 	 */
-	private _2DGraphingManager() {}
+	private _2DGraphingManager() {
+		for (Allele a : Allele.getValues()) {
+			DEFAULT_RANGE_METRIC.add(FrequencyType.toEnum(a));
+		}
+	}
 	 
+	/**
+	 * Resets the class to enable default axis types when 
+	 * switching between 2/3 alleles without restarting
+	 * GUI.
+	 */
+	public static void destroyInstance() {
+		instance = null;
+		DEFAULT_RANGE_METRIC.clear();
+	}
 	
 	/**
 	 * Constructs the graph and control panel and adds them to a given

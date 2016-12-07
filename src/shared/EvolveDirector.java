@@ -2,6 +2,7 @@ package shared;
 
 import graphing.GraphType;
 import graphing.GraphingEngine;
+import graphing._2DGraphingManager;
 import importexport.ExportFormat;
 import importexport.ImportExportEngine;
 import simulation.Population;
@@ -73,7 +74,8 @@ public class EvolveDirector {
 		else {
 			PopulationManager.getInstance().reset();
 			DataManager.getInstance().reset();
-			Population.resetPopulationCounter();		
+			Population.resetPopulationCounter();
+			_2DGraphingManager.destroyInstance();
 		}
 	}
 	
