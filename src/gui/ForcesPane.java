@@ -31,7 +31,7 @@ public class ForcesPane extends EvoPane {
 	
 	public ForcesPane() {
 		super();
-		color2List.add(getParent());
+		//color1List.add(getParent());
 		/* seed stuff ********************************************************/
 		seedLabel = new JLabel("<html><b>Seed: </b>");
 		seedField = new JTextField(TEXT_LEN_LONG);

@@ -108,6 +108,7 @@ public class MigrationPane extends EvoPane {
 		varMigRateBB.setName(RATE); varMigRateBB.setInputVerifier(iv);
 		
 		table = new JPanel();
+		table.setBackground(color1);
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
 		//t.insets = new Insets(0, 0, 3, 15);
@@ -238,15 +239,5 @@ public class MigrationPane extends EvoPane {
 		else if (varMig.isSelected() && enabled == true){
 			modeFixed(false);
 		}
-	}
-	
-	public static void main(String[] args){
-		JFrame window = new JFrame();
-		
-		MigrationPane test = new MigrationPane();
-		
-		window.add(test);
-		window.pack();
-		window.setVisible(true);
 	}
 }

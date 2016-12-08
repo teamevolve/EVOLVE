@@ -27,7 +27,6 @@ import java.util.ArrayList;
  */
 
 public class GeneticDriftPane extends EvoPane{
-	Color color = new Color(244, 228, 210);		// Pane color
 	JLabel popConstLabel;			// Population constant
 	ButtonGroup popConstGroup;
 	JRadioButton popConstTrue;
@@ -78,7 +77,7 @@ public class GeneticDriftPane extends EvoPane{
 
 		// add carrying capacity and post crash stuff to separate panel for formatting
 		JPanel fields = new JPanel();
-		fields.setBackground(color);
+		fields.setBackground(color2);
 		fields.setLayout(new FlowLayout());
 		fields.add(carryCapLabel);
 		fields.add(carryCap);

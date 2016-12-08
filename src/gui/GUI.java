@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -64,15 +65,20 @@ public class GUI extends EvoPane {
 	JButton okay;
 	
 	/* Evolutionary Forces Panes *********************************************/
-	ForcesPane fp = new ForcesPane();
+	JLabel seedLabel; 				// Seed
+	JTextField seedField;
+	JLabel numAllelesLabel;			// Number of Alleles
+	ButtonGroup numAlleles;
+	static JRadioButton alleles2, alleles3;
+	
+	//ForcesPane fp = new ForcesPane();
 	InitPopPane pp = new InitPopPane();
 	GeneticDriftPane gd = new GeneticDriftPane();
 	SelectionPane sp = new SelectionPane();
 	MutationPane mp = new MutationPane();
 	MigrationPane mip = new MigrationPane();
 	SexSelectPane ssp = new SexSelectPane();
-	NextPane np = new NextPane();
-	
+
 	ArrayList<EvoPane> forces = new ArrayList<EvoPane>();
 
 	/**
@@ -100,7 +106,7 @@ public class GUI extends EvoPane {
 		c.anchor = GridBagConstraints.WEST;
 		
 		/* Lab report fields *******************************************************/
-		color1List.add(getParent());
+		color2List.add(getParent());
 		titleLabel = new JLabel("<html><b>Title:</b>");
 		title = new JTextField(TEXT_LEN_EXTRA_LONG / 2);
 		
@@ -169,7 +175,51 @@ public class GUI extends EvoPane {
 		c.anchor = GridBagConstraints.CENTER;
 		add(help, c);
 
+		/* Here's a bar for "aesthetics" ****************************************************/
+		c.gridy = 6;	
+		/*for(int i = 0; i < 5; i++) {
+			c.gridx = i;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}*/
+		
+		/* seed stuff ********************************************************/
+		seedLabel = new JLabel("<html><b>Seed: </b>");
+		seedField = new JTextField(TEXT_LEN_LONG);
+		
+		// add seed label and field to frame
+		c.gridx = 4; c.gridy++;
+		c.anchor = GridBagConstraints.WEST;
+		add(seedLabel, c);		
+		c.gridx = 4;
+		c.anchor = GridBagConstraints.CENTER;
+		add(seedField, c);	
 
+		// Fill in a random seed
+		Long randomNum = (new Random()).nextLong();
+		seedField.setText(randomNum.toString());
+		
+		/* num alleles stuff ****************************************************/
+		numAllelesLabel = new JLabel("<html><b>Number of Alleles: </b>");
+		
+		// 2 and 3 allele radio buttons
+		numAlleles = new ButtonGroup();
+		alleles2 = new JRadioButton("2", true);
+		alleles3 = new JRadioButton("3");
+		
+		// add radio buttons to button groups
+		numAlleles.add(alleles2);
+		numAlleles.add(alleles3);
+		
+		// add radio buttons and labels to gui
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0; 
+		add(numAllelesLabel, c);
+		c.gridx = 1;
+		add(alleles2, c);
+		c.gridx = 2;
+		add(alleles3, c);
+		
 		/* EVOLUTIONARY FORCES ***************************************************************/
 		JLabel evoForces = new JLabel("<html><b>Active Evolutionary Forces:");
 		
@@ -211,30 +261,30 @@ public class GUI extends EvoPane {
 			}
 		});
 		
-		c.gridx = 0; c.gridy = 7;
+		c.gridx = 0; c.gridy++;
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.WEST;
 		add(evoForces, c);
-		c.gridx = 0; c.gridy = 9;
+		c.gridx = 0; c.gridy++;
 		c.gridwidth = 1;
 		add(popSizeCheck, c);
-		c.gridx = 1; c.gridy = 9;
+		c.gridx = 1; 
 		add(selectCheck, c);
-		c.gridx = 2; c.gridy = 9;
+		c.gridx = 2; 
 		add(mutationCheck, c);
-		c.gridx = 3; c.gridy = 9;
+		c.gridx = 3; 
 		add(migrationCheck, c);
-		c.gridx = 4; c.gridy = 9;
+		c.gridx = 4; 
 //		add(sexualSelectCheck, c); // SEXUAL SELECTION NOT BEING ADDED !! (unimplemented)
 		
 		
 		/* Panes ****************************************************************************/
 		c.gridwidth = 7;
 		
-		c.gridx = 0; c.gridy = 6;
-		add(fp, c);
+//		c.gridx = 0; c.gridy = 6;
+	//	add(fp, c);
 		
-		c.gridx = 0; c.gridy = 10;
+		c.gridx = 0; c.gridy++;
 		add(pp, c);
 		
 		c.gridx = 0; c.gridy = 15;
@@ -261,7 +311,7 @@ public class GUI extends EvoPane {
 		//add(apply, c);
 		
 		submit = new JButton("<html><span style='font-size:13px'>Run Simulation");	
-		Color buttonColor = new Color (40, 160, 255);
+		Color buttonColor = new Color(115, 229, 103);
 		submit.setBackground(buttonColor);
 		c.gridx = 4; c.gridy = 60;
 		add(submit, c);		
@@ -278,14 +328,14 @@ public class GUI extends EvoPane {
 		});
 		
 		// Set actions for the NumAlleles radio buttons
-		gui.ForcesPane.alleles2.addItemListener(new ItemListener() {
+		alleles2.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeThreeAlleles(false);
 				
 			}
 		});
 		
-		gui.ForcesPane.alleles3.addItemListener(new ItemListener() {
+		alleles3.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeThreeAlleles(true);
 			}
@@ -325,8 +375,6 @@ public class GUI extends EvoPane {
 					});
 					e1.printStackTrace();
 				}
-				
-				// Link datamanger to sesh parms, run sim, export
 			}
 		});
 
@@ -419,6 +467,8 @@ public class GUI extends EvoPane {
 	 *  pushes data to sesh parms
 	 */
 	public void applyInfo() { //throws Exception {
+		parms.setThreeAlleles(alleles3.isSelected());
+		parms.setSeed(Long.parseLong(seedField.getText()));
 		
 		// Set evolutionary force flags
 		parms.setPopSizeChecked(popSizeCheck.isSelected());
@@ -430,7 +480,7 @@ public class GUI extends EvoPane {
 		submitTitle();
 		
 		// Submit info from the EvoPanes if necessary
-		fp.submit(parms);
+		//fp.submit(parms);
 		pp.submit(parms);
 		if(parms.isPopSizeChecked())
 			gd.submit(parms);

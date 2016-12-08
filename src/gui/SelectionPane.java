@@ -30,7 +30,6 @@ import shared.SessionParameters;
  * 
  */
 public class SelectionPane extends EvoPane {
-	Color color = new Color(168, 218, 255);
 	JLabel selectLabel;
 	ButtonGroup selectGroup;
 	JRadioButton selectRandS, 
@@ -118,7 +117,7 @@ public class SelectionPane extends EvoPane {
 		relFitCC = new JLabel("___"); threeAllelesList.add(relFitCC);
 		
 		table = new JPanel();
-		table.setBackground(color);
+		table.setBackground(color1);
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 3, 15);
