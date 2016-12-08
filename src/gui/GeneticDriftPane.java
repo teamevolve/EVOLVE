@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
  */
 
 public class GeneticDriftPane extends EvoPane{
+	Color color = new Color(244, 228, 210);		// Pane color
 	JLabel popConstLabel;			// Population constant
 	ButtonGroup popConstGroup;
 	JRadioButton popConstTrue;
@@ -43,6 +45,7 @@ public class GeneticDriftPane extends EvoPane{
 	public GeneticDriftPane() {
 
 		super();
+		color2List.add(getParent());
 		
 		/* pop const stuff *****************************************************************************/
 		popConstLabel = new JLabel("<html><span style='font-size:11px'><b>Genetic Drift: </span>");
@@ -75,6 +78,7 @@ public class GeneticDriftPane extends EvoPane{
 
 		// add carrying capacity and post crash stuff to separate panel for formatting
 		JPanel fields = new JPanel();
+		fields.setBackground(color);
 		fields.setLayout(new FlowLayout());
 		fields.add(carryCapLabel);
 		fields.add(carryCap);

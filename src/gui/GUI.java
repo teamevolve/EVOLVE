@@ -100,6 +100,7 @@ public class GUI extends EvoPane {
 		c.anchor = GridBagConstraints.WEST;
 		
 		/* Lab report fields *******************************************************/
+		color1List.add(getParent());
 		titleLabel = new JLabel("<html><b>Title:</b>");
 		title = new JTextField(TEXT_LEN_EXTRA_LONG / 2);
 		

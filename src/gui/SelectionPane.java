@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -29,7 +30,7 @@ import shared.SessionParameters;
  * 
  */
 public class SelectionPane extends EvoPane {
-	
+	Color color = new Color(168, 218, 255);
 	JLabel selectLabel;
 	ButtonGroup selectGroup;
 	JRadioButton selectRandS, 
@@ -55,11 +56,11 @@ public class SelectionPane extends EvoPane {
 	ArrayList<Component> absFitList = new ArrayList<Component>();
 	ArrayList<Component> relFitList = new ArrayList<Component>();
 	
-		
 	JPanel table;
 	
 	public SelectionPane() {
-		
+		super();
+		color1List.add(getParent());
 		// Selection radio buttons
 		selectLabel = new JLabel("<html><b><span style='font-size:11px'>Natural Selection: </span> </b>");
 		selectGroup = new ButtonGroup();
@@ -117,6 +118,7 @@ public class SelectionPane extends EvoPane {
 		relFitCC = new JLabel("___"); threeAllelesList.add(relFitCC);
 		
 		table = new JPanel();
+		table.setBackground(color);
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 3, 15);

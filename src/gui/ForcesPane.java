@@ -31,6 +31,7 @@ public class ForcesPane extends EvoPane {
 	
 	public ForcesPane() {
 		super();
+		color2List.add(getParent());
 		/* seed stuff ********************************************************/
 		seedLabel = new JLabel("<html><b>Seed: </b>");
 		seedField = new JTextField(TEXT_LEN_LONG);
@@ -70,7 +71,7 @@ public class ForcesPane extends EvoPane {
 		c.gridx = 2; c.gridy = 1;
 		add(alleles3, c);
 	}
-	
+
 	void submit (shared.SessionParameters p) {
 		p.setThreeAlleles(alleles3.isSelected());
 		p.setSeed(Long.parseLong(seedField.getText()));

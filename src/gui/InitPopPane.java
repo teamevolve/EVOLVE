@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
  * 
  */
 public class InitPopPane extends EvoPane {
-
+	Color color = new Color(168, 218, 255);				// pane color
 	JLabel popLabel;			// Population size
 	JLabel popSizeLabel;
 	JTextField popSizeField;
@@ -68,8 +69,8 @@ public class InitPopPane extends EvoPane {
 	ArrayList<Component> gtNumList = new ArrayList<Component>();
 	
 	public InitPopPane() {
-
 		super();
+		color1List.add(getParent());
 		popLabel = new JLabel("<html><b><span style='font-size:11px'>Initial Population:</span></b>");
 		popSizeLabel = new JLabel("<html><b>Population Size:");
 		popSizeField = new JTextField(TEXT_LEN_LONG);
@@ -132,6 +133,7 @@ public class InitPopPane extends EvoPane {
 		c.gridwidth = 2;
 		c.gridx = 0; c.gridy++;
 		afPane = new JPanel();
+		afPane.setBackground(color);
 		afPane.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); 	// t for temp constraints
 		t.insets = new Insets(0, 0, 3, 15);
@@ -178,6 +180,7 @@ public class InitPopPane extends EvoPane {
 		genoCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(genoCC);
 		
 		gnPane = new JPanel();
+		gnPane.setBackground(color);
 		gnPane.setLayout(new GridBagLayout());
 		t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 0, 15);

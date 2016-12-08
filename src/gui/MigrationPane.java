@@ -51,7 +51,8 @@ public class MigrationPane extends EvoPane {
 	JPanel table;
 	
 	public MigrationPane() {
-		
+		super();
+		color1List.add(getParent());
 		// Migration radio buttons
 		migLabel = new JLabel("<html><b><span style='font-size:11px'>Migration: ");
 		migGroup = new ButtonGroup();

@@ -31,7 +31,7 @@ public class MutationPane extends EvoPane {
 	public MutationPane(){
 		
 		super();
-		
+		color2List.add(getParent());
 		// Mutation (0 to 1)
 		mutLabel = new JLabel("<html><span style='font-size:11px'><b>Mutation </b>(0.0-0.01):");
 		mutAtoBLabel = new JLabel("A to B:");
@@ -184,17 +184,6 @@ public class MutationPane extends EvoPane {
 			p.setMutationRate(Genotype.BB, Genotype.BB, mutBB_BB);
 			
 		}
-	}
-	
-	public static void main(String[] args){
-		JFrame window = new JFrame();
-		
-		MutationPane test = new MutationPane();
-		
-		window.add(test);
-		window.pack();
-		window.setVisible(true);
-		
 	}
 
 }
