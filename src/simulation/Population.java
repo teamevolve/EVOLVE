@@ -168,7 +168,12 @@ public class Population {
 
 	private void reproduce(GenerationRecord previous, GenerationRecord current) {
 		///*DEBUG*/long start = System.currentTimeMillis();
+		
 		HashMap<Genotype, HashMap<Genotype, Integer>> pairings = mateIterativeIntegers(previous);
+//		HashMap<Genotype, HashMap<Genotype, Integer>> pairings = mateIterativeBiased(previous);
+		
+		
+		
 		///*DEBUG*/System.out.println(System.currentTimeMillis() - start);
 		generateOffspring(current, pairings);
 	}
@@ -276,6 +281,8 @@ public class Population {
 	
 	private HashMap<Genotype, HashMap<Genotype, Integer>> mateIterativeIntegers(GenerationRecord previous) {
 		HashMap<Genotype, HashMap<Genotype, Integer>> results = new HashMap<Genotype, HashMap<Genotype, Integer>>();
+		
+		// create new hashmaps for each valid pairing in results:
 		for (Genotype gt1 : Genotype.getValues()) {
 			results.put(gt1, new HashMap<Genotype, Integer>());
 			for (Genotype gt2 : Genotype.getValues()) {
@@ -284,55 +291,88 @@ public class Population {
 			}
 		}
 		
+		// store current sub population sizes in a separate hashmap:
 		HashMap<Genotype, Integer> subpopSizes = new HashMap<Genotype, Integer>();
 		for (Genotype gt : Genotype.getValues()) {
 			subpopSizes.put(gt, previous.getGenotypeSubpopulationSize(gt));
 		}
 		
+		// store current total and keep track of probabilities in a separate hashmap:
 		int total = previous.getPopulationSize();
 		HashMap<Genotype, Double> probabilities = new HashMap<Genotype, Double>();
-
-	
+		
+		// loop until there are no pairs left
 		while (total > 1) {
-			double accumulator = 0.0;
+			System.out.println("---------------------------------------------------");
+			double accumulator = 0.0; // total frequency (not necessarily = 1)
 
+			// update probabilities and increment accumulator:
 			for (Genotype gt : Genotype.getValues()) {
 				accumulator += (double)subpopSizes.get(gt) / (double)total;
 				probabilities.put(gt, accumulator);
 			}
 			
-			double r1 = INTERNAL_RNG.nextDouble();
+			double r1 = INTERNAL_RNG.nextDouble();			
 			double r2 = INTERNAL_RNG.nextDouble();
-			Genotype gt1 = null;
-			Genotype gt2 = null;
 			
+			Genotype gt1 = null, gt2 = null;
+
+			System.out.println("r1 = " + r1);
 			for (Genotype gt : Genotype.getValues()) {
 				if (r1 < probabilities.get(gt)) {
 					gt1 = gt;
+					System.out.println("Individual 1: " + gt1.toString());
 					break;
 				}
 			}
 			
-			for (Genotype gt : Genotype.getValues()) {	
-				if (r2 < probabilities.get(gt)) {
-					gt2 = gt;
-					break;
+			boolean isBiased = true;
+						
+			System.out.println();
+			System.out.println("r2 = " + r2);
+			if (isBiased) {
+				double sexualPref = 0.0;
+				for (Genotype gt : Genotype.getValues()) {
+					sexualPref += DataManager.getInstance().getSessionParams().getSexualSelectionRate(gt1, gt);
+					System.out.println("Cumulative Preference(" + gt1 + "->" + gt +"): " + sexualPref);
+					if (r2 < sexualPref)
+					{	// pick this genotype for individual 2:
+						gt2 = gt;
+						System.out.println("Individual 2: " + gt2.toString());
+						break;
+					}
 				}
 			}
+			else {
+				for (Genotype gt : Genotype.getValues()) {	
+					if (r2 < probabilities.get(gt)) {
+						gt2 = gt;
+						System.out.println("Individual 2: " + gt2.toString());
+						break;
+					}
+				}				
+			}
 
+			
+			// swap pair so that genotypes are ordered alphabetically:
 			if (!Utilities.isValidPairing(gt1, gt2)) {
 				Genotype temp = gt1;
 				gt1 = gt2;
 				gt2 = temp;
 			}
+
+			System.out.println("Ordered Pair: (" + gt1 + ", " + gt2 + ")");
 			
+			// increment (gt1, gt2) mating pair + 1
 			results.get(gt1).put(gt2, results.get(gt1).get(gt2) + 1);
 	
+			// adjust subpop sizes
 			subpopSizes.put(gt1, subpopSizes.get(gt1) - 1);
 			subpopSizes.put(gt2, subpopSizes.get(gt2) - 1);
 			total -= 2;
 		}
 		
+		// in the case that one individual is left alone, mate with self:
 		if (total == 1) {
 			Genotype gt = null;
 			for (Genotype g : Genotype.getValues()) {
@@ -347,7 +387,6 @@ public class Population {
 		
 		return results;
 	}
-	
 	
 	private void generateOffspring(GenerationRecord current, HashMap<Genotype, HashMap<Genotype, Integer>> pairings) {
 		HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();

@@ -65,6 +65,8 @@ public class TestResources {
 	public static void init() {
 		sp = new SessionParameters();
 		
+		sp.setThreeAlleles(false);
+		
 		sp.setPopSize(POPULATION_SIZE);
 		sp.setNumPops(NUMBER_OF_POPULATIONS);
 		sp.setSeed(SEED);
