@@ -282,6 +282,9 @@ public class Population {
 	private HashMap<Genotype, HashMap<Genotype, Integer>> mateIterativeIntegers(GenerationRecord previous) {
 		HashMap<Genotype, HashMap<Genotype, Integer>> results = new HashMap<Genotype, HashMap<Genotype, Integer>>();
 		
+		SessionParameters sp = DataManager.getInstance().getSessionParams();
+		boolean isBiased = sp.isSexSelectChecked();
+		
 		// create new hashmaps for each valid pairing in results:
 		for (Genotype gt1 : Genotype.getValues()) {
 			results.put(gt1, new HashMap<Genotype, Integer>());
@@ -325,15 +328,13 @@ public class Population {
 					break;
 				}
 			}
-			
-			boolean isBiased = true;
-						
+									
 			System.out.println();
 			System.out.println("r2 = " + r2);
 			if (isBiased) {
 				double sexualPref = 0.0;
 				for (Genotype gt : Genotype.getValues()) {
-					sexualPref += DataManager.getInstance().getSessionParams().getSexualSelectionRate(gt1, gt);
+					sexualPref += sp.getSexualSelectionRate(gt1, gt);
 					System.out.println("Cumulative Preference(" + gt1 + "->" + gt +"): " + sexualPref);
 					if (r2 < sexualPref)
 					{	// pick this genotype for individual 2:

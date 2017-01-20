@@ -275,7 +275,7 @@ public class GUI extends EvoPane {
 		c.gridx = 3; 
 		add(migrationCheck, c);
 		c.gridx = 4; 
-//		add(sexualSelectCheck, c); // SEXUAL SELECTION NOT BEING ADDED !! (unimplemented)
+		add(sexualSelectCheck, c); 
 		
 		
 		/* Panes ****************************************************************************/
@@ -299,8 +299,8 @@ public class GUI extends EvoPane {
 		c.gridx = 0; c.gridy = 40;
 		add(mip, c);
 		
-		c.gridx = 0; c.gridy = 50;    // SEXUAL SELECTION NOT BEING ADDED !! (unimplemented)
-//		add(ssp, c);
+		c.gridx = 0; c.gridy = 50;
+		add(ssp, c);
 		
 		c.gridx = 0; c.gridy = 70;
 		//add(np, c);
@@ -489,8 +489,8 @@ public class GUI extends EvoPane {
 			mp.submit(parms);
 		if(parms.isMigrationChecked())
 			mip.submit(parms);
-//		if(parms.isSexSelectChecked())
-//			ssp.submit(parms);
+		if(parms.isSexSelectChecked())
+			ssp.submit(parms);
 	}
 
 	
