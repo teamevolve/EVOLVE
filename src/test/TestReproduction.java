@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Random;
 
+import shared.Allele;
 import shared.DataManager;
 import shared.Genotype;
 import shared.SessionParameters;
@@ -16,13 +17,6 @@ import simulation.Population;
 
 
 public class TestReproduction {
-	
-	final static int SUBPOPSIZE_AA = 100;
-	final static int SUBPOPSIZE_AB = 100;
-	final static int SUBPOPSIZE_BB = 100;
-	final static int SUBPOPSIZE_AC = 100;
-	final static int SUBPOPSIZE_BC = 100;
-	final static int SUBPOPSIZE_CC = 100;
 	
 	final static double REPROD_RATE_AA = 5.0;
 	final static double REPROD_RATE_AB = 5.0;
@@ -42,6 +36,9 @@ public class TestReproduction {
 	
 		String filePath = args[0];
 		
+		int PopSize=0;
+		double freqA=0, freqB=0, freqC=0;
+		
 		try{
 //			BufferedReader br = new BufferedReader(new FileReader("src/test.csv"));
 			BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -51,15 +48,53 @@ public class TestReproduction {
 			System.out.println("NumAlleles: " + numAlleles);
 			sp.setThreeAlleles((numAlleles == 3));
 			
+			//sexual selection on/off
 			boolean sexualSelectionOn = (br.readLine().split(",")[1].equals("on"));
 			System.out.println("Sexual Selection: " + sexualSelectionOn);
 			sp.setSexSelectChecked(sexualSelectionOn);
+			
+			//num gens
+			int NumGens = Integer.parseInt(br.readLine().split(",")[1]);
+			sp.setNumGens(NumGens);
+			System.out.println("Num Gens: " + NumGens);
+			
+			//num populations
+			int NumPops = Integer.parseInt(br.readLine().split(",")[1]);
+			sp.setNumPops(NumPops);
+			System.out.println("Num Pops: " + NumPops);
+			
+			//population size
+			PopSize = Integer.parseInt(br.readLine().split(",")[1]);
+			sp.setPopSize(PopSize);
+			System.out.println("Pop Size: " + PopSize);
+			
+			//allele frequencies
+			br.readLine();
+			String[] line = br.readLine().split(",");
+			freqA = Double.parseDouble(line[1]);
+			freqB = Double.parseDouble(line[2]);
+			freqC = Double.parseDouble(line[3]);
+					
+			sp.setAlleleFrequency(Allele.A, freqA);
+			sp.setAlleleFrequency(Allele.B, freqB);
+			sp.setAlleleFrequency(Allele.C, freqC);
+			
+			sp.setGenotypeFrequency(Genotype.AA, freqA*freqA);
+			sp.setGenotypeFrequency(Genotype.AB, 2*freqA*freqB);
+			sp.setGenotypeFrequency(Genotype.BB, freqB*freqB);
+			
+			if (numAlleles == 3)
+			{
+				sp.setGenotypeFrequency(Genotype.AC, 2*freqA*freqC);
+				sp.setGenotypeFrequency(Genotype.BC, 2*freqB*freqC);
+				sp.setGenotypeFrequency(Genotype.CC, freqC*freqC);
+			}
 			
 			if (numAlleles == 2)
 			{
 				br.readLine(); br.readLine(); br.readLine();
 				
-				String[] line = br.readLine().split(",");
+				line = br.readLine().split(",");
 				System.out.println("Preferences of "+ line[0] +" added.");
 				sp.setSexualSelectionRate(Genotype.AA, Genotype.AA, Double.parseDouble(line[1]));
 				sp.setSexualSelectionRate(Genotype.AA, Genotype.AB, Double.parseDouble(line[2]));
@@ -79,15 +114,12 @@ public class TestReproduction {
 			}
 			else if (numAlleles == 3)
 			{
-				sp.setGenotypeFrequency(Genotype.AC, .5);
-				sp.setGenotypeFrequency(Genotype.BC, .5);
-				sp.setGenotypeFrequency(Genotype.CC, .5);
 				
 				br.readLine(); br.readLine(); br.readLine();
 				br.readLine(); br.readLine(); br.readLine();
 				br.readLine(); br.readLine(); br.readLine();
 				
-				String[] line = br.readLine().split(",");
+				line = br.readLine().split(",");
 				System.out.println("Preferences of "+ line[0] +" added.");
 				sp.setSexualSelectionRate(Genotype.AA, Genotype.AA, Double.parseDouble(line[1]));
 				sp.setSexualSelectionRate(Genotype.AA, Genotype.AB, Double.parseDouble(line[2]));
@@ -151,24 +183,37 @@ public class TestReproduction {
 		sp.setReproductionRate(Genotype.AA, REPROD_RATE_AA);
 		sp.setReproductionRate(Genotype.AB, REPROD_RATE_AB);
 		sp.setReproductionRate(Genotype.BB, REPROD_RATE_BB);
+		sp.setReproductionRate(Genotype.AC, REPROD_RATE_AC);
+		sp.setReproductionRate(Genotype.BC, REPROD_RATE_BC);
+		sp.setReproductionRate(Genotype.CC, REPROD_RATE_CC);
 		
 		
 		
 		GenerationRecord previousGen = new GenerationRecord(0, 0);
 		
-		previousGen.setGenotypeSubpopulationSize(Genotype.AA, SUBPOPSIZE_AA);
-		previousGen.setGenotypeSubpopulationSize(Genotype.AB, SUBPOPSIZE_AB);
-		previousGen.setGenotypeSubpopulationSize(Genotype.BB, SUBPOPSIZE_BB);
+		previousGen.setGenotypeSubpopulationSize(Genotype.AA, (int) (PopSize*freqA*freqA+.5));
+		previousGen.setGenotypeSubpopulationSize(Genotype.AB, (int) (PopSize*2*freqA*freqB+.5));
+		previousGen.setGenotypeSubpopulationSize(Genotype.BB, (int) (PopSize*freqB*freqB+.5));
+
+		double a = PopSize*freqA*freqA+.5;
+		double b = PopSize*2*freqA*freqB+.5;
+		double c = PopSize*freqB*freqB+.5;
 
 
 		if (numAlleles == 3)
 		{
-		sp.setReproductionRate(Genotype.AC, REPROD_RATE_AC);
-		sp.setReproductionRate(Genotype.BC, REPROD_RATE_BC);
-		sp.setReproductionRate(Genotype.CC, REPROD_RATE_CC);
-		previousGen.setGenotypeSubpopulationSize(Genotype.AC, SUBPOPSIZE_AC);
-		previousGen.setGenotypeSubpopulationSize(Genotype.BC, SUBPOPSIZE_BC);
-		previousGen.setGenotypeSubpopulationSize(Genotype.CC, SUBPOPSIZE_CC);
+			
+			previousGen.setGenotypeSubpopulationSize(Genotype.AC, (int) (PopSize*2*freqA*freqC+.5));
+			previousGen.setGenotypeSubpopulationSize(Genotype.BC, (int) (PopSize*2*freqB*freqC+.5));
+			previousGen.setGenotypeSubpopulationSize(Genotype.CC, (int) (PopSize*freqC*freqC+.5));
+
+			
+//		sp.setReproductionRate(Genotype.AC, REPROD_RATE_AC);
+//		sp.setReproductionRate(Genotype.BC, REPROD_RATE_BC);
+//		sp.setReproductionRate(Genotype.CC, REPROD_RATE_CC);
+//		previousGen.setGenotypeSubpopulationSize(Genotype.AC, SUBPOPSIZE_AC);
+//		previousGen.setGenotypeSubpopulationSize(Genotype.BC, SUBPOPSIZE_BC);
+//		previousGen.setGenotypeSubpopulationSize(Genotype.CC, SUBPOPSIZE_CC);
 	}
 		
 		GenerationRecord currentGen = new GenerationRecord(0, 1);

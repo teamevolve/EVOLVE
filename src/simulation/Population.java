@@ -284,11 +284,19 @@ public class Population {
 		
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		boolean isBiased = sp.isSexSelectChecked();
+
+		// Preferenes for sexual selection
+		HashMap<Genotype, HashMap<Genotype, Double>> preferences = new HashMap<Genotype, HashMap<Genotype, Double>>();
 		
 		// create new hashmaps for each valid pairing in results:
 		for (Genotype gt1 : Genotype.getValues()) {
+			
 			results.put(gt1, new HashMap<Genotype, Integer>());
+			preferences.put(gt1, new HashMap<Genotype, Double>());
+			
 			for (Genotype gt2 : Genotype.getValues()) {
+				preferences.get(gt1).put(gt2, sp.getSexualSelectionRate(gt1, gt2));
+
 				if (!Utilities.isValidPairing(gt1, gt2)) continue;
 				results.get(gt1).put(gt2, 0);
 			}
@@ -304,6 +312,15 @@ public class Population {
 		int total = previous.getPopulationSize();
 		HashMap<Genotype, Double> probabilities = new HashMap<Genotype, Double>();
 		
+		
+		System.out.print("SubPopSizes: ");
+		for (Genotype gt : Genotype.getValues())
+		{
+			System.out.print(gt.name()+ ": " + subpopSizes.get(gt) + ", ");
+		}
+		System.out.println();
+
+		
 		// loop until there are no pairs left
 		while (total > 1) {
 			System.out.println("---------------------------------------------------");
@@ -316,7 +333,6 @@ public class Population {
 			}
 			
 			double r1 = INTERNAL_RNG.nextDouble();			
-			double r2 = INTERNAL_RNG.nextDouble();
 			
 			Genotype gt1 = null, gt2 = null;
 
@@ -328,14 +344,57 @@ public class Population {
 					break;
 				}
 			}
-									
+			
+			
+			
+			// remove first individual and decrement total
+			subpopSizes.put(gt1, subpopSizes.get(gt1) - 1);	
+			total--;
+			
+			System.out.print("SubPopSizes: ");
+			for (Genotype gt : Genotype.getValues())
+			{
+				System.out.print(gt.name()+ ": " + subpopSizes.get(gt) + ", ");
+			}
+			System.out.println();
+
+
+			
+			double maxPref = 1;
+			for (Genotype gt : Genotype.getValues())
+			{
+				if (subpopSizes.get(gt) < 1) // if current genotype is empty
+				{
+//						maxPref -= preferences.get(gt1).get(gt);
+						maxPref -= sp.getSexualSelectionRate(gt1, gt);
+						preferences.get(gt1).put(gt, 0.0);
+				}
+			}
+			
+			System.out.print("Preferences of " + gt1.name() + ": ");
+			for (Genotype gt : Genotype.getValues())
+			{
+				System.out.print(gt.name() + " = " 
+						+ preferences.get(gt1).get(gt) + " : ");
+			}
+			System.out.println();
+
+			
+			System.out.println("MaxPref: " + maxPref);
+			double r2 = INTERNAL_RNG.nextDouble()*maxPref; // from 0 to cf 
+
+			
 			System.out.println();
 			System.out.println("r2 = " + r2);
 			if (isBiased) {
 				double sexualPref = 0.0;
 				for (Genotype gt : Genotype.getValues()) {
-					sexualPref += sp.getSexualSelectionRate(gt1, gt);
+					
+//					sexualPref += sp.getSexualSelectionRate(gt1, gt);
+					sexualPref += preferences.get(gt1).get(gt); // 0 if gt subpopSize is empty
+					
 					System.out.println("Cumulative Preference(" + gt1 + "->" + gt +"): " + sexualPref);
+					
 					if (r2 < sexualPref)
 					{	// pick this genotype for individual 2:
 						gt2 = gt;
@@ -354,6 +413,9 @@ public class Population {
 				}				
 			}
 
+			// remove second individual and decrement total
+			subpopSizes.put(gt2, subpopSizes.get(gt2) - 1);
+			total --;			
 			
 			// swap pair so that genotypes are ordered alphabetically:
 			if (!Utilities.isValidPairing(gt1, gt2)) {
@@ -364,13 +426,31 @@ public class Population {
 
 			System.out.println("Ordered Pair: (" + gt1 + ", " + gt2 + ")");
 			
+			
+			
 			// increment (gt1, gt2) mating pair + 1
 			results.get(gt1).put(gt2, results.get(gt1).get(gt2) + 1);
-	
-			// adjust subpop sizes
-			subpopSizes.put(gt1, subpopSizes.get(gt1) - 1);
-			subpopSizes.put(gt2, subpopSizes.get(gt2) - 1);
-			total -= 2;
+
+			
+			System.out.print("Pair Matrix:");
+			for (Genotype gtA : Genotype.getValues()) {
+				for (Genotype gtB : Genotype.getValues()) {
+					if (!Utilities.isValidPairing(gtA, gtB)) {continue;}					
+					System.out.print(gtA.name() + "-" +  gtB.name() + ":");
+					System.out.print(results.get(gtA).get(gtB));
+					System.out.print(":");
+				}
+			}
+			System.out.println();
+								
+			System.out.print("SubPopSizes: ");
+			for (Genotype gt : Genotype.getValues())
+			{
+				System.out.print(gt.name()+ ": " + subpopSizes.get(gt) + ", ");
+			}
+			System.out.println();
+
+			
 		}
 		
 		// in the case that one individual is left alone, mate with self:
@@ -383,7 +463,21 @@ public class Population {
 				}
 			}
 
+			// we are adding an extra individual to the population
+			// by doing this - how to resolve?
 			results.get(gt).put(gt, results.get(gt).get(gt) + 1);
+			
+			System.out.print("Pair Matrix:");
+			for (Genotype gtA : Genotype.getValues()) {
+				for (Genotype gtB : Genotype.getValues()) {
+					if (!Utilities.isValidPairing(gtA, gtB)) {continue;}					
+					System.out.print(gtA.name() + "-" +  gtB.name() + ":");
+					System.out.print(results.get(gtA).get(gtB));
+					System.out.print(":");
+				}
+			}
+			System.out.println();
+			
 		}
 		
 		return results;

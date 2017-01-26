@@ -475,7 +475,7 @@ public class GUI extends EvoPane {
 		parms.setSelectChecked(selectCheck.isSelected());
 		parms.setMutationChecked(mutationCheck.isSelected());
 		parms.setMigrationChecked(migrationCheck.isSelected());
-		//parms.setSexSelectChecked(sexualSelectCheck.isSelected());
+		parms.setSexSelectChecked(sexualSelectCheck.isSelected());
 
 		submitTitle();
 		
