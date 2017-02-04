@@ -431,17 +431,7 @@ public class Population {
 			// increment (gt1, gt2) mating pair + 1
 			results.get(gt1).put(gt2, results.get(gt1).get(gt2) + 1);
 
-			
-			System.out.print("Pair Matrix:");
-			for (Genotype gtA : Genotype.getValues()) {
-				for (Genotype gtB : Genotype.getValues()) {
-					if (!Utilities.isValidPairing(gtA, gtB)) {continue;}					
-					System.out.print(gtA.name() + "-" +  gtB.name() + ":");
-					System.out.print(results.get(gtA).get(gtB));
-					System.out.print(":");
-				}
-			}
-			System.out.println();
+			printPairMatrix(results);
 								
 			System.out.print("SubPopSizes: ");
 			for (Genotype gt : Genotype.getValues())
@@ -467,20 +457,35 @@ public class Population {
 			// by doing this - how to resolve?
 			results.get(gt).put(gt, results.get(gt).get(gt) + 1);
 			
-			System.out.print("Pair Matrix:");
-			for (Genotype gtA : Genotype.getValues()) {
-				for (Genotype gtB : Genotype.getValues()) {
-					if (!Utilities.isValidPairing(gtA, gtB)) {continue;}					
-					System.out.print(gtA.name() + "-" +  gtB.name() + ":");
-					System.out.print(results.get(gtA).get(gtB));
-					System.out.print(":");
-				}
-			}
-			System.out.println();
+			printPairMatrix(results);
 			
 		}
 		
 		return results;
+	}
+	
+	private void printPairMatrix(HashMap<Genotype, HashMap<Genotype, Integer>> results)
+	{
+		System.out.println("Pair Matrix:");
+		System.out.print("      ");
+		for (Genotype gtB : Genotype.getValues())
+		{
+			System.out.print(gtB.name() + "   ");
+		}
+		System.out.println();
+		
+		for (Genotype gtA : Genotype.getValues()) {
+			System.out.print(gtA.name() + " ");
+			for (Genotype gtB : Genotype.getValues()) {
+				if (!Utilities.isValidPairing(gtA, gtB)) {continue;}					
+//				System.out.print(gtA.name() + "-" +  gtB.name() + ":");
+				String str = "" + results.get(gtA).get(gtB);
+				System.out.print(String.format("%1$"+5+"s", str));
+//				System.out.print(":");
+			}
+			System.out.println();
+		}
+		System.out.println();		
 	}
 	
 	private void generateOffspring(GenerationRecord current, HashMap<Genotype, HashMap<Genotype, Integer>> pairings) {
