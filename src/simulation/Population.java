@@ -132,15 +132,16 @@ public class Population {
 	public void simulateGeneration() {
 		GenerationRecord newGeneration = new GenerationRecord(populationID, generationHistory.size());
 		reproduce(getLastGeneration(), newGeneration);
-		if (DataManager.getInstance().getSessionParams().isMutationChecked()) 
+		if (DataManager.getInstance().getSessionParams().isMutationChecked()) {
 			mutate(newGeneration);
-			survive(newGeneration);
+		}
+		survive(newGeneration);
 		generationHistory.add(newGeneration);
 	}
 
 
 	/**
-	 * Only run if use sets population size as constant. Scales a population
+	 * Only run if the use sets population size as constant. Scales a population
 	 * keeping its genotype frequencies constant so that its total population
 	 * size is equal to popSize.
 	 *
@@ -168,12 +169,15 @@ public class Population {
 
 	private void reproduce(GenerationRecord previous, GenerationRecord current) {
 		///*DEBUG*/long start = System.currentTimeMillis();
-		
-		HashMap<Genotype, HashMap<Genotype, Integer>> pairings = mateIterativeIntegers(previous);
-//		HashMap<Genotype, HashMap<Genotype, Integer>> pairings = mateIterativeBiased(previous);
-		
-		
-		
+		SessionParameters sp = DataManager.getInstance().getSessionParams();
+		boolean isBiased = sp.isSexSelectChecked();
+		HashMap<Genotype, HashMap<Genotype, Integer>> pairings = new HashMap<Genotype, HashMap<Genotype, Integer>> ();
+		if(!isBiased) {
+			pairings = mateIterativeIntegers(previous);
+		}
+		else {
+			pairings = mateIterativeBiased(previous);
+		}
 		///*DEBUG*/System.out.println(System.currentTimeMillis() - start);
 		generateOffspring(current, pairings);
 	}
@@ -281,13 +285,89 @@ public class Population {
 	
 	private HashMap<Genotype, HashMap<Genotype, Integer>> mateIterativeIntegers(GenerationRecord previous) {
 		HashMap<Genotype, HashMap<Genotype, Integer>> results = new HashMap<Genotype, HashMap<Genotype, Integer>>();
+		for (Genotype gt1 : Genotype.getValues()) {
+			results.put(gt1, new HashMap<Genotype, Integer>());
+			for (Genotype gt2 : Genotype.getValues()) {
+				if (!Utilities.isValidPairing(gt1, gt2)) continue;
+				results.get(gt1).put(gt2, 0);
+			}
+		}
+		
+		HashMap<Genotype, Integer> subpopSizes = new HashMap<Genotype, Integer>();
+		for (Genotype gt : Genotype.getValues()) {
+			subpopSizes.put(gt, previous.getGenotypeSubpopulationSize(gt));
+		}
+		
+		int total = previous.getPopulationSize();
+		HashMap<Genotype, Double> probabilities = new HashMap<Genotype, Double>();
+
+	
+		while (total > 1) {
+			double accumulator = 0.0;
+
+			for (Genotype gt : Genotype.getValues()) {
+				accumulator += (double)subpopSizes.get(gt) / (double)total;
+				probabilities.put(gt, accumulator);
+			}
+			
+			double r1 = INTERNAL_RNG.nextDouble();
+			double r2 = INTERNAL_RNG.nextDouble();
+			Genotype gt1 = null;
+			Genotype gt2 = null;
+			
+			for (Genotype gt : Genotype.getValues()) {
+				if (r1 < probabilities.get(gt)) {
+					gt1 = gt;
+					break;
+				}
+			}
+			
+			for (Genotype gt : Genotype.getValues()) {	
+				if (r2 < probabilities.get(gt)) {
+					gt2 = gt;
+					break;
+				}
+			}
+
+			if (!Utilities.isValidPairing(gt1, gt2)) {
+				Genotype temp = gt1;
+				gt1 = gt2;
+				gt2 = temp;
+			}
+			
+			results.get(gt1).put(gt2, results.get(gt1).get(gt2) + 1);
+	
+			subpopSizes.put(gt1, subpopSizes.get(gt1) - 1);
+			subpopSizes.put(gt2, subpopSizes.get(gt2) - 1);
+			total -= 2;
+		}
+		
+		if (total == 1) {
+			Genotype gt = null;
+			for (Genotype g : Genotype.getValues()) {
+				if (subpopSizes.get(g) != 0) {
+					gt = g;
+					break;
+				}
+			}
+
+			results.get(gt).put(gt, results.get(gt).get(gt) + 1);
+		}
+		
+		return results;
+	}
+	
+	
+	// PROBLEMATIC
+	private HashMap<Genotype, HashMap<Genotype, Integer>> mateIterativeBiased(GenerationRecord previous) {
+		HashMap<Genotype, HashMap<Genotype, Integer>> results = new HashMap<Genotype, HashMap<Genotype, Integer>>();
 		
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
-		boolean isBiased = sp.isSexSelectChecked();
 
-		// Preferenes for sexual selection
+		// Preferences for sexual selection
 		HashMap<Genotype, HashMap<Genotype, Double>> preferences = new HashMap<Genotype, HashMap<Genotype, Double>>();
-		
+	
+
 		// create new hashmaps for each valid pairing in results:
 		for (Genotype gt1 : Genotype.getValues()) {
 			
@@ -295,13 +375,12 @@ public class Population {
 			preferences.put(gt1, new HashMap<Genotype, Double>());
 			
 			for (Genotype gt2 : Genotype.getValues()) {
-				preferences.get(gt1).put(gt2, sp.getSexualSelectionRate(gt1, gt2));
-
+				preferences.get(gt1).put(gt2, sp.getSexualSelectionRate(gt1, gt2));					
 				if (!Utilities.isValidPairing(gt1, gt2)) continue;
-				results.get(gt1).put(gt2, 0);
+				results.get(gt1).put(gt2, 0);	
 			}
 		}
-		
+
 		// store current sub population sizes in a separate hashmap:
 		HashMap<Genotype, Integer> subpopSizes = new HashMap<Genotype, Integer>();
 		for (Genotype gt : Genotype.getValues()) {
@@ -323,30 +402,31 @@ public class Population {
 		
 		// loop until there are no pairs left
 		while (total > 1) {
-			System.out.println("---------------------------------------------------");
 			double accumulator = 0.0; // total frequency (not necessarily = 1)
 
 			// update probabilities and increment accumulator:
 			for (Genotype gt : Genotype.getValues()) {
-				accumulator += (double)subpopSizes.get(gt) / (double)total;
-				probabilities.put(gt, accumulator);
+				double subprob = (double)subpopSizes.get(gt) / (double)total;
+				accumulator += subprob;
+				probabilities.put(gt, subprob);
+				System.out.println("prob of " + gt.toString() +": "+ subprob);
 			}
-			
-			double r1 = INTERNAL_RNG.nextDouble();			
+			System.out.println(accumulator);
 			
 			Genotype gt1 = null, gt2 = null;
+			double r1 = INTERNAL_RNG.nextDouble();			
 
-			System.out.println("r1 = " + r1);
-			for (Genotype gt : Genotype.getValues()) {
-				if (r1 < probabilities.get(gt)) {
-					gt1 = gt;
-					System.out.println("Individual 1: " + gt1.toString());
-					break;
+			while (gt1 == null) {
+				r1 = INTERNAL_RNG.nextDouble();
+				System.out.println("r1 = " + r1);
+				for (Genotype gt : Genotype.getValues()) {
+					if (r1 < probabilities.get(gt)) {
+						gt1 = gt;
+						System.out.println("Individual 1: " + gt1.toString());
+						break;
+					}
 				}
 			}
-			
-			
-			
 			// remove first individual and decrement total
 			subpopSizes.put(gt1, subpopSizes.get(gt1) - 1);	
 			total--;
@@ -386,32 +466,24 @@ public class Population {
 			
 			System.out.println();
 			System.out.println("r2 = " + r2);
-			if (isBiased) {
-				double sexualPref = 0.0;
-				for (Genotype gt : Genotype.getValues()) {
+			double sexualPref = 0.0;
+			while(gt2 == null) {
+				r2 = INTERNAL_RNG.nextDouble()*maxPref;
+			for (Genotype gt : Genotype.getValues()) {
 					
-//					sexualPref += sp.getSexualSelectionRate(gt1, gt);
-					sexualPref += preferences.get(gt1).get(gt); // 0 if gt subpopSize is empty
+//				sexualPref += sp.getSexualSelectionRate(gt1, gt);
+				sexualPref = preferences.get(gt1).get(gt); // 0 if gt subpopSize is empty
 					
-					System.out.println("Cumulative Preference(" + gt1 + "->" + gt +"): " + sexualPref);
-					
-					if (r2 < sexualPref)
-					{	// pick this genotype for individual 2:
-						gt2 = gt;
-						System.out.println("Individual 2: " + gt2.toString());
-						break;
-					}
+				System.out.println("Cumulative Preference(" + gt1 + "->" + gt +"): " + sexualPref);
+				if (r2 < sexualPref)
+				{	// pick this genotype for individual 2:
+					gt2 = gt;
+					System.out.println("Individual 2: " + gt2.toString());
+					break;
 				}
 			}
-			else {
-				for (Genotype gt : Genotype.getValues()) {	
-					if (r2 < probabilities.get(gt)) {
-						gt2 = gt;
-						System.out.println("Individual 2: " + gt2.toString());
-						break;
-					}
-				}				
 			}
+				
 
 			// remove second individual and decrement total
 			subpopSizes.put(gt2, subpopSizes.get(gt2) - 1);
@@ -430,8 +502,6 @@ public class Population {
 			
 			// increment (gt1, gt2) mating pair + 1
 			results.get(gt1).put(gt2, results.get(gt1).get(gt2) + 1);
-
-			printPairMatrix(results);
 								
 			System.out.print("SubPopSizes: ");
 			for (Genotype gt : Genotype.getValues())
@@ -439,7 +509,6 @@ public class Population {
 				System.out.print(gt.name()+ ": " + subpopSizes.get(gt) + ", ");
 			}
 			System.out.println();
-
 			
 		}
 		
@@ -456,9 +525,7 @@ public class Population {
 			// we are adding an extra individual to the population
 			// by doing this - how to resolve?
 			results.get(gt).put(gt, results.get(gt).get(gt) + 1);
-			
-			printPairMatrix(results);
-			
+						
 		}
 		
 		return results;
