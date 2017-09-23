@@ -19,7 +19,8 @@ public enum Genotype {
 	 */
 	private int pairingIndex;
 	private static Genotype[] twoAlleleArray = {AA, AB, BB};
-	
+	private static Genotype[] threeAlleleArray = {AA, AB, AC, BB, BC, CC};
+
 	
 	/**
 	 * Required to set pairing index value
@@ -115,13 +116,12 @@ public enum Genotype {
 				return null;
 			}
 		}
-			
 	}
 	
 	
 	public static Genotype[] getValues() {
 		if (DataManager.getInstance().getSessionParams().isThreeAlleles()) {
-			return values();
+			return threeAlleleArray;
 		}
 		else {
 			return twoAlleleArray;
