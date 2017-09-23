@@ -24,15 +24,15 @@ import shared.Genotype;
 import shared.SessionParameters;
 
 /**
- * 
+ *
  * @author jasonfortunato
  * @author linneasahlberg
- * 
+ *
  */
 public class SelectionPane extends EvoPane {
 	JLabel selectLabel;
 	ButtonGroup selectGroup;
-	JRadioButton selectRandS, 
+	JRadioButton selectRandS,
 		selectAbs;
 	JLabel AALabel, ABLabel, BBLabel,
 		ACLabel, BCLabel, CCLabel;
@@ -46,17 +46,17 @@ public class SelectionPane extends EvoPane {
 	JLabel relFitAA, relFitAB, relFitBB,
 		relFitAC, relFitBC, relFitCC;
 	JButton apply;
-	
+
 	double REPRO_DEFAULT = 5;
-	
+
 	ArrayList<Component> labelsList = new ArrayList<Component>();
 	ArrayList<Component> survList = new ArrayList<Component>();
 	ArrayList<Component> reproList = new ArrayList<Component>();
 	ArrayList<Component> absFitList = new ArrayList<Component>();
 	ArrayList<Component> relFitList = new ArrayList<Component>();
-	
+
 	JPanel table;
-	
+
 	public SelectionPane() {
 		super();
 		color1List.add(getParent());
@@ -67,12 +67,12 @@ public class SelectionPane extends EvoPane {
 		selectAbs = new JRadioButton("Absolute Fitness");
 		selectGroup.add(selectRandS);
 		selectGroup.add(selectAbs);
-		
+
 		c.gridwidth = 1;
 		c.gridx = 0; c.gridy = 1;
 		c.anchor = GridBagConstraints.WEST;
 		add(selectLabel, c);
-		
+
 		c.gridx = 1; c.gridy = 1;
 		c.gridwidth = 2;
 		add(selectRandS, c);
@@ -80,7 +80,7 @@ public class SelectionPane extends EvoPane {
 		c.gridwidth = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		add(selectAbs, c);
-		
+
 		AALabel = new JLabel("AA");
 		ABLabel = new JLabel("AB");
 		BBLabel = new JLabel("BB");
@@ -115,15 +115,15 @@ public class SelectionPane extends EvoPane {
 		relFitAC = new JLabel("___"); threeAllelesList.add(relFitAC);
 		relFitBC = new JLabel("___"); threeAllelesList.add(relFitBC);
 		relFitCC = new JLabel("___"); threeAllelesList.add(relFitCC);
-		
+
 		table = new JPanel();
 		table.setBackground(color1);
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 3, 15);
-		
+
 		addToLists();
-		
+
 		int i = 1;
 		int y = 0;
 		t.gridy = y;
@@ -131,7 +131,7 @@ public class SelectionPane extends EvoPane {
 			t.gridx = i; i++;
 			table.add(c, t);
 		}
-		
+
 		i = 0;
 		t.anchor = GridBagConstraints.WEST;
 		t.gridy++;
@@ -139,67 +139,67 @@ public class SelectionPane extends EvoPane {
 			t.gridx = i; i++;
 			table.add(c, t);
 		}
-		
+
 		i = 0;
 		t.gridy++;
 		for (Component c : reproList) {
 			t.gridx = i; i++;
 			table.add(c, t);
 		}
-		
+
 		i = 0;
 		t.gridy++;
 		for (Component c : absFitList) {
 			t.gridx = i; i++;
 			table.add(c, t);
 		}
-		
+
 		i = 0;
 		t.gridy++;
 		for (Component c : relFitList) {
 			t.gridx = i; i++;
 			table.add(c, t);
 		}
-		
+
 		c.insets = new Insets(0, 20, 0, 0);
 		c.gridx = 0; c.gridy = 2;
 		c.gridwidth = 7;
 		c.anchor = GridBagConstraints.WEST;
 		add(table, c);
-		
+
 		apply = new JButton("Apply");
 		c.gridx = 4; c.gridy = 1;
 		add(apply, c);
-		
+
 		// default is rAndS
 		modeRandS(true);
-		
-		// Set listeners for real-time disabling of fields		
+
+		// Set listeners for real-time disabling of fields
 		selectRandS.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeRandS(true);
 			}
 		});
-		
+
 		selectAbs.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeRandS(false);
 			}
 		});
-		
+
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				applyInfo();
 			}
 		});
-		
+
 	}
-	
+
 	public void applyInfo() {
 		SessionParameters parms = new shared.SessionParameters();
 		submit(parms);
 	}
-	
+
 	private void addToLists() {
 		labelsList.add(AALabel);
 		labelsList.add(ABLabel);
@@ -207,7 +207,7 @@ public class SelectionPane extends EvoPane {
 		labelsList.add(ACLabel);
 		labelsList.add(BCLabel);
 		labelsList.add(CCLabel);
-		
+
 		survList.add(survLabel);
 		survList.add(survAA);
 		survList.add(survAB);
@@ -215,7 +215,7 @@ public class SelectionPane extends EvoPane {
 		survList.add(survAC);
 		survList.add(survBC);
 		survList.add(survCC);
-		
+
 		reproList.add(reproLabel);
 		reproList.add(reproAA);
 		reproList.add(reproAB);
@@ -223,7 +223,7 @@ public class SelectionPane extends EvoPane {
 		reproList.add(reproAC);
 		reproList.add(reproBC);
 		reproList.add(reproCC);
-		
+
 		absFitList.add(absFitLabel);
 		absFitList.add(absFitAA);
 		absFitList.add(absFitAB);
@@ -231,7 +231,7 @@ public class SelectionPane extends EvoPane {
 		absFitList.add(absFitAC);
 		absFitList.add(absFitBC);
 		absFitList.add(absFitCC);
-		
+
 		relFitList.add(relFitLabel);
 		relFitList.add(relFitAA);
 		relFitList.add(relFitAB);
@@ -240,18 +240,18 @@ public class SelectionPane extends EvoPane {
 		relFitList.add(relFitBC);
 		relFitList.add(relFitCC);
 	}
-	
+
 	private void modeRandS(boolean b) {
 		for(Component comp : survList)
 			comp.setEnabled(b);
-		
+
 		for(Component comp : reproList)
 			comp.setEnabled(b);
-		
+
 		for(Component comp : absFitList)
-			comp.setEnabled(!b);	
+			comp.setEnabled(!b);
 	}
-	
+
 	@Override
 	public void setEnabled(boolean enable){
 		super.setEnabled(enable);
@@ -263,12 +263,12 @@ public class SelectionPane extends EvoPane {
 		}
 		else if (selectAbs.isSelected() && enable){
 			modeRandS(false);
-		}	
+		}
 		if (!enable) {
 			fillWithOnes();
 		}
 	}
-	
+
 	/**
 	 * @author jason
 	 * PRE: this pane is disabled in the GUI
@@ -280,26 +280,26 @@ public class SelectionPane extends EvoPane {
 		survAC.setText("1");
 		survBC.setText("1");
 		survCC.setText("1");
-		
+
 		reproAA.setText("1.02");
 		reproAB.setText("1.02");
 		reproBB.setText("1.02");
 		reproAC.setText("1.02");
 		reproBC.setText("1.02");
 		reproCC.setText("1.02");
-		
-		JLabel[] relFits = {relFitAA, relFitAB, relFitBB, 
-				relFitAC, relFitBC, relFitCC};
-		
 
-		
+		JLabel[] relFits = {relFitAA, relFitAB, relFitBB,
+				relFitAC, relFitBC, relFitCC};
+
+
+
 		selectRandS.setSelected(true);
 		applyInfo();
 		for(JLabel rf : relFits) {
 			rf.setText("1.000");
 		}
 	}
-	
+
 	/**
 	 * Dumps absolute and relative fitnesses into session parameters.
 	 * If Reproductioin and Survival radiobutton is checked, it also dumps Repro and Surv rates
@@ -307,11 +307,11 @@ public class SelectionPane extends EvoPane {
 	 */
 	public void submit(shared.SessionParameters p){
 
-		double afAA = 0; double afAB = 0; double afBB = 0; 
+		double afAA = 0; double afAB = 0; double afBB = 0;
 		double afAC = 0; double afBC = 0; double afCC = 0;
 
 		double rfAA, rfAB, rfBB, rfAC, rfBC, rfCC;
-		
+
 		// if repro and surv is selected
 		if(selectRandS.isSelected()) {
 			submitRandS(p);
@@ -330,29 +330,35 @@ public class SelectionPane extends EvoPane {
 			afAA = Double.parseDouble(absFitAA.getText());
 			afAB = Double.parseDouble(absFitAB.getText());
 			afBB = Double.parseDouble(absFitBB.getText());
-			
+
 			reproAA.setText(Double.toString(REPRO_DEFAULT));
 			reproAB.setText(Double.toString(REPRO_DEFAULT));
 			reproBB.setText(Double.toString(REPRO_DEFAULT));
-			
+
 			if(threeAlleles) {
 				reproAC.setText(Double.toString(REPRO_DEFAULT));
 				reproBC.setText(Double.toString(REPRO_DEFAULT));
 				reproCC.setText(Double.toString(REPRO_DEFAULT));
-				
+
 				afAC = Double.parseDouble(absFitAC.getText());
 				afBC = Double.parseDouble(absFitBC.getText());
 				afCC = Double.parseDouble(absFitCC.getText());
 			}
-			
+
 			calcSurvRates(afAA, afAB, afBB, afAC, afBC, afCC);
 			submitRandS(p);
 		}
 
 		p.setAbsoluteFitness(Genotype.AA, afAA);
-		p.setAbsoluteFitness(Genotype.AA, afAB);
-		p.setAbsoluteFitness(Genotype.AA, afBB);
-		
+		p.setAbsoluteFitness(Genotype.AB, afAB);
+		p.setAbsoluteFitness(Genotype.BB, afBB);
+
+    if(threeAlleles) {
+      p.setAbsoluteFitness(Genotype.AC, afAC);
+      p.setAbsoluteFitness(Genotype.BC, afBC);
+      p.setAbsoluteFitness(Genotype.CC, afCC);
+    }
+
 		// get the highest absolute fitness
 		double afMax = 0;
 
@@ -361,16 +367,16 @@ public class SelectionPane extends EvoPane {
 		for(double af : afArray) {
 			afMax = Math.max(afMax, af);
 		}
-		
-		
+
+
 		rfAA = afAA / afMax;
 		rfAB = afAB / afMax;
 		rfBB = afBB / afMax;
-		
+
 		p.setRelativeFitness(Genotype.AA, rfAA);
 		p.setRelativeFitness(Genotype.AB, rfAB);
 		p.setRelativeFitness(Genotype.BB, rfBB);
-		
+
 		relFitAA.setText(String.format("%.4f", rfAA));
 		relFitAB.setText(String.format("%.4f", rfAB));
 		relFitBB.setText(String.format("%.4f", rfBB));
@@ -382,13 +388,13 @@ public class SelectionPane extends EvoPane {
 			p.setRelativeFitness(Genotype.AC, rfAC);
 			p.setRelativeFitness(Genotype.BC, rfBC);
 			p.setRelativeFitness(Genotype.CC, rfCC);
-			
+
 			relFitAC.setText(String.format("%.4f", rfAC));
 			relFitBC.setText(String.format("%.4f", rfBC));
 			relFitCC.setText(String.format("%.4f", rfCC));
 		}
 	}
-	
+
 	private void submitRandS(SessionParameters p) {
 		double AArr = Double.parseDouble(reproAA.getText());
 		double ABrr = Double.parseDouble(reproAB.getText());
@@ -403,7 +409,7 @@ public class SelectionPane extends EvoPane {
 		double ACsr = 0;
 		double BCsr = 0;
 		double CCsr = 0;
-		
+
 		if(threeAlleles) {
 			ACrr = Double.parseDouble(reproAC.getText());
 			BCrr = Double.parseDouble(reproBC.getText());
@@ -413,7 +419,7 @@ public class SelectionPane extends EvoPane {
 			BCsr = Double.parseDouble(survBC.getText());
 			CCsr = Double.parseDouble(survCC.getText());
 		}
-		
+
 		p.setReproductionRate(Genotype.AA, AArr);
 		p.setReproductionRate(Genotype.AB, ABrr);
 		p.setReproductionRate(Genotype.BB, BBrr);
@@ -437,23 +443,23 @@ public class SelectionPane extends EvoPane {
 		double ACrr = 0;
 		double BCrr = 0;
 		double CCrr = 0;
-		
+
 		double AAsr = Double.parseDouble(survAA.getText());
 		double ABsr = Double.parseDouble(survAB.getText());
 		double BBsr = Double.parseDouble(survBB.getText());
 		double ACsr = 0;
 		double BCsr = 0;
 		double CCsr = 0;
-			
+
 		if(threeAlleles) {
 			ACrr = Double.parseDouble(reproAC.getText());
 			BCrr = Double.parseDouble(reproBC.getText());
 			CCrr = Double.parseDouble(reproCC.getText());
-	
+
 			ACsr = Double.parseDouble(survAC.getText());
 			BCsr = Double.parseDouble(survBC.getText());
 			CCsr = Double.parseDouble(survCC.getText());
-		}	
+		}
 		// Calculate absolute fitness of each genotype
 		double afAA = AArr * AAsr;
 		double afAB = ABrr * ABsr;
@@ -461,7 +467,7 @@ public class SelectionPane extends EvoPane {
 		double afAC = ACrr * ACsr;
 		double afBC = BCrr * BCsr;
 		double afCC = CCrr * CCsr;
-	
+
 		absFitAA.setText(String.format("%.3f", afAA));
 		absFitAB.setText(String.format("%.3f", afAB));
 		absFitBB.setText(String.format("%.3f", afBB));
@@ -471,18 +477,18 @@ public class SelectionPane extends EvoPane {
 			absFitCC.setText(String.format("%.3f", afCC));
 		}
 	}
-	
+
 	private void calcSurvRates(double aa, double ab, double bb, double ac, double bc, double cc) {
-		
+
 		survAA.setText(String.format("%.4f", aa/REPRO_DEFAULT));
 		survAB.setText(String.format("%.4f", ab/REPRO_DEFAULT));
 		survBB.setText(String.format("%.4f", bb/REPRO_DEFAULT));
-		
+
 		if(threeAlleles){
 			survAC.setText(String.format("%.4f", ac/REPRO_DEFAULT));
 			survBC.setText(String.format("%.4f", bc/REPRO_DEFAULT));
-			survCC.setText(String.format("%.4f", cc/REPRO_DEFAULT));		
+			survCC.setText(String.format("%.4f", cc/REPRO_DEFAULT));
 		}
 	}
-	
+
 }
