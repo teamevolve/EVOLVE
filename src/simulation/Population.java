@@ -61,8 +61,8 @@ public class Population {
 	 * @return GenerationRecord object representing initial generation
 	 */
 	private GenerationRecord getInitialGeneration() {
+		
 		GenerationRecord gr = new GenerationRecord(populationID, 0);
-
 		for (Genotype gt : Genotype.getValues()) {
 			gr.setGenotypeSubpopulationSize(gt, (int)(DataManager.getInstance().getSessionParams().getPopSize() * DataManager.getInstance().getSessionParams().getGenotypeFrequency(gt)));
 			gr.setImmigrationCount(gt, 0);
@@ -374,8 +374,19 @@ public class Population {
 			results.put(gt1, new HashMap<Genotype, Integer>());
 			preferences.put(gt1, new HashMap<Genotype, Double>());
 			
+			// calculate relative preferences
+			double totalpref = 0.0;
 			for (Genotype gt2 : Genotype.getValues()) {
-				preferences.get(gt1).put(gt2, sp.getSexualSelectionRate(gt1, gt2));					
+				totalpref += sp.getSexualSelectionRate(gt1, gt2);					
+			}
+
+			for (Genotype gt2 : Genotype.getValues()) {
+				if (totalpref == 0) {
+					preferences.get(gt1).put(gt2, 1.0/3.0);					
+				}
+				else {
+					preferences.get(gt1).put(gt2, sp.getSexualSelectionRate(gt1, gt2)/totalpref);
+				}
 				if (!Utilities.isValidPairing(gt1, gt2)) continue;
 				results.get(gt1).put(gt2, 0);	
 			}
@@ -406,10 +417,9 @@ public class Population {
 
 			// update probabilities and increment accumulator:
 			for (Genotype gt : Genotype.getValues()) {
-				double subprob = (double)subpopSizes.get(gt) / (double)total;
-				accumulator += subprob;
-				probabilities.put(gt, subprob);
-				System.out.println("prob of " + gt.toString() +": "+ subprob);
+				accumulator += (double)subpopSizes.get(gt) / (double)total;
+				probabilities.put(gt, accumulator);
+				System.out.println("prob of " + gt.toString() +": "+ accumulator);
 			}
 			System.out.println(accumulator);
 			
