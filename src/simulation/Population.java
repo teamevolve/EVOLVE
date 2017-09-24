@@ -61,6 +61,7 @@ public class Population {
 	 * @return GenerationRecord object representing initial generation
 	 */
 	private GenerationRecord getInitialGeneration() {
+		
 		GenerationRecord gr = new GenerationRecord(populationID, 0);
 		for (Genotype gt : Genotype.getValues()) {
 			gr.setGenotypeSubpopulationSize(gt, (int)(DataManager.getInstance().getSessionParams().getPopSize() * DataManager.getInstance().getSessionParams().getGenotypeFrequency(gt)));
