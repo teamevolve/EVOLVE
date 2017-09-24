@@ -11,6 +11,8 @@ package shared;
  * @author ericscollins
  */
 public enum Genotype {
+	// List all possible genotype with three alleles and the values assigned to them are used to 
+	// order their paired conditions.
 	AA(0), AB(1), AC(2), BB(3), BC(4), CC(5);
 	
 	
@@ -19,7 +21,8 @@ public enum Genotype {
 	 */
 	private int pairingIndex;
 	private static Genotype[] twoAlleleArray = {AA, AB, BB};
-	
+	private static Genotype[] threeAlleleArray = {AA, AB, AC, BB, BC, CC};
+
 	
 	/**
 	 * Required to set pairing index value
@@ -115,13 +118,12 @@ public enum Genotype {
 				return null;
 			}
 		}
-			
 	}
 	
 	
 	public static Genotype[] getValues() {
 		if (DataManager.getInstance().getSessionParams().isThreeAlleles()) {
-			return values();
+			return threeAlleleArray;
 		}
 		else {
 			return twoAlleleArray;
