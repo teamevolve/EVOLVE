@@ -255,6 +255,9 @@ public class SelectionPane extends EvoPane {
 	@Override
 	public void setEnabled(boolean enable){
 		super.setEnabled(enable);
+		if (!enable) {
+			fillWithOnes();
+		}
 		for(Component comp : table.getComponents()){
 			comp.setEnabled(enable);
 		}
@@ -263,9 +266,6 @@ public class SelectionPane extends EvoPane {
 		}
 		else if (selectAbs.isSelected() && enable){
 			modeRandS(false);
-		}
-		if (!enable) {
-			fillWithOnes();
 		}
 	}
 
