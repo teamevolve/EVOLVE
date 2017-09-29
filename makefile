@@ -23,7 +23,7 @@ $(jar): build/recipts/src $(lib_rcts)
 	@jar cfe $(jar) $(entrypoint) -C build/classes .
 
 run: build/recipts/src
-	@java -cp build/classes:$(lib_cp) $(entrypoint)
+	@java -cp build/classes:$(lib_cp) $(entrypoint) $(args)
 
 build/recipts/src: $(src_files)
 	@mkdir -p $(@D)

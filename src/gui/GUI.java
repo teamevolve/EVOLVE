@@ -26,7 +26,9 @@ import shared.EvolveDirector;
 public class GUI extends EvoPane {
 
 	private static final long serialVersionUID = 1L;
-
+	public static boolean DEBUG_MATE = false;
+	public static boolean DEBUG_REPRO = false;
+	public static boolean DEBUG_SELECTION = false;
 	boolean firstRun = true;
 	
 	// we'll put args here
@@ -544,6 +546,35 @@ public class GUI extends EvoPane {
 	}
 	
 	public static void main(String[] args) {
-		createAndShowGUI();
+		  try {
+		        String one = args[0];
+		        switch (one.toLowerCase()) {
+		        		case "mate":
+			        		DEBUG_MATE = true;
+			        		break;
+		        		case "reproduce":
+			        		DEBUG_REPRO = true;
+			        		break;
+		        		case "selection":
+		        			DEBUG_SELECTION = true;
+		        			break;
+		        		case "all":
+		        			DEBUG_MATE = true;
+		        			DEBUG_REPRO = true;
+		        			DEBUG_SELECTION = true;
+		        			break;
+		        		default:
+		        			break;
+		        }     
+//		        if("mate".equals(one)) {
+//		        		DEBUG_MATE = true;
+//		        }        
+		    }
+		    catch (ArrayIndexOutOfBoundsException e){
+		        //System.out.println("ArrayIndexOutOfBoundsException caught");		    
+		    	}
+		    finally {
+				createAndShowGUI();
+		    }
 	}
 }
