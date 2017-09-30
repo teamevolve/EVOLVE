@@ -1,5 +1,5 @@
 version ?= 1.0.0
-jar := build/evolve-$(version).jar
+jar := runnables/evolve-$(version).jar
 entrypoint ?= gui.GUI
 
 src_files := $(shell find src -type f -name '*.java')
@@ -20,6 +20,7 @@ run-jar: $(jar)
 jar: $(jar)
 
 $(jar): build/recipts/src $(lib_rcts)
+	@mkdir -p $(@D)
 	@jar cfe $(jar) $(entrypoint) -C build/classes .
 
 run: build/recipts/src
