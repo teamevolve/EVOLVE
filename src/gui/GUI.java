@@ -172,7 +172,7 @@ public class GUI extends EvoPane {
 		add(discussionPane, c);
 
 		/* help stuff *****************************************************************************/
-		help = new JButton("Info");
+		help = new JButton("Help");
 		c.gridx = 4; c.gridy = 3;
 		c.anchor = GridBagConstraints.CENTER;
 		add(help, c);
@@ -227,7 +227,7 @@ public class GUI extends EvoPane {
 		/* EVOLUTIONARY FORCES ***************************************************************/
 		JLabel evoForces = new JLabel("<html><b>Active Evolutionary Forces:");
 
-		popSizeCheck = new JCheckBox("<html><b>Drift</b> (Population Size)", true);
+		popSizeCheck = new JCheckBox("<html><b>Genetic Drift", true);
 		popSizeCheck.setEnabled(false);
 
 		popSizeCheck.addActionListener(new ActionListener() {
@@ -251,14 +251,14 @@ public class GUI extends EvoPane {
 		});
 
 
-		migrationCheck = new JCheckBox("<html><b>Migration </b>(Gene Flow)", true);
+		migrationCheck = new JCheckBox("<html><b>Migration", true);
 		migrationCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mip.setEnabled(migrationCheck.isSelected());
 			}
 		});
 
-		sexualSelectCheck = new JCheckBox("<html><b>Non-Random Mating", true);
+		sexualSelectCheck = new JCheckBox("<html><b>Sexual Selection", true);
 		sexualSelectCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ssp.setEnabled(sexualSelectCheck.isSelected());
