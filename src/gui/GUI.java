@@ -554,10 +554,10 @@ public class GUI extends EvoPane {
 		        		case "mate":
 			        		DEBUG_MATE = true;
 			        		break;
-		        		case "reproduce":
+		        		case "repro":
 			        		DEBUG_REPRO = true;
 			        		break;
-		        		case "selection":
+		        		case "sele":
 		        			DEBUG_SELECTION = true;
 		        			break;
 		        		case "all":
