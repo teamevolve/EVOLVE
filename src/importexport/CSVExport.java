@@ -65,6 +65,9 @@ public class CSVExport {
 
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		printLabInfo();
+		if (popList.size() < 2) {
+			sp.setMigrationChecked(false);
+		}
 		for (Population p : popList) {
 			printHeader(p);
 			ArrayList<GenerationRecord> genHistory = p.getGenerationHistory();
@@ -269,13 +272,13 @@ public class CSVExport {
 		System.out.print("Total Births,");
 
 		if (sp.isMutationChecked()) {
-
 			for (Genotype gt1 : Genotype.getValues()) {
 				for (Genotype gt2 : Genotype.getValues()) {
+					if (gt1 == gt2)
+						continue;
 					System.out.printf(" #Mutations %s->%s,", gt1.toString(), gt2.toString());
 				}
 			}
-
 			System.out.print("Total Mutations,");
 		}
 
@@ -338,7 +341,23 @@ public class CSVExport {
 				System.out.println();
 			}
 		}
-
+		System.out.println();
+		if (sp.isMigrationChecked()) {
+			for (Genotype gt : Genotype.getValues()) {
+				System.out.printf("Migration Rate %s:, %f,,", gt.toString(), sp.getMigrationRate(gt));
+			}
+			System.out.println();
+		}
+		System.out.println();
+		if (sp.isSexSelectChecked()) {
+			for (Genotype gt1 : Genotype.getValues()) {
+				System.out.printf("%s Sexual Selection Preference for :, ", gt1.toString());
+				for (Genotype gt2: Genotype.getValues()) {
+					System.out.printf("%s : %f,", gt2.toString(), sp.getSexualSelectionRate(gt1, gt2));
+				}
+				System.out.println();
+			}
+		}
 		System.out.println("\n");
 
 	}

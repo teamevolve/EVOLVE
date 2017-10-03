@@ -91,7 +91,7 @@ public class PopulationManager {
 			p.simulateGeneration();	
 		}
 
-		if (sp.isMigrationChecked())
+		if (sp.isMigrationChecked() && populationList.size() > 1)
 			processMigrations();
 
 		if (sp.isPopConst()) {
