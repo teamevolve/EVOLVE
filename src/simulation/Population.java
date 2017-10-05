@@ -146,6 +146,11 @@ public class Population {
 			mutate(newGeneration); //mutate
 		}
 		survive(newGeneration); //natural selection
+		if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_SELECTION) && populationID == 0){
+			System.out.println();
+			System.out.println();
+			System.out.println();
+		}
 		generationHistory.add(newGeneration);
 	}
 

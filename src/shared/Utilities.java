@@ -85,9 +85,11 @@ public class Utilities {
 	 * 
 	 */
 	public static File generateSaveDialog(Component parent, String... filters){
+		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		JFileChooser chooser = new JFileChooser();
 		chooser.setMultiSelectionEnabled(false);
 		chooser.setFileFilter(new FileNameExtensionFilter("", filters));
+		chooser.setSelectedFile(new File(String.format("%s.csv", sp.getTitle())));
 		if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
 			return chooser.getSelectedFile();
 		}
