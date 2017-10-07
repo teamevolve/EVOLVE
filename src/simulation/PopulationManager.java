@@ -11,6 +11,8 @@ import shared.Genotype;
 import shared.SessionParameters;
 import shared.Utilities;
 
+import static gui.GUI.DEBUG_MIGRATION;
+
 /**
  * PopulationManager is controlled mostly by SimulationEngine, and delegates
  * work to Population objects. Additionally, it logistically manages
@@ -88,18 +90,21 @@ public class PopulationManager {
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		
 		for (Population p : populationList) {
-			p.simulateGeneration();	
+			p.simulateMatingRepro();	
 		}
 
 		if (sp.isMigrationChecked() && populationList.size() > 1)
 			processMigrations();
 
-		if (sp.isPopConst()) {
-			int popSize = sp.getPopSize();
-			for (Population p : populationList) {
-				p.scale(popSize);
-			}
+		for (Population p : populationList) {
+			p.simulateSurviveMutation();	
 		}
+//		if (sp.isPopConst()) {
+//			int popSize = sp.getPopSize();
+//			for (Population p : populationList) {
+//				p.scale(popSize);
+//			}
+//		}
 	}
 
 	
@@ -110,6 +115,9 @@ public class PopulationManager {
 	 * evenly as possible among all other populations.
 	 */
 	public void processMigrations() {
+		if (DEBUG_MIGRATION) {
+			System.out.println("migration debugging!");
+		}
 		// Used to determine how individuals are redistributed, as individuals
 		// may not immigrate to the population they emigrated from
 		final double distributeTo = populationList.size() - 1;

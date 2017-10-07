@@ -17,7 +17,9 @@ import shared.Utilities;
 
 import static gui.GUI.DEBUG_MATE;
 import static gui.GUI.DEBUG_REPRO;
-import static gui.GUI.DEBUG_SELECTION;
+import static gui.GUI.DEBUG_MIGRATION;
+import static gui.GUI.DEBUG_SURVIVAL;
+import static gui.GUI.DEBUG_MUTATION;
 
 
 /**
@@ -136,21 +138,39 @@ public class Population {
 	/**
 	 * Simulates birth and death over a generation of a population
 	 */
-	public void simulateGeneration() {
+	public void simulateMatingRepro() {
 		GenerationRecord newGeneration = new GenerationRecord(populationID, generationHistory.size());
-		if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_SELECTION) && populationID == 0){
+		if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION) && populationID == 0){
 			System.out.println("GENERATION: "+ generationHistory.size() + " Population No." + populationID);
 		}
 		reproduce(getLastGeneration(), newGeneration); // mating and reproduce
+		
+//		survive(newGeneration); //natural selection
+//		if (DataManager.getInstance().getSessionParams().isMutationChecked()) {
+//			mutate(newGeneration); //mutate
+//		}
+//		if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION) && populationID == 0){
+//			System.out.println();
+//			System.out.println();
+//			System.out.println();
+//		}
+//		
+		//return newGeneration;
+		generationHistory.add(newGeneration);
+	}
+	
+	public void simulateSurviveMutation() {
+		GenerationRecord newGeneration = generationHistory.get(generationHistory.size() - 1);
+		survive(newGeneration); //natural selection
 		if (DataManager.getInstance().getSessionParams().isMutationChecked()) {
 			mutate(newGeneration); //mutate
 		}
-		survive(newGeneration); //natural selection
-		if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_SELECTION) && populationID == 0){
+		if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION) && populationID == 0){
 			System.out.println();
 			System.out.println();
 			System.out.println();
 		}
+		generationHistory.remove(generationHistory.size() - 1);
 		generationHistory.add(newGeneration);
 	}
 
@@ -643,7 +663,7 @@ public class Population {
 		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 	
-	private void printGenoInfo(HashMap<Genotype, Integer>  subpopSizes, HashMap<Genotype, Double> probabilities, HashMap<Genotype, Double> subProb) {
+	private void printGenoInfo(HashMap<Genotype, Integer> subpopSizes, HashMap<Genotype, Double> probabilities, HashMap<Genotype, Double> subProb) {
 		String genoNum =   "|Number         ";
 		String genoRatio = "|Prob. Interval ";
 		String genotypes = "|               ";
@@ -708,24 +728,43 @@ public class Population {
 				if (pairings.get(gt1).get(gt2) == 0) continue;
 				
 				for (Genotype off : Utilities.getOffspringGenotypes(gt1, gt2)) {
-					double random_co = Utilities.nextGaussianRand(INTERNAL_RNG, REPRODUCTION_MEAN, REPRODUCTION_STDDEV);
-					double off_num = (sp.getReproductionRate(gt1) + sp.getReproductionRate(gt2)) * .25 *
-							pairings.get(gt1).get(gt2) *
-							random_co;
-					offspring.put(off, offspring.get(off) + off_num);
-					//------------------------------------------------------------------------
-					//------------------------------------------------------------------------
-					if (DEBUG_REPRO && populationID == 0) {
-						printPairings(pairings);
-						System.out.println(gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString());
-						System.out.println(gt1.toString() + " repror8: " + sp.getReproductionRate(gt1));
-						System.out.println(gt2.toString() + " repror8: " + sp.getReproductionRate(gt2));
-						System.out.println("random coefficient: " + random_co);
-						System.out.println("number of " + off.toString() + " added to the young gen: "+ off_num);
-						printOffspring(offspring);
+					double numOfMates = pairings.get(gt1).get(gt2);
+					if (numOfMates != 0) {
+						// questioning the mean and standard deviation...
+						double mean = (sp.getReproductionRate(gt1) + sp.getReproductionRate(gt2)) * 0.25;
+						double sd = mean / Math.sqrt(numOfMates);
+						double random_co = Utilities.nextGaussianRand(INTERNAL_RNG, REPRODUCTION_MEAN, REPRODUCTION_STDDEV);
+						double off_num = mean * numOfMates * random_co;
+						offspring.put(off, offspring.get(off) + off_num);
+						//------------------------------------------------------------------------
+						//------------------------------------------------------------------------
+						if (DEBUG_REPRO && populationID == 0) {
+							printPairings(pairings);
+							System.out.println(gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString());
+							System.out.println(gt1.toString() + " repror8: " + sp.getReproductionRate(gt1));
+							System.out.println(gt2.toString() + " repror8: " + sp.getReproductionRate(gt2));
+							System.out.println("average number of off: " + mean);
+							System.out.println("number of mates: " + numOfMates);
+							System.out.println("standard deviation: " + sd);
+							System.out.println("random coefficient: " + random_co);
+							System.out.println("number of " + off.toString() + " added to the young gen: "+ off_num);
+							printOffspring(offspring);
+						}
+						//------------------------------------------------------------------------					
+						//------------------------------------------------------------------------
 					}
-					//------------------------------------------------------------------------					
-					//------------------------------------------------------------------------
+					else {
+						//------------------------------------------------------------------------
+						//------------------------------------------------------------------------
+						if (DEBUG_REPRO && populationID == 0) {
+							printPairings(pairings);
+							System.out.println(gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString());
+							System.out.println("0 mate will generate 0 offspring.");
+							printOffspring(offspring);
+						}
+						//------------------------------------------------------------------------
+						//------------------------------------------------------------------------
+					}
 				}
 			}
 		}
@@ -787,31 +826,79 @@ public class Population {
 		for (Genotype gt: Genotype.getValues()) {
 			subPopulation = current.getGenotypeSubpopulationSize(gt);
 			//Typecasting to int in java is analogous to flooring
-			numSurvived = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, SURVIVAL_MEAN, SURVIVAL_STDDEV) * 
-					subPopulation * sp.getSurvivalRate(gt));
+			double random_coefficient = Utilities.nextGaussianRand(INTERNAL_RNG, SURVIVAL_MEAN, SURVIVAL_STDDEV);
+			numSurvived = (int)Math.round(random_coefficient * subPopulation * sp.getSurvivalRate(gt));
 
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			if (DEBUG_SURVIVAL && populationID == 0) {
+				printGenoNum(current);
+				System.out.println("random coefficient:" +random_coefficient);
+				System.out.println("number of genotype " + gt.toString() + ":" + subPopulation);
+				System.out.println("survival rate of genotype " + gt.toString() + ":" + sp.getSurvivalRate(gt));
+				System.out.println("number of " + gt.toString() + " survived (before adjustment): " + numSurvived);
+			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			
+			
 			if (numSurvived <= 0) {
 				numSurvived = 0;
 			}
 			else if (numSurvived > subPopulation){
 				numSurvived = subPopulation;
 			}
+			
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			if (DEBUG_SURVIVAL && populationID == 0) {
+				System.out.println("number of " + gt.toString() + " survived (after adjustment): " + numSurvived);
+			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			
 			current.setGenotypeSubpopulationSize(gt, numSurvived);
 			current.setDeaths(gt, subPopulation - numSurvived);
 			totalAdults += numSurvived;
 		}
-
+		
+		//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
+		if (DEBUG_SURVIVAL && populationID == 0) {
+			printGenoNum(current);
+		}
+		//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
+		
 		//Kill off populations if larger than carrying capacity
-		if (!sp.isPopConst()) {
-			if (totalAdults > sp.getPopCapacity()) {
-				crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
-				for (Genotype gt: Genotype.getValues()) {
-					current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
-				}
+		if (totalAdults > sp.getPopCapacity()) {
+			crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
+			for (Genotype gt: Genotype.getValues()) {
+				current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
 			}
-		}		
+		}
+		//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
+		if (DEBUG_SURVIVAL && populationID == 0) {
+			System.out.println("scale the subpopulation sizes since total adults number is larger than carrying capacity.");
+			printGenoNum(current);
+		}
+		//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------			
 	}
-
+	
+	private void printGenoNum(GenerationRecord record) {
+		String genoNum =   "|Number         ";
+		String genotypes = "|               ";
+		for (Genotype gt : Genotype.getValues())
+		{
+			genotypes += String.format("|%-15s", gt.toString());
+			genoNum += String.format("|%-15d",record.getGenotypeSubpopulationSize(gt));
+		}
+		System.out.println("*-----------------------Genotype Number-------------------------*");
+		System.out.print(genotypes + "|\n" + genoNum + "|\n");
+		System.out.println("*---------------------------------------------------------------*");
+	}
 
 	/**
 	 * Simulates mutations within a population.

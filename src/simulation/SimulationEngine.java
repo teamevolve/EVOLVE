@@ -9,7 +9,9 @@ import shared.SessionParameters;
 
 import static gui.GUI.DEBUG_MATE;
 import static gui.GUI.DEBUG_REPRO;
-import static gui.GUI.DEBUG_SELECTION;
+import static gui.GUI.DEBUG_MIGRATION;
+import static gui.GUI.DEBUG_SURVIVAL;
+import static gui.GUI.DEBUG_MUTATION;
 
 /**
  * SimulationEngine is the top of level class of the simulation component of
@@ -38,7 +40,7 @@ public class SimulationEngine {
 	 */
 	public static SimulationEngine getInstance() {
 		if (instance == null) {
-			instance  = new SimulationEngine();
+			instance = new SimulationEngine();
 		}
 		return instance;
 	}
@@ -66,7 +68,7 @@ public class SimulationEngine {
 	}
 	
 	public void runSimulation() {
-		if (DEBUG_MATE || DEBUG_REPRO || DEBUG_SELECTION) {
+		if (DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION) {
 			setOutputStream();
 		}
 		for (int i = 0; i < DataManager.getInstance().getSessionParams().getNumGens(); i++) {

@@ -28,7 +28,10 @@ public class GUI extends EvoPane {
 	private static final long serialVersionUID = 1L;
 	public static boolean DEBUG_MATE = false;
 	public static boolean DEBUG_REPRO = false;
-	public static boolean DEBUG_SELECTION = false;
+	public static boolean DEBUG_MIGRATION = false;
+	public static boolean DEBUG_SURVIVAL = false;
+	public static boolean DEBUG_MUTATION = false;
+	
 	boolean firstRun = true;
 
 	// we'll put args here
@@ -554,23 +557,28 @@ public class GUI extends EvoPane {
 		        		case "mate":
 			        		DEBUG_MATE = true;
 			        		break;
-		        		case "repro":
+		        		case "reproduction":
 			        		DEBUG_REPRO = true;
 			        		break;
-		        		case "sele":
-		        			DEBUG_SELECTION = true;
+		        		case "migration":
+		        			DEBUG_MIGRATION = true;
+		        			break;
+		        		case "survival":
+		        			DEBUG_SURVIVAL = true;
+		        			break;
+		        		case "mutation":
+		        			DEBUG_MUTATION = true;
 		        			break;
 		        		case "all":
 		        			DEBUG_MATE = true;
 		        			DEBUG_REPRO = true;
-		        			DEBUG_SELECTION = true;
+		        			DEBUG_MIGRATION = true;
+		        			DEBUG_SURVIVAL = true;
+		        			DEBUG_MUTATION = true;
 		        			break;
 		        		default:
 		        			break;
 		        }
-//		        if("mate".equals(one)) {
-//		        		DEBUG_MATE = true;
-//		        }
 		    }
 		    catch (ArrayIndexOutOfBoundsException e){
 		        //System.out.println("ArrayIndexOutOfBoundsException caught");
