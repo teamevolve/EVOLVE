@@ -925,28 +925,55 @@ public class Population {
 		for (Genotype from : Genotype.getValues()) {
 			contrib = new HashMap<Genotype, Integer>();
 			totalMutations = 0;
+			
+			if (DEBUG_MUTATION && populationID == 0) {
+				printGenoNum(current);
+			}
+			
 			for (Genotype to : Genotype.getValues()) {
-
+				double random_co = Utilities.nextGaussianRand(INTERNAL_RNG, MUTATION_MEAN, MUTATION_STDDEV);
 				// Produce a random number with a mean of MUTATION_MEAN (usually 1.0) and a standard deviation of
 				// MUTATION_STDDEV and multiply that by the expected average number of mutations
-				numMutations = (int)Math.round(Utilities.nextGaussianRand(INTERNAL_RNG, MUTATION_MEAN, MUTATION_STDDEV) *
-						current.getGenotypeSubpopulationSize(from) * sp.getMutationRate(from, to));
+				numMutations = (int)Math.round(random_co * current.getGenotypeSubpopulationSize(from) 
+							* sp.getMutationRate(from, to));
 
 				// Ensure rng did not produce negative value
 				if (numMutations < 0) numMutations = 0;
 
 				totalMutations += numMutations;
 				contrib.put(to, numMutations);
+				
+				//------------------------------------------------------------
+				//------------------------------------------------------------
+				if (DEBUG_MUTATION && populationID == 0) {
+					System.out.println("mutation rate from " + from.toString() + " to " + to.toString() 
+										+ ": " + sp.getMutationRate(from, to));
+					System.out.println("random coefficient for " + to.toString() + ": " + random_co);
+					System.out.println("number of " + from.toString() + " -> " + to.toString() + 
+							"(before adjustment): " + numMutations);
+					System.out.println();
+				}
+				//------------------------------------------------------------
+				//------------------------------------------------------------
 			}
 
 			// If no mutations happened, move on to the next genotype
 			if (totalMutations == 0) continue;
 
 			// Ratio to scale mutations by to keep population size constant
-			ratio = current.getGenotypeSubpopulationSize(from) / totalMutations;
-
+			ratio = (double) current.getGenotypeSubpopulationSize(from) / (double)totalMutations;
+			
+			//------------------------------------------------------------
+			//------------------------------------------------------------
+			if (DEBUG_MUTATION && populationID == 0) {
+				mutationTable(contrib, from);
+				System.out.println("scale mutations to keep population size constant");
+			}
+			//------------------------------------------------------------
+			//------------------------------------------------------------
+			
 			for (Genotype to : Genotype.getValues()) {
-				if (to == from) continue;
+				//if (to == from) continue;
 
 				// Scale mutation count appropriately
 				adjustedMutations = (int)Math.round(ratio * contrib.get(to));
@@ -955,8 +982,38 @@ public class Population {
 				current.setMutationCount(from, to, adjustedMutations);
 				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - adjustedMutations);
 				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + adjustedMutations);
+
+				//----------------------------------------------------------------------------
+				//----------------------------------------------------------------------------
+				if (DEBUG_MUTATION && populationID == 0) {
+					System.out.println("number of " + from.toString() + " -> " + to.toString() + 
+							"(after adjustment): " + adjustedMutations);
+				}
+				//----------------------------------------------------------------------------
+				//----------------------------------------------------------------------------
 			}
+			
+			if (DEBUG_MUTATION && populationID == 0) {
+				printGenoNum(current);
+				System.out.println();
+			}
+
 		}
+	}
+
+	private void mutationTable(HashMap<Genotype, Integer> contrib, Genotype gt) {
+		String mutation = "|Mutations      ";
+		String genotypes = "|               ";
+		for (Genotype gt1 : Genotype.getValues())
+		{
+			genotypes += String.format("|%-10s", gt1.toString());
+			mutation += String.format("|%-10d", contrib.get(gt1));
+		}
+		//System.out.println("*---------------*---------------*---------------*---------------*");
+		System.out.println("*-------------Mutation Table for " + gt.toString() +"-------------*");
+		System.out.print(genotypes + "|\n" + mutation + "|\n");
+		System.out.println("*------------------------------------------------*");
+		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 	
 }
