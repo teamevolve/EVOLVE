@@ -115,9 +115,9 @@ public class PopulationManager {
 	 * evenly as possible among all other populations.
 	 */
 	public void processMigrations() {
-		if (DEBUG_MIGRATION) {
-			System.out.println("migration debugging!");
-		}
+//		if (DEBUG_MIGRATION) {
+//			System.out.println("migration debugging!");
+//		}
 		// Used to determine how individuals are redistributed, as individuals
 		// may not immigrate to the population they emigrated from
 		final double distributeTo = populationList.size() - 1;
@@ -154,10 +154,15 @@ public class PopulationManager {
 			totalEmigrations = 0;
 			
 			if (DEBUG_MIGRATION) {
+				
 				System.out.println("Migration Rate of " + gt.toString() +": " + genotypeMigrationRate);
+				System.out.println("*---------------------------------------------------------*");
+				System.out.printf("|                | rand coef | num of gt | emigration num |");
+				System.out.println();
 			}
 			
 			// Process emigrations
+			String popInfo;
 			for (Population pop : populationList) {
 				index = populationList.indexOf(pop);
 				subPopSize = pop.getLastGeneration().getGenotypeSubpopulationSize(gt);
@@ -172,16 +177,24 @@ public class PopulationManager {
 				contributions.get(pop).put(gt, numEmigrations);
 				
 				if (DEBUG_MIGRATION) {
-					System.out.println("population #" + index);
-					System.out.println("random coefficient " + gt.toString() +": " + random_co);
-					System.out.println("number of " + gt.toString() +" in the population: " + subPopSize);
-					System.out.println("emigration number of " + gt.toString() +": " + numEmigrations);
+					popInfo = String.format("|population %1$-5d|%2$-11f|%3$-11d|%4$-16d|", index, random_co,  subPopSize, numEmigrations);
+					System.out.println(popInfo);
 				}
+			}
+
+			if (DEBUG_MIGRATION) {
+				System.out.println("*---------------------------------------------------------*");
+				System.out.println("total emigrations of " + gt.toString() + ": " + totalEmigrations);
+				System.out.println();
+				System.out.println("*---------------------------------------------------*");
+				System.out.printf("|                | immigration num | emigration num |");
+				System.out.println();
 			}
 
 			totalImmigrations = totalEmigrations;
 
 			// Process immigrations
+			String migrationInfo;
 			for (Population pop : populationList) {
 				record = pop.getLastGeneration();
 				contribution = contributions.get(pop).get(gt);
@@ -197,15 +210,18 @@ public class PopulationManager {
 				totalImmigrations -= adjustedI;
 				
 				if (DEBUG_MIGRATION) {
-					System.out.println("population #" + populationList.indexOf(pop));
-					System.out.println("random coefficient " + gt.toString() +": " + genotypeMigrationRate);
-					System.out.println("emigration number of " + gt.toString() +" : " + contribution);
-					System.out.println("immigration number of " + gt.toString() +": " + adjustedI);
+					migrationInfo = String.format("|population %1$-5d|%2$-17d|%3$-16d|", populationList.indexOf(pop), 
+							adjustedI, contribution);
+					System.out.println (migrationInfo);
 				}
 				
 				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) - contribution + adjustedI);
 				record.setEmigrationCount(gt, contribution);
 				record.setImmigrationCount(gt, adjustedI);
+			}
+			if (DEBUG_MIGRATION) {
+				System.out.println("*---------------------------------------------------*");
+				System.out.println();
 			}
 
 			// Redistribute remaining individuals
@@ -215,25 +231,40 @@ public class PopulationManager {
 			}
 		}
 		if (DEBUG_MIGRATION) {
+		
 			printContributions(contributions);
 		}
 	}
 	
 	public void printContributions (HashMap<Population, HashMap<Genotype, Integer>> contributions) {
-		String genotypes = "|              ";
+		String genotypes = "|population #   ";
 		for (Genotype gt1 : Genotype.getValues())
 		{
 			genotypes += String.format("|%-10s", gt1.toString());
 		}
-		System.out.println("*-------------Contribution Table----------------*");
+		System.out.println("*--------------Contribution Table----------------*");
 		System.out.println(genotypes + "|");
 		for (int i = 0; i < populationList.size(); i++) {
-			String popInfo = "|population #" + i + " ";
+			String popInfo = String.format("|   %-10d  ", i);
 			for (Genotype gt : Genotype.getValues()) {
 				popInfo += String.format("|%-10d", contributions.get(populationList.get(i)).get(gt));
 			}
 			System.out.println(popInfo + "|");
 		}
-		System.out.println("*-----------------------------------------------*");
+		System.out.println("*------------------------------------------------*");
+	}
+	
+	
+	private void printGenoNum(GenerationRecord record) {
+		String genoNum =   "|Number         ";
+		String genotypes = "|               ";
+		for (Genotype gt : Genotype.getValues())
+		{
+			genotypes += String.format("|%-15s", gt.toString());
+			genoNum += String.format("|%-15d",record.getGenotypeSubpopulationSize(gt));
+		}
+		System.out.println("*-----------------------Genotype Number-------------------------*");
+		System.out.print(genotypes + "|\n" + genoNum + "|\n");
+		System.out.println("*---------------------------------------------------------------*");
 	}
 }
