@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -222,10 +224,6 @@ public class InitPopPane extends EvoPane {
 		c.gridx = 0; c.gridy++;
 		add(gnPane, c);
 
-		apply = new JButton("Apply");
-		c.gridx = 4; c.gridy = 1;
-		add(apply, c);
-
 		addToLists();
 		modeAlleleFreqs(true);
 
@@ -242,12 +240,106 @@ public class InitPopPane extends EvoPane {
 			}
 		});
 
-		apply.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				SessionParameters parms = new shared.SessionParameters();
-				submit(parms);
-			}
-		});
+    popSizeField.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        popSizeField.selectAll();
+      }
+
+      public void focusLost(FocusEvent e) {
+        popSizeField.select(0, 0);
+        updateGenoNums();
+      }
+    });
+
+    initFreqA.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        initFreqA.selectAll();
+      }
+
+      public void focusLost(FocusEvent e) {
+        initFreqA.select(0, 0);
+        updateFreq();
+        updateGenoNums();
+      }
+    });
+
+		initFreqB.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        initFreqB.selectAll();
+      }
+
+      public void focusLost(FocusEvent e) {
+        initFreqB.select(0, 0);
+        updateFreq();
+        updateGenoNums();
+      }
+    });
+
+    genoAA.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        genoAA.selectAll();
+      }
+
+      public void focusLost(FocusEvent e) {
+        genoAA.select(0, 0);
+        updatePopSizeAndFreq();
+      }
+    });
+
+    genoAB.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        genoAB.selectAll();
+      }
+
+      public void focusLost(FocusEvent e) {
+        genoAB.select(0, 0);
+        updatePopSizeAndFreq();
+      }
+    });
+
+    genoBB.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        genoBB.selectAll();
+      }
+
+      public void focusLost(FocusEvent e) {
+        genoBB.select(0, 0);
+        updatePopSizeAndFreq();
+      }
+    });
+
+    genoAC.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        genoAC.selectAll();
+      }
+
+      public void focusLost(FocusEvent e) {
+        genoAC.select(0, 0);
+        updatePopSizeAndFreq();
+      }
+    });
+
+    genoBC.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        genoBC.selectAll();
+      }
+
+      public void focusLost(FocusEvent e) {
+        genoBC.select(0, 0);
+        updatePopSizeAndFreq();
+      }
+    });
+
+    genoCC.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        genoCC.selectAll();
+      }
+
+      public void focusLost(FocusEvent e) {
+        genoCC.select(0, 0);
+        updatePopSizeAndFreq();
+      }
+    });
 	}
 
 	/**
@@ -296,6 +388,7 @@ public class InitPopPane extends EvoPane {
 		initFreqBLabel.setEnabled(b && alleleFreqs.isSelected());
 		initFreqC.setEnabled(false);
 		initFreqCLabel.setEnabled(false);
+    updateAll();
 	}
 
 	public void submit(shared.SessionParameters p) {
@@ -434,4 +527,126 @@ public class InitPopPane extends EvoPane {
 		p.setGenotypeFrequency(Genotype.AB, ABfreq);
 		p.setGenotypeFrequency(Genotype.BB, BBfreq);
 	}
+
+  public void updateAll() {
+    if(alleleFreqs.isSelected()) {
+      updateFreq();
+      updateGenoNums();
+    }
+    else {
+      updatePopSizeAndFreq();
+    }
+  }
+
+  public void updateFreq() {
+    if(!threeAlleles && initFreqA.getText().equals("")) {
+      initFreqB.setText("");
+      return;
+    }
+    if(threeAlleles && (initFreqA.getText().equals("") ||
+       initFreqB.getText().equals(""))) {
+      initFreqC.setText("");
+      return;
+    }
+
+		double Afreq = Double.parseDouble(initFreqA.getText());
+    double Bfreq;
+		double Cfreq;
+
+    if(!threeAlleles) { // two alleles
+			Bfreq = 1 - Afreq;
+      initFreqB.setText(String.format("%.3f", Bfreq));
+		}
+		else { // three alleles
+			Bfreq = Double.parseDouble(initFreqB.getText());
+			Cfreq = 1 - (Afreq + Bfreq);
+      initFreqC.setText(String.format("%.3f", Cfreq));
+		}
+  }
+
+  public void updateGenoNums() {
+    if(popSizeField.getText().equals("") || initFreqA.getText().equals("") ||
+       (threeAlleles && initFreqB.getText().equals(""))) {
+      genoAA.setText("");
+      genoAB.setText("");
+      genoBB.setText("");
+      genoAC.setText("");
+      genoBC.setText("");
+      genoCC.setText("");
+      return;
+    }
+
+    int totalPop = Integer.parseInt(popSizeField.getText());
+    double freqA = Double.parseDouble(initFreqA.getText());
+		double freqB = Double.parseDouble(initFreqB.getText());
+		double freqC = 0;
+		double AAfreq = 0;
+		double ABfreq = 0;
+		double BBfreq = 0;
+		double ACfreq = 0;
+		double BCfreq = 0;
+		double CCfreq = 0;
+
+    if(!threeAlleles) { // two alleles
+      AAfreq = freqA * freqA;
+			ABfreq = 2 * freqA * freqB;
+			BBfreq = freqB * freqB;
+    }
+    else { // three alleles
+      freqC = Double.parseDouble(initFreqC.getText());
+
+			AAfreq = freqA * freqA;
+			ABfreq = 2 * freqA * freqB;
+			BBfreq = freqB * freqB;
+			ACfreq = 2 * freqA * freqC;
+			BCfreq = 2 * freqB * freqC;
+			CCfreq = freqC * freqC;
+    }
+
+    genoAA.setText(Integer.toString((int) (AAfreq * totalPop)));
+    genoAB.setText(Integer.toString((int) (ABfreq * totalPop)));
+    genoBB.setText(Integer.toString((int) (BBfreq * totalPop)));
+    if(threeAlleles) {
+      genoAC.setText(Integer.toString((int) (ACfreq * totalPop)));
+      genoBC.setText(Integer.toString((int) (BCfreq * totalPop)));
+      genoCC.setText(Integer.toString((int) (CCfreq * totalPop)));
+    }
+  }
+
+  public void updatePopSizeAndFreq() {
+    if(genoAA.getText().equals("") || genoAB.getText().equals("") ||
+       genoBB.getText().equals("") || (threeAlleles && (
+       genoAC.getText().equals("") || genoBC.getText().equals("") ||
+       genoCC.getText().equals("")))) {
+      popSizeField.setText("");
+      initFreqA.setText("");
+      initFreqB.setText("");
+      initFreqC.setText("");
+      return;
+    }
+
+    double AA = Double.parseDouble(genoAA.getText());;
+    double AB = Double.parseDouble(genoAB.getText());;
+    double BB = Double.parseDouble(genoBB.getText());;
+    double AC = 0;
+    double BC = 0;
+    double CC = 0;
+    if(threeAlleles) {
+      AC = Double.parseDouble(genoAC.getText());
+      BC = Double.parseDouble(genoBC.getText());
+      CC = Double.parseDouble(genoCC.getText());
+    }
+
+    popSizeField.setText(Integer.toString((int) (AA + AB + BB + AC + BC + CC)));
+
+    int totalA = (int) (2 * AA + AB + AC);
+    int totalB = (int) (2 * BB + AB + BC);
+    int totalC = (int) (2 * CC + AC + BC);
+
+    double totalAlleles = totalA + totalB + totalC;
+
+    initFreqA.setText(String.format("%.3f", (double) totalA / totalAlleles));
+    initFreqB.setText(String.format("%.3f", (double) totalB / totalAlleles));
+    initFreqC.setText(String.format("%.3f", (double) totalC / totalAlleles));
+  }
 } // class
