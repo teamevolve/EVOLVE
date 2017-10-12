@@ -13,11 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * 
+ *
  * @author jasonfortunato
  * @author linneasahlberg
+ * @author alexdennis
  *
- * The superclass for the evolutionary forces panes. Allows for three allele mode. 
+ * The superclass for the evolutionary forces panes. Allows for three allele mode.
  * Sets the layout and standardizes column widths.
  */
 
@@ -33,23 +34,23 @@ public abstract class EvoPane extends JPanel {
 	final static String ANY_NUMBER = "any number";
 	public boolean threeAlleles;
 	public GridBagConstraints c;
-	
+
 	public OurInputVerifier iv = new OurInputVerifier();
-	
+
 	private boolean enabled;
-	
+
 	public ArrayList<Component> threeAllelesList = new ArrayList<Component>();
 	public ArrayList<Component> color1List = new ArrayList<Component>();
 	public ArrayList<Component> color2List = new ArrayList<Component>();
 	public Color color1 = new Color(183, 210, 222);
 	public Color color2 = new Color(213, 218, 226);//(173, 208, 212);
-	
+
 	EvoPane() {
 		super();
 		// initialize default settings
 		threeAlleles = false;
 		enabled = true;
-		
+
 		// set layout
 		setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
@@ -61,7 +62,7 @@ public abstract class EvoPane extends JPanel {
 			add(new JLabel("_______________________________"), c);
 		}
 	}
-	
+
 	@Override
 	public void setEnabled(boolean enable) {
 		super.setEnabled(enable);
@@ -70,24 +71,24 @@ public abstract class EvoPane extends JPanel {
 		}
 		enabled = !enabled;
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for(Component comp : this.color1List) {	
+		for(Component comp : this.color1List) {
 			g.setColor(color2);
 			g.fillRect(0, 0, getWidth(), 15);
 			g.setColor(color1);
 			g.fillRect(0, 15, getWidth(), getHeight());
 		}
-		for(Component comp : this.color2List) {	
+		for(Component comp : this.color2List) {
 			g.setColor(color1);
 			g.fillRect(0, 0, getWidth(), 15);
 			g.setColor(color2);
 			g.fillRect(0, 15, getWidth(), getHeight());
 		}
 	}
-	
+
 	public boolean getEnabled() {
 		return enabled;
 	}

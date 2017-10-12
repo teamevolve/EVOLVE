@@ -27,6 +27,7 @@ import java.util.ArrayList;
  *
  * @author jasonfortunato
  * @author linneasahlberg
+ * @author alexdennis
  *
  * A pane in the GUI that allows the user to put in information about the initial population: number of generations,
  * number of populations, population size, and enter allele frequencies OR genotype numbers.

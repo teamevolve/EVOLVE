@@ -15,6 +15,8 @@ import shared.Genotype;
  *
  * @author jasonfortunato
  * @author linneasahlberg
+ * @author alexdennis
+ *
  */
 public class MutationPane extends EvoPane {
 

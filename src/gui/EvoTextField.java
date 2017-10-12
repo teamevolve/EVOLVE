@@ -5,6 +5,12 @@ import javax.swing.JTextField;
 import java.awt.event.FocusListener;
 import java.awt.event.FocusEvent;
 
+/**
+ *
+ * @author alexdennis
+ *
+ */
+
 public class EvoTextField extends JTextField {
   public EvoTextField(int columns) {
     super(columns);

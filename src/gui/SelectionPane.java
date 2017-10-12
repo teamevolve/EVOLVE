@@ -27,6 +27,7 @@ import shared.SessionParameters;
  *
  * @author jasonfortunato
  * @author linneasahlberg
+ * @author alexdennis
  *
  */
 public class SelectionPane extends EvoPane {

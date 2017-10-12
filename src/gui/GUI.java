@@ -17,6 +17,7 @@ import shared.EvolveDirector;
 /**
  * @author linneasahlberg
  * @author jasonfortunato
+ * @author alexdennis
  *
  * Started 9/18/16
  * The main GUI class. Combines all of the panes into one JFrame.
