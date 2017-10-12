@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
 import shared.Genotype;
 
@@ -35,11 +34,11 @@ public class MigrationPane extends EvoPane {
 	ButtonGroup migGroup;
 	JRadioButton fixedMig, varMig;
 	JLabel fixedMigRateLabel;
-	JTextField fixedMigRate;
+	EvoTextField fixedMigRate;
 	JLabel varMigRateLabel;
 	JLabel varMigRateAALabel, varMigRateABLabel, varMigRateBBLabel,
 		varMigRateACLabel, varMigRateBCLabel, varMigRateCCLabel;
-	JTextField varMigRateAA, varMigRateAB, varMigRateBB,
+	EvoTextField varMigRateAA, varMigRateAB, varMigRateBB,
 		varMigRateAC, varMigRateBC, varMigRateCC;
 
 	ArrayList<Component> fixedList = new ArrayList<Component>();
@@ -77,7 +76,7 @@ public class MigrationPane extends EvoPane {
 
 		// Migration rate - if fixed
 		fixedMigRateLabel = new JLabel("Migration Rate (0.0-0.9): ");
-		fixedMigRate = new JTextField(TEXT_LEN_SHORT);
+		fixedMigRate = new EvoTextField(TEXT_LEN_SHORT);
 
 		fixedMigRate.setName(RATE); fixedMigRate.setInputVerifier(iv);
 
@@ -96,12 +95,12 @@ public class MigrationPane extends EvoPane {
 		varMigRateACLabel = new JLabel("AC"); threeAllelesList.add(varMigRateACLabel);
 		varMigRateBCLabel = new JLabel("BC"); threeAllelesList.add(varMigRateBCLabel);
 		varMigRateCCLabel = new JLabel("CC"); threeAllelesList.add(varMigRateCCLabel);
-		varMigRateAA = new JTextField(TEXT_LEN_SHORT);
-		varMigRateAB = new JTextField(TEXT_LEN_SHORT);
-		varMigRateBB = new JTextField(TEXT_LEN_SHORT);
-		varMigRateAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateAC);
-		varMigRateBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateBC);
-		varMigRateCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateCC);
+		varMigRateAA = new EvoTextField(TEXT_LEN_SHORT);
+		varMigRateAB = new EvoTextField(TEXT_LEN_SHORT);
+		varMigRateBB = new EvoTextField(TEXT_LEN_SHORT);
+		varMigRateAC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateAC);
+		varMigRateBC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateBC);
+		varMigRateCC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateCC);
 
 		varMigRateAA.setName(RATE); varMigRateAA.setInputVerifier(iv);
 		varMigRateAB.setName(RATE); varMigRateAB.setInputVerifier(iv);

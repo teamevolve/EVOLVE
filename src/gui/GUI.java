@@ -31,14 +31,14 @@ public class GUI extends EvoPane {
 	public static boolean DEBUG_MIGRATION = false;
 	public static boolean DEBUG_SURVIVAL = false;
 	public static boolean DEBUG_MUTATION = false;
-	
+
 	boolean firstRun = true;
 
 	// we'll put args here
 	shared.SessionParameters parms;
 
 	// Lab report stuff
-	JLabel titleLabel; JTextField title;
+	JLabel titleLabel; EvoTextField title;
 	JLabel questionLabel; JTextArea question; JScrollPane questionPane;
 	JLabel experLabel; JTextArea exper; JScrollPane experPane;
 	JLabel resultsLabel; JTextArea results; JScrollPane resultsPane;
@@ -49,14 +49,6 @@ public class GUI extends EvoPane {
 	JButton apply;
 	JButton submit;
 	JButton help;
-
-	// Number of Pops
-	JLabel numPopsLabel;
-	JTextField numPops;
-
-	// Number of Gens
-	JLabel numGensLabel;
-	JTextField numGens;
 
 	// Evolutionary forces checkboxes
 	JCheckBox popSizeCheck;
@@ -71,7 +63,7 @@ public class GUI extends EvoPane {
 
 	/* Evolutionary Forces Panes *********************************************/
 	JLabel seedLabel; 				// Seed
-	JTextField seedField;
+	EvoTextField seedField;
 	JLabel numAllelesLabel;			// Number of Alleles
 	ButtonGroup numAlleles;
 	static JRadioButton alleles2, alleles3;
@@ -113,7 +105,7 @@ public class GUI extends EvoPane {
 		/* Lab report fields *******************************************************/
 		color2List.add(getParent());
 		titleLabel = new JLabel("<html><b>Title:</b>");
-		title = new JTextField(TEXT_LEN_EXTRA_LONG / 2);
+		title = new EvoTextField(TEXT_LEN_EXTRA_LONG);
 
 		// checkbox to show/hide lab report fields
 		showLabInfo = new JCheckBox("Show lab report fields", true);
@@ -190,7 +182,7 @@ public class GUI extends EvoPane {
 
 		/* seed stuff ********************************************************/
 		seedLabel = new JLabel("<html><b>Seed: </b>");
-		seedField = new JTextField(TEXT_LEN_LONG);
+		seedField = new EvoTextField(TEXT_LEN_LONG);
 
 		// add seed label and field to frame
 		c.gridx = 4; c.gridy++;

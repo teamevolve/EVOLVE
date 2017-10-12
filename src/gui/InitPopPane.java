@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -18,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
 import shared.Allele;
 import shared.Genotype;
@@ -38,19 +35,19 @@ import java.util.ArrayList;
 public class InitPopPane extends EvoPane {
 	JLabel popLabel;			// Population size
 	JLabel popSizeLabel;
-	JTextField popSizeField;
+	EvoTextField popSizeField;
 	JLabel numPopsLabel;        // number of populations
-	JTextField numPops;
+	EvoTextField numPops;
 	JLabel numGensLabel;		// number of generations
-	JTextField numGens;
+	EvoTextField numGens;
 	ButtonGroup initPopVals;    // radio buttons
 	JRadioButton alleleFreqs;
 	JRadioButton genotypeNums;
 	JLabel initPopLabel;  		// Initial population
-	JTextField initPop;
+	EvoTextField initPop;
 	JLabel initFreqALabel, initFreqBLabel,		// Initial frequencies
 		initFreqCLabel;
-	JTextField initFreqA, initFreqB, initFreqC;
+	EvoTextField initFreqA, initFreqB, initFreqC;
 	JLabel alleleFreqsLabel, genoNumsLabel;		// labels for subsections
 	JLabel calcFreqAALabel, calcFreqABLabel, 	// calculated frequencies
 		calcFreqBBLabel, calcFreqACLabel,
@@ -60,7 +57,7 @@ public class InitPopPane extends EvoPane {
 		genoBBLabel, genoACLabel,
 		genoBCLabel, genoCCLabel;
 	JLabel genoTotal;
-	JTextField genoAA, genoAB,
+	EvoTextField genoAA, genoAB,
 		genoBB, genoAC, genoBC,
 		genoCC;
 	JPanel afPane, gnPane;		// allele freqency and genotype panes
@@ -74,7 +71,11 @@ public class InitPopPane extends EvoPane {
 		color1List.add(getParent());
 		popLabel = new JLabel("<html><b><span style='font-size:11px'>Initial Population:</span></b>");
 		popSizeLabel = new JLabel("<html><b>Population Size:");
-		popSizeField = new JTextField(TEXT_LEN_LONG);
+		popSizeField = new EvoTextField(TEXT_LEN_LONG) {
+      public void updateOnFocusLost() {
+        updateGenoNums();
+      }
+    };
 		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
 
 		// init pop size
@@ -84,9 +85,9 @@ public class InitPopPane extends EvoPane {
 
 		// num gens and pops
 		numGensLabel = new JLabel("<html><b>Number of Generations:");
-		numGens = new JTextField(TEXT_LEN_LONG);
+		numGens = new EvoTextField(TEXT_LEN_LONG);
 		numPopsLabel = new JLabel("<html><b>Number of Populations:");
-		numPops = new JTextField(TEXT_LEN_LONG);
+		numPops = new EvoTextField(TEXT_LEN_LONG);
 
 		c.insets = new Insets(0, 20, 0, 0);
 		c.gridwidth = 2;
@@ -116,9 +117,19 @@ public class InitPopPane extends EvoPane {
 		initFreqALabel = new JLabel("A:");
 		initFreqBLabel = new JLabel("B:");
 		initFreqCLabel = new JLabel("C:"); threeAllelesList.add(initFreqCLabel);
-		initFreqA = new JTextField(TEXT_LEN_SHORT);
-		initFreqB = new JTextField(TEXT_LEN_SHORT);
-		initFreqC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(initFreqC);
+		initFreqA = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateFreq();
+        updateGenoNums();
+      }
+    };
+		initFreqB = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateFreq();
+        updateGenoNums();
+      }
+    };
+		initFreqC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(initFreqC);
 
 		initFreqA.setName(RATE);
 		initFreqB.setName(RATE);
@@ -173,12 +184,39 @@ public class InitPopPane extends EvoPane {
 		genoBCLabel = new JLabel("BC"); threeAllelesList.add(genoBCLabel);
 		genoCCLabel = new JLabel("CC"); threeAllelesList.add(genoCCLabel);
 
-		genoAA = new JTextField(TEXT_LEN_SHORT);
-		genoAB = new JTextField(TEXT_LEN_SHORT);
-		genoBB = new JTextField(TEXT_LEN_SHORT);
-		genoAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(genoAC);
-		genoBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(genoBC);
-		genoCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(genoCC);
+		genoAA = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updatePopSizeAndFreq();
+      }
+    };
+		genoAB = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updatePopSizeAndFreq();
+      }
+    };
+		genoBB = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updatePopSizeAndFreq();
+      }
+    };
+		genoAC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updatePopSizeAndFreq();
+      }
+    };
+		genoBC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updatePopSizeAndFreq();
+      }
+    };
+		genoCC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updatePopSizeAndFreq();
+      }
+    };
+    threeAllelesList.add(genoAC);
+    threeAllelesList.add(genoBC);
+    threeAllelesList.add(genoCC);
 
 		gnPane = new JPanel();
 		gnPane.setBackground(color1);
@@ -239,107 +277,6 @@ public class InitPopPane extends EvoPane {
 				modeAlleleFreqs(false);
 			}
 		});
-
-    popSizeField.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        popSizeField.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        popSizeField.select(0, 0);
-        updateGenoNums();
-      }
-    });
-
-    initFreqA.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        initFreqA.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        initFreqA.select(0, 0);
-        updateFreq();
-        updateGenoNums();
-      }
-    });
-
-		initFreqB.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        initFreqB.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        initFreqB.select(0, 0);
-        updateFreq();
-        updateGenoNums();
-      }
-    });
-
-    genoAA.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        genoAA.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        genoAA.select(0, 0);
-        updatePopSizeAndFreq();
-      }
-    });
-
-    genoAB.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        genoAB.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        genoAB.select(0, 0);
-        updatePopSizeAndFreq();
-      }
-    });
-
-    genoBB.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        genoBB.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        genoBB.select(0, 0);
-        updatePopSizeAndFreq();
-      }
-    });
-
-    genoAC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        genoAC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        genoAC.select(0, 0);
-        updatePopSizeAndFreq();
-      }
-    });
-
-    genoBC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        genoBC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        genoBC.select(0, 0);
-        updatePopSizeAndFreq();
-      }
-    });
-
-    genoCC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        genoCC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        genoCC.select(0, 0);
-        updatePopSizeAndFreq();
-      }
-    });
 	}
 
 	/**
