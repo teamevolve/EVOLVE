@@ -42,12 +42,12 @@ public class GUI extends EvoPane {
 	JLabel titleLabel; EvoTextField title;
 	JLabel questionLabel; JTextArea question; JScrollPane questionPane;
 	JLabel experLabel; JTextArea exper; JScrollPane experPane;
+  JLabel predictLabel; JTextArea predict; JScrollPane predictPane;
 	JLabel resultsLabel; JTextArea results; JScrollPane resultsPane;
 	JLabel discussionLabel; JTextArea discussion; JScrollPane discussionPane;
 	JCheckBox showLabInfo;
 
 	// GUI buttons
-	JButton apply;
 	JButton submit;
 	JButton help;
 
@@ -69,7 +69,6 @@ public class GUI extends EvoPane {
 	ButtonGroup numAlleles;
 	static JRadioButton alleles2, alleles3;
 
-	//ForcesPane fp = new ForcesPane();
 	InitPopPane pp = new InitPopPane();
 	GeneticDriftPane gd = new GeneticDriftPane();
 	SelectionPane sp = new SelectionPane();
@@ -125,6 +124,13 @@ public class GUI extends EvoPane {
 		exper.setLineWrap(true);
 		exper.setWrapStyleWord(true);
 
+    predictLabel = new JLabel("<html><b>Predictions:</b>");
+    predict = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
+    predictPane = new JScrollPane(predict);
+    predictPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    predict.setLineWrap(true);
+    predict.setWrapStyleWord(true);
+
 		resultsLabel = new JLabel("<html><b>Results:</b>");
 		results = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
 		resultsPane = new JScrollPane(results);
@@ -157,14 +163,19 @@ public class GUI extends EvoPane {
 		c.gridx = 1; c.gridy = 3;
 		add(experPane, c);
 
-		c.gridx = 0; c.gridy = 4;
-		add(resultsLabel, c);
-		c.gridx = 1; c.gridy = 4;
-		add(resultsPane, c);
+    c.gridx = 0; c.gridy = 4;
+    add(predictLabel, c);
+    c.gridx = 1; c.gridy = 4;
+    add(predictPane, c);
 
 		c.gridx = 0; c.gridy = 5;
-		add(discussionLabel, c);
+		add(resultsLabel, c);
 		c.gridx = 1; c.gridy = 5;
+		add(resultsPane, c);
+
+		c.gridx = 0; c.gridy = 6;
+		add(discussionLabel, c);
+		c.gridx = 1; c.gridy = 6;
 		add(discussionPane, c);
 
 		/* help stuff *****************************************************************************/
@@ -174,7 +185,7 @@ public class GUI extends EvoPane {
 		add(help, c);
 
 		/* Here's a bar for "aesthetics" ****************************************************/
-		c.gridy = 6;
+		c.gridy = 7;
 		/*for(int i = 0; i < 5; i++) {
 			c.gridx = i;
 			c.anchor = GridBagConstraints.WEST;
@@ -281,9 +292,6 @@ public class GUI extends EvoPane {
 		/* Panes ****************************************************************************/
 		c.gridwidth = 7;
 
-//		c.gridx = 0; c.gridy = 6;
-	//	add(fp, c);
-
 		c.gridx = 0; c.gridy++;
 		add(pp, c);
 
@@ -301,14 +309,6 @@ public class GUI extends EvoPane {
 
 		c.gridx = 0; c.gridy = 50;
 		add(ssp, c);
-
-		c.gridx = 0; c.gridy = 70;
-		//add(np, c);
-
-		/* apply and submit buttons ***********************************************/
-		apply = new JButton("Apply");
-		c.gridx = 3; c.gridy = 60;
-		//add(apply, c);
 
 		submit = new JButton("<html><span style='font-size:13px'>Run Simulation");
 		Color buttonColor = new Color(115, 229, 103);
@@ -378,17 +378,6 @@ public class GUI extends EvoPane {
 			}
 		});
 
-		apply.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				parms = new shared.SessionParameters();
-				if(!selectCheck.isSelected()) {
-					sp.fillWithOnes();
-				}
-				applyInfo();
-			}
-		});
-
-
 		/**
 		 * @author jasonfortunato
 		 * @author linneasahlberg
@@ -407,11 +396,9 @@ public class GUI extends EvoPane {
 				}
 			}
 		});
-
 	} // end of constructor
 
 	private void openHelp() throws Exception {
-
 		InputStream pdfStream = GUI.class.getResourceAsStream("evolveInfo.pdf");
 
 		File pdfTemp = new File("evolveTempManual.pdf");
@@ -436,11 +423,9 @@ public class GUI extends EvoPane {
 			System.out.println("File does not exist!");
 			System.out.println("Path used: " + pdfStream);
 		}
-
 	}
 
 	private void hideLabInfo(boolean b) {
-		//setLayout(null);
 		questionLabel.setVisible(b);
 		experLabel.setVisible(b);
 		resultsLabel.setVisible(b);
@@ -451,7 +436,6 @@ public class GUI extends EvoPane {
 		discussionPane.setVisible(b);
 	}
 
-
 	public void modeThreeAlleles(boolean b){
 		super.modeThreeAlleles(b);
 		pp.modeThreeAlleles(b);
@@ -459,9 +443,7 @@ public class GUI extends EvoPane {
 		mp.modeThreeAlleles(b);
 		mip.modeThreeAlleles(b);
 		ssp.modeThreeAlleles(b);
-
 	}
-
 
 	/**
 	 *  pushes data to sesh parms
@@ -501,6 +483,7 @@ public class GUI extends EvoPane {
 		parms.setTitle(title.getText());
 		parms.setQuestion(question.getText());
 		parms.setDesign(exper.getText());
+    parms.setPrediction(predict.getText());
 		parms.setResults(results.getText());
 		parms.setDiscuss(discussion.getText());
 	}
