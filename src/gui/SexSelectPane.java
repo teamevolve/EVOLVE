@@ -46,6 +46,7 @@ public class SexSelectPane extends EvoPane {
 
 	public SexSelectPane() {
 		super();
+    color2List.add(getParent());
 		mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): ");
 		AAPrefLabel = new JLabel("AA Preference for:");
 		ABPrefLabel = new JLabel("AB Preference for:");
