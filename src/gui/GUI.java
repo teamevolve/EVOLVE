@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import shared.EvolveDirector;
 
@@ -493,7 +494,6 @@ public class GUI extends EvoPane {
 	 * Called in main
 	 */
 	public static void createAndShowGUI() {
-
 		//make the GUI panel and add evo force panels to GUI
 		GUI g = GUI.getInstance();
 
@@ -504,63 +504,62 @@ public class GUI extends EvoPane {
 
 		//add the GUI to a scrollable pane
 		JScrollPane scrPane = new JScrollPane(g);
+    scrPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		// add the scrollable pane to the window
 		frame.add(scrPane);
-
-        try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    try {
+      for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          UIManager.setLookAndFeel(info.getClassName());
+          break;
         }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
-        SwingUtilities.updateComponentTreeUI(frame);
+    SwingUtilities.updateComponentTreeUI(frame);
 
 		frame.pack();
 		frame.setVisible(true);
-
 	}
 
 	public static void main(String[] args) {
-		  try {
-		        String one = args[0];
-		        switch (one.toLowerCase()) {
-		        		case "mate":
-			        		DEBUG_MATE = true;
-			        		break;
-		        		case "reproduction":
-			        		DEBUG_REPRO = true;
-			        		break;
-		        		case "migration":
-		        			DEBUG_MIGRATION = true;
-		        			break;
-		        		case "survival":
-		        			DEBUG_SURVIVAL = true;
-		        			break;
-		        		case "mutation":
-		        			DEBUG_MUTATION = true;
-		        			break;
-		        		case "all":
-		        			DEBUG_MATE = true;
-		        			DEBUG_REPRO = true;
-		        			DEBUG_MIGRATION = true;
-		        			DEBUG_SURVIVAL = true;
-		        			DEBUG_MUTATION = true;
-		        			break;
-		        		default:
-		        			break;
-		        }
-		    }
-		    catch (ArrayIndexOutOfBoundsException e){
-		        //System.out.println("ArrayIndexOutOfBoundsException caught");
-		    	}
-		    finally {
-				createAndShowGUI();
-		    }
+	  try {
+      String one = args[0];
+      switch (one.toLowerCase()) {
+    		case "mate":
+      		DEBUG_MATE = true;
+      		break;
+    		case "reproduction":
+      		DEBUG_REPRO = true;
+      		break;
+    		case "migration":
+    			DEBUG_MIGRATION = true;
+    			break;
+    		case "survival":
+    			DEBUG_SURVIVAL = true;
+    			break;
+    		case "mutation":
+    			DEBUG_MUTATION = true;
+    			break;
+    		case "all":
+    			DEBUG_MATE = true;
+    			DEBUG_REPRO = true;
+    			DEBUG_MIGRATION = true;
+    			DEBUG_SURVIVAL = true;
+    			DEBUG_MUTATION = true;
+    			break;
+    		default:
+    			break;
+      }
+    }
+    catch (ArrayIndexOutOfBoundsException e){
+      //System.out.println("ArrayIndexOutOfBoundsException caught");
+  	}
+    finally {
+      createAndShowGUI();
+    }
 	}
 }
