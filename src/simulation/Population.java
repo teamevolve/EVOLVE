@@ -142,7 +142,7 @@ public class Population {
 	 */
 	public void simulateMatingRepro() {
 		GenerationRecord newGeneration = new GenerationRecord(populationID, generationHistory.size());
-		if (DEBUG_MIGRATION || DEBUG_SUMMARY) {
+		if (DEBUG_MIGRATION && DEBUG_SUMMARY) {
 			System.out.println("GENERATION: "+ generationHistory.size() + " Population NO." + populationID);
 		}
 		else if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL ) && populationID == 0){
