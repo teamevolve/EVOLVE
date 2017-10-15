@@ -40,14 +40,14 @@ public class GeneticDriftPane extends EvoPane{
 
 	public GeneticDriftPane() {
 		super();
+    setBackground(COLOR1);
+
     // standardize column widths
 		for(int i = 0; i < 5; i++) {
 			c.gridx = i; c.gridy = 0;
 			c.anchor = GridBagConstraints.WEST;
 			add(new JLabel("_______________________________"), c);
 		}
-
-		color2List.add(getParent());
 
 		/* pop const stuff *****************************************************************************/
 		genDriftLabel = new JLabel("<html><span style='font-size:11px'><b>Genetic Drift</b> (Population Size): </span>");
@@ -79,7 +79,7 @@ public class GeneticDriftPane extends EvoPane{
 
 		// add carrying capacity and post crash stuff to separate panel for formatting
 		JPanel fields = new JPanel();
-		fields.setBackground(color2);
+		fields.setBackground(getBackground());
 		fields.setLayout(new FlowLayout());
 		fields.add(carryCapLabel);
 		fields.add(carryCap);

@@ -59,6 +59,8 @@ public class HeaderPane extends EvoPane {
 
   public HeaderPane() {
     super();
+    setBackground(COLOR1);
+
     c.anchor = GridBagConstraints.LINE_START;
 
     headerLabel = new JLabel("<html><b><span style='font-size:11px'>Experiment Parameters:</span></b>");
@@ -75,7 +77,6 @@ public class HeaderPane extends EvoPane {
     c.anchor = GridBagConstraints.LINE_START;
 
 		/* Lab report fields *******************************************************/
-		color2List.add(getParent());
 		titleLabel = new JLabel("<html><b>Title:</b>");
 		title = new EvoTextField(TEXT_LEN_LONG);
 
@@ -166,6 +167,7 @@ public class HeaderPane extends EvoPane {
 		seedField = new EvoTextField(TEXT_LEN_SHORT);
 
     JPanel seedPane = new JPanel();
+    seedPane.setBackground(getBackground());
     seedPane.setLayout(new FlowLayout());
     seedPane.add(seedLabel);
     seedPane.add(seedField);
@@ -194,6 +196,7 @@ public class HeaderPane extends EvoPane {
 		numAlleles.add(alleles3);
 
     JPanel allelesPane = new JPanel();
+    allelesPane.setBackground(getBackground());
     allelesPane.setLayout(new BoxLayout(allelesPane, BoxLayout.LINE_AXIS));
     allelesPane.add(alleles2);
     allelesPane.add(Box.createHorizontalStrut(20));
@@ -250,6 +253,7 @@ public class HeaderPane extends EvoPane {
 		add(evoForces, c);
 
     JPanel forcesPane = new JPanel();
+    forcesPane.setBackground(getBackground());
     forcesPane.setLayout(new BoxLayout(forcesPane, BoxLayout.LINE_AXIS));
     forcesPane.add(popSizeCheck);
     forcesPane.add(Box.createHorizontalStrut(20));

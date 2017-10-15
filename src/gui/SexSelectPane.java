@@ -46,6 +46,8 @@ public class SexSelectPane extends EvoPane {
 
 	public SexSelectPane() {
 		super();
+    setBackground(COLOR1);
+
     // standardize column widths
 		for(int i = 0; i < 5; i++) {
 			c.gridx = i; c.gridy = 0;
@@ -53,8 +55,7 @@ public class SexSelectPane extends EvoPane {
 			add(new JLabel("_______________________________"), c);
 		}
 
-    color2List.add(getParent());
-		mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): ");
+    mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): ");
 		AAPrefLabel = new JLabel("AA Preference for:");
 		ABPrefLabel = new JLabel("AB Preference for:");
 		BBPrefLabel = new JLabel("BB Preference for:");
@@ -114,6 +115,7 @@ public class SexSelectPane extends EvoPane {
 		addToLists();
 
 		table = new JPanel();
+    table.setBackground(getBackground());
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); // t for temp constraints
 		t.insets = new Insets(0, 0, 3, 15);

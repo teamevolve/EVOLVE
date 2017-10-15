@@ -69,6 +69,8 @@ public class InitPopPane extends EvoPane {
 
 	public InitPopPane() {
 		super();
+    setBackground(COLOR2);
+
     // standardize column widths
 		for(int i = 0; i < 5; i++) {
 			c.gridx = i; c.gridy = 0;
@@ -76,7 +78,6 @@ public class InitPopPane extends EvoPane {
 			add(new JLabel("_______________________________"), c);
 		}
 
-		color1List.add(getParent());
 		popLabel = new JLabel("<html><b><span style='font-size:11px'>Initial Population:</span></b>");
 		popSizeLabel = new JLabel("<html><b>Population Size:");
 		popSizeField = new EvoTextField(TEXT_LEN_LONG) {
@@ -153,7 +154,7 @@ public class InitPopPane extends EvoPane {
 		c.gridwidth = 2;
 		c.gridx = 0; c.gridy++;
 		afPane = new JPanel();
-		afPane.setBackground(color1);
+		afPane.setBackground(getBackground());
 		afPane.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); 	// t for temp constraints
 		t.insets = new Insets(0, 0, 3, 15);
@@ -227,7 +228,7 @@ public class InitPopPane extends EvoPane {
     threeAllelesList.add(genoCC);
 
 		gnPane = new JPanel();
-		gnPane.setBackground(color1);
+    gnPane.setBackground(getBackground());
 		gnPane.setLayout(new GridBagLayout());
 		t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 0, 15);

@@ -30,6 +30,9 @@ public abstract class EvoPane extends JPanel {
 	final static String RATE = "rate";
 	final static String ANY_DOUBLE_ZERO_TO_TEN = "double zero to ten";
 	final static String ANY_NUMBER = "any number";
+  final static public Color COLOR1 = new Color(213, 218, 226);
+	final static public Color COLOR2 = new Color(183, 210, 222);
+
 	public boolean threeAlleles;
 	public GridBagConstraints c;
 
@@ -38,10 +41,6 @@ public abstract class EvoPane extends JPanel {
 	private boolean enabled;
 
 	public ArrayList<Component> threeAllelesList = new ArrayList<Component>();
-	public ArrayList<Component> color1List = new ArrayList<Component>();
-	public ArrayList<Component> color2List = new ArrayList<Component>();
-	public Color color1 = new Color(183, 210, 222);
-	public Color color2 = new Color(213, 218, 226);//(173, 208, 212);
 
 	EvoPane() {
 		super();
@@ -61,23 +60,6 @@ public abstract class EvoPane extends JPanel {
 			component.setEnabled(enable);
 		}
 		enabled = !enabled;
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		for(Component comp : this.color1List) {
-			g.setColor(color2);
-			g.fillRect(0, 0, getWidth(), 15);
-			g.setColor(color1);
-			g.fillRect(0, 15, getWidth(), getHeight());
-		}
-		for(Component comp : this.color2List) {
-			g.setColor(color1);
-			g.fillRect(0, 0, getWidth(), 15);
-			g.setColor(color2);
-			g.fillRect(0, 15, getWidth(), getHeight());
-		}
 	}
 
 	public boolean getEnabled() {
