@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -47,6 +48,8 @@ public abstract class EvoPane extends JPanel {
 		// initialize default settings
 		threeAlleles = false;
 		enabled = true;
+
+    setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		// set layout
 		setLayout(new GridBagLayout());

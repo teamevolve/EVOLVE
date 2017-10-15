@@ -78,11 +78,17 @@ public class GUI extends JPanel {
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 
     mainPanel.add(hp);
+    mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
     mainPanel.add(pp);
+    mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
     mainPanel.add(gd);
+    mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
     mainPanel.add(sp);
+    mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
     mainPanel.add(mp);
+    mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
     mainPanel.add(mip);
+    mainPanel.add(new JSeparator(JSeparator.HORIZONTAL));
     mainPanel.add(ssp);
 
     JScrollPane mainScroll = new JScrollPane(mainPanel);
