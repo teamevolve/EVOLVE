@@ -1097,6 +1097,7 @@ public class Population {
 	 *                 will be modified by mutate() to reflect mutations
 	 *
 	 * @author ericscollins
+	 * @author candicezhao
 	 */
 	private void mutate(GenerationRecord current) {
 
@@ -1104,6 +1105,7 @@ public class Population {
 
 		// Containers to hold temporary values used more than once
 		int totalMutations;
+		double rawMutations;
 		int numMutations;
 		int adjustedMutations;
 		double ratio;
@@ -1115,15 +1117,16 @@ public class Population {
 			totalMutations = 0;
 			
 			if (DEBUG_MUTATION && populationID == 0) {
-				printGenoNum(current);
+				System.out.println();
+				printGenoNum_indent(current);
 			}
 			
 			for (Genotype to : Genotype.getValues()) {
 				double random_co = Utilities.nextGaussianRand(INTERNAL_RNG, MUTATION_MEAN, MUTATION_STDDEV);
 				// Produce a random number with a mean of MUTATION_MEAN (usually 1.0) and a standard deviation of
 				// MUTATION_STDDEV and multiply that by the expected average number of mutations
-				numMutations = (int)Math.round(random_co * current.getGenotypeSubpopulationSize(from) 
-							* sp.getMutationRate(from, to));
+				rawMutations = random_co * current.getGenotypeSubpopulationSize(from) * sp.getMutationRate(from, to);
+				numMutations = (int)Math.round(rawMutations);
 
 				// Ensure rng did not produce negative value
 				if (numMutations < 0) numMutations = 0;
@@ -1134,12 +1137,20 @@ public class Population {
 				//------------------------------------------------------------
 				//------------------------------------------------------------
 				if (DEBUG_MUTATION && populationID == 0) {
+					System.out.println();
+					System.out.print("     ");
+					System.out.println("[ " + from.toString() + " -> " + to.toString() + " ]");
+					System.out.print("        ");
 					System.out.println("mutation rate from " + from.toString() + " to " + to.toString() 
 										+ ": " + sp.getMutationRate(from, to));
+					System.out.print("        ");
 					System.out.println("random coefficient for " + to.toString() + ": " + random_co);
-					System.out.println("number of " + from.toString() + " -> " + to.toString() + 
-							"(before adjustment): " + numMutations);
-					System.out.println();
+					System.out.print("        ");
+					System.out.println("raw number of " + from.toString() + " -> " + to.toString() + 
+							": " + rawMutations);
+					System.out.print("        ");
+					System.out.println("rounded number of " + from.toString() + " -> " + to.toString() + 
+							"(before adjustment) : " + numMutations);
 				}
 				//------------------------------------------------------------
 				//------------------------------------------------------------
@@ -1154,8 +1165,9 @@ public class Population {
 			//------------------------------------------------------------
 			//------------------------------------------------------------
 			if (DEBUG_MUTATION && populationID == 0) {
-				mutationTable(contrib, from);
-				System.out.println("scale mutations to keep population size constant");
+				System.out.println();
+				mutationTable_indent(contrib, from);
+				System.out.println("     scale mutations to keep population size constant");
 			}
 			//------------------------------------------------------------
 			//------------------------------------------------------------
@@ -1174,6 +1186,7 @@ public class Population {
 				//----------------------------------------------------------------------------
 				//----------------------------------------------------------------------------
 				if (DEBUG_MUTATION && populationID == 0) {
+					System.out.print("        ");
 					System.out.println("number of " + from.toString() + " -> " + to.toString() + 
 							"(after adjustment): " + adjustedMutations);
 				}
@@ -1182,8 +1195,9 @@ public class Population {
 			}
 			
 			if (DEBUG_MUTATION && populationID == 0) {
-				printGenoNum(current);
 				System.out.println();
+				printGenoNum_indent(current);
+				System.out.println("    -------------------------------------------------------------------------");
 			}
 
 		}
@@ -1198,11 +1212,27 @@ public class Population {
 			mutation += String.format("|%-10d", contrib.get(gt1));
 		}
 		//System.out.println("*---------------*---------------*---------------*---------------*");
-		System.out.println("*-------------Mutation Table for " + gt.toString() +"-------------*");
+		System.out.println("*mmmmmmmmmm---Mutation Table for " + gt.toString() +"---mmmmmmmmmm*");
 		System.out.print(genotypes + "|\n" + mutation + "|\n");
-		System.out.println("*------------------------------------------------*");
+		System.out.println("*mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm*");
 		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
+	
+	private void mutationTable_indent(HashMap<Genotype, Integer> contrib, Genotype gt) {
+		String mutation = "     |Mutations      ";
+		String genotypes = "     |               ";
+		for (Genotype gt1 : Genotype.getValues())
+		{
+			genotypes += String.format("|%-10s", gt1.toString());
+			mutation += String.format("|%-10d", contrib.get(gt1));
+		}
+		//System.out.println("*---------------*---------------*---------------*---------------*");
+		System.out.println("     *mmmmmmmmmm---Mutation Table for " + gt.toString() +"---mmmmmmmmmm*");
+		System.out.print(genotypes + "|\n" + mutation + "|\n");
+		System.out.println("     *mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm*");
+		//System.out.println("*---------------*---------------*---------------*---------------*");
+	}
+	
 	
 }
 
