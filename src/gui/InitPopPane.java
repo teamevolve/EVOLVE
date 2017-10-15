@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.Box;
 
 import shared.Allele;
 import shared.Genotype;
@@ -50,9 +52,9 @@ public class InitPopPane extends EvoPane {
 		initFreqCLabel;
 	EvoTextField initFreqA, initFreqB, initFreqC;
 	JLabel alleleFreqsLabel, genoNumsLabel;		// labels for subsections
-	JLabel calcFreqAALabel, calcFreqABLabel, 	// calculated frequencies
-		calcFreqBBLabel, calcFreqACLabel,
-		calcFreqBCLabel, calcFreqCCLabel;
+	// JLabel calcFreqAALabel, calcFreqABLabel, 	// calculated frequencies
+	// 	calcFreqBBLabel, calcFreqACLabel,
+	// 	calcFreqBCLabel, calcFreqCCLabel;
 	JLabel freqTotal;
 	JLabel genoAALabel, genoABLabel, 	// genotypes
 		genoBBLabel, genoACLabel,
@@ -71,12 +73,7 @@ public class InitPopPane extends EvoPane {
 		super();
     setBackground(COLOR2);
 
-    // standardize column widths
-		for(int i = 0; i < 5; i++) {
-			c.gridx = i; c.gridy = 0;
-			c.anchor = GridBagConstraints.WEST;
-			add(new JLabel("_______________________________"), c);
-		}
+		c.anchor = GridBagConstraints.LINE_START;
 
 		popLabel = new JLabel("<html><b><span style='font-size:11px'>Initial Population:</span></b>");
 		popSizeLabel = new JLabel("<html><b>Population Size:");
@@ -88,9 +85,10 @@ public class InitPopPane extends EvoPane {
 		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
 
 		// init pop size
-		c.gridx = 0; c.gridy = 1;
-		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0; c.gridy = 0;
+    c.gridwidth = 3;
 		add(popLabel, c);
+    c.gridwidth = 1;
 
 		// num gens and pops
 		numGensLabel = new JLabel("<html><b>Number of Generations:");
@@ -98,20 +96,18 @@ public class InitPopPane extends EvoPane {
 		numPopsLabel = new JLabel("<html><b>Number of Populations:");
 		numPops = new EvoTextField(TEXT_LEN_LONG);
 
-		c.insets = new Insets(0, 20, 0, 0);
-		c.gridwidth = 2;
+		// c.insets = new Insets(0, 20, 0, 0);
 		c.gridx = 0; c.gridy++;
 		add(numGensLabel, c);
-		c.gridwidth = 2;
-		c.gridx++;
+		c.gridx = 1;
 		add(numGens, c);
 		c.gridx = 0; c.gridy++;
 		add(numPopsLabel, c);
-		c.gridx++;
+		c.gridx = 1;
 		add(numPops, c);
 		c.gridx = 0; c.gridy++;
 		add(popSizeLabel, c);
-		c.gridx++;
+		c.gridx = 1;
 		add(popSizeField, c);
 
 		// population constant radio button stuff
@@ -120,7 +116,6 @@ public class InitPopPane extends EvoPane {
 		genotypeNums = new JRadioButton("<html><b>Enter Genotype Numbers");
 		initPopVals.add(alleleFreqs);
 		initPopVals.add(genotypeNums);
-
 
 		alleleFreqsLabel = new JLabel("<html><b>Allele frequencies</b> (0-1):");
 		initFreqALabel = new JLabel("A:");
@@ -144,45 +139,33 @@ public class InitPopPane extends EvoPane {
 		initFreqB.setName(RATE);
 		initFreqC.setName(RATE);
 
-		calcFreqAALabel = new JLabel("AA: ___");
-		calcFreqABLabel = new JLabel("AB: ___");
-		calcFreqBBLabel = new JLabel("BB: ___");
-		calcFreqACLabel = new JLabel("AC: ___"); threeAllelesList.add(calcFreqACLabel);
-		calcFreqBCLabel = new JLabel("BC: ___"); threeAllelesList.add(calcFreqBCLabel);
-		calcFreqCCLabel = new JLabel("CC: ___"); threeAllelesList.add(calcFreqCCLabel);
+		// calcFreqAALabel = new JLabel("AA: ___");
+		// calcFreqABLabel = new JLabel("AB: ___");
+		// calcFreqBBLabel = new JLabel("BB: ___");
+		// calcFreqACLabel = new JLabel("AC: ___"); threeAllelesList.add(calcFreqACLabel);
+		// calcFreqBCLabel = new JLabel("BC: ___"); threeAllelesList.add(calcFreqBCLabel);
+		// calcFreqCCLabel = new JLabel("CC: ___"); threeAllelesList.add(calcFreqCCLabel);
 
-		c.gridwidth = 2;
-		c.gridx = 0; c.gridy++;
 		afPane = new JPanel();
 		afPane.setBackground(getBackground());
-		afPane.setLayout(new GridBagLayout());
-		GridBagConstraints t = new GridBagConstraints(); 	// t for temp constraints
-		t.insets = new Insets(0, 0, 3, 15);
+		afPane.setLayout(new FlowLayout(FlowLayout.LEADING));
 
-		t.gridwidth = 6;
-		t.gridx = 0; t.gridy = 0;
-		afPane.add(alleleFreqs, t);
+		afPane.add(alleleFreqs);
+    afPane.add(Box.createHorizontalStrut(20));
+    afPane.add(initFreqALabel);
+		afPane.add(initFreqA);
+    afPane.add(Box.createHorizontalStrut(20));
+    afPane.add(initFreqBLabel);
+		afPane.add(initFreqB);
+    afPane.add(Box.createHorizontalStrut(20));
+    afPane.add(initFreqCLabel);
+		afPane.add(initFreqC);
 
-		t.gridwidth = 1;
-		t.gridx = 6; t.gridy = 0;
-		afPane.add(initFreqALabel, t);
-		t.gridx = 7; t.gridy = 0;
-		afPane.add(initFreqA, t);
-
-		t.gridx = 8; t.gridy = 0;
-		afPane.add(initFreqBLabel, t);
-		t.gridx = 9; t.gridy = 0;
-		afPane.add(initFreqB, t);
-
-		t.gridx = 10; t.gridy = 0;
-		afPane.add(initFreqCLabel, t);
-		t.gridx = 11; t.gridy = 0;
-		afPane.add(initFreqC, t);
-
-		c.gridx = 0;
-		c.gridwidth = 7;
+		c.gridx = 0; c.gridy++;
+		c.gridwidth = 3;
+    c.weightx = 1.0;
+    c.fill = GridBagConstraints.HORIZONTAL;
 		add(afPane, c);
-
 
 		/*Genotype Number Pane********************************/
 		genoNumsLabel = new JLabel("<html><b>Genotype Numbers:");
@@ -230,45 +213,51 @@ public class InitPopPane extends EvoPane {
 		gnPane = new JPanel();
     gnPane.setBackground(getBackground());
 		gnPane.setLayout(new GridBagLayout());
-		t = new GridBagConstraints();
+		GridBagConstraints t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 0, 15);
 
-		t.gridwidth = 1;
-		t.gridx = 0; t.gridy = 1;
+		t.gridx = 0; t.gridy = 0;
 		gnPane.add(genotypeNums, t);
 
-		t.gridwidth = 1;
-		t.gridx++; t.gridy = 1;
+		t.gridx = 1; t.gridy = 0;
 		gnPane.add(genoAALabel, t);
-		t.gridy = 2;
+		t.gridy = 1;
 		gnPane.add(genoAA, t);
 
-		t.gridx = 2; t.gridy = 1;
+		t.gridx = 2; t.gridy = 0;
 		gnPane.add(genoABLabel, t);
-		t.gridx = 2; t.gridy = 2;
+		t.gridx = 2; t.gridy = 1;
 		gnPane.add(genoAB, t);
 
-		t.gridx = 3; t.gridy = 1;
+		t.gridx = 3; t.gridy = 0;
 		gnPane.add(genoBBLabel, t);
-		t.gridx = 3; t.gridy = 2;
+		t.gridx = 3; t.gridy = 1;
 		gnPane.add(genoBB, t);
 
-		t.gridx = 4; t.gridy = 1;
+		t.gridx = 4; t.gridy = 0;
 		gnPane.add(genoACLabel, t);
-		t.gridx = 4; t.gridy = 2;
+		t.gridx = 4; t.gridy = 1;
 		gnPane.add(genoAC, t);
 
-		t.gridx = 5; t.gridy = 1;
+		t.gridx = 5; t.gridy = 0;
 		gnPane.add(genoBCLabel, t);
-		t.gridx = 5; t.gridy = 2;
+		t.gridx = 5; t.gridy = 1;
 		gnPane.add(genoBC, t);
 
-		t.gridx = 6; t.gridy = 1;
+		t.gridx = 6; t.gridy = 0;
 		gnPane.add(genoCCLabel, t);
-		t.gridx = 6; t.gridy = 2;
+		t.gridx = 6; t.gridy = 1;
 		gnPane.add(genoCC, t);
 
+    t.gridx = 7; t.gridy = 0;
+    t.weightx = 1.0;
+    t.fill = GridBagConstraints.HORIZONTAL;
+    gnPane.add(Box.createHorizontalGlue(), t);
+
 		c.gridx = 0; c.gridy++;
+    c.gridwidth = 3;
+    c.weightx = 1.0;
+    c.fill = GridBagConstraints.HORIZONTAL;
 		add(gnPane, c);
 
 		addToLists();
@@ -444,12 +433,12 @@ public class InitPopPane extends EvoPane {
 		initFreqB.setText(String.format("%.3f", freqB));
 		initFreqC.setText(String.format("%.3f", freqC));
 
-		calcFreqAALabel.setText("AA: " + String.format("%.3f",  AAfreq));
-		calcFreqABLabel.setText("AB: " + String.format("%.3f",  ABfreq));
-		calcFreqBBLabel.setText("BB: " + String.format("%.3f",  BBfreq));
-		calcFreqACLabel.setText("AC: " + String.format("%.3f",  ACfreq));
-		calcFreqBCLabel.setText("BC: " + String.format("%.3f",  BCfreq));
-		calcFreqCCLabel.setText("CC: " + String.format("%.3f",  CCfreq));
+		// calcFreqAALabel.setText("AA: " + String.format("%.3f",  AAfreq));
+		// calcFreqABLabel.setText("AB: " + String.format("%.3f",  ABfreq));
+		// calcFreqBBLabel.setText("BB: " + String.format("%.3f",  BBfreq));
+		// calcFreqACLabel.setText("AC: " + String.format("%.3f",  ACfreq));
+		// calcFreqBCLabel.setText("BC: " + String.format("%.3f",  BCfreq));
+		// calcFreqCCLabel.setText("CC: " + String.format("%.3f",  CCfreq));
 
 		// Set the number text boxes
 		if(!genotypeNums.isSelected()) {
