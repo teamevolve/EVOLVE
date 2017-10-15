@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
 import java.util.ArrayList;
 
@@ -21,6 +20,7 @@ import java.util.ArrayList;
  *
  * @author jasonfortunato
  * @author linneasahlberg
+ * @author alexdennis
  *
  * A pane in the GUI that allows the user to enter information about a constant or varying population.
  *
@@ -31,15 +31,12 @@ public class GeneticDriftPane extends EvoPane{
 //	ButtonGroup popConstGroup;
 //	JRadioButton popConstTrue;
 //	JRadioButton popConstFalse;
-	JLabel initPopLabel;  			// Initial population
-	JTextField initPop;
 	JLabel carryCapLabel;			// Carrying Capacity
-	JTextField carryCap;
+	EvoTextField carryCap;
 	JLabel postCrashLabel; 			// Crash
-	JTextField postCrash;
+	EvoTextField postCrash;
 
 	ArrayList<Component> vPopList = new ArrayList<Component>();
-	ArrayList<Component> cPopList = new ArrayList<Component>();
 
 	public GeneticDriftPane() {
 
@@ -66,12 +63,12 @@ public class GeneticDriftPane extends EvoPane{
 
 		// carrying capacity stuff - appears when popSize varying
 		carryCapLabel = new JLabel("Carrying Capacity: ");
-		carryCap = new JTextField(TEXT_LEN_LONG);
+		carryCap = new EvoTextField(TEXT_LEN_LONG);
 		carryCap.setName(INT); carryCap.setInputVerifier(iv);
 
 		// post crash population size stuff - appears when popSize varying
 		postCrashLabel = new JLabel("Post Crash Population Size: ");
-		postCrash = new JTextField(TEXT_LEN_LONG);
+		postCrash = new EvoTextField(TEXT_LEN_LONG);
 		postCrash.setName(INT); postCrash.setInputVerifier(iv);
 
 		// add carrying capacity and post crash stuff to separate panel for formatting
@@ -100,9 +97,6 @@ public class GeneticDriftPane extends EvoPane{
 		vPopList.add(postCrashLabel);
 		vPopList.add(postCrash);
 
-		// add all that will be disabled when PopSize is varying to the cPopList
-		cPopList.add(initPopLabel);
-		cPopList.add(initPop);
 //		modeConstPop(false);
 
 		// set actions for the PopConstTrue radio button

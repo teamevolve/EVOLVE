@@ -8,7 +8,6 @@ import java.awt.Insets;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import java.util.ArrayList;
 
@@ -18,6 +17,7 @@ import shared.Genotype;
  *
  * @author linneasahlberg
  * @author jasonfortunato
+ * @author alexdennis
  *
  */
 
@@ -31,12 +31,12 @@ public class SexSelectPane extends EvoPane {
 
 	JLabel AALabel, ABLabel, BBLabel, ACLabel, BCLabel, CCLabel;
 
-	JTextField freqAAxAA, freqAAxAB, freqAAxBB, freqAAxAC, freqAAxBC, freqAAxCC;
-	JTextField freqABxAA, freqABxAB, freqABxBB, freqABxAC, freqABxBC, freqABxCC;
-	JTextField freqBBxAA, freqBBxAB, freqBBxBB, freqBBxAC, freqBBxBC, freqBBxCC;
-	JTextField freqACxAA, freqACxAB, freqACxBB, freqACxAC, freqACxBC, freqACxCC;
-	JTextField freqBCxAA, freqBCxAB, freqBCxBB, freqBCxAC, freqBCxBC, freqBCxCC;
-	JTextField freqCCxAA, freqCCxAB, freqCCxBB, freqCCxAC, freqCCxBC, freqCCxCC;
+	EvoTextField freqAAxAA, freqAAxAB, freqAAxBB, freqAAxAC, freqAAxBC, freqAAxCC;
+	EvoTextField freqABxAA, freqABxAB, freqABxBB, freqABxAC, freqABxBC, freqABxCC;
+	EvoTextField freqBBxAA, freqBBxAB, freqBBxBB, freqBBxAC, freqBBxBC, freqBBxCC;
+	EvoTextField freqACxAA, freqACxAB, freqACxBB, freqACxAC, freqACxBC, freqACxCC;
+	EvoTextField freqBCxAA, freqBCxAB, freqBCxBB, freqBCxAC, freqBCxBC, freqBCxCC;
+	EvoTextField freqCCxAA, freqCCxAB, freqCCxBB, freqCCxAC, freqCCxBC, freqCCxCC;
 
 	ArrayList<Component> prefLabels = new ArrayList<Component>();
 	ArrayList<Component> labels = new ArrayList<Component>();
@@ -46,6 +46,7 @@ public class SexSelectPane extends EvoPane {
 
 	public SexSelectPane() {
 		super();
+    color2List.add(getParent());
 		mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): ");
 		AAPrefLabel = new JLabel("AA Preference for:");
 		ABPrefLabel = new JLabel("AB Preference for:");
@@ -61,47 +62,47 @@ public class SexSelectPane extends EvoPane {
 		BCLabel = new JLabel("BC"); threeAllelesList.add(BCLabel);
 		CCLabel = new JLabel("CC"); threeAllelesList.add(CCLabel);
 
-		freqAAxAA = new JTextField(TEXT_LEN_SHORT);
-		freqAAxAB = new JTextField(TEXT_LEN_SHORT);
-		freqAAxBB = new JTextField(TEXT_LEN_SHORT);
-		freqAAxAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqAAxAC);
-		freqAAxBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqAAxBC);
-		freqAAxCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqAAxCC);
+		freqAAxAA = new EvoTextField(TEXT_LEN_SHORT);
+		freqAAxAB = new EvoTextField(TEXT_LEN_SHORT);
+		freqAAxBB = new EvoTextField(TEXT_LEN_SHORT);
+		freqAAxAC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqAAxAC);
+		freqAAxBC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqAAxBC);
+		freqAAxCC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqAAxCC);
 
-		freqABxAA = new JTextField(TEXT_LEN_SHORT);
-		freqABxAB = new JTextField(TEXT_LEN_SHORT);
-		freqABxBB = new JTextField(TEXT_LEN_SHORT);
-		freqABxAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqABxAC);
-		freqABxBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqABxBC);
-		freqABxCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqABxCC);
+		freqABxAA = new EvoTextField(TEXT_LEN_SHORT);
+		freqABxAB = new EvoTextField(TEXT_LEN_SHORT);
+		freqABxBB = new EvoTextField(TEXT_LEN_SHORT);
+		freqABxAC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqABxAC);
+		freqABxBC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqABxBC);
+		freqABxCC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqABxCC);
 
-		freqBBxAA = new JTextField(TEXT_LEN_SHORT);
-		freqBBxAB = new JTextField(TEXT_LEN_SHORT);
-		freqBBxBB = new JTextField(TEXT_LEN_SHORT);
-		freqBBxAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBBxAC);
-		freqBBxBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBBxBC);
-		freqBBxCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBBxCC);
+		freqBBxAA = new EvoTextField(TEXT_LEN_SHORT);
+		freqBBxAB = new EvoTextField(TEXT_LEN_SHORT);
+		freqBBxBB = new EvoTextField(TEXT_LEN_SHORT);
+		freqBBxAC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBBxAC);
+		freqBBxBC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBBxBC);
+		freqBBxCC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBBxCC);
 
-		freqACxAA = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxAA);
-		freqACxAB = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxAB);
-		freqACxBB = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxBB);
-		freqACxAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxAC);
-		freqACxBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxBC);
-		freqACxCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxCC);
+		freqACxAA = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxAA);
+		freqACxAB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxAB);
+		freqACxBB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxBB);
+		freqACxAC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxAC);
+		freqACxBC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxBC);
+		freqACxCC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqACxCC);
 
-		freqBCxAA = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxAA);
-		freqBCxAB = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxAB);
-		freqBCxBB = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxBB);
-		freqBCxAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxAC);
-		freqBCxBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxBC);
-		freqBCxCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxCC);
+		freqBCxAA = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxAA);
+		freqBCxAB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxAB);
+		freqBCxBB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxBB);
+		freqBCxAC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxAC);
+		freqBCxBC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxBC);
+		freqBCxCC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqBCxCC);
 
-		freqCCxAA = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxAA);
-		freqCCxAB = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxAB);
-		freqCCxBB = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxBB);
-		freqCCxAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxAC);
-		freqCCxBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxBC);
-		freqCCxCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxCC);
+		freqCCxAA = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxAA);
+		freqCCxAB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxAB);
+		freqCCxBB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxBB);
+		freqCCxAC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxAC);
+		freqCCxBC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxBC);
+		freqCCxCC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(freqCCxCC);
 
 		addToLists();
 

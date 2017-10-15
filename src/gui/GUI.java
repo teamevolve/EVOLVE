@@ -11,12 +11,14 @@ import java.util.Random;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import shared.EvolveDirector;
 
 /**
  * @author linneasahlberg
  * @author jasonfortunato
+ * @author alexdennis
  *
  * Started 9/18/16
  * The main GUI class. Combines all of the panes into one JFrame.
@@ -31,32 +33,24 @@ public class GUI extends EvoPane {
 	public static boolean DEBUG_MIGRATION = false;
 	public static boolean DEBUG_SURVIVAL = false;
 	public static boolean DEBUG_MUTATION = false;
-	
+
 	boolean firstRun = true;
 
 	// we'll put args here
 	shared.SessionParameters parms;
 
 	// Lab report stuff
-	JLabel titleLabel; JTextField title;
+	JLabel titleLabel; EvoTextField title;
 	JLabel questionLabel; JTextArea question; JScrollPane questionPane;
 	JLabel experLabel; JTextArea exper; JScrollPane experPane;
+  JLabel predictLabel; JTextArea predict; JScrollPane predictPane;
 	JLabel resultsLabel; JTextArea results; JScrollPane resultsPane;
 	JLabel discussionLabel; JTextArea discussion; JScrollPane discussionPane;
 	JCheckBox showLabInfo;
 
 	// GUI buttons
-	JButton apply;
 	JButton submit;
 	JButton help;
-
-	// Number of Pops
-	JLabel numPopsLabel;
-	JTextField numPops;
-
-	// Number of Gens
-	JLabel numGensLabel;
-	JTextField numGens;
 
 	// Evolutionary forces checkboxes
 	JCheckBox popSizeCheck;
@@ -71,12 +65,11 @@ public class GUI extends EvoPane {
 
 	/* Evolutionary Forces Panes *********************************************/
 	JLabel seedLabel; 				// Seed
-	JTextField seedField;
+	EvoTextField seedField;
 	JLabel numAllelesLabel;			// Number of Alleles
 	ButtonGroup numAlleles;
 	static JRadioButton alleles2, alleles3;
 
-	//ForcesPane fp = new ForcesPane();
 	InitPopPane pp = new InitPopPane();
 	GeneticDriftPane gd = new GeneticDriftPane();
 	SelectionPane sp = new SelectionPane();
@@ -113,7 +106,7 @@ public class GUI extends EvoPane {
 		/* Lab report fields *******************************************************/
 		color2List.add(getParent());
 		titleLabel = new JLabel("<html><b>Title:</b>");
-		title = new JTextField(TEXT_LEN_EXTRA_LONG / 2);
+		title = new EvoTextField(TEXT_LEN_EXTRA_LONG);
 
 		// checkbox to show/hide lab report fields
 		showLabInfo = new JCheckBox("Show lab report fields", true);
@@ -131,6 +124,13 @@ public class GUI extends EvoPane {
 		experPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		exper.setLineWrap(true);
 		exper.setWrapStyleWord(true);
+
+    predictLabel = new JLabel("<html><b>Predictions:</b>");
+    predict = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
+    predictPane = new JScrollPane(predict);
+    predictPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    predict.setLineWrap(true);
+    predict.setWrapStyleWord(true);
 
 		resultsLabel = new JLabel("<html><b>Results:</b>");
 		results = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
@@ -164,14 +164,19 @@ public class GUI extends EvoPane {
 		c.gridx = 1; c.gridy = 3;
 		add(experPane, c);
 
-		c.gridx = 0; c.gridy = 4;
-		add(resultsLabel, c);
-		c.gridx = 1; c.gridy = 4;
-		add(resultsPane, c);
+    c.gridx = 0; c.gridy = 4;
+    add(predictLabel, c);
+    c.gridx = 1; c.gridy = 4;
+    add(predictPane, c);
 
 		c.gridx = 0; c.gridy = 5;
-		add(discussionLabel, c);
+		add(resultsLabel, c);
 		c.gridx = 1; c.gridy = 5;
+		add(resultsPane, c);
+
+		c.gridx = 0; c.gridy = 6;
+		add(discussionLabel, c);
+		c.gridx = 1; c.gridy = 6;
 		add(discussionPane, c);
 
 		/* help stuff *****************************************************************************/
@@ -181,7 +186,7 @@ public class GUI extends EvoPane {
 		add(help, c);
 
 		/* Here's a bar for "aesthetics" ****************************************************/
-		c.gridy = 6;
+		c.gridy = 7;
 		/*for(int i = 0; i < 5; i++) {
 			c.gridx = i;
 			c.anchor = GridBagConstraints.WEST;
@@ -190,7 +195,7 @@ public class GUI extends EvoPane {
 
 		/* seed stuff ********************************************************/
 		seedLabel = new JLabel("<html><b>Seed: </b>");
-		seedField = new JTextField(TEXT_LEN_LONG);
+		seedField = new EvoTextField(TEXT_LEN_LONG);
 
 		// add seed label and field to frame
 		c.gridx = 4; c.gridy++;
@@ -288,9 +293,6 @@ public class GUI extends EvoPane {
 		/* Panes ****************************************************************************/
 		c.gridwidth = 7;
 
-//		c.gridx = 0; c.gridy = 6;
-	//	add(fp, c);
-
 		c.gridx = 0; c.gridy++;
 		add(pp, c);
 
@@ -308,14 +310,6 @@ public class GUI extends EvoPane {
 
 		c.gridx = 0; c.gridy = 50;
 		add(ssp, c);
-
-		c.gridx = 0; c.gridy = 70;
-		//add(np, c);
-
-		/* apply and submit buttons ***********************************************/
-		apply = new JButton("Apply");
-		c.gridx = 3; c.gridy = 60;
-		//add(apply, c);
 
 		submit = new JButton("<html><span style='font-size:13px'>Run Simulation");
 		Color buttonColor = new Color(115, 229, 103);
@@ -385,17 +379,6 @@ public class GUI extends EvoPane {
 			}
 		});
 
-		apply.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				parms = new shared.SessionParameters();
-				if(!selectCheck.isSelected()) {
-					sp.fillWithOnes();
-				}
-				applyInfo();
-			}
-		});
-
-
 		/**
 		 * @author jasonfortunato
 		 * @author linneasahlberg
@@ -414,11 +397,9 @@ public class GUI extends EvoPane {
 				}
 			}
 		});
-
 	} // end of constructor
 
 	private void openHelp() throws Exception {
-
 		InputStream pdfStream = GUI.class.getResourceAsStream("evolveInfo.pdf");
 
 		File pdfTemp = new File("evolveTempManual.pdf");
@@ -443,11 +424,9 @@ public class GUI extends EvoPane {
 			System.out.println("File does not exist!");
 			System.out.println("Path used: " + pdfStream);
 		}
-
 	}
 
 	private void hideLabInfo(boolean b) {
-		//setLayout(null);
 		questionLabel.setVisible(b);
 		experLabel.setVisible(b);
 		resultsLabel.setVisible(b);
@@ -458,7 +437,6 @@ public class GUI extends EvoPane {
 		discussionPane.setVisible(b);
 	}
 
-
 	public void modeThreeAlleles(boolean b){
 		super.modeThreeAlleles(b);
 		pp.modeThreeAlleles(b);
@@ -466,9 +444,7 @@ public class GUI extends EvoPane {
 		mp.modeThreeAlleles(b);
 		mip.modeThreeAlleles(b);
 		ssp.modeThreeAlleles(b);
-
 	}
-
 
 	/**
 	 *  pushes data to sesh parms
@@ -508,6 +484,7 @@ public class GUI extends EvoPane {
 		parms.setTitle(title.getText());
 		parms.setQuestion(question.getText());
 		parms.setDesign(exper.getText());
+    parms.setPrediction(predict.getText());
 		parms.setResults(results.getText());
 		parms.setDiscuss(discussion.getText());
 	}
@@ -517,7 +494,6 @@ public class GUI extends EvoPane {
 	 * Called in main
 	 */
 	public static void createAndShowGUI() {
-
 		//make the GUI panel and add evo force panels to GUI
 		GUI g = GUI.getInstance();
 
@@ -528,63 +504,62 @@ public class GUI extends EvoPane {
 
 		//add the GUI to a scrollable pane
 		JScrollPane scrPane = new JScrollPane(g);
+    scrPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		// add the scrollable pane to the window
 		frame.add(scrPane);
-
-        try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    try {
+      for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          UIManager.setLookAndFeel(info.getClassName());
+          break;
         }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
-        SwingUtilities.updateComponentTreeUI(frame);
+    SwingUtilities.updateComponentTreeUI(frame);
 
 		frame.pack();
 		frame.setVisible(true);
-
 	}
 
 	public static void main(String[] args) {
-		  try {
-		        String one = args[0];
-		        switch (one.toLowerCase()) {
-		        		case "mate":
-			        		DEBUG_MATE = true;
-			        		break;
-		        		case "reproduction":
-			        		DEBUG_REPRO = true;
-			        		break;
-		        		case "migration":
-		        			DEBUG_MIGRATION = true;
-		        			break;
-		        		case "survival":
-		        			DEBUG_SURVIVAL = true;
-		        			break;
-		        		case "mutation":
-		        			DEBUG_MUTATION = true;
-		        			break;
-		        		case "all":
-		        			DEBUG_MATE = true;
-		        			DEBUG_REPRO = true;
-		        			DEBUG_MIGRATION = true;
-		        			DEBUG_SURVIVAL = true;
-		        			DEBUG_MUTATION = true;
-		        			break;
-		        		default:
-		        			break;
-		        }
-		    }
-		    catch (ArrayIndexOutOfBoundsException e){
-		        //System.out.println("ArrayIndexOutOfBoundsException caught");
-		    	}
-		    finally {
-				createAndShowGUI();
-		    }
+	  try {
+      String one = args[0];
+      switch (one.toLowerCase()) {
+    		case "mate":
+      		DEBUG_MATE = true;
+      		break;
+    		case "reproduction":
+      		DEBUG_REPRO = true;
+      		break;
+    		case "migration":
+    			DEBUG_MIGRATION = true;
+    			break;
+    		case "survival":
+    			DEBUG_SURVIVAL = true;
+    			break;
+    		case "mutation":
+    			DEBUG_MUTATION = true;
+    			break;
+    		case "all":
+    			DEBUG_MATE = true;
+    			DEBUG_REPRO = true;
+    			DEBUG_MIGRATION = true;
+    			DEBUG_SURVIVAL = true;
+    			DEBUG_MUTATION = true;
+    			break;
+    		default:
+    			break;
+      }
+    }
+    catch (ArrayIndexOutOfBoundsException e){
+      //System.out.println("ArrayIndexOutOfBoundsException caught");
+  	}
+    finally {
+      createAndShowGUI();
+    }
 	}
 }

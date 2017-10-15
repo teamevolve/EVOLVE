@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -29,6 +27,7 @@ import shared.SessionParameters;
  *
  * @author jasonfortunato
  * @author linneasahlberg
+ * @author alexdennis
  *
  */
 public class SelectionPane extends EvoPane {
@@ -39,15 +38,14 @@ public class SelectionPane extends EvoPane {
 	JLabel AALabel, ABLabel, BBLabel,
 		ACLabel, BCLabel, CCLabel;
 	JLabel reproLabel, survLabel, absFitLabel, relFitLabel;
-	JTextField survAA, survAB, survBB,
+	EvoTextField survAA, survAB, survBB,
 	survAC, survBC, survCC;
-	JTextField reproAA, reproAB, reproBB,
+	EvoTextField reproAA, reproAB, reproBB,
 		reproAC, reproBC, reproCC;
-	JTextField absFitAA, absFitAB, absFitBB,
+	EvoTextField absFitAA, absFitAB, absFitBB,
 		absFitAC, absFitBC, absFitCC;
 	JLabel relFitAA, relFitAB, relFitBB,
 		relFitAC, relFitBC, relFitCC;
-	JButton apply;
 
 	double REPRO_DEFAULT = 5;
 
@@ -92,24 +90,126 @@ public class SelectionPane extends EvoPane {
 		survLabel = new JLabel("<html><b>Survival Rates </b> (0.0-1.0):");
 		reproLabel = new JLabel("<html><b>Reproductive Rates </b> (0.0-10.0):");
 		absFitLabel = new JLabel("<html><b>Absolute Fitness </b> (0.0-5.0):");
-		survAA = new JTextField(TEXT_LEN_SHORT);
-		survAB = new JTextField(TEXT_LEN_SHORT);
-		survBB = new JTextField(TEXT_LEN_SHORT);
-		survAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(survAC);
-		survBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(survBC);
-		survCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(survCC);
-		reproAA = new JTextField(TEXT_LEN_SHORT);
-		reproAB = new JTextField(TEXT_LEN_SHORT);
-		reproBB = new JTextField(TEXT_LEN_SHORT);
-		reproAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(reproAC);
-		reproBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(reproBC);
-		reproCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(reproCC);
-		absFitAA = new JTextField(TEXT_LEN_SHORT);
-		absFitAB = new JTextField(TEXT_LEN_SHORT);
-		absFitBB = new JTextField(TEXT_LEN_SHORT);
-		absFitAC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(absFitAC);
-		absFitBC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(absFitBC);
-		absFitCC = new JTextField(TEXT_LEN_SHORT); threeAllelesList.add(absFitCC);
+		survAA = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survAA, reproAA, absFitAA);
+        updateRelFit();
+      }
+    };
+		survAB = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survAB, reproAB, absFitAB);
+        updateRelFit();
+      }
+    };
+		survBB = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survBB, reproBB, absFitBB);
+        updateRelFit();
+      }
+    };
+		survAC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survAC, reproAC, absFitAC);
+        updateRelFit();
+      }
+    };
+		survBC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survBC, reproBC, absFitBC);
+        updateRelFit();
+      }
+    };
+		survCC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survCC, reproCC, absFitCC);
+        updateRelFit();
+      }
+    };
+    threeAllelesList.add(survAC);
+    threeAllelesList.add(survBC);
+    threeAllelesList.add(survCC);
+
+		reproAA = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survAA, reproAA, absFitAA);
+        updateRelFit();
+      }
+    };
+		reproAB = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survAB, reproAB, absFitAB);
+        updateRelFit();
+      }
+    };
+		reproBB = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survBB, reproBB, absFitBB);
+        updateRelFit();
+      }
+    };
+		reproAC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survAC, reproAC, absFitAC);
+        updateRelFit();
+      }
+    };
+		reproBC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survBC, reproBC, absFitBC);
+        updateRelFit();
+      }
+    };
+		reproCC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateAbsFit(survCC, reproCC, absFitCC);
+        updateRelFit();
+      }
+    };
+    threeAllelesList.add(reproAC);
+    threeAllelesList.add(reproBC);
+    threeAllelesList.add(reproCC);
+
+		absFitAA = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateSurv(survAA, reproAA, absFitAA);
+        updateRelFit();
+      }
+    };
+		absFitAB = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateSurv(survAB, reproAB, absFitAB);
+        updateRelFit();
+      }
+    };
+		absFitBB = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateSurv(survBB, reproBB, absFitBB);
+        updateRelFit();
+      }
+    };
+		absFitAC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateSurv(survAC, reproAC, absFitAC);
+        updateRelFit();
+      }
+    };
+		absFitBC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateSurv(survBC, reproBC, absFitBC);
+        updateRelFit();
+      }
+    };
+		absFitCC = new EvoTextField(TEXT_LEN_SHORT) {
+      public void updateOnFocusLost() {
+        updateSurv(survCC, reproCC, absFitCC);
+        updateRelFit();
+      }
+    };
+    threeAllelesList.add(absFitAC);
+    threeAllelesList.add(absFitBC);
+    threeAllelesList.add(absFitCC);
+
 		relFitLabel = new JLabel("<html><b>Relative Fitness: ");
 		relFitAA = new JLabel("___");
 		relFitAB = new JLabel("___");
@@ -185,223 +285,6 @@ public class SelectionPane extends EvoPane {
 				modeRandS(false);
 			}
 		});
-
-
-    survAA.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        survAA.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        survAA.select(0, 0);
-        updateAbsFit(survAA, reproAA, absFitAA);
-        updateRelFit();
-      }
-    });
-
-		survAB.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        survAB.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        survAB.select(0, 0);
-        updateAbsFit(survAB, reproAB, absFitAB);
-        updateRelFit();
-      }
-    });
-
-		survBB.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        survBB.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        survBB.select(0, 0);
-        updateAbsFit(survBB, reproBB, absFitBB);
-        updateRelFit();
-      }
-    });
-
-		survAC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        survAC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        survAC.select(0, 0);
-        updateAbsFit(survAC, reproAC, absFitAC);
-        updateRelFit();
-      }
-    });
-
-		survBC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        survBC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        survBC.select(0, 0);
-        updateAbsFit(survBC, reproBC, absFitBC);
-        updateRelFit();
-      }
-    });
-
-		survCC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        survCC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        survCC.select(0, 0);
-        updateAbsFit(survCC, reproCC, absFitCC);
-        updateRelFit();
-      }
-    });
-
-		reproAA.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        reproAA.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        reproAA.select(0, 0);
-        updateAbsFit(survAA, reproAA, absFitAA);
-        updateRelFit();
-      }
-    });
-
-		reproAB.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        reproAB.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        reproAB.select(0, 0);
-        updateAbsFit(survAB, reproAB, absFitAB);
-        updateRelFit();
-      }
-    });
-
-		reproBB.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        reproBB.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        reproAB.select(0, 0);
-        updateAbsFit(survBB, reproBB, absFitBB);
-        updateRelFit();
-      }
-    });
-
-		reproAC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        reproAC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        reproAC.select(0, 0);
-        updateAbsFit(survAC, reproAC, absFitAC);
-        updateRelFit();
-      }
-    });
-
-		reproBC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        reproBC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        reproBC.select(0, 0);
-        updateAbsFit(survBC, reproBC, absFitBC);
-        updateRelFit();
-      }
-    });
-
-		reproCC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        reproCC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        reproCC.select(0, 0);
-        updateAbsFit(survCC, reproCC, absFitCC);
-        updateRelFit();
-      }
-    });
-
-		absFitAA.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        absFitAA.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        absFitAA.select(0, 0);
-        updateSurv(survAA, reproAA, absFitAA);
-        updateRelFit();
-      }
-    });
-
-		absFitAB.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        absFitAB.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        absFitAB.select(0, 0);
-        updateSurv(survAB, reproAB, absFitAB);
-        updateRelFit();
-      }
-    });
-
-		absFitBB.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        absFitBB.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        absFitBB.select(0, 0);
-        updateSurv(survBB, reproBB, absFitBB);
-        updateRelFit();
-      }
-    });
-
-		absFitAC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        absFitAC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        absFitAC.select(0, 0);
-        updateSurv(survAC, reproAC, absFitAC);
-        updateRelFit();
-      }
-    });
-
-		absFitBC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        absFitBC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        absFitBC.select(0, 0);
-        updateSurv(survBC, reproBC, absFitBC);
-        updateRelFit();
-      }
-    });
-
-		absFitCC.addFocusListener(new FocusListener() {
-      public void focusGained(FocusEvent e) {
-        absFitCC.selectAll();
-      }
-
-      public void focusLost(FocusEvent e) {
-        absFitCC.select(0, 0);
-        updateSurv(survCC, reproCC, absFitCC);
-        updateRelFit();
-      }
-    });
 	}
 
 
