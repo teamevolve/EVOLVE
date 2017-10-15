@@ -46,6 +46,13 @@ public class SexSelectPane extends EvoPane {
 
 	public SexSelectPane() {
 		super();
+    // standardize column widths
+		for(int i = 0; i < 5; i++) {
+			c.gridx = i; c.gridy = 0;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}
+
     color2List.add(getParent());
 		mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): ");
 		AAPrefLabel = new JLabel("AA Preference for:");

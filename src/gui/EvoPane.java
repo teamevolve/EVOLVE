@@ -54,13 +54,6 @@ public abstract class EvoPane extends JPanel {
 		// set layout
 		setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
-
-		// standardize column widths
-		for(int i = 0; i < 5; i++) {
-			c.gridx = i; c.gridy = 0;
-			c.anchor = GridBagConstraints.WEST;
-			add(new JLabel("_______________________________"), c);
-		}
 	}
 
 	@Override

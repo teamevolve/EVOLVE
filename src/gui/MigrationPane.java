@@ -52,6 +52,13 @@ public class MigrationPane extends EvoPane {
 
 	public MigrationPane() {
 		super();
+    // standardize column widths
+		for(int i = 0; i < 5; i++) {
+			c.gridx = i; c.gridy = 0;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}
+
 		color1List.add(getParent());
 		// Migration radio buttons
 		migLabel = new JLabel("<html><span style='font-size:11px'><b>Migration</b> (Gene Flow): </span>");

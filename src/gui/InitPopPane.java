@@ -69,6 +69,13 @@ public class InitPopPane extends EvoPane {
 
 	public InitPopPane() {
 		super();
+    // standardize column widths
+		for(int i = 0; i < 5; i++) {
+			c.gridx = i; c.gridy = 0;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}
+
 		color1List.add(getParent());
 		popLabel = new JLabel("<html><b><span style='font-size:11px'>Initial Population:</span></b>");
 		popSizeLabel = new JLabel("<html><b>Population Size:");

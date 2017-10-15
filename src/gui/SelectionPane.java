@@ -59,6 +59,13 @@ public class SelectionPane extends EvoPane {
 
 	public SelectionPane() {
 		super();
+    // standardize column widths
+		for(int i = 0; i < 5; i++) {
+			c.gridx = i; c.gridy = 0;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}
+
 		color1List.add(getParent());
 		// Selection radio buttons
 		selectLabel = new JLabel("<html><b><span style='font-size:11px'>Natural Selection: </span> </b>");

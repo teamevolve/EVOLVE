@@ -39,8 +39,14 @@ public class GeneticDriftPane extends EvoPane{
 	ArrayList<Component> vPopList = new ArrayList<Component>();
 
 	public GeneticDriftPane() {
-
 		super();
+    // standardize column widths
+		for(int i = 0; i < 5; i++) {
+			c.gridx = i; c.gridy = 0;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}
+
 		color2List.add(getParent());
 
 		/* pop const stuff *****************************************************************************/

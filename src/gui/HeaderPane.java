@@ -53,6 +53,13 @@ public class HeaderPane extends EvoPane {
 
   public HeaderPane() {
     super();
+    // standardize column widths
+		for(int i = 0; i < 5; i++) {
+			c.gridx = i; c.gridy = 0;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}
+
     c.anchor = GridBagConstraints.WEST;
 
 		/* Lab report fields *******************************************************/
