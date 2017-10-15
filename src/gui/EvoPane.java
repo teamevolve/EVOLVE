@@ -23,8 +23,6 @@ import javax.swing.JPanel;
  */
 
 public abstract class EvoPane extends JPanel {
-
-	final static int TEXT_LEN_EXTRA_LONG = 48;
 	final static int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 4;
 	final static String INT = "int";

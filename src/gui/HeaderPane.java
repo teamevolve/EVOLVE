@@ -1,7 +1,9 @@
 package gui;
 
+import java.awt.FlowLayout;
 import java.awt.Desktop;
 import java.awt.GridBagConstraints;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -19,6 +21,9 @@ import javax.swing.JCheckBox;
 import javax.swing.ButtonGroup;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JPanel;
+import javax.swing.BoxLayout;
+import javax.swing.Box;
 
 /**
  *
@@ -27,6 +32,7 @@ import javax.swing.ScrollPaneConstants;
  */
 public class HeaderPane extends EvoPane {
   // Lab report stuff
+  JLabel headerLabel;
   JLabel titleLabel; EvoTextField title;
   JLabel questionLabel; JTextArea question; JScrollPane questionPane;
   JLabel experLabel; JTextArea exper; JScrollPane experPane;
@@ -53,116 +59,121 @@ public class HeaderPane extends EvoPane {
 
   public HeaderPane() {
     super();
-    // standardize column widths
-		for(int i = 0; i < 5; i++) {
-			c.gridx = i; c.gridy = 0;
-			c.anchor = GridBagConstraints.WEST;
-			add(new JLabel("_______________________________"), c);
-		}
+    c.anchor = GridBagConstraints.LINE_START;
 
-    c.anchor = GridBagConstraints.WEST;
+    headerLabel = new JLabel("<html><b><span style='font-size:11px'>Experiment Parameters:</span></b>");
+    c.gridx = 0; c.gridy = 0;
+    c.gridwidth = 2;
+    add(headerLabel, c);
+    c.gridwidth = 1;
+
+    /* help stuff *****************************************************************************/
+		help = new JButton("Help");
+		c.gridx = 2;
+		c.anchor = GridBagConstraints.LINE_END;
+		add(help, c);
+    c.anchor = GridBagConstraints.LINE_START;
 
 		/* Lab report fields *******************************************************/
 		color2List.add(getParent());
 		titleLabel = new JLabel("<html><b>Title:</b>");
-		title = new EvoTextField(TEXT_LEN_EXTRA_LONG);
+		title = new EvoTextField(TEXT_LEN_LONG);
 
-		// checkbox to show/hide lab report fields
+		// // checkbox to show/hide lab report fields
 		showLabInfo = new JCheckBox("Show lab report fields", true);
 
 		questionLabel = new JLabel("<html><b>Question:</b>");
-		question = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
+		question = new JTextArea(1, TEXT_LEN_LONG);
 		questionPane = new JScrollPane(question);
 		questionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		question.setLineWrap(true);
 		question.setWrapStyleWord(true);
+    question.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
+    question.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
 
 		experLabel = new JLabel("<html><b>Experimental Design:</b>");
-		exper = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
+		exper = new JTextArea(1, TEXT_LEN_LONG);
 		experPane = new JScrollPane(exper);
 		experPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		exper.setLineWrap(true);
 		exper.setWrapStyleWord(true);
+    exper.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
+    exper.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
 
     predictLabel = new JLabel("<html><b>Predictions:</b>");
-    predict = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
+    predict = new JTextArea(1, TEXT_LEN_LONG);
     predictPane = new JScrollPane(predict);
     predictPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     predict.setLineWrap(true);
     predict.setWrapStyleWord(true);
+    predict.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
+    predict.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
 
 		resultsLabel = new JLabel("<html><b>Results:</b>");
-		results = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
+		results = new JTextArea(1, TEXT_LEN_LONG);
 		resultsPane = new JScrollPane(results);
 		resultsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		results.setLineWrap(true);
 		results.setWrapStyleWord(true);
+    results.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
+    results.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
 
 		discussionLabel = new JLabel("<html><b>Notes:</b>");
-		discussion = new JTextArea(1, TEXT_LEN_EXTRA_LONG);
+		discussion = new JTextArea(1, TEXT_LEN_LONG);
 		discussionPane = new JScrollPane(discussion);
 		discussionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		discussion.setLineWrap(true);
 		discussion.setWrapStyleWord(true);
+    discussion.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
+    discussion.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
 
-		c.gridwidth = 5;
 		c.gridx = 0; c.gridy = 1;
 		add(titleLabel, c);
-		c.gridx = 1; c.gridy = 1;
-		add(title, c);
-		c.gridx = 4; c.gridy = 1;
+		c.gridx = 2;
 		add(showLabInfo, c);
-
-		c.gridx = 0; c.gridy = 2;
+		c.gridx = 0; c.gridy++;
 		add(questionLabel, c);
-		c.gridx = 1; c.gridy = 2;
-		add(questionPane, c);
-
-		c.gridx = 0; c.gridy = 3;
+		c.gridx = 0; c.gridy++;
 		add(experLabel, c);
-		c.gridx = 1; c.gridy = 3;
-		add(experPane, c);
-
-    c.gridx = 0; c.gridy = 4;
+    c.gridx = 0; c.gridy++;
     add(predictLabel, c);
-    c.gridx = 1; c.gridy = 4;
-    add(predictPane, c);
-
-		c.gridx = 0; c.gridy = 5;
+		c.gridx = 0; c.gridy++;
 		add(resultsLabel, c);
-		c.gridx = 1; c.gridy = 5;
-		add(resultsPane, c);
-
-		c.gridx = 0; c.gridy = 6;
+		c.gridx = 0; c.gridy++;
 		add(discussionLabel, c);
-		c.gridx = 1; c.gridy = 6;
-		add(discussionPane, c);
 
-		/* help stuff *****************************************************************************/
-		help = new JButton("Help");
-		c.gridx = 4; c.gridy = 3;
-		c.anchor = GridBagConstraints.CENTER;
-		add(help, c);
-
-		/* Here's a bar for "aesthetics" ****************************************************/
-		c.gridy = 7;
-		/*for(int i = 0; i < 5; i++) {
-			c.gridx = i;
-			c.anchor = GridBagConstraints.WEST;
-			add(new JLabel("_______________________________"), c);
-		}*/
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 1.0;
+    c.gridx = 1; c.gridy = 1;
+    add(title, c);
+    c.gridwidth = 2;
+    c.gridx = 1; c.gridy++;
+    add(questionPane, c);
+    c.gridx = 1; c.gridy++;
+    add(experPane, c);
+    c.gridx = 1; c.gridy++;
+    add(predictPane, c);
+    c.gridx = 1; c.gridy++;
+    add(resultsPane, c);
+    c.gridx = 1; c.gridy++;
+    add(discussionPane, c);
+    c.gridwidth = 1;
+    c.weightx = 0.0;
+    c.fill = GridBagConstraints.NONE;
 
 		/* seed stuff ********************************************************/
-		seedLabel = new JLabel("<html><b>Seed: </b>");
-		seedField = new EvoTextField(TEXT_LEN_LONG);
+		seedLabel = new JLabel("<html><b>Seed:</b>");
+		seedField = new EvoTextField(TEXT_LEN_SHORT);
 
-		// add seed label and field to frame
-		c.gridx = 4; c.gridy++;
-		c.anchor = GridBagConstraints.WEST;
-		add(seedLabel, c);
-		c.gridx = 4;
-		c.anchor = GridBagConstraints.CENTER;
-		add(seedField, c);
+    JPanel seedPane = new JPanel();
+    seedPane.setLayout(new FlowLayout());
+    seedPane.add(seedLabel);
+    seedPane.add(seedField);
+
+    c.gridx = 2; c.gridy++;
+    c.anchor = GridBagConstraints.LINE_END;
+    add(seedPane, c);
+    c.anchor = GridBagConstraints.LINE_START;
 
 		// Fill in a random seed
     // range of seed should be small enough for students to write down, we
@@ -182,14 +193,17 @@ public class HeaderPane extends EvoPane {
 		numAlleles.add(alleles2);
 		numAlleles.add(alleles3);
 
+    JPanel allelesPane = new JPanel();
+    allelesPane.setLayout(new BoxLayout(allelesPane, BoxLayout.LINE_AXIS));
+    allelesPane.add(alleles2);
+    allelesPane.add(Box.createHorizontalStrut(20));
+    allelesPane.add(alleles3);
+
 		// add radio buttons and labels to gui
-		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		add(numAllelesLabel, c);
 		c.gridx = 1;
-		add(alleles2, c);
-		c.gridx = 2;
-		add(alleles3, c);
+		add(allelesPane, c);
 
 		/* EVOLUTIONARY FORCES ***************************************************************/
 		JLabel evoForces = new JLabel("<html><b>Active Evolutionary Forces:");
@@ -233,19 +247,23 @@ public class HeaderPane extends EvoPane {
 
 		c.gridx = 0; c.gridy++;
 		c.gridwidth = 3;
-		c.anchor = GridBagConstraints.WEST;
 		add(evoForces, c);
+
+    JPanel forcesPane = new JPanel();
+    forcesPane.setLayout(new BoxLayout(forcesPane, BoxLayout.LINE_AXIS));
+    forcesPane.add(popSizeCheck);
+    forcesPane.add(Box.createHorizontalStrut(20));
+    forcesPane.add(selectCheck);
+    forcesPane.add(Box.createHorizontalStrut(20));
+    forcesPane.add(mutationCheck);
+    forcesPane.add(Box.createHorizontalStrut(20));
+    forcesPane.add(migrationCheck);
+    forcesPane.add(Box.createHorizontalStrut(20));
+    forcesPane.add(sexualSelectCheck);
+
 		c.gridx = 0; c.gridy++;
-		c.gridwidth = 1;
-		add(popSizeCheck, c);
-		c.gridx = 1;
-		add(selectCheck, c);
-		c.gridx = 2;
-		add(mutationCheck, c);
-		c.gridx = 3;
-		add(migrationCheck, c);
-		c.gridx = 4;
-		add(sexualSelectCheck, c);
+		add(forcesPane, c);
+    c.gridwidth = 1;
 
 		// Show additional lab info
 		showLabInfo.addActionListener(new ActionListener() {
@@ -307,15 +325,24 @@ public class HeaderPane extends EvoPane {
 	private void hideLabInfo(boolean b) {
 		questionLabel.setVisible(b);
 		experLabel.setVisible(b);
+    predictLabel.setVisible(b);
 		resultsLabel.setVisible(b);
 		discussionLabel.setVisible(b);
 		questionPane.setVisible(b);
 		experPane.setVisible(b);
+    predictPane.setVisible(b);
 		resultsPane.setVisible(b);
 		discussionPane.setVisible(b);
 	}
 
   public void submit(shared.SessionParameters p) {
+    p.setTitle(title.getText());
+		p.setQuestion(question.getText());
+		p.setDesign(exper.getText());
+    p.setPrediction(predict.getText());
+		p.setResults(results.getText());
+		p.setDiscuss(discussion.getText());
+
     p.setThreeAlleles(alleles3.isSelected());
     p.setSeed(Long.parseLong(seedField.getText()));
 
@@ -325,20 +352,5 @@ public class HeaderPane extends EvoPane {
     p.setMutationChecked(mutationCheck.isSelected());
     p.setMigrationChecked(migrationCheck.isSelected());
     p.setSexSelectChecked(sexualSelectCheck.isSelected());
-
-    submitTitle(p);
   }
-
-  /**
-	 * Submits title and lab info
-	 */
-	private void submitTitle(shared.SessionParameters p) {
-		p.setTitle(title.getText());
-		p.setQuestion(question.getText());
-		p.setDesign(exper.getText());
-    p.setPrediction(predict.getText());
-		p.setResults(results.getText());
-		p.setDiscuss(discussion.getText());
-	}
-
 }
