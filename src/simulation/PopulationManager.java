@@ -11,7 +11,13 @@ import shared.Genotype;
 import shared.SessionParameters;
 import shared.Utilities;
 
+import static gui.GUI.DEBUG_MATE;
 import static gui.GUI.DEBUG_MIGRATION;
+import static gui.GUI.DEBUG_MUTATION;
+import static gui.GUI.DEBUG_REPRO;
+import static gui.GUI.DEBUG_SURVIVAL;
+import static gui.GUI.DEBUG_SUMMARY;
+
 
 /**
  * PopulationManager is controlled mostly by SimulationEngine, and delegates
@@ -99,6 +105,13 @@ public class PopulationManager {
 		for (Population p : populationList) {
 			p.simulateSurviveMutation();	
 		}
+		
+		if (DEBUG_SUMMARY) {
+			System.out.println("------------------------------------------------------------------------------------");
+			System.out.println();
+			System.out.println();
+		}
+		
 //		if (sp.isPopConst()) {
 //			int popSize = sp.getPopSize();
 //			for (Population p : populationList) {

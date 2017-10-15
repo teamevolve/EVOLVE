@@ -168,14 +168,36 @@ public class Population {
 	public void simulateSurviveMutation() {
 		GenerationRecord newGeneration = generationHistory.get(generationHistory.size() - 1);
 		survive(newGeneration); //natural selection
+		
+		if (DEBUG_SUMMARY) {
+
+			System.out.println("GENERATION: " + newGeneration.getGenerationNumber() + " Population NO." + newGeneration.getParentPopID());
+			System.out.println();
+			System.out.println("  summary for SURVIVING:");
+			printGenoNum_indent(newGeneration);
+		}
+		
 		if (DataManager.getInstance().getSessionParams().isMutationChecked()) {
 			mutate(newGeneration); //mutate
 		}
-		if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION) && populationID == 0){
+
+		if (DEBUG_SUMMARY) {
+			System.out.println();
+			System.out.println("  summary for MUTATION:");
+			printGenoNum_indent(newGeneration);
+			System.out.println();
+			System.out.println();
+		}
+
+		if (!DEBUG_SUMMARY 
+				&& (DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION) 
+				&& populationID == 0) {
 			System.out.println();
 			System.out.println();
 			System.out.println();
 		}
+		
+		
 		generationHistory.remove(generationHistory.size() - 1);
 		generationHistory.add(newGeneration);
 	}
@@ -221,7 +243,10 @@ public class Population {
 		else {
 			pairings = mateIterativeBiased(previous);
 		}
+		
+		//----------DEBUGGING CODE------------
 		if (DEBUG_SUMMARY) {
+			System.out.println();
 			System.out.println("  summary for MATING:");
 			printPairings_indent(pairings);
 		}
@@ -231,9 +256,14 @@ public class Population {
 		// generate Offspring
 		
 		generateOffspring(current, pairings);
+		
+		//----------DEBUGGING CODE-------------
 		if (DEBUG_SUMMARY) {
+			System.out.println();
 			System.out.println("  summary for REPRODUCTION:");
 			printGenoNum_indent(current);
+			System.out.println();
+			System.out.println();
 		}
 	}
 	
@@ -1058,7 +1088,7 @@ public class Population {
 			//----------------------------------------------------------------------------
 			//----------------------------------------------------------------------------		
 		}
-			
+		
 	}
 	
 	
