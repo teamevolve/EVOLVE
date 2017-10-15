@@ -33,6 +33,7 @@ public class GUI extends EvoPane {
 	public static boolean DEBUG_MIGRATION = false;
 	public static boolean DEBUG_SURVIVAL = false;
 	public static boolean DEBUG_MUTATION = false;
+	public static boolean DEBUG_SUMMARY = false;
 
 	boolean firstRun = true;
 
@@ -535,6 +536,10 @@ public class GUI extends EvoPane {
     		case "reproduction":
       		DEBUG_REPRO = true;
       		break;
+    		case "migrationsummary":
+    			DEBUG_MIGRATION = true;
+    			DEBUG_SUMMARY = true;
+    			break;
     		case "migration":
     			DEBUG_MIGRATION = true;
     			break;

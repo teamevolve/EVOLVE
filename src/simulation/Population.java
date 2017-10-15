@@ -20,6 +20,7 @@ import static gui.GUI.DEBUG_REPRO;
 import static gui.GUI.DEBUG_MIGRATION;
 import static gui.GUI.DEBUG_SURVIVAL;
 import static gui.GUI.DEBUG_MUTATION;
+import static gui.GUI.DEBUG_SUMMARY;
 
 
 /**
@@ -32,7 +33,8 @@ import static gui.GUI.DEBUG_MUTATION;
  * @see GenerationRecord
  *
  * @author ericscollins
- * @auther rwenner
+ * @author rwenner
+ * @author candicezhao
  *
  */
 
@@ -140,9 +142,13 @@ public class Population {
 	 */
 	public void simulateMatingRepro() {
 		GenerationRecord newGeneration = new GenerationRecord(populationID, generationHistory.size());
-		if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION) && populationID == 0){
+		if (DEBUG_MIGRATION || DEBUG_SUMMARY) {
 			System.out.println("GENERATION: "+ generationHistory.size() + " Population NO." + populationID);
 		}
+		else if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL ) && populationID == 0){
+			System.out.println("GENERATION: "+ generationHistory.size() + " Population NO." + populationID);
+		}
+		
 		reproduce(getLastGeneration(), newGeneration); // mating and reproduce
 		
 //		survive(newGeneration); //natural selection
@@ -207,15 +213,28 @@ public class Population {
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		boolean isBiased = sp.isSexSelectChecked();
 		HashMap<Genotype, HashMap<Genotype, Integer>> pairings = new HashMap<Genotype, HashMap<Genotype, Integer>> ();
+	
+		
 		if(!isBiased) {
 			pairings = mateIterativeIntegers(previous);
 		}
 		else {
 			pairings = mateIterativeBiased(previous);
 		}
+		if (DEBUG_SUMMARY) {
+			System.out.println("  summary for MATING:");
+			printPairings_indent(pairings);
+		}
+
+		
 		///*DEBUG*/System.out.println(System.currentTimeMillis() - start);
 		// generate Offspring
+		
 		generateOffspring(current, pairings);
+		if (DEBUG_SUMMARY) {
+			System.out.println("  summary for REPRODUCTION:");
+			printGenoNum_indent(current);
+		}
 	}
 	
 	
@@ -460,6 +479,7 @@ public class Population {
 			printPairings(results);
 			//System.out.println("--------------------------------------------------------------------");
 		}
+
 		return results;
 	}
 	
@@ -668,6 +688,7 @@ public class Population {
 			System.out.println();
 			printPairings(results);
 		}
+
 		return results;
 	}
 	
@@ -813,14 +834,27 @@ public class Population {
 		for (Genotype gt : Genotype.getValues()) {
 			offspring.put(gt, 0.0);
 		}
-		if (DEBUG_REPRO && populationID == 0) {
-			printOffspring(offspring);
-		}
+		
+//		if (DEBUG_REPRO && populationID == 0) {
+//			System.out.println();
+//			printOffspring_indent(offspring);
+//		}
+		
 		for (Genotype gt1 : Genotype.getValues()) {
 			for (Genotype gt2 : Genotype.getValues()) {
 				// if gt1xgt2 is not a valid pair or there is no pair of gt1xgt2 chosen in the mating process, skip
 				if (!Utilities.isValidPairing(gt1, gt2)) continue;
 				if (pairings.get(gt1).get(gt2) == 0) continue;
+				
+				//------------------------------------------------------------------------
+				//------------------------------------------------------------------------
+				if (DEBUG_REPRO && populationID == 0) {
+					System.out.println();
+					printPairings_indent(pairings);
+					System.out.println();
+				}
+				//------------------------------------------------------------------------
+				//------------------------------------------------------------------------
 				
 				for (Genotype off : Utilities.getOffspringGenotypes(gt1, gt2)) {
 					double numOfMates = pairings.get(gt1).get(gt2);
@@ -834,16 +868,25 @@ public class Population {
 						//------------------------------------------------------------------------
 						//------------------------------------------------------------------------
 						if (DEBUG_REPRO && populationID == 0) {
-							printPairings(pairings);
-							System.out.println(gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString());
+							System.out.print("  ");
+							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
+							System.out.print("     ");
 							System.out.println(gt1.toString() + " repror8: " + sp.getReproductionRate(gt1));
+							System.out.print("     ");
 							System.out.println(gt2.toString() + " repror8: " + sp.getReproductionRate(gt2));
+							System.out.print("     ");
 							System.out.println("average number of off: " + mean);
+							System.out.print("     ");
 							System.out.println("number of mates: " + numOfMates);
+							System.out.print("     ");
 							System.out.println("standard deviation: " + sd);
+							System.out.print("     ");
 							System.out.println("random coefficient: " + random_co);
+							System.out.print("     ");
 							System.out.println("number of " + off.toString() + " added to the young gen: "+ off_num);
-							printOffspring(offspring);
+							System.out.println();
+							printOffspring_indent(offspring);
+							System.out.println();
 						}
 						//------------------------------------------------------------------------					
 						//------------------------------------------------------------------------
@@ -852,10 +895,13 @@ public class Population {
 						//------------------------------------------------------------------------
 						//------------------------------------------------------------------------
 						if (DEBUG_REPRO && populationID == 0) {
-							printPairings(pairings);
-							System.out.println(gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString());
+							System.out.print("  ");
+							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
+							System.out.print("     ");
 							System.out.println("0 mate will generate 0 offspring.");
-							printOffspring(offspring);
+							System.out.println();
+							printOffspring_indent(offspring);
+							System.out.println();
 						}
 						//------------------------------------------------------------------------
 						//------------------------------------------------------------------------
@@ -871,10 +917,13 @@ public class Population {
 		//------------------------------------------------------------------------
 		//------------------------------------------------------------------------
 		if (DEBUG_REPRO && populationID == 0) {
+			System.out.println();
+			System.out.println();
 			System.out.println("results after rounding...");
-			for (Genotype gt : Genotype.getValues()) {
-				System.out.println("num of " + gt.toString() + ": " + current.getGenotypeSubpopulationSize(gt));
-			}
+			printGenoNum_indent(current);
+//			for (Genotype gt : Genotype.getValues()) {
+//				System.out.println("num of " + gt.toString() + ": " + current.getGenotypeSubpopulationSize(gt));
+//			}
 		}
 		//------------------------------------------------------------------------
 		//------------------------------------------------------------------------
@@ -890,9 +939,24 @@ public class Population {
 			number += String.format("|%-10.4f", offspring.get(gt));
 		}
 		//System.out.println("*---------------*---------------*---------------*---------------*");
-		System.out.println("*-----------Offspring Table-----------*");
+		System.out.println("*oooooooo---Offspring Table---oooooooo*");
 		System.out.print(genotypes + "|\n" + number + "|\n");
-		System.out.println("*-------------------------------------*");
+		System.out.println("*ooooooooooooooooooooooooooooooooooooo*");
+		//System.out.println("*---------------*---------------*---------------*---------------*");
+	}
+	
+	private void printOffspring_indent(HashMap<Genotype, Double> offspring) {
+		String number = "     |Num ";
+		String genotypes = "     |    ";
+		for (Genotype gt : Genotype.getValues())
+		{
+			genotypes += String.format("|%-10s", gt.toString());
+			number += String.format("|%-10.4f", offspring.get(gt));
+		}
+		//System.out.println("*---------------*---------------*---------------*---------------*");
+		System.out.println("     *oooooooo---Offspring Table---oooooooo*");
+		System.out.print(genotypes + "|\n" + number + "|\n");
+		System.out.println("     *ooooooooooooooooooooooooooooooooooooo*");
 		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 
@@ -909,6 +973,7 @@ public class Population {
 	 *                 will be modified by survive() to reflect death
 	 *
 	 * @author richwenner
+	 * @author candicezhao
 	 */
 	private void survive(GenerationRecord current) {
 
@@ -917,6 +982,11 @@ public class Population {
 		double crash;
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
 
+		if (DEBUG_SURVIVAL && populationID == 0) {
+			System.out.println();
+			printGenoNum_indent(current);
+			System.out.println();
+		}
 		//Calculate the number of each genotype surviving
 		for (Genotype gt: Genotype.getValues()) {
 			subPopulation = current.getGenotypeSubpopulationSize(gt);
@@ -927,11 +997,15 @@ public class Population {
 			//----------------------------------------------------------------------------
 			//----------------------------------------------------------------------------
 			if (DEBUG_SURVIVAL && populationID == 0) {
-				printGenoNum(current);
-				System.out.println("random coefficient:" +random_coefficient);
-				System.out.println("number of genotype " + gt.toString() + ":" + subPopulation);
-				System.out.println("survival rate of genotype " + gt.toString() + ":" + sp.getSurvivalRate(gt));
-				System.out.println("number of " + gt.toString() + " survived (before adjustment): " + numSurvived);
+				System.out.println("     [ " + gt.toString() + " ]");
+				System.out.print("       ");
+				System.out.println("random coefficient: " +random_coefficient);
+				System.out.print("       ");
+				System.out.println("number of genotype " + gt.toString() + ": " + subPopulation);
+				System.out.print("       ");
+				System.out.println("survival rate of genotype " + gt.toString() + ": " + sp.getSurvivalRate(gt));
+				System.out.print("       ");
+				System.out.println("number of " + gt.toString() + " survived: " + numSurvived);
 			}
 			//----------------------------------------------------------------------------
 			//----------------------------------------------------------------------------
@@ -946,9 +1020,9 @@ public class Population {
 			
 			//----------------------------------------------------------------------------
 			//----------------------------------------------------------------------------
-			if (DEBUG_SURVIVAL && populationID == 0) {
-				System.out.println("number of " + gt.toString() + " survived (after adjustment): " + numSurvived);
-			}
+//			if (DEBUG_SURVIVAL && populationID == 0) {
+//				System.out.println("number of " + gt.toString() + " survived (after adjustment): " + numSurvived);
+//			}
 			//----------------------------------------------------------------------------
 			//----------------------------------------------------------------------------
 			
@@ -960,7 +1034,9 @@ public class Population {
 		//----------------------------------------------------------------------------
 		//----------------------------------------------------------------------------
 		if (DEBUG_SURVIVAL && populationID == 0) {
-			printGenoNum(current);
+			System.out.println();
+			System.out.println("     RESULT POP: ");
+			printGenoNum_indent(current);
 		}
 		//----------------------------------------------------------------------------
 		//----------------------------------------------------------------------------
@@ -971,16 +1047,20 @@ public class Population {
 			for (Genotype gt: Genotype.getValues()) {
 				current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
 			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			if (DEBUG_SURVIVAL && populationID == 0) {
+				System.out.println();
+				System.out.print("     ");
+				System.out.println("Scale the subpop sizes since pop. size is larger than carrying capacity.");
+				printGenoNum_indent(current);
+			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------		
 		}
-		//----------------------------------------------------------------------------
-		//----------------------------------------------------------------------------
-		if (DEBUG_SURVIVAL && populationID == 0) {
-			System.out.println("scale the subpopulation sizes since total adults number is larger than carrying capacity.");
-			printGenoNum(current);
-		}
-		//----------------------------------------------------------------------------
-		//----------------------------------------------------------------------------			
+			
 	}
+	
 	
 	private void printGenoNum(GenerationRecord record) {
 		String genoNum =   "|Number         ";
@@ -990,9 +1070,22 @@ public class Population {
 			genotypes += String.format("|%-15s", gt.toString());
 			genoNum += String.format("|%-15d",record.getGenotypeSubpopulationSize(gt));
 		}
-		System.out.println("*-----------------------Genotype Number-------------------------*");
+		System.out.println("*nnnnnnnnnnnnnnnnnnnn---Genotype Number---nnnnnnnnnnnnnnnnnnnnnn*");
 		System.out.print(genotypes + "|\n" + genoNum + "|\n");
-		System.out.println("*---------------------------------------------------------------*");
+		System.out.println("*nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn*");
+	}
+	
+	private void printGenoNum_indent(GenerationRecord record) {
+		String genoNum =   "     |Number         ";
+		String genotypes = "     |               ";
+		for (Genotype gt : Genotype.getValues())
+		{
+			genotypes += String.format("|%-15s", gt.toString());
+			genoNum += String.format("|%-15d",record.getGenotypeSubpopulationSize(gt));
+		}
+		System.out.println("     *nnnnnnnnnnnnnnnnnnnn---Genotype Number---nnnnnnnnnnnnnnnnnnnnnn*");
+		System.out.print(genotypes + "|\n" + genoNum + "|\n");
+		System.out.println("     *nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn*");
 	}
 
 	/**
