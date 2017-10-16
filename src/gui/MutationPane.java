@@ -31,7 +31,15 @@ public class MutationPane extends EvoPane {
 
 	public MutationPane(){
 		super();
-		color2List.add(getParent());
+    setBackground(COLOR1);
+
+    // standardize column widths
+		for(int i = 0; i < 5; i++) {
+			c.gridx = i; c.gridy = 0;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}
+
 		// Mutation (0 to 1)
 		mutLabel = new JLabel("<html><span style='font-size:11px'><b>Mutation </b>(0.0-0.01):");
 		mutAtoBLabel = new JLabel("A to B:");

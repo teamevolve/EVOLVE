@@ -59,7 +59,15 @@ public class SelectionPane extends EvoPane {
 
 	public SelectionPane() {
 		super();
-		color1List.add(getParent());
+    setBackground(COLOR2);
+
+    // standardize column widths
+		for(int i = 0; i < 5; i++) {
+			c.gridx = i; c.gridy = 0;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}
+
 		// Selection radio buttons
 		selectLabel = new JLabel("<html><b><span style='font-size:11px'>Natural Selection: </span> </b>");
 		selectGroup = new ButtonGroup();
@@ -219,7 +227,7 @@ public class SelectionPane extends EvoPane {
 		relFitCC = new JLabel("___"); threeAllelesList.add(relFitCC);
 
 		table = new JPanel();
-		table.setBackground(color1);
+		table.setBackground(getBackground());
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 3, 15);

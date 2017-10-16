@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -23,8 +24,6 @@ import javax.swing.JPanel;
  */
 
 public abstract class EvoPane extends JPanel {
-
-	final static int TEXT_LEN_EXTRA_LONG = 48;
 	final static int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 4;
 	final static String INT = "int";
@@ -32,6 +31,9 @@ public abstract class EvoPane extends JPanel {
 	final static String RATE = "rate";
 	final static String ANY_DOUBLE_ZERO_TO_TEN = "double zero to ten";
 	final static String ANY_NUMBER = "any number";
+  final static public Color COLOR1 = new Color(213, 218, 226);
+	final static public Color COLOR2 = new Color(183, 210, 222);
+
 	public boolean threeAlleles;
 	public GridBagConstraints c;
 
@@ -40,10 +42,6 @@ public abstract class EvoPane extends JPanel {
 	private boolean enabled;
 
 	public ArrayList<Component> threeAllelesList = new ArrayList<Component>();
-	public ArrayList<Component> color1List = new ArrayList<Component>();
-	public ArrayList<Component> color2List = new ArrayList<Component>();
-	public Color color1 = new Color(183, 210, 222);
-	public Color color2 = new Color(213, 218, 226);//(173, 208, 212);
 
 	EvoPane() {
 		super();
@@ -51,16 +49,11 @@ public abstract class EvoPane extends JPanel {
 		threeAlleles = false;
 		enabled = true;
 
+    setBorder(new EmptyBorder(10, 10, 10, 10));
+
 		// set layout
 		setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
-
-		// standardize column widths
-		for(int i = 0; i < 5; i++) {
-			c.gridx = i; c.gridy = 0;
-			c.anchor = GridBagConstraints.WEST;
-			add(new JLabel("_______________________________"), c);
-		}
 	}
 
 	@Override
@@ -70,23 +63,6 @@ public abstract class EvoPane extends JPanel {
 			component.setEnabled(enable);
 		}
 		enabled = !enabled;
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		for(Component comp : this.color1List) {
-			g.setColor(color2);
-			g.fillRect(0, 0, getWidth(), 15);
-			g.setColor(color1);
-			g.fillRect(0, 15, getWidth(), getHeight());
-		}
-		for(Component comp : this.color2List) {
-			g.setColor(color1);
-			g.fillRect(0, 0, getWidth(), 15);
-			g.setColor(color2);
-			g.fillRect(0, 15, getWidth(), getHeight());
-		}
 	}
 
 	public boolean getEnabled() {

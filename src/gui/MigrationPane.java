@@ -52,7 +52,15 @@ public class MigrationPane extends EvoPane {
 
 	public MigrationPane() {
 		super();
-		color1List.add(getParent());
+    setBackground(COLOR2);
+
+    // standardize column widths
+		for(int i = 0; i < 5; i++) {
+			c.gridx = i; c.gridy = 0;
+			c.anchor = GridBagConstraints.WEST;
+			add(new JLabel("_______________________________"), c);
+		}
+
 		// Migration radio buttons
 		migLabel = new JLabel("<html><span style='font-size:11px'><b>Migration</b> (Gene Flow): </span>");
 		migGroup = new ButtonGroup();
@@ -108,7 +116,7 @@ public class MigrationPane extends EvoPane {
 		varMigRateBB.setName(RATE); varMigRateBB.setInputVerifier(iv);
 
 		table = new JPanel();
-		table.setBackground(color1);
+		table.setBackground(getBackground());
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
 		//t.insets = new Insets(0, 0, 3, 15);
