@@ -47,6 +47,7 @@ public abstract class EvoPane extends JPanel {
 		enabled = true;
 
     setBorder(new EmptyBorder(10, 10, 10, 10));
+    setAlignmentX(Component.LEFT_ALIGNMENT);
 	}
 
 	@Override
