@@ -31,6 +31,11 @@ public class MutationPane extends EvoPane {
 
 	public MutationPane(){
 		super();
+
+    // set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
     setBackground(COLOR1);
 
     // standardize column widths

@@ -59,6 +59,11 @@ public class SelectionPane extends EvoPane {
 
 	public SelectionPane() {
 		super();
+
+    // set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
     setBackground(COLOR2);
 
     // standardize column widths
@@ -237,38 +242,38 @@ public class SelectionPane extends EvoPane {
 		int i = 1;
 		int y = 0;
 		t.gridy = y;
-		for (Component c : labelsList) {
+		for (Component comp : labelsList) {
 			t.gridx = i; i++;
-			table.add(c, t);
+			table.add(comp, t);
 		}
 
 		i = 0;
 		t.anchor = GridBagConstraints.WEST;
 		t.gridy++;
-		for (Component c : survList) {
+		for (Component comp : survList) {
 			t.gridx = i; i++;
-			table.add(c, t);
+			table.add(comp, t);
 		}
 
 		i = 0;
 		t.gridy++;
-		for (Component c : reproList) {
+		for (Component comp : reproList) {
 			t.gridx = i; i++;
-			table.add(c, t);
+			table.add(comp, t);
 		}
 
 		i = 0;
 		t.gridy++;
-		for (Component c : absFitList) {
+		for (Component comp : absFitList) {
 			t.gridx = i; i++;
-			table.add(c, t);
+			table.add(comp, t);
 		}
 
 		i = 0;
 		t.gridy++;
-		for (Component c : relFitList) {
+		for (Component comp : relFitList) {
 			t.gridx = i; i++;
-			table.add(c, t);
+			table.add(comp, t);
 		}
 
 		c.insets = new Insets(0, 20, 0, 0);

@@ -52,6 +52,11 @@ public class MigrationPane extends EvoPane {
 
 	public MigrationPane() {
 		super();
+
+    // set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
     setBackground(COLOR2);
 
     // standardize column widths
@@ -142,11 +147,11 @@ public class MigrationPane extends EvoPane {
 		add(table, c);
 
 		// grey out all the elements-- prevents submit w.o radio button selected
-		for(Component c : fixedList) {
-			c.setEnabled(true);
+		for(Component comp : fixedList) {
+			comp.setEnabled(true);
 		}
-		for(Component c : varyList) {
-			c.setEnabled(false);
+		for(Component comp : varyList) {
+			comp.setEnabled(false);
 		}
 
 		// set radio buttons to grey out sections of panel

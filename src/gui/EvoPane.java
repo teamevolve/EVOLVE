@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 
@@ -35,7 +33,6 @@ public abstract class EvoPane extends JPanel {
 	final static public Color COLOR2 = new Color(183, 210, 222);
 
 	public boolean threeAlleles;
-	public GridBagConstraints c;
 
 	public OurInputVerifier iv = new OurInputVerifier();
 
@@ -50,10 +47,6 @@ public abstract class EvoPane extends JPanel {
 		enabled = true;
 
     setBorder(new EmptyBorder(10, 10, 10, 10));
-
-		// set layout
-		setLayout(new GridBagLayout());
-		c = new GridBagConstraints();
 	}
 
 	@Override

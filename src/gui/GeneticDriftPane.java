@@ -3,6 +3,7 @@ package gui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ItemEvent;
@@ -40,6 +41,11 @@ public class GeneticDriftPane extends EvoPane{
 
 	public GeneticDriftPane() {
 		super();
+
+    // set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
     setBackground(COLOR1);
 
     // standardize column widths

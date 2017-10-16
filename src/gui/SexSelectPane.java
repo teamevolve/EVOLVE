@@ -46,6 +46,11 @@ public class SexSelectPane extends EvoPane {
 
 	public SexSelectPane() {
 		super();
+
+    // set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
     setBackground(COLOR1);
 
     // standardize column widths

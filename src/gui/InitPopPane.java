@@ -71,6 +71,11 @@ public class InitPopPane extends EvoPane {
 
 	public InitPopPane() {
 		super();
+
+    // set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
     setBackground(COLOR2);
 
 		c.anchor = GridBagConstraints.LINE_START;

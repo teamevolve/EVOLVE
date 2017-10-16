@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.FlowLayout;
 import java.awt.Desktop;
+import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -59,6 +60,11 @@ public class HeaderPane extends EvoPane {
 
   public HeaderPane() {
     super();
+
+    // set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
     setBackground(COLOR1);
 
     c.anchor = GridBagConstraints.LINE_START;
