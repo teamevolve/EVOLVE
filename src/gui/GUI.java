@@ -1,9 +1,24 @@
 package gui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.Scrollable;
+import javax.swing.BoxLayout;
+import javax.swing.JSeparator;
+import javax.swing.JScrollPane;
+import javax.swing.JLabel;
+import javax.swing.BorderFactory;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -30,8 +45,6 @@ public class GUI extends JPanel {
 	public static boolean DEBUG_MUTATION = false;
 	public static boolean DEBUG_SUMMARY = false;
 
-	boolean firstRun = true;
-
 	// we'll put args here
 	shared.SessionParameters parms;
 
@@ -49,8 +62,6 @@ public class GUI extends JPanel {
 	MutationPane mp = new MutationPane();
 	MigrationPane mip = new MigrationPane();
 	SexSelectPane ssp = new SexSelectPane();
-
-  JPanel mainPanel;
 
 	/**
 	 * Member to enable singleton class
@@ -75,7 +86,7 @@ public class GUI extends JPanel {
 		super();
 
     setLayout(new BorderLayout());
-    mainPanel = new JPanel();
+    EvoScrollable mainPanel = new EvoScrollable();
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 
     mainPanel.add(hp);
@@ -93,7 +104,7 @@ public class GUI extends JPanel {
     mainPanel.add(ssp);
 
     JScrollPane mainScroll = new JScrollPane(mainPanel);
-    mainScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    mainScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     add(mainScroll, BorderLayout.CENTER);
 
 		submit = new JButton("<html><span style='font-size:13px'>Run Simulation");
@@ -137,6 +148,28 @@ public class GUI extends JPanel {
 			}
 		});
 	} // end of constructor
+
+  public class EvoScrollable extends JPanel implements Scrollable {
+    public Dimension getPreferredScrollableViewportSize() {
+      return getPreferredSize();
+    }
+
+    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+      return 10;
+    }
+
+    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+      return 100;
+    }
+
+    public boolean getScrollableTracksViewportWidth() {
+      return true;
+    }
+
+    public boolean getScrollableTracksViewportHeight() {
+      return false;
+    }
+  }
 
 	public void modeThreeAlleles(boolean b){
 		pp.modeThreeAlleles(b);
