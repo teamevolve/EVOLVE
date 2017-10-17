@@ -1,7 +1,5 @@
 package gui;
 
-import java.awt.FlowLayout;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,7 +30,7 @@ public class MutationPane extends EvoPane {
 		super();
 
     // set layout
-		setLayout(new FlowLayout(FlowLayout.LEADING));
+		setLayout(new WrapLayout(WrapLayout.LEADING));
 
     setBackground(COLOR1);
 

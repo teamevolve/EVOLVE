@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -153,7 +152,7 @@ public class InitPopPane extends EvoPane {
 
 		afPane = new JPanel();
 		afPane.setBackground(getBackground());
-		afPane.setLayout(new FlowLayout(FlowLayout.LEADING));
+		afPane.setLayout(new WrapLayout(WrapLayout.LEADING));
 
 		afPane.add(alleleFreqs);
     afPane.add(Box.createHorizontalStrut(20));

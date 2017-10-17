@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,7 +75,7 @@ public class SelectionPane extends EvoPane {
 		selectGroup.add(selectAbs);
 
     JPanel titlePane = new JPanel();
-    titlePane.setLayout(new FlowLayout(FlowLayout.LEADING));
+    titlePane.setLayout(new WrapLayout(WrapLayout.LEADING));
     titlePane.setBackground(getBackground());
     titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
     titlePane.add(selectLabel);

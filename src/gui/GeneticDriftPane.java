@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Component;
-import java.awt.FlowLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -51,7 +50,7 @@ public class GeneticDriftPane extends EvoPane{
 		// add carrying capacity and post crash stuff to separate panel for formatting
 		JPanel fields = new JPanel();
 		fields.setBackground(getBackground());
-		fields.setLayout(new FlowLayout(FlowLayout.LEADING));
+		fields.setLayout(new WrapLayout(WrapLayout.LEADING));
     fields.setAlignmentX(Component.LEFT_ALIGNMENT);
 		fields.add(carryCapLabel);
 		fields.add(carryCap);
