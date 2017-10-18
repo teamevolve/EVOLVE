@@ -236,6 +236,11 @@ public class GUI extends JPanel {
 	      String sum = args[1].toLowerCase();
 	      if (sum.contains("all")) {
 	      		DEBUG_SUMMARY = true;
+	      		MAT_SUM = true;
+	      		REP_SUM = true;
+	      		MIG_SUM = true;
+	      		SURV_SUM = true;
+	      		MUT_SUM = true;
 	      }
 	      else {
 	    	  	if (sum.contains("mat")) MAT_SUM = true;
