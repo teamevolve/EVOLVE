@@ -89,8 +89,8 @@ public class HeaderPane extends EvoPane {
 		questionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		question.setLineWrap(true);
 		question.setWrapStyleWord(true);
-    question.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
-    question.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
+    question.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+    question.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 
 		experLabel = new JLabel("<html><b>Experimental Design:</b>");
 		exper = new JTextArea(1, TEXT_LEN_LONG);
@@ -98,8 +98,8 @@ public class HeaderPane extends EvoPane {
 		experPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		exper.setLineWrap(true);
 		exper.setWrapStyleWord(true);
-    exper.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
-    exper.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
+    exper.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+    exper.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 
     predictLabel = new JLabel("<html><b>Predictions:</b>");
     predict = new JTextArea(1, TEXT_LEN_LONG);
@@ -107,8 +107,8 @@ public class HeaderPane extends EvoPane {
     predictPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     predict.setLineWrap(true);
     predict.setWrapStyleWord(true);
-    predict.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
-    predict.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
+    predict.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+    predict.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 
 		resultsLabel = new JLabel("<html><b>Results:</b>");
 		results = new JTextArea(1, TEXT_LEN_LONG);
@@ -116,8 +116,8 @@ public class HeaderPane extends EvoPane {
 		resultsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		results.setLineWrap(true);
 		results.setWrapStyleWord(true);
-    results.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
-    results.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
+    results.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+    results.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 
 		discussionLabel = new JLabel("<html><b>Notes:</b>");
 		discussion = new JTextArea(1, TEXT_LEN_LONG);
@@ -125,8 +125,8 @@ public class HeaderPane extends EvoPane {
 		discussionPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		discussion.setLineWrap(true);
 		discussion.setWrapStyleWord(true);
-    discussion.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERS‌​AL_KEYS, null);
-    discussion.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERS‌​AL_KEYS, null);
+    discussion.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+    discussion.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 
 		c.gridx = 0; c.gridy = 1;
 		add(titleLabel, c);

@@ -22,6 +22,12 @@ import static gui.GUI.DEBUG_SURVIVAL;
 import static gui.GUI.DEBUG_MUTATION;
 import static gui.GUI.DEBUG_SUMMARY;
 
+import static gui.GUI.MAT_SUM;
+import static gui.GUI.REP_SUM;
+import static gui.GUI.MIG_SUM;
+import static gui.GUI.SURV_SUM;
+import static gui.GUI.MUT_SUM;
+
 
 /**
  * Population represents a single population within the simulation. It holds
@@ -145,7 +151,7 @@ public class Population {
 		if (DEBUG_MIGRATION && DEBUG_SUMMARY) {
 			System.out.println("GENERATION: "+ generationHistory.size() + " Population NO." + populationID);
 		}
-		else if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL ) && populationID == 0){
+		else if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL) && populationID == 0){
 			System.out.println("GENERATION: "+ generationHistory.size() + " Population NO." + populationID);
 		}
 		
@@ -169,7 +175,7 @@ public class Population {
 		GenerationRecord newGeneration = generationHistory.get(generationHistory.size() - 1);
 		survive(newGeneration); //natural selection
 		
-		if (DEBUG_SUMMARY) {
+		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || SURV_SUM) && populationID == 0)) {
 
 			System.out.println("GENERATION: " + newGeneration.getGenerationNumber() + " Population NO." + newGeneration.getParentPopID());
 			System.out.println();
@@ -181,7 +187,7 @@ public class Population {
 			mutate(newGeneration); //mutate
 		}
 
-		if (DEBUG_SUMMARY) {
+		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || MUT_SUM) && populationID == 0)) {
 			System.out.println();
 			System.out.println("  summary for MUTATION:");
 			printGenoNum_indent(newGeneration);
@@ -245,7 +251,7 @@ public class Population {
 		}
 		
 		//----------DEBUGGING CODE------------
-		if (DEBUG_SUMMARY) {
+		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || MAT_SUM) && populationID == 0)) {
 			System.out.println();
 			System.out.println("  summary for MATING:");
 			printPairings_indent(pairings);
@@ -258,7 +264,7 @@ public class Population {
 		generateOffspring(current, pairings);
 		
 		//----------DEBUGGING CODE-------------
-		if (DEBUG_SUMMARY) {
+		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || REP_SUM) && populationID == 0)) {
 			System.out.println();
 			System.out.println("  summary for REPRODUCTION:");
 			printGenoNum_indent(current);

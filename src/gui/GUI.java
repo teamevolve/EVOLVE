@@ -28,8 +28,14 @@ public class GUI extends JPanel {
 	public static boolean DEBUG_MIGRATION = false;
 	public static boolean DEBUG_SURVIVAL = false;
 	public static boolean DEBUG_MUTATION = false;
+	
 	public static boolean DEBUG_SUMMARY = false;
-
+	public static boolean MAT_SUM = false;
+	public static boolean REP_SUM = false;
+	public static boolean MIG_SUM = false;
+	public static boolean SURV_SUM = false;
+	public static boolean MUT_SUM = false;
+	
 	boolean firstRun = true;
 
 	// we'll put args here
@@ -200,43 +206,50 @@ public class GUI extends JPanel {
 
 	public static void main(String[] args) {
 	  try {
-      String one = args[0];
-      switch (one.toLowerCase()) {
-    		case "mate":
-      		DEBUG_MATE = true;
-      		break;
-    		case "reproduction":
-      		DEBUG_REPRO = true;
-      		break;
-    		case "migrationsummary":
-    			DEBUG_MIGRATION = true;
-    			DEBUG_SUMMARY = true;
-    			break;
-    		case "migration":
-    			DEBUG_MIGRATION = true;
-    			break;
-    		case "survival":
-    			DEBUG_SURVIVAL = true;
-    			break;
-    		case "mutation":
-    			DEBUG_MUTATION = true;
-    			break;
-    		case "all":
-    			DEBUG_MATE = true;
-    			DEBUG_REPRO = true;
-    			DEBUG_MIGRATION = true;
-    			DEBUG_SURVIVAL = true;
-    			DEBUG_MUTATION = true;
-    			break;
-    		default:
-    			break;
-      }
-    }
-    catch (ArrayIndexOutOfBoundsException e){
-      //System.out.println("ArrayIndexOutOfBoundsException caught");
-  	}
-    finally {
-      createAndShowGUI();
-    }
+		  String arg = args[0];
+	      switch (arg.toLowerCase()) {
+	    		case "mat":
+	      		DEBUG_MATE = true;
+	      		break;
+	    		case "rep":
+	      		DEBUG_REPRO = true;
+	      		break;
+	    		case "mig":
+	    			DEBUG_MIGRATION = true;
+	    			break;
+	    		case "surv":
+	    			DEBUG_SURVIVAL = true;
+	    			break;
+	    		case "mut":
+	    			DEBUG_MUTATION = true;
+	    			break;
+	    		case "all":
+	    			DEBUG_MATE = true;
+	    			DEBUG_REPRO = true;
+	    			DEBUG_MIGRATION = true;
+	    			DEBUG_SURVIVAL = true;
+	    			DEBUG_MUTATION = true;
+	    			break;
+	    		default:
+	    			break;
+	      }
+	      String sum = args[1].toLowerCase();
+	      if (sum.contains("all")) {
+	      		DEBUG_SUMMARY = true;
+	      }
+	      else {
+	    	  	if (sum.contains("mat")) MAT_SUM = true;
+	    	  	if (sum.contains("rep")) REP_SUM = true;
+	    	  	if (sum.contains("mig")) MIG_SUM = true;
+	    	  	if (sum.contains("surv")) SURV_SUM = true;
+	    	  	if (sum.contains("mut")) MUT_SUM = true;
+	      }
+	    }
+	    catch (ArrayIndexOutOfBoundsException e){
+	      //System.out.println("ArrayIndexOutOfBoundsException caught");
+	  	}
+	  	finally {
+	  		createAndShowGUI();
+	  	}
 	}
 }

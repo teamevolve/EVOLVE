@@ -27,7 +27,7 @@ $(jar): build/recipts/src $(lib_rcts)
 
 run: build/recipts/src
 	@mkdir -p output
-	@java -cp build/classes:$(lib_cp) $(entrypoint) $(args)
+	@java -cp build/classes:$(lib_cp) $(entrypoint) $(arg) $(sum)
 
 build/recipts/src: $(src_files) $(pdf_dest)
 	@mkdir -p $(@D)
