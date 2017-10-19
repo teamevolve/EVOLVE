@@ -56,13 +56,15 @@ public class CSVExport {
 	 */
 	public void export(ArrayList<Population> popList) {
 		PrintStream original = System.out;
-			try {
-				System.setOut(new PrintStream(Utilities.generateSaveDialog(null, "csv")));
-			} 
-			catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-
+		File save = Utilities.generateSaveDialog(null, "csv");
+		try {
+			if (save == null) return;
+			System.setOut(new PrintStream(save));
+		} 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		printLabInfo();
 		if (popList.size() < 2) {

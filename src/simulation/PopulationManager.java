@@ -206,8 +206,6 @@ public class PopulationManager {
 				//--------------------------------------------------------------------
 			}
 			
-			
-			
 			if (DEBUG_MIGRATION) {
 				gt_pop_rand.put(gt, pop_rand);
 				gt_pop_num.put(gt, pop_num);

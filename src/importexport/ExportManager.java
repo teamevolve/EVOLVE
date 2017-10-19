@@ -36,8 +36,8 @@ public class ExportManager {
 	 */
 	public void exportTo(ExportFormat format) {
 		switch(format) {
-		case CSV:
-			CSVExport.getInstance().export(DataManager.getInstance().getSimulationData());
+			case CSV:
+				CSVExport.getInstance().export(DataManager.getInstance().getSimulationData());
 		}
 	}
 }

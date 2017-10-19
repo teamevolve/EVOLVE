@@ -187,18 +187,19 @@ public class GUI extends JPanel {
 
 		// add the scrollable pane to the window
 		frame.add(g);
-    try {
-      for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+	    try {
+	      for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+	        if ("Nimbus".equals(info.getName())) {
+	          UIManager.setLookAndFeel(info.getClassName());
+	          break;
+	        }
+	      }
+	    } 
+	    catch (Exception e) {
+	      e.printStackTrace();
+	    }
 
-    SwingUtilities.updateComponentTreeUI(frame);
+	    SwingUtilities.updateComponentTreeUI(frame);
 
 		frame.pack();
 		frame.setVisible(true);
