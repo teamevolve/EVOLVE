@@ -31,7 +31,6 @@ public class EvolveChart extends JFreeChart {
 	
 	public QuantityType getAxisType() {
 		return axisType;
-				
 	}
 
 }

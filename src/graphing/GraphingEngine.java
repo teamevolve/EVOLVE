@@ -37,12 +37,12 @@ public class GraphingEngine {
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		switch(type) {
-		case _2D : 
-			_2DGraphingManager.getInstance().construct(window.getContentPane());
-			break;
-			
-		default : 
-			break;
+			case _2D : 
+				_2DGraphingManager.getInstance().construct(window.getContentPane());
+				break;
+				
+			default : 
+				break;
 		}
 		window.pack();
 		window.setVisible(true);

@@ -34,6 +34,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
@@ -73,8 +75,8 @@ public class _2DGraphingManager {
 	/** Maximum height of control panel **/
 	private static final int CONTROL_PANEL_WIDTH = 150;
 	/** Dimensions of exported image of chart **/
-	private static final int EXPORT_WIDTH = 1920;
-	private static final int EXPORT_HEIGHT = 1080;
+	private static final int EXPORT_WIDTH = 960;
+	private static final int EXPORT_HEIGHT = 540;
 	/** 
 	 * Default value of bounds on x and y axis. In the case that a bound is 
 	 * default, the graphing library chooses best fit bounds.
@@ -351,20 +353,41 @@ public class _2DGraphingManager {
 		}
 
 		// Adjust chart's axis bounds based on value of text fields in conrtol panel
-		ValueAxis domain = chart.getXYPlot().getDomainAxis();
+		NumberAxis domain = (NumberAxis) chart.getXYPlot().getDomainAxis();
 		Range domainRange = domain.getRange();
 		double xMin = (xmin.equals("")) ? domainRange.getLowerBound() : Double.parseDouble(xmin);
 		double xMax = (xmax.equals("")) ? domainRange.getUpperBound() : Double.parseDouble(xmax);
 		domain.setRange(xMin, xMax);
+		//set up tick unit
+		long unit = Math.round(xMax/200) * 5;
+		if (unit == 0) unit = Math.round(xMax/100) * 5;
+		if (unit == 0) unit = Math.round(xMax/50) * 2;
+		if (unit == 0) unit = 1;
+		domain.setTickUnit(new NumberTickUnit(unit)); 
+//
+//		if (xMax <= 15) {
+//			domain.setTickUnit(new NumberTickUnit(Math.round(xMax/100) * 5)); 
+//		}
+//		else if (xMax <= 100) {
+//			domain.setTickUnit(new NumberTickUnit(5)); 
+//		}
+//		else if (xMax <= 500) {
+//			domain.setTickUnit(new NumberTickUnit(20)); 
+//		}
+//		else if (xMax <= 2000) {
+//			domain.setTickUnit(new NumberTickUnit(50)); 
+//		}
+//		else {
+//			domain.setTickUnit(new NumberTickUnit((int) (xMax/20)));
+//		}
 
-		
-		ValueAxis range = chart.getXYPlot().getRangeAxis();
+		NumberAxis range = (NumberAxis)chart.getXYPlot().getRangeAxis();
 		Range rangeRange = range.getRange();
 		double yMin = (ymin.equals("")) ? (usingFrequencies) ? 0 : rangeRange.getLowerBound() : Double.parseDouble(ymin);
 		double yMax = (ymax.equals("")) ? (usingFrequencies) ? 1 : rangeRange.getUpperBound() : Double.parseDouble(ymax);
-
 		range.setRange(yMin,yMax);
-	
+		range.setTickUnit(new NumberTickUnit(0.1)); 
+
 	
 		// Create panel and set its dimensions to avoid text stretching on labels
 		ChartPanel newPanel = new ChartPanel(chart);
