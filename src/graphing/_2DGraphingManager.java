@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -34,13 +35,20 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.HorizontalAlignment;
+import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.RectangleInsets;
+import org.jfree.ui.VerticalAlignment;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.chart.title.Title;
 
 import importexport.ExportFormat;
 import shared.Allele;
@@ -289,7 +297,18 @@ public class _2DGraphingManager {
 				File target = Utilities.generateSaveDialog(win, "png");
 				if (target != null) {
 					try {
-						ChartUtilities.saveChartAsPNG(target, panel.getChart(), EXPORT_WIDTH, EXPORT_HEIGHT);
+						JFreeChart chart = panel.getChart();
+						String question = "     question: " + DataManager.getInstance().getSessionParams().getQuestion();
+						String design ="     design: " +  DataManager.getInstance().getSessionParams().getDesign();
+						String prediction = "     prediction: " + DataManager.getInstance().getSessionParams().getPrediction();
+						String result = "     results: " + DataManager.getInstance().getSessionParams().getResults();
+						String labInfo = question + "\n" + design + "\n" + prediction + "\n" + result;
+						TextTitle source = new TextTitle(labInfo, new Font("Serif", Font.PLAIN, 14), Color.black,
+							    RectangleEdge.BOTTOM, HorizontalAlignment.LEFT,
+							    VerticalAlignment.CENTER, RectangleInsets.ZERO_INSETS); 
+						chart.addSubtitle(source);
+						ChartUtilities.saveChartAsPNG(target, chart, EXPORT_WIDTH, EXPORT_HEIGHT);
+						chart.removeSubtitle(source);
 					}
 					catch (IOException excpt) {
 						excpt.printStackTrace();
@@ -337,10 +356,21 @@ public class _2DGraphingManager {
 				
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		JFreeChart chart = ChartFactory.createXYLineChart(DataManager.getInstance().getSessionParams().getTitle(), "Generation", "", seriesCollection);
+//		String question = "question: " + DataManager.getInstance().getSessionParams().getQuestion();
+//		String design ="design: " +  DataManager.getInstance().getSessionParams().getDesign();
+//		String prediction = "prediction: " + DataManager.getInstance().getSessionParams().getPrediction();
+//		String result = "result: " + DataManager.getInstance().getSessionParams().getResults();
+//		String labInfo = question + "\n" + design + "\n" + prediction + "\n" + result;
+//		TextTitle source = new TextTitle(labInfo, new Font("Dialog", Font.PLAIN, 12), Color.black,
+//			    RectangleEdge.BOTTOM, HorizontalAlignment.LEFT,
+//			    VerticalAlignment.CENTER, RectangleInsets.ZERO_INSETS); 
 		chart.setTitle(DataManager.getInstance().getSessionParams().getTitle());
+//		chart.addSubtitle(source);
 		chart.removeLegend();
-
-
+		//XYTextAnnotation a = new XYTextAnnotation(question,0,0);
+		
+		
+		
 		for (AxisType at : types) {
 			for (Population p : DataManager.getInstance().getSimulationData()) {
 				XYSeries series = new XYSeries(at.toString() + " " + p.getPopID());
@@ -358,28 +388,14 @@ public class _2DGraphingManager {
 		double xMin = (xmin.equals("")) ? domainRange.getLowerBound() : Double.parseDouble(xmin);
 		double xMax = (xmax.equals("")) ? domainRange.getUpperBound() : Double.parseDouble(xmax);
 		domain.setRange(xMin, xMax);
+		
 		//set up tick unit
 		long unit = Math.round(xMax/200) * 5;
 		if (unit == 0) unit = Math.round(xMax/100) * 5;
 		if (unit == 0) unit = Math.round(xMax/50) * 2;
 		if (unit == 0) unit = 1;
+		
 		domain.setTickUnit(new NumberTickUnit(unit)); 
-//
-//		if (xMax <= 15) {
-//			domain.setTickUnit(new NumberTickUnit(Math.round(xMax/100) * 5)); 
-//		}
-//		else if (xMax <= 100) {
-//			domain.setTickUnit(new NumberTickUnit(5)); 
-//		}
-//		else if (xMax <= 500) {
-//			domain.setTickUnit(new NumberTickUnit(20)); 
-//		}
-//		else if (xMax <= 2000) {
-//			domain.setTickUnit(new NumberTickUnit(50)); 
-//		}
-//		else {
-//			domain.setTickUnit(new NumberTickUnit((int) (xMax/20)));
-//		}
 
 		NumberAxis range = (NumberAxis)chart.getXYPlot().getRangeAxis();
 		Range rangeRange = range.getRange();
@@ -387,12 +403,16 @@ public class _2DGraphingManager {
 		double yMax = (ymax.equals("")) ? (usingFrequencies) ? 1 : rangeRange.getUpperBound() : Double.parseDouble(ymax);
 		range.setRange(yMin,yMax);
 		range.setTickUnit(new NumberTickUnit(0.1)); 
+		
+		if (usingFrequencies) range.setAttributedLabel("Frequency");
+		else {range.setAttributedLabel("Number");}
 
 	
 		// Create panel and set its dimensions to avoid text stretching on labels
 		ChartPanel newPanel = new ChartPanel(chart);
 		newPanel.setMaximumDrawHeight(GRAPH_RENDER_HEIGHT);
 		newPanel.setMaximumDrawWidth(GRAPH_RENDER_WIDTH);
+
 		
 		// Remove existing panel from screen
 		if (panel != null) win.remove(panel);
