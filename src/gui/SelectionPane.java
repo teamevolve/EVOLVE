@@ -12,6 +12,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -59,14 +60,11 @@ public class SelectionPane extends EvoPane {
 
 	public SelectionPane() {
 		super();
-    setBackground(COLOR2);
 
-    // standardize column widths
-		for(int i = 0; i < 5; i++) {
-			c.gridx = i; c.gridy = 0;
-			c.anchor = GridBagConstraints.WEST;
-			add(new JLabel("_______________________________"), c);
-		}
+    // set layout
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+    setBackground(COLOR2);
 
 		// Selection radio buttons
 		selectLabel = new JLabel("<html><b><span style='font-size:11px'>Natural Selection: </span> </b>");
@@ -76,18 +74,17 @@ public class SelectionPane extends EvoPane {
 		selectGroup.add(selectRandS);
 		selectGroup.add(selectAbs);
 
-		c.gridwidth = 1;
-		c.gridx = 0; c.gridy = 1;
-		c.anchor = GridBagConstraints.WEST;
-		add(selectLabel, c);
+    JPanel titlePane = new JPanel();
+    titlePane.setLayout(new WrapLayout(WrapLayout.LEADING));
+    titlePane.setBackground(getBackground());
+    titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
+    titlePane.add(selectLabel);
+    titlePane.add(Box.createHorizontalStrut(20));
+		titlePane.add(selectRandS);
+    titlePane.add(Box.createHorizontalStrut(20));
+		titlePane.add(selectAbs);
 
-		c.gridx = 1; c.gridy = 1;
-		c.gridwidth = 2;
-		add(selectRandS, c);
-		c.gridx = 2; c.gridy = 1;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.CENTER;
-		add(selectAbs, c);
+    add(titlePane);
 
 		AALabel = new JLabel("AA");
 		ABLabel = new JLabel("AB");
@@ -229,54 +226,54 @@ public class SelectionPane extends EvoPane {
 		table = new JPanel();
 		table.setBackground(getBackground());
 		table.setLayout(new GridBagLayout());
+    table.setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagConstraints t = new GridBagConstraints();
 		t.insets = new Insets(0, 0, 3, 15);
 
 		addToLists();
 
 		int i = 1;
-		int y = 0;
-		t.gridy = y;
-		for (Component c : labelsList) {
+		t.gridy = 0;
+		for (Component comp : labelsList) {
 			t.gridx = i; i++;
-			table.add(c, t);
+			table.add(comp, t);
 		}
 
 		i = 0;
-		t.anchor = GridBagConstraints.WEST;
+		t.anchor = GridBagConstraints.LINE_START;
 		t.gridy++;
-		for (Component c : survList) {
+		for (Component comp : survList) {
 			t.gridx = i; i++;
-			table.add(c, t);
-		}
-
-		i = 0;
-		t.gridy++;
-		for (Component c : reproList) {
-			t.gridx = i; i++;
-			table.add(c, t);
+			table.add(comp, t);
 		}
 
 		i = 0;
 		t.gridy++;
-		for (Component c : absFitList) {
+		for (Component comp : reproList) {
 			t.gridx = i; i++;
-			table.add(c, t);
+			table.add(comp, t);
 		}
 
 		i = 0;
 		t.gridy++;
-		for (Component c : relFitList) {
+		for (Component comp : absFitList) {
 			t.gridx = i; i++;
-			table.add(c, t);
+			table.add(comp, t);
 		}
 
-		c.insets = new Insets(0, 20, 0, 0);
-		c.gridx = 0; c.gridy = 2;
-		c.gridwidth = 7;
-		c.anchor = GridBagConstraints.WEST;
-		add(table, c);
+		i = 0;
+		t.gridy++;
+		for (Component comp : relFitList) {
+			t.gridx = i; i++;
+			table.add(comp, t);
+		}
 
+    t.gridx = 7; t.gridy = 0;
+    t.weightx = 1.0;
+    t.fill = GridBagConstraints.HORIZONTAL;
+    table.add(Box.createHorizontalGlue(), t);
+
+		add(table);
 
 		// default is rAndS
 		modeRandS(true);

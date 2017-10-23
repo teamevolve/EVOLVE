@@ -3,7 +3,6 @@ package gui;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.Box;
 
 import shared.Genotype;
 
@@ -34,9 +34,7 @@ public class MigrationPane extends EvoPane {
 	JLabel migLabel;
 	ButtonGroup migGroup;
 	JRadioButton fixedMig, varMig;
-	JLabel fixedMigRateLabel;
 	EvoTextField fixedMigRate;
-	JLabel varMigRateLabel;
 	JLabel varMigRateAALabel, varMigRateABLabel, varMigRateBBLabel,
 		varMigRateACLabel, varMigRateBCLabel, varMigRateCCLabel;
 	EvoTextField varMigRateAA, varMigRateAB, varMigRateBB,
@@ -52,14 +50,13 @@ public class MigrationPane extends EvoPane {
 
 	public MigrationPane() {
 		super();
-    setBackground(COLOR2);
 
-    // standardize column widths
-		for(int i = 0; i < 5; i++) {
-			c.gridx = i; c.gridy = 0;
-			c.anchor = GridBagConstraints.WEST;
-			add(new JLabel("_______________________________"), c);
-		}
+    // set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+    c.anchor = GridBagConstraints.LINE_START;
+
+    setBackground(COLOR2);
 
 		// Migration radio buttons
 		migLabel = new JLabel("<html><span style='font-size:11px'><b>Migration</b> (Gene Flow): </span>");
@@ -70,34 +67,26 @@ public class MigrationPane extends EvoPane {
 		migGroup.add(varMig);
 
 
-		c.gridx = 0; c.gridy = 1;
-		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0; c.gridy = 0;
+    c.gridwidth = 3;
+    c.weightx = 1.0;
+    c.fill = GridBagConstraints.HORIZONTAL;
 		add(migLabel, c);
-		c.insets = new Insets(0, 20, 0, 0);
-		c.gridy = 2;
-		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth=3;
+    c.gridwidth = 1;
+    c.weightx = 0.0;
+    c.fill = GridBagConstraints.NONE;
+		c.gridy++;
 		add(fixedMig, c);
-		c.gridwidth=1;
-		c.gridy = 3;
-		c.anchor = GridBagConstraints.WEST;
+		c.gridy++;
 		add(varMig, c);
 
-		// Migration rate - if fixed
-		fixedMigRateLabel = new JLabel("Migration Rate (0.0-0.9): ");
+    // Migration rate - if fixed
 		fixedMigRate = new EvoTextField(TEXT_LEN_SHORT);
 
-		fixedMigRate.setName(RATE); fixedMigRate.setInputVerifier(iv);
-
-		//c.gridx = 1; c.gridy = 2;
-		//c.anchor = GridBagConstraints.WEST;
-		//add(fixedMigRateLabel, c);
-		c.gridx = 1; c.gridy = 2;
-		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 1; c.gridy = 1;
 		add(fixedMigRate, c);
 
 		// Migration Rates by genotype - if varies
-		varMigRateLabel = new JLabel("Migration Rate (by genotype): ");
 		varMigRateAALabel = new JLabel("AA");
 		varMigRateABLabel = new JLabel("AB");
 		varMigRateBBLabel = new JLabel("BB");
@@ -119,34 +108,38 @@ public class MigrationPane extends EvoPane {
 		table.setBackground(getBackground());
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
-		//t.insets = new Insets(0, 0, 3, 15);
 
 		addToLists();
-		t.gridy = 1;
+		t.gridy = 0;
 		int i = 0;
 		for (Component comp : labels) {
 			t.gridx = i; i++;
 			table.add(comp, t);
 		}
 
-		t.gridy = 2;
+		t.gridy = 1;
 		i = 0;
 		for (Component comp : fields) {
 			t.gridx = i; i++;
 			table.add(comp, t);
 		}
-		c.gridheight = 10;
-		c.gridx = 1; c.gridy = 3;
-		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.WEST;
+
+    c.gridx = 1; c.gridy = 2;
+		c.gridheight = 2;
 		add(table, c);
+    c.gridheight = 1;
+
+    c.gridx = 2; c.gridy = 1;
+    c.weightx = 1.0;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    add(Box.createHorizontalGlue());
 
 		// grey out all the elements-- prevents submit w.o radio button selected
-		for(Component c : fixedList) {
-			c.setEnabled(true);
+		for(Component comp : fixedList) {
+			comp.setEnabled(true);
 		}
-		for(Component c : varyList) {
-			c.setEnabled(false);
+		for(Component comp : varyList) {
+			comp.setEnabled(false);
 		}
 
 		// set radio buttons to grey out sections of panel
@@ -161,8 +154,6 @@ public class MigrationPane extends EvoPane {
 				modeFixed(false);
 			}
 		});
-
-
 	}
 
 	private void modeFixed(boolean b) {
@@ -199,11 +190,9 @@ public class MigrationPane extends EvoPane {
 	private void addToLists() {
 
 		//add fixed elements to fixedList
-		fixedList.add(fixedMigRateLabel);
 		fixedList.add(fixedMigRate);
 
 		//add vary-by-genotype to varyList
-		varyList.add(varMigRateLabel);
 		varyList.add(varMigRateAALabel);
 		varyList.add(varMigRateABLabel);
 		varyList.add(varMigRateBBLabel);

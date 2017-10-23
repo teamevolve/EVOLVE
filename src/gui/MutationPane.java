@@ -1,8 +1,5 @@
 package gui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,14 +28,11 @@ public class MutationPane extends EvoPane {
 
 	public MutationPane(){
 		super();
-    setBackground(COLOR1);
 
-    // standardize column widths
-		for(int i = 0; i < 5; i++) {
-			c.gridx = i; c.gridy = 0;
-			c.anchor = GridBagConstraints.WEST;
-			add(new JLabel("_______________________________"), c);
-		}
+    // set layout
+		setLayout(new WrapLayout(WrapLayout.LEADING));
+
+    setBackground(COLOR1);
 
 		// Mutation (0 to 1)
 		mutLabel = new JLabel("<html><span style='font-size:11px'><b>Mutation </b>(0.0-0.01):");
@@ -64,48 +58,26 @@ public class MutationPane extends EvoPane {
 		mutBtoC.setName(RATE); mutBtoA.setInputVerifier(iv);
 		mutCtoB.setName(RATE); mutBtoA.setInputVerifier(iv);
 
-		c.gridx = 0; c.gridy = 1;
-		c.anchor = GridBagConstraints.WEST;
-		add(mutLabel, c);
+		add(mutLabel);
 
 		// add label then field for each mutation possibility
-		c.gridx = 1; c.gridy = 1;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.WEST;
-		add(mutAtoBLabel, c);
-		c.anchor = GridBagConstraints.CENTER;
-		add(mutAtoB, c);
+		add(mutAtoBLabel);
+		add(mutAtoB);
 
-		c.gridx++;
-		c.anchor = GridBagConstraints.WEST;
-		add(mutBtoALabel, c);
-		c.anchor = GridBagConstraints.CENTER;
-		add(mutBtoA, c);
+		add(mutBtoALabel);
+		add(mutBtoA);
 
-		c.gridx++;
-		c.anchor = GridBagConstraints.WEST;
-		add(mutAtoCLabel, c);
-		c.anchor = GridBagConstraints.CENTER;
-		add(mutAtoC, c);
+		add(mutAtoCLabel);
+		add(mutAtoC);
 
-		c.gridx = 1; c.gridy++;
-		c.anchor = GridBagConstraints.WEST;
-		add(mutCtoALabel, c);
-		c.anchor = GridBagConstraints.CENTER;
-		add(mutCtoA, c);
+		add(mutCtoALabel);
+		add(mutCtoA);
 
-		c.gridx++;
-		c.anchor = GridBagConstraints.WEST;
-		add(mutBtoCLabel, c);
-		c.anchor = GridBagConstraints.CENTER;
-		add(mutBtoC, c);
+		add(mutBtoCLabel);
+		add(mutBtoC);
 
-		c.gridx++;
-		c.anchor = GridBagConstraints.WEST;
-		add(mutCtoBLabel, c);
-		c.anchor = GridBagConstraints.CENTER;
-		add(mutCtoB, c);
-
+		add(mutCtoBLabel);
+		add(mutCtoB);
 	}
 
 	public void submit(shared.SessionParameters p) {

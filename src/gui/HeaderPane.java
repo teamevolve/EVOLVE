@@ -1,7 +1,7 @@
 package gui;
 
-import java.awt.FlowLayout;
 import java.awt.Desktop;
+import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -59,6 +59,11 @@ public class HeaderPane extends EvoPane {
 
   public HeaderPane() {
     super();
+
+    // set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
     setBackground(COLOR1);
 
     c.anchor = GridBagConstraints.LINE_START;
@@ -168,7 +173,7 @@ public class HeaderPane extends EvoPane {
 
     JPanel seedPane = new JPanel();
     seedPane.setBackground(getBackground());
-    seedPane.setLayout(new FlowLayout());
+    seedPane.setLayout(new BoxLayout(seedPane, BoxLayout.LINE_AXIS));
     seedPane.add(seedLabel);
     seedPane.add(seedField);
 
@@ -197,7 +202,7 @@ public class HeaderPane extends EvoPane {
 
     JPanel allelesPane = new JPanel();
     allelesPane.setBackground(getBackground());
-    allelesPane.setLayout(new BoxLayout(allelesPane, BoxLayout.LINE_AXIS));
+    allelesPane.setLayout(new WrapLayout(WrapLayout.LEADING));
     allelesPane.add(alleles2);
     allelesPane.add(Box.createHorizontalStrut(20));
     allelesPane.add(alleles3);
@@ -206,7 +211,11 @@ public class HeaderPane extends EvoPane {
 		c.gridx = 0;
 		add(numAllelesLabel, c);
 		c.gridx = 1;
+    c.weightx = 1.0;
+    c.fill = GridBagConstraints.HORIZONTAL;
 		add(allelesPane, c);
+    c.weightx = 0.0;
+    c.fill = GridBagConstraints.NONE;
 
 		/* EVOLUTIONARY FORCES ***************************************************************/
 		JLabel evoForces = new JLabel("<html><b>Active Evolutionary Forces:");
@@ -254,7 +263,7 @@ public class HeaderPane extends EvoPane {
 
     JPanel forcesPane = new JPanel();
     forcesPane.setBackground(getBackground());
-    forcesPane.setLayout(new BoxLayout(forcesPane, BoxLayout.LINE_AXIS));
+    forcesPane.setLayout(new WrapLayout(WrapLayout.LEADING));
     forcesPane.add(popSizeCheck);
     forcesPane.add(Box.createHorizontalStrut(20));
     forcesPane.add(selectCheck);
@@ -266,8 +275,12 @@ public class HeaderPane extends EvoPane {
     forcesPane.add(sexualSelectCheck);
 
 		c.gridx = 0; c.gridy++;
+    c.weightx = 1.0;
+    c.fill = GridBagConstraints.HORIZONTAL;
 		add(forcesPane, c);
     c.gridwidth = 1;
+    c.weightx = 0.0;
+    c.fill = GridBagConstraints.NONE;
 
 		// Show additional lab info
 		showLabInfo.addActionListener(new ActionListener() {
