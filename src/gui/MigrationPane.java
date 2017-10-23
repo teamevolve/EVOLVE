@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -12,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JButton;
 import javax.swing.Box;
 
 import shared.Genotype;
@@ -31,6 +34,7 @@ public class MigrationPane extends EvoPane {
 	 */
 	private static final long serialVersionUID = 7447657572452485224L;
 
+  JButton help;
 	JLabel migLabel;
 	ButtonGroup migGroup;
 	JRadioButton fixedMig, varMig;
@@ -60,6 +64,7 @@ public class MigrationPane extends EvoPane {
 
 		// Migration radio buttons
 		migLabel = new JLabel("<html><span style='font-size:11px'><b>Migration</b> (Gene Flow): </span>");
+    help = new JButton("Help");
 		migGroup = new ButtonGroup();
 		fixedMig = new JRadioButton("Genotypes Equal (0.0-0.9): ", true);
 		varMig = new JRadioButton("Genotypes Vary: ");
@@ -68,14 +73,18 @@ public class MigrationPane extends EvoPane {
 
 
 		c.gridx = 0; c.gridy = 0;
-    c.gridwidth = 3;
+    c.gridwidth = 2;
     c.weightx = 1.0;
     c.fill = GridBagConstraints.HORIZONTAL;
 		add(migLabel, c);
     c.gridwidth = 1;
     c.weightx = 0.0;
     c.fill = GridBagConstraints.NONE;
-		c.gridy++;
+    c.gridx = 2;
+    c.anchor = GridBagConstraints.LINE_END;
+    add(help, c);
+    c.anchor = GridBagConstraints.LINE_START;
+		c.gridx = 0; c.gridy++;
 		add(fixedMig, c);
 		c.gridy++;
 		add(varMig, c);
@@ -152,6 +161,16 @@ public class MigrationPane extends EvoPane {
 		varMig.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeFixed(false);
+			}
+		});
+
+    help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openHelp("/help/Help07_Migration.pdf");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 	}
