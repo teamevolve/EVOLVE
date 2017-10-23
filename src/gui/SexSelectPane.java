@@ -8,6 +8,8 @@ import java.awt.Insets;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.BoxLayout;
+import javax.swing.Box;
 
 import java.util.ArrayList;
 
@@ -22,8 +24,6 @@ import shared.Genotype;
  */
 
 public class SexSelectPane extends EvoPane {
-
-	static final int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 3;
 
 	JLabel mateFreqLabel, AAPrefLabel,ABPrefLabel, BBPrefLabel,
@@ -48,19 +48,13 @@ public class SexSelectPane extends EvoPane {
 		super();
 
     // set layout
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
     setBackground(COLOR1);
 
-    // standardize column widths
-		for(int i = 0; i < 5; i++) {
-			c.gridx = i; c.gridy = 0;
-			c.anchor = GridBagConstraints.WEST;
-			add(new JLabel("_______________________________"), c);
-		}
-
     mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): ");
+    mateFreqLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
 		AAPrefLabel = new JLabel("AA Preference for:");
 		ABPrefLabel = new JLabel("AB Preference for:");
 		BBPrefLabel = new JLabel("BB Preference for:");
@@ -121,6 +115,7 @@ public class SexSelectPane extends EvoPane {
 
 		table = new JPanel();
     table.setBackground(getBackground());
+    table.setAlignmentX(Component.LEFT_ALIGNMENT);
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints(); // t for temp constraints
 		t.insets = new Insets(0, 0, 3, 15);
@@ -151,18 +146,13 @@ public class SexSelectPane extends EvoPane {
 			}
 		}
 
+    t.gridx = 8; t.gridy = 0;
+    t.weightx = 1.0;
+    t.fill = GridBagConstraints.HORIZONTAL;
+    table.add(Box.createHorizontalGlue(), t);
 
-		c.gridx = 0; c.gridy = 1;
-		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = 3;
-		add(mateFreqLabel, c);
-
-		//AA x __
-		c.gridx = 1; c.gridy = 2;
-		c.anchor = GridBagConstraints.WEST;
-		c.gridwidth = 6;
-		//AAPrefLabel.setFont(boldFont);
-		add(table, c);
+		add(mateFreqLabel);
+		add(table);
 
 	}
 
