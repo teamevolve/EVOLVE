@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
@@ -228,6 +229,12 @@ public class GUI extends JPanel {
     SwingUtilities.updateComponentTreeUI(frame);
 
 		frame.pack();
+
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    if (frame.getHeight() >= screenSize.getHeight() - 100) {
+      frame.setSize(frame.getWidth(), (int)screenSize.getHeight() - 100);
+    }
+
 		frame.setVisible(true);
 	}
 
