@@ -1,5 +1,6 @@
 package graphing;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -256,6 +257,17 @@ public class _2DGraphingManager {
 			public void actionPerformed(ActionEvent e) {
 				for (Component box : quantitiesPanel.getComponents()) {
 					box.setEnabled(quantitiesButton.isSelected());
+					// CHECK and disabled quantity buttons that cannot be plotted
+					String text = ((JCheckBox) box).getText();
+					if (!DataManager.getInstance().getSessionParams().isMigrationChecked())
+						if (text.equals("Immigration") 
+									|| text.equals("Emigration") 
+									|| text.equals("Net Migration")) 
+							box.setEnabled(false);
+					if (!DataManager.getInstance().getSessionParams().isMutationChecked() && 
+							(text.equals("Num Mutations"))) {
+						box.setEnabled(false);
+					}
 				}
 				for (Component box : frequenciesPanel.getComponents()) {
 					box.setEnabled(frequenciesButton.isSelected());
@@ -298,17 +310,30 @@ public class _2DGraphingManager {
 				if (target != null) {
 					try {
 						JFreeChart chart = panel.getChart();
-						String question = "     question: " + DataManager.getInstance().getSessionParams().getQuestion();
-						String design ="     design: " +  DataManager.getInstance().getSessionParams().getDesign();
-						String prediction = "     prediction: " + DataManager.getInstance().getSessionParams().getPrediction();
-						String result = "     results: " + DataManager.getInstance().getSessionParams().getResults();
-						String labInfo = question + "\n" + design + "\n" + prediction + "\n" + result;
-						TextTitle source = new TextTitle(labInfo, new Font("Serif", Font.PLAIN, 14), Color.black,
+						String question = "";
+						String design = "";
+						String prediction = "";
+						String result = "";
+						if (DataManager.getInstance().getSessionParams().getQuestion().trim().length() > 0) 
+							question = "     Question: " + DataManager.getInstance().getSessionParams().getQuestion() + "\n";
+						if (DataManager.getInstance().getSessionParams().getDesign().trim().length() > 0) 
+							design ="     Experimental Design: " +  DataManager.getInstance().getSessionParams().getDesign() + "\n";
+						if (DataManager.getInstance().getSessionParams().getPrediction().trim().length() > 0) 
+							prediction = "     Predictions: " + DataManager.getInstance().getSessionParams().getPrediction() + "\n";
+						if (DataManager.getInstance().getSessionParams().getResults().trim().length() > 0) 
+							result = "     Results: " + DataManager.getInstance().getSessionParams().getResults();
+						
+						String labInfo = question + design  + prediction + result;
+						TextTitle labinfo = new TextTitle(labInfo, new Font("Serif", Font.PLAIN, 14), Color.black,
 							    RectangleEdge.BOTTOM, HorizontalAlignment.LEFT,
 							    VerticalAlignment.CENTER, RectangleInsets.ZERO_INSETS); 
-						chart.addSubtitle(source);
+						chart.addSubtitle(labinfo);
+						
+						// export the graph as a png
 						ChartUtilities.saveChartAsPNG(target, chart, EXPORT_WIDTH, EXPORT_HEIGHT);
-						chart.removeSubtitle(source);
+						
+						// remove the lab information added
+						chart.removeSubtitle(labinfo);
 					}
 					catch (IOException excpt) {
 						excpt.printStackTrace();
@@ -356,20 +381,8 @@ public class _2DGraphingManager {
 				
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		JFreeChart chart = ChartFactory.createXYLineChart(DataManager.getInstance().getSessionParams().getTitle(), "Generation", "", seriesCollection);
-//		String question = "question: " + DataManager.getInstance().getSessionParams().getQuestion();
-//		String design ="design: " +  DataManager.getInstance().getSessionParams().getDesign();
-//		String prediction = "prediction: " + DataManager.getInstance().getSessionParams().getPrediction();
-//		String result = "result: " + DataManager.getInstance().getSessionParams().getResults();
-//		String labInfo = question + "\n" + design + "\n" + prediction + "\n" + result;
-//		TextTitle source = new TextTitle(labInfo, new Font("Dialog", Font.PLAIN, 12), Color.black,
-//			    RectangleEdge.BOTTOM, HorizontalAlignment.LEFT,
-//			    VerticalAlignment.CENTER, RectangleInsets.ZERO_INSETS); 
 		chart.setTitle(DataManager.getInstance().getSessionParams().getTitle());
-//		chart.addSubtitle(source);
-		chart.removeLegend();
-		//XYTextAnnotation a = new XYTextAnnotation(question,0,0);
-		
-		
+		chart.removeLegend();		
 		
 		for (AxisType at : types) {
 			for (Population p : DataManager.getInstance().getSimulationData()) {
@@ -378,19 +391,21 @@ public class _2DGraphingManager {
 					series.add(gr.getGenerationNumber(), getDataPoint(gr, at));
 				}
 				seriesCollection.addSeries(series);
+				((XYPlot)chart.getPlot()).getRenderer().setBaseStroke(new BasicStroke(2.0f));
 				((XYPlot)chart.getPlot()).getRenderer().setSeriesPaint(seriesCollection.getSeriesIndex(at.toString() + " " + p.getPopID()), FrequencyType.getColor(at));
 			}
 		}
 
-		// Adjust chart's axis bounds based on value of text fields in conrtol panel
+		// Adjust chart's axis bounds based on value of text fields in control panel
 		NumberAxis domain = (NumberAxis) chart.getXYPlot().getDomainAxis();
+		domain.setRange(0, DataManager.getInstance().getSimulationData().get(0).getLastGeneration().getGenerationNumber());
 		Range domainRange = domain.getRange();
 		double xMin = (xmin.equals("")) ? domainRange.getLowerBound() : Double.parseDouble(xmin);
 		double xMax = (xmax.equals("")) ? domainRange.getUpperBound() : Double.parseDouble(xmax);
 		domain.setRange(xMin, xMax);
 		
 		//set up tick unit
-		long unit = Math.round(xMax/200) * 5;
+		long unit = Math.round(xMax/200) * 10;
 		if (unit == 0) unit = Math.round(xMax/100) * 5;
 		if (unit == 0) unit = Math.round(xMax/50) * 2;
 		if (unit == 0) unit = 1;
@@ -402,10 +417,16 @@ public class _2DGraphingManager {
 		double yMin = (ymin.equals("")) ? (usingFrequencies) ? 0 : rangeRange.getLowerBound() : Double.parseDouble(ymin);
 		double yMax = (ymax.equals("")) ? (usingFrequencies) ? 1 : rangeRange.getUpperBound() : Double.parseDouble(ymax);
 		range.setRange(yMin,yMax);
-		range.setTickUnit(new NumberTickUnit(0.1)); 
 		
-		if (usingFrequencies) range.setAttributedLabel("Frequency");
-		else {range.setAttributedLabel("Number");}
+		if (usingFrequencies) {
+			range.setAttributedLabel("Frequency");
+			range.setTickUnit(new NumberTickUnit(0.1)); 
+		}
+		else {
+			// set auto tick unit selection on when using number as y-axis
+			range.setAttributedLabel("Number");
+			range.setAutoTickUnitSelection(!usingFrequencies);
+		}
 
 	
 		// Create panel and set its dimensions to avoid text stretching on labels
