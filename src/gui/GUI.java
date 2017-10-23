@@ -44,18 +44,15 @@ public class GUI extends JPanel {
 	public static boolean DEBUG_MIGRATION = false;
 	public static boolean DEBUG_SURVIVAL = false;
 	public static boolean DEBUG_MUTATION = false;
-	
+
 	public static boolean DEBUG_SUMMARY = false;
-<<<<<<< HEAD
 	public static boolean MAT_SUM = false;
 	public static boolean REP_SUM = false;
 	public static boolean MIG_SUM = false;
 	public static boolean SURV_SUM = false;
 	public static boolean MUT_SUM = false;
-	
+
 	boolean firstRun = true;
-=======
->>>>>>> devel
 
 	// we'll put args here
 	shared.SessionParameters parms;
@@ -233,7 +230,7 @@ public class GUI extends JPanel {
 	          break;
 	        }
 	      }
-	    } 
+	    }
 	    catch (Exception e) {
 	      e.printStackTrace();
 	    }
