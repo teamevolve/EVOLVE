@@ -1,8 +1,14 @@
 package gui;
 
-import javax.swing.JFrame;
+import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.Box;
 
 import shared.Allele;
 import shared.Genotype;
@@ -16,6 +22,7 @@ import shared.Genotype;
  *
  */
 public class MutationPane extends EvoPane {
+  JButton help;
 
 	JLabel mutLabel,					// Mutation (0 to 1)
 		mutAtoBLabel, mutBtoALabel,
@@ -30,12 +37,14 @@ public class MutationPane extends EvoPane {
 		super();
 
     // set layout
-		setLayout(new WrapLayout(WrapLayout.LEADING));
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
     setBackground(COLOR1);
 
 		// Mutation (0 to 1)
 		mutLabel = new JLabel("<html><span style='font-size:11px'><b>Mutation </b>(0.0-0.01):");
+    help = new JButton("Help");
+
 		mutAtoBLabel = new JLabel("A to B:");
 		mutBtoALabel = new JLabel("B to A:");
 		mutAtoCLabel = new JLabel("A to C:"); threeAllelesList.add(mutAtoCLabel);
@@ -58,26 +67,48 @@ public class MutationPane extends EvoPane {
 		mutBtoC.setName(RATE); mutBtoA.setInputVerifier(iv);
 		mutCtoB.setName(RATE); mutBtoA.setInputVerifier(iv);
 
-		add(mutLabel);
+    JPanel titlePane = new JPanel();
+    titlePane.setBackground(getBackground());
+    titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.LINE_AXIS));
+    titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
+		titlePane.add(mutLabel);
+    titlePane.add(Box.createHorizontalGlue());
+    titlePane.add(help);
 
-		// add label then field for each mutation possibility
-		add(mutAtoBLabel);
-		add(mutAtoB);
+    JPanel mutPane = new JPanel();
+    mutPane.setBackground(getBackground());
+    mutPane.setLayout(new WrapLayout(WrapLayout.LEADING));
+    mutPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+		mutPane.add(mutAtoBLabel);
+		mutPane.add(mutAtoB);
 
-		add(mutBtoALabel);
-		add(mutBtoA);
+		mutPane.add(mutBtoALabel);
+		mutPane.add(mutBtoA);
 
-		add(mutAtoCLabel);
-		add(mutAtoC);
+		mutPane.add(mutAtoCLabel);
+		mutPane.add(mutAtoC);
 
-		add(mutCtoALabel);
-		add(mutCtoA);
+		mutPane.add(mutCtoALabel);
+		mutPane.add(mutCtoA);
 
-		add(mutBtoCLabel);
-		add(mutBtoC);
+		mutPane.add(mutBtoCLabel);
+		mutPane.add(mutBtoC);
 
-		add(mutCtoBLabel);
-		add(mutCtoB);
+		mutPane.add(mutCtoBLabel);
+		mutPane.add(mutCtoB);
+
+    add(titlePane);
+    add(mutPane);
+
+		help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openHelp("/help/Help06_Mutation.pdf");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void submit(shared.SessionParameters p) {
