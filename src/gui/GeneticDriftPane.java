@@ -1,11 +1,14 @@
 package gui;
 
 import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JButton;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 
@@ -20,6 +23,7 @@ import javax.swing.Box;
  */
 
 public class GeneticDriftPane extends EvoPane{
+  JButton help;
 	JLabel genDriftLabel;			// Population constant
 	JLabel carryCapLabel;			// Carrying Capacity
 	EvoTextField carryCap;
@@ -35,7 +39,15 @@ public class GeneticDriftPane extends EvoPane{
 
 		/* pop const stuff *****************************************************************************/
 		genDriftLabel = new JLabel("<html><span style='font-size:11px'><b>Genetic Drift</b> (Population Size): </span>");
-    genDriftLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    help = new JButton("Help");
+
+    JPanel titlePane = new JPanel();
+    titlePane.setBackground(getBackground());
+    titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.LINE_AXIS));
+    titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
+    titlePane.add(genDriftLabel);
+    titlePane.add(Box.createHorizontalGlue());
+    titlePane.add(help);
 
 		// carrying capacity stuff - appears when popSize varying
 		carryCapLabel = new JLabel("Carrying Capacity:");
@@ -58,8 +70,18 @@ public class GeneticDriftPane extends EvoPane{
 		fields.add(postCrashLabel);
 		fields.add(postCrash);
 
-		add(genDriftLabel);
+		add(titlePane);
 		add(fields);
+
+		help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openHelp("/help/Help04_Drift.pdf");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void submit(shared.SessionParameters p) {
