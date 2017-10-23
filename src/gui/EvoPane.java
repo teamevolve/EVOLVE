@@ -5,7 +5,11 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.awt.Desktop;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -67,6 +71,39 @@ public abstract class EvoPane extends JPanel {
 		threeAlleles = b;
 		for(Component comp : this.threeAllelesList) {
 			comp.setVisible(b);
+		}
+	}
+
+  public void openHelp(String helpFile) throws Exception {
+		InputStream pdfStream = GUI.class.getResourceAsStream(helpFile);
+
+    if (pdfStream == null) {
+      System.out.println("Resource does not exist!");
+      System.out.println("Path used: " + helpFile);
+      return;
+    }
+
+		File pdfTemp = File.createTempFile("help", ".pdf"); // new File("evolveTempManual.pdf");
+		pdfTemp.deleteOnExit();
+
+		FileOutputStream fos = new FileOutputStream(pdfTemp);
+
+		while(pdfStream.available() > 0) {
+			fos.write(pdfStream.read());
+		}
+
+		fos.close();
+		pdfStream.close();
+
+		if (pdfTemp.exists()) {
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(pdfTemp);
+			} else {
+				System.out.println("Awt Desktop is not supported!");
+			}
+		} else {
+			System.out.println("File does not exist!");
+			System.out.println("Path used: " + pdfTemp.getAbsolutePath());
 		}
 	}
 }
