@@ -1193,7 +1193,13 @@ public class Population {
 			}
 
 			// If no mutations happened, move on to the next genotype
-			if (totalMutations == 0) continue;
+			if (totalMutations == 0) 
+			{
+				for (Genotype to : Genotype.getValues()) {
+					current.setMutationCount(from, to, 0);
+				}
+				continue;
+			}
 
 			// Ratio to scale mutations by to keep population size constant
 			ratio = (double) current.getGenotypeSubpopulationSize(from) / (double)totalMutations;
