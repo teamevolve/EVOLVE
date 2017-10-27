@@ -411,13 +411,17 @@ public class _2DGraphingManager {
 		if (unit == 0) unit = 1;
 		
 		domain.setTickUnit(new NumberTickUnit(unit)); 
+		domain.setMinorTickCount(5);
+		domain.setMinorTickMarksVisible(true);
 
 		NumberAxis range = (NumberAxis)chart.getXYPlot().getRangeAxis();
 		Range rangeRange = range.getRange();
 		double yMin = (ymin.equals("")) ? (usingFrequencies) ? 0 : rangeRange.getLowerBound() : Double.parseDouble(ymin);
 		double yMax = (ymax.equals("")) ? (usingFrequencies) ? 1 : rangeRange.getUpperBound() : Double.parseDouble(ymax);
 		range.setRange(yMin,yMax);
-		
+		range.setMinorTickCount(5);
+		range.setMinorTickMarksVisible(true);
+
 		if (usingFrequencies) {
 			range.setAttributedLabel("Frequency");
 			range.setTickUnit(new NumberTickUnit(0.1)); 
