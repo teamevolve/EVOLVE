@@ -1,8 +1,5 @@
 package simulation;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,7 +58,6 @@ public class Population {
 	private int populationID;
 	private ArrayList<GenerationRecord> generationHistory;
 	private boolean extinct;
-	private static int counter = 0;
 
 	/**
 	 * Constructor: initializes generationHistory, assigns ID
@@ -237,7 +233,14 @@ public class Population {
 		getLastGeneration().setGenotypeSubpopulationSize(maxGenotype, getLastGeneration().getGenotypeSubpopulationSize(maxGenotype) + (popSize - getLastGeneration().getPopulationSize()));
 	}
 
-
+	/**
+	 * Simulates production of juveniles in a population.
+	 *
+	 * @param previous GenerationRecord representing the previous generation
+	 *                 used to calculate data about the new generation
+	 * @param current  GenerationRecord representing the current generation,
+	 *                 will be modified by reproduce() to reflect reproduction
+	 */
 	private void reproduce(GenerationRecord previous, GenerationRecord current) {
 		///*DEBUG*/long start = System.currentTimeMillis();
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
@@ -283,66 +286,7 @@ public class Population {
 	}
 	
 	
-	/**
-	 * Simulates production of juveniles in a population.
-	 *
-	 * @param previous GenerationRecord representing the previous generation
-	 *                 used to calculate data about the new generation
-	 * @param current  GenerationRecord representing the current generation,
-	 *                 will be modified by reproduce() to reflect reproduction
-	 */
-	@Deprecated
-	private void reproduce_old(GenerationRecord previous, GenerationRecord current) {
-		// Constants and persistent objects we'll use
-		final double previousSize = previous.getPopulationSize();
-		final double numParings = previousSize / 2;
-		final HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
-		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-
-		// Containers to hold temporary values used more than once
-		double gt1SubPopRatio;
-		double gt1Rate;
-
-		// Initialize result HashMap
-		for (Genotype gt : Genotype.getValues()) {
-			offspring.put(gt, 0.0);
-		}
-
-		// Iterate over every mating pair
-		for (Genotype gt1 :  Genotype.getValues()) {
-			gt1SubPopRatio = previous.getGenotypeSubpopulationSize(gt1);
-			gt1Rate = sp.getReproductionRate(gt1);
-
-			for (Genotype gt2 : Genotype.getValues()) {
-				// Ensure we don't overcount pairs
-				if (!Utilities.isValidPairing(gt1, gt2)) continue;
-				// Calculate how many offspring of each genotype are produced
-				for (Genotype gt : Utilities.getOffspringGenotypes(gt1, gt2)) {
-					offspring.put(gt, 
-							// Already accumulated offspring of genotype gt
-							offspring.get(gt) +
-							// Likelyhood of a pairing of gt1 and gt2
-							gt1SubPopRatio * previous.getGenotypeSubpopulationSize(gt2) / Math.pow(previousSize, 2) * ((gt1 == gt2) ? 1 : 2) *
-							// Total number of mating pairs
-							numParings *
-							// Sum of each genotype's reproductive rate (avg total number of offspring)
-							(gt1Rate + sp.getReproductionRate(gt2)) *
-							// Random varying
-							Utilities.nextGaussianRand(INTERNAL_RNG, REPRODUCTION_MEAN, REPRODUCTION_STDDEV) *
-							// Percentage of offspring from punnet
-							.25);
-				}
-			}
-		}
-
-		// Store results in new generation
-		for (Genotype gt : Genotype.getValues()) {
-
-			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
-			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
-		}
-	}
-
+	
 	// mating with no sexual preferences
 	private HashMap<Genotype, HashMap<Genotype, Integer>> mateIterativeIntegers(GenerationRecord previous) {
 		// results for mating record
@@ -1150,6 +1094,7 @@ public class Population {
 			printGenoNum_indent(current);
 			System.out.println();
 		}
+		
 		//Calculate the number of each genotype surviving
 		for (Genotype gt: Genotype.getValues()) {
 			subPopulation = current.getGenotypeSubpopulationSize(gt);
@@ -1181,13 +1126,6 @@ public class Population {
 				numSurvived = subPopulation;
 			}
 			
-			//----------------------------------------------------------------------------
-			//----------------------------------------------------------------------------
-//			if (DEBUG_SURVIVAL && populationID == 0) {
-//				System.out.println("number of " + gt.toString() + " survived (after adjustment): " + numSurvived);
-//			}
-			//----------------------------------------------------------------------------
-			//----------------------------------------------------------------------------
 			
 			current.setGenotypeSubpopulationSize(gt, numSurvived);
 			current.setDeaths(gt, subPopulation - numSurvived);
