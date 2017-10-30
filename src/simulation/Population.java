@@ -1,11 +1,8 @@
 package simulation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
-
-import org.omg.CORBA.INTERNAL;
 
 import shared.DataManager;
 import shared.Genotype;
@@ -21,7 +18,6 @@ import static gui.GUI.DEBUG_SUMMARY;
 
 import static gui.GUI.MAT_SUM;
 import static gui.GUI.REP_SUM;
-import static gui.GUI.MIG_SUM;
 import static gui.GUI.SURV_SUM;
 import static gui.GUI.MUT_SUM;
 
