@@ -37,6 +37,7 @@ public class HeaderPane extends EvoPane {
   JLabel discussionLabel; JTextArea discussion; JScrollPane discussionPane;
   JCheckBox showLabInfo;
 
+  JButton intro;
   JButton help;
 
 	// Evolutionary forces checkboxes
@@ -72,6 +73,12 @@ public class HeaderPane extends EvoPane {
 
     /* help stuff *****************************************************************************/
 		help = new JButton("Help");
+    intro = new JButton("Introduction");
+
+    c.gridx = 1;
+    c.anchor = GridBagConstraints.CENTER;
+    add(intro, c);
+
 		c.gridx = 2;
 		c.anchor = GridBagConstraints.LINE_END;
 		add(help, c);
@@ -294,6 +301,16 @@ public class HeaderPane extends EvoPane {
 		alleles3.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				GUI.getInstance().modeThreeAlleles(true);
+			}
+		});
+
+    intro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openHelp("/help/Help01_Introduction.pdf");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 
