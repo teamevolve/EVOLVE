@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Desktop;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.KeyboardFocusManager;
@@ -8,9 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.Random;
 
 import javax.swing.JLabel;
@@ -41,6 +37,7 @@ public class HeaderPane extends EvoPane {
   JLabel discussionLabel; JTextArea discussion; JScrollPane discussionPane;
   JCheckBox showLabInfo;
 
+  JButton intro;
   JButton help;
 
 	// Evolutionary forces checkboxes
@@ -76,6 +73,12 @@ public class HeaderPane extends EvoPane {
 
     /* help stuff *****************************************************************************/
 		help = new JButton("Help");
+    intro = new JButton("Introduction");
+
+    c.gridx = 1;
+    c.anchor = GridBagConstraints.CENTER;
+    add(intro, c);
+
 		c.gridx = 2;
 		c.anchor = GridBagConstraints.LINE_END;
 		add(help, c);
@@ -301,43 +304,26 @@ public class HeaderPane extends EvoPane {
 			}
 		});
 
+    intro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openHelp("/help/Help01_Introduction.pdf");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
+
 		help.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					openHelp();
+					openHelp("/help/Help02_Exp_Config.pdf");
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
 		});
   }
-
-  private void openHelp() throws Exception {
-		InputStream pdfStream = GUI.class.getResourceAsStream("evolveInfo.pdf");
-
-		File pdfTemp = new File("evolveTempManual.pdf");
-		pdfTemp.deleteOnExit();
-
-		FileOutputStream fos = new FileOutputStream(pdfTemp);
-
-		while(pdfStream.available() > 0) {
-			fos.write(pdfStream.read());
-		}
-
-		fos.close();
-		pdfStream.close();
-
-		if (pdfTemp.exists()) {
-			if (Desktop.isDesktopSupported()) {
-				Desktop.getDesktop().open(pdfTemp);
-			} else {
-				System.out.println("Awt Desktop is not supported!");
-			}
-		} else {
-			System.out.println("File does not exist!");
-			System.out.println("Path used: " + pdfStream);
-		}
-	}
 
 	private void hideLabInfo(boolean b) {
 		questionLabel.setVisible(b);

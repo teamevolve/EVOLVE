@@ -1,8 +1,14 @@
 package gui;
 
-import javax.swing.JFrame;
+import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.Box;
 
 import shared.Allele;
 import shared.Genotype;
@@ -16,6 +22,7 @@ import shared.Genotype;
  *
  */
 public class MutationPane extends EvoPane {
+  JButton help;
 
 	JLabel mutLabel,					// Mutation (0 to 1)
 		mutAtoBLabel, mutBtoALabel,
@@ -30,24 +37,26 @@ public class MutationPane extends EvoPane {
 		super();
 
     // set layout
-		setLayout(new WrapLayout(WrapLayout.LEADING));
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
     setBackground(COLOR1);
 
 		// Mutation (0 to 1)
-		mutLabel = new JLabel("<html><span style='font-size:11px'><b>Mutation </b>(0.0-0.01):");
+		mutLabel = new JLabel("<html><span style='font-size:11px'><b>Mutation: </b></span>(0.0-0.01)");
+    help = new JButton("Help");
+
 		mutAtoBLabel = new JLabel("A to B:");
 		mutBtoALabel = new JLabel("B to A:");
 		mutAtoCLabel = new JLabel("A to C:"); threeAllelesList.add(mutAtoCLabel);
 		mutCtoALabel = new JLabel("C to A:"); threeAllelesList.add(mutCtoALabel);
 		mutBtoCLabel = new JLabel("B to C:"); threeAllelesList.add(mutBtoCLabel);
 		mutCtoBLabel = new JLabel("C to B:"); threeAllelesList.add(mutCtoBLabel);
-		mutAtoB = new EvoTextField(TEXT_LEN_LONG);
-		mutBtoA = new EvoTextField(TEXT_LEN_LONG);
-		mutAtoC = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutAtoC);
-		mutCtoA = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutCtoA);
-		mutBtoC = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutBtoC);
-		mutCtoB = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutCtoB);
+		mutAtoB = new EvoTextField(TEXT_LEN_SHORT);
+		mutBtoA = new EvoTextField(TEXT_LEN_SHORT);
+		mutAtoC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutAtoC);
+		mutCtoA = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutCtoA);
+		mutBtoC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutBtoC);
+		mutCtoB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutCtoB);
 
 		// Set input verifiers
 
@@ -58,26 +67,53 @@ public class MutationPane extends EvoPane {
 		mutBtoC.setName(RATE); mutBtoA.setInputVerifier(iv);
 		mutCtoB.setName(RATE); mutBtoA.setInputVerifier(iv);
 
-		add(mutLabel);
+    JPanel titlePane = new JPanel();
+    titlePane.setBackground(getBackground());
+    titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.LINE_AXIS));
+    titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
+		titlePane.add(mutLabel);
+    titlePane.add(Box.createHorizontalGlue());
+    titlePane.add(help);
 
-		// add label then field for each mutation possibility
-		add(mutAtoBLabel);
-		add(mutAtoB);
+    JPanel mutPane = new JPanel();
+    mutPane.setBackground(getBackground());
+    mutPane.setLayout(new WrapLayout(WrapLayout.LEADING));
+    mutPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+		mutPane.add(mutAtoBLabel);
+		mutPane.add(mutAtoB);
+    mutPane.add(Box.createHorizontalStrut(10));
 
-		add(mutBtoALabel);
-		add(mutBtoA);
+		mutPane.add(mutBtoALabel);
+		mutPane.add(mutBtoA);
+    mutPane.add(Box.createHorizontalStrut(10));
 
-		add(mutAtoCLabel);
-		add(mutAtoC);
+		mutPane.add(mutAtoCLabel);
+		mutPane.add(mutAtoC);
+    mutPane.add(Box.createHorizontalStrut(10));
 
-		add(mutCtoALabel);
-		add(mutCtoA);
+		mutPane.add(mutCtoALabel);
+		mutPane.add(mutCtoA);
+    mutPane.add(Box.createHorizontalStrut(10));
 
-		add(mutBtoCLabel);
-		add(mutBtoC);
+		mutPane.add(mutBtoCLabel);
+		mutPane.add(mutBtoC);
+    mutPane.add(Box.createHorizontalStrut(10));
 
-		add(mutCtoBLabel);
-		add(mutCtoB);
+		mutPane.add(mutCtoBLabel);
+		mutPane.add(mutCtoB);
+
+    add(titlePane);
+    add(mutPane);
+
+		help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openHelp("/help/Help06_Mutation.pdf");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void submit(shared.SessionParameters p) {

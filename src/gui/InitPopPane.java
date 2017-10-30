@@ -36,6 +36,7 @@ import java.util.ArrayList;
  */
 public class InitPopPane extends EvoPane {
 	JLabel popLabel;			// Population size
+  JButton help;
 	JLabel popSizeLabel;
 	EvoTextField popSizeField;
 	JLabel numPopsLabel;        // number of populations
@@ -51,9 +52,6 @@ public class InitPopPane extends EvoPane {
 		initFreqCLabel;
 	EvoTextField initFreqA, initFreqB, initFreqC;
 	JLabel alleleFreqsLabel, genoNumsLabel;		// labels for subsections
-	// JLabel calcFreqAALabel, calcFreqABLabel, 	// calculated frequencies
-	// 	calcFreqBBLabel, calcFreqACLabel,
-	// 	calcFreqBCLabel, calcFreqCCLabel;
 	JLabel freqTotal;
 	JLabel genoAALabel, genoABLabel, 	// genotypes
 		genoBBLabel, genoACLabel,
@@ -63,7 +61,6 @@ public class InitPopPane extends EvoPane {
 		genoBB, genoAC, genoBC,
 		genoCC;
 	JPanel afPane, gnPane;		// allele freqency and genotype panes
-	JButton apply;				// apply button to see calculated values
 
 	ArrayList<Component> alFreqList = new ArrayList<Component>();
 	ArrayList<Component> gtNumList = new ArrayList<Component>();
@@ -80,6 +77,7 @@ public class InitPopPane extends EvoPane {
 		c.anchor = GridBagConstraints.LINE_START;
 
 		popLabel = new JLabel("<html><b><span style='font-size:11px'>Initial Population:</span></b>");
+    help = new JButton("Help");
 		popSizeLabel = new JLabel("<html><b>Population Size:");
 		popSizeField = new EvoTextField(TEXT_LEN_LONG) {
       public void updateOnFocusLost() {
@@ -90,9 +88,14 @@ public class InitPopPane extends EvoPane {
 
 		// init pop size
 		c.gridx = 0; c.gridy = 0;
-    c.gridwidth = 3;
+    c.gridwidth = 2;
 		add(popLabel, c);
     c.gridwidth = 1;
+
+    c.gridx = 2; c.gridy = 0;
+    c.anchor = GridBagConstraints.LINE_END;
+    add(help, c);
+    c.anchor = GridBagConstraints.LINE_START;
 
 		// num gens and pops
 		numGensLabel = new JLabel("<html><b>Number of Generations:");
@@ -142,13 +145,6 @@ public class InitPopPane extends EvoPane {
 		initFreqA.setName(RATE);
 		initFreqB.setName(RATE);
 		initFreqC.setName(RATE);
-
-		// calcFreqAALabel = new JLabel("AA: ___");
-		// calcFreqABLabel = new JLabel("AB: ___");
-		// calcFreqBBLabel = new JLabel("BB: ___");
-		// calcFreqACLabel = new JLabel("AC: ___"); threeAllelesList.add(calcFreqACLabel);
-		// calcFreqBCLabel = new JLabel("BC: ___"); threeAllelesList.add(calcFreqBCLabel);
-		// calcFreqCCLabel = new JLabel("CC: ___"); threeAllelesList.add(calcFreqCCLabel);
 
 		afPane = new JPanel();
 		afPane.setBackground(getBackground());
@@ -277,6 +273,16 @@ public class InitPopPane extends EvoPane {
 		genotypeNums.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeAlleleFreqs(false);
+			}
+		});
+
+		help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openHelp("/help/Help03_Initial_Pop.pdf");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 	}
@@ -436,13 +442,6 @@ public class InitPopPane extends EvoPane {
 		// Set the allele freq text fields
 		initFreqB.setText(String.format("%.3f", freqB));
 		initFreqC.setText(String.format("%.3f", freqC));
-
-		// calcFreqAALabel.setText("AA: " + String.format("%.3f",  AAfreq));
-		// calcFreqABLabel.setText("AB: " + String.format("%.3f",  ABfreq));
-		// calcFreqBBLabel.setText("BB: " + String.format("%.3f",  BBfreq));
-		// calcFreqACLabel.setText("AC: " + String.format("%.3f",  ACfreq));
-		// calcFreqBCLabel.setText("BC: " + String.format("%.3f",  BCfreq));
-		// calcFreqCCLabel.setText("CC: " + String.format("%.3f",  CCfreq));
 
 		// Set the number text boxes
 		if(!genotypeNums.isSelected()) {

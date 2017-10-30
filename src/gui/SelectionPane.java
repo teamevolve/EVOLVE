@@ -32,6 +32,7 @@ import shared.SessionParameters;
  *
  */
 public class SelectionPane extends EvoPane {
+  JButton help;
 	JLabel selectLabel;
 	ButtonGroup selectGroup;
 	JRadioButton selectRandS,
@@ -68,6 +69,7 @@ public class SelectionPane extends EvoPane {
 
 		// Selection radio buttons
 		selectLabel = new JLabel("<html><b><span style='font-size:11px'>Natural Selection: </span> </b>");
+    help = new JButton("Help");
 		selectGroup = new ButtonGroup();
 		selectRandS = new JRadioButton("Reproduction and Survival", true);
 		selectAbs = new JRadioButton("Absolute Fitness");
@@ -84,7 +86,15 @@ public class SelectionPane extends EvoPane {
     titlePane.add(Box.createHorizontalStrut(20));
 		titlePane.add(selectAbs);
 
-    add(titlePane);
+    JPanel helpPane = new JPanel();
+    helpPane.setLayout(new BoxLayout(helpPane, BoxLayout.LINE_AXIS));
+    helpPane.setBackground(getBackground());
+    helpPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+    helpPane.add(titlePane);
+    helpPane.add(Box.createHorizontalGlue());
+    helpPane.add(help);
+
+    add(helpPane);
 
 		AALabel = new JLabel("AA");
 		ABLabel = new JLabel("AB");
@@ -92,9 +102,9 @@ public class SelectionPane extends EvoPane {
 		ACLabel = new JLabel("AC"); threeAllelesList.add(ACLabel);
 		BCLabel = new JLabel("BC"); threeAllelesList.add(BCLabel);
 		CCLabel = new JLabel("CC"); threeAllelesList.add(CCLabel);
-		survLabel = new JLabel("<html><b>Survival Rates </b> (0.0-1.0):");
-		reproLabel = new JLabel("<html><b>Reproductive Rates </b> (0.0-10.0):");
-		absFitLabel = new JLabel("<html><b>Absolute Fitness </b> (0.0-5.0):");
+		survLabel = new JLabel("<html><b>Survival Rates: </b> (0.0-1.0)");
+		reproLabel = new JLabel("<html><b>Reproductive Rates: </b> (0.0-10.0)");
+		absFitLabel = new JLabel("<html><b>Absolute Fitness: </b> (0.0-5.0)");
 		survAA = new EvoTextField(TEXT_LEN_SHORT) {
       public void updateOnFocusLost() {
         updateAbsFit(survAA, reproAA, absFitAA);
@@ -288,6 +298,16 @@ public class SelectionPane extends EvoPane {
 		selectAbs.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				modeRandS(false);
+			}
+		});
+
+		help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openHelp("/help/Help05_Natural_Selection.pdf");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 	}

@@ -4,10 +4,13 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 
@@ -26,6 +29,7 @@ import shared.Genotype;
 public class SexSelectPane extends EvoPane {
 	final static int TEXT_LEN_SHORT = 3;
 
+  JButton help;
 	JLabel mateFreqLabel, AAPrefLabel,ABPrefLabel, BBPrefLabel,
 		ACPrefLabel, BCPrefLabel, CCPrefLabel;
 
@@ -52,8 +56,16 @@ public class SexSelectPane extends EvoPane {
 
     setBackground(COLOR1);
 
-    mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): ");
-    mateFreqLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): </span>(0.0-1.0)");
+    help = new JButton("Help");
+
+    JPanel titlePane = new JPanel();
+    titlePane.setBackground(getBackground());
+    titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.LINE_AXIS));
+    titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
+    titlePane.add(mateFreqLabel);
+    titlePane.add(Box.createHorizontalGlue());
+    titlePane.add(help);
 
 		AAPrefLabel = new JLabel("AA Preference for:");
 		ABPrefLabel = new JLabel("AB Preference for:");
@@ -151,9 +163,18 @@ public class SexSelectPane extends EvoPane {
     t.fill = GridBagConstraints.HORIZONTAL;
     table.add(Box.createHorizontalGlue(), t);
 
-		add(mateFreqLabel);
+		add(titlePane);
 		add(table);
 
+    help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openHelp("/help/Help08_Sexual_Selection.pdf");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 	}
 
 	// does exactly what you'd think

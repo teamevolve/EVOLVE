@@ -240,6 +240,9 @@ public class GUI extends JPanel {
 		frame.pack();
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    if (frame.getWidth() <= 800) {
+      frame.setSize(800, frame.getHeight());
+    }
     if (frame.getHeight() >= screenSize.getHeight() - 100) {
       frame.setSize(frame.getWidth(), (int)screenSize.getHeight() - 100);
     }
