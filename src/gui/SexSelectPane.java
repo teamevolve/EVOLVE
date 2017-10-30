@@ -56,7 +56,7 @@ public class SexSelectPane extends EvoPane {
 
     setBackground(COLOR1);
 
-    mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): ");
+    mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): </span>(0.0-1.0)");
     help = new JButton("Help");
 
     JPanel titlePane = new JPanel();

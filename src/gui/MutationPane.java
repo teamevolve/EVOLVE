@@ -42,7 +42,7 @@ public class MutationPane extends EvoPane {
     setBackground(COLOR1);
 
 		// Mutation (0 to 1)
-		mutLabel = new JLabel("<html><span style='font-size:11px'><b>Mutation </b>(0.0-0.01):");
+		mutLabel = new JLabel("<html><span style='font-size:11px'><b>Mutation: </b></span>(0.0-0.01)");
     help = new JButton("Help");
 
 		mutAtoBLabel = new JLabel("A to B:");

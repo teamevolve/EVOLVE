@@ -66,7 +66,7 @@ public class MigrationPane extends EvoPane {
 		migLabel = new JLabel("<html><span style='font-size:11px'><b>Migration</b> (Gene Flow): </span>");
     help = new JButton("Help");
 		migGroup = new ButtonGroup();
-		fixedMig = new JRadioButton("Genotypes Equal (0.0-0.9): ", true);
+		fixedMig = new JRadioButton("Genotypes Equal: (0.0-0.9)", true);
 		varMig = new JRadioButton("Genotypes Vary: ");
 		migGroup.add(fixedMig);
 		migGroup.add(varMig);

@@ -102,9 +102,9 @@ public class SelectionPane extends EvoPane {
 		ACLabel = new JLabel("AC"); threeAllelesList.add(ACLabel);
 		BCLabel = new JLabel("BC"); threeAllelesList.add(BCLabel);
 		CCLabel = new JLabel("CC"); threeAllelesList.add(CCLabel);
-		survLabel = new JLabel("<html><b>Survival Rates </b> (0.0-1.0):");
-		reproLabel = new JLabel("<html><b>Reproductive Rates </b> (0.0-10.0):");
-		absFitLabel = new JLabel("<html><b>Absolute Fitness </b> (0.0-5.0):");
+		survLabel = new JLabel("<html><b>Survival Rates: </b> (0.0-1.0)");
+		reproLabel = new JLabel("<html><b>Reproductive Rates: </b> (0.0-10.0)");
+		absFitLabel = new JLabel("<html><b>Absolute Fitness: </b> (0.0-5.0)");
 		survAA = new EvoTextField(TEXT_LEN_SHORT) {
       public void updateOnFocusLost() {
         updateAbsFit(survAA, reproAA, absFitAA);
