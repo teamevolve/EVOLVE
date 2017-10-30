@@ -13,10 +13,11 @@ public enum Allele {
 	A, B, C;
 	
 	private static Allele[] twoAlleleArray = {A, B};
+	private static Allele[] threeAlleleArray = {A, B, C};
 	
 	public static Allele[] getValues() {
 		if (DataManager.getInstance().getSessionParams().isThreeAlleles())
-			return Allele.values();
+			return threeAlleleArray;
 		else
 			return twoAlleleArray;
 		
