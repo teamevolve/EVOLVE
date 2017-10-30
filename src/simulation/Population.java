@@ -28,6 +28,8 @@ import static gui.GUI.MIG_SUM;
 import static gui.GUI.SURV_SUM;
 import static gui.GUI.MUT_SUM;
 
+import static gui.GUI.BINOMIAL;
+import static gui.GUI.POISSON;
 
 /**
  * Population represents a single population within the simulation. It holds
@@ -260,8 +262,15 @@ public class Population {
 		
 		///*DEBUG*/System.out.println(System.currentTimeMillis() - start);
 		// generate Offspring
-		
-		generateOffspring(current, pairings);
+		if (BINOMIAL) {
+			generateOffspring_binomial(current, pairings);
+		}
+		else if (POISSON) {
+			generateOffspring_poisson(current, pairings);
+		}
+		else {
+			generateOffspring(current, pairings);
+		}
 		
 		//----------DEBUGGING CODE-------------
 		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || REP_SUM) && populationID == 0)) {
@@ -332,46 +341,6 @@ public class Population {
 			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
 			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
 		}
-	}
-
-	private HashMap<Genotype, HashMap<Genotype, Integer>> mateIterativeList(GenerationRecord previous) {
-		ArrayList<Genotype> individuals = new ArrayList<Genotype>();
-		HashMap<Genotype, HashMap<Genotype, Integer>> results = new HashMap<Genotype, HashMap<Genotype, Integer>>();
-		for (Genotype gt : Genotype.getValues()) {
-			for (int i=0; i < previous.getGenotypeSubpopulationSize(gt); i++) {
-				individuals.add(gt);
-			}
-		}
-		Collections.shuffle(individuals);
-		while(individuals.size() > 1) {
-			Genotype gt1;
-			Genotype gt2;
-			if (Utilities.isValidPairing(individuals.get(0), individuals.get(1))) {
-				gt1 = individuals.remove(0);
-				gt2 = individuals.remove(0);
-			}
-			else {
-				gt2 = individuals.remove(0);
-				gt1 = individuals.remove(0);
-			}
-			
-			if (results.get(gt1) == null)
-				results.put(gt1, new HashMap<Genotype, Integer>());
-			if (results.get(gt1).get(gt2) == null)
-				results.get(gt1).put(gt2,  0);
-			results.get(gt1).put(gt2, results.get(gt1).get(gt2) + 1);			
-		}
-		
-		if (!individuals.isEmpty()) {
-			Genotype gt = individuals.remove(0);
-			if (results.get(gt) == null)
-				results.put(gt, new HashMap<Genotype, Integer>());
-			if (results.get(gt).get(gt) == null)
-				results.get(gt).put(gt,  0);
-			results.get(gt).put(gt, results.get(gt).get(gt) + 1);			
-		}
-			
-		return results;
 	}
 
 	// mating with no sexual preferences
@@ -831,37 +800,7 @@ public class Population {
 		System.out.println("     *ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg*");
 		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
-	
-	private void generateOffspring_old(GenerationRecord current, HashMap<Genotype, HashMap<Genotype, Integer>> pairings) {
-		HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
-		SessionParameters sp = DataManager.getInstance().getSessionParams();
-		// initialize the young generation
-		for (Genotype gt : Genotype.getValues()) {
-			offspring.put(gt, 0.0);
-		}
-		printOffspring(offspring);
-		for (Genotype gt1 : Genotype.getValues()) {
-			for (Genotype gt2 : Genotype.getValues()) {
-				if (!Utilities.isValidPairing(gt1, gt2)) continue;
-				for (Genotype off : Utilities.getOffspringGenotypes(gt1, gt2)) {
 
-					offspring.put(off,
-							offspring.get(off) + 
-							(sp.getReproductionRate(gt1) + sp.getReproductionRate(gt2)) * .25 *
-							pairings.get(gt1).get(gt2) *
-							Utilities.nextGaussianRand(INTERNAL_RNG, REPRODUCTION_MEAN, REPRODUCTION_STDDEV));
-					printPairings(pairings);
-					System.out.println(gt1.toString() +"  "+  gt2.toString() + "  "+ off.toString());
-					printOffspring(offspring);
-				}
-			}
-		}
-		
-		for (Genotype gt : Genotype.getValues()) {
-			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
-			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
-		}
-	}
 	
 	private void generateOffspring(GenerationRecord current, HashMap<Genotype, HashMap<Genotype, Integer>> pairings) {
 		HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
@@ -871,10 +810,6 @@ public class Population {
 			offspring.put(gt, 0.0);
 		}
 		
-//		if (DEBUG_REPRO && populationID == 0) {
-//			System.out.println();
-//			printOffspring_indent(offspring);
-//		}
 		
 		for (Genotype gt1 : Genotype.getValues()) {
 			for (Genotype gt2 : Genotype.getValues()) {
@@ -960,6 +895,198 @@ public class Population {
 //			for (Genotype gt : Genotype.getValues()) {
 //				System.out.println("num of " + gt.toString() + ": " + current.getGenotypeSubpopulationSize(gt));
 //			}
+		}
+		//------------------------------------------------------------------------
+		//------------------------------------------------------------------------
+		
+	}
+	
+	
+	
+	private void generateOffspring_binomial(GenerationRecord current, 
+			HashMap<Genotype, HashMap<Genotype, Integer>> pairings) {
+		HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
+		SessionParameters sp = DataManager.getInstance().getSessionParams();
+		// initialize the young generation
+		for (Genotype gt : Genotype.getValues()) {
+			offspring.put(gt, 0.0);
+		}
+		
+		for (Genotype gt1 : Genotype.getValues()) {
+			for (Genotype gt2 : Genotype.getValues()) {
+				// if gt1xgt2 is not a valid pair or there is no pair of gt1xgt2 chosen in the mating process, skip
+				if (!Utilities.isValidPairing(gt1, gt2)) continue;
+				if (pairings.get(gt1).get(gt2) == 0) continue;
+				
+				//------------------------------------------------------------------------
+				//------------------------------------------------------------------------
+				if (DEBUG_REPRO && populationID == 0) {
+					System.out.println();
+					printPairings_indent(pairings);
+					System.out.println();
+				}
+				//------------------------------------------------------------------------
+				//------------------------------------------------------------------------
+				
+				for (Genotype off : Utilities.getOffspringGenotypes(gt1, gt2)) {
+					double numOfMates = pairings.get(gt1).get(gt2);
+					if (numOfMates != 0) {
+						// questioning the mean and standard deviation...
+						int n = (int)(sp.getReproductionRate(gt1) + sp.getReproductionRate(gt2));
+						double p = 0.25;
+						int off_num = 0;
+						for(int i = 0 ; i < numOfMates; i++) {
+							off_num += Utilities.getBinomial(n, p);
+						}
+						offspring.put(off, offspring.get(off) + off_num);
+						//------------------------------------------------------------------------
+						//------------------------------------------------------------------------
+						if (DEBUG_REPRO && populationID == 0) {
+							System.out.print("  ");
+							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
+							System.out.print("     ");
+							System.out.println(gt1.toString() + " repror8: " + sp.getReproductionRate(gt1));
+							System.out.print("     ");
+							System.out.println(gt2.toString() + " repror8: " + sp.getReproductionRate(gt2));
+							System.out.print("     ");
+							System.out.println("expected # of offspring per pair: " + n);
+							System.out.print("     ");
+							System.out.println("number of mates: " + numOfMates);
+							System.out.print("     ");
+							System.out.println("number of " + off.toString() + " added to the young gen: "+ off_num);
+							System.out.println();
+							printOffspring_indent(offspring);
+							System.out.println();
+						}
+						//------------------------------------------------------------------------					
+						//------------------------------------------------------------------------
+					}
+					else {
+						//------------------------------------------------------------------------
+						//------------------------------------------------------------------------
+						if (DEBUG_REPRO && populationID == 0) {
+							System.out.print("  ");
+							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
+							System.out.print("     ");
+							System.out.println("0 mate will generate 0 offspring.");
+							System.out.println();
+							printOffspring_indent(offspring);
+							System.out.println();
+						}
+						//------------------------------------------------------------------------
+						//------------------------------------------------------------------------
+					}
+				}
+			}
+		}
+		
+		for (Genotype gt : Genotype.getValues()) {
+			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
+			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
+		}
+		//------------------------------------------------------------------------
+		//------------------------------------------------------------------------
+		if (DEBUG_REPRO && populationID == 0) {
+			System.out.println();
+			System.out.println();
+			System.out.println("results after rounding...");
+			printGenoNum_indent(current);
+//			for (Genotype gt : Genotype.getValues()) {
+//				System.out.println("num of " + gt.toString() + ": " + current.getGenotypeSubpopulationSize(gt));
+//			}
+		}
+		//------------------------------------------------------------------------
+		//------------------------------------------------------------------------
+		
+	}
+	
+	private void generateOffspring_poisson(GenerationRecord current, 
+			HashMap<Genotype, HashMap<Genotype, Integer>> pairings) {
+		HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
+		SessionParameters sp = DataManager.getInstance().getSessionParams();
+		// initialize the young generation
+		for (Genotype gt : Genotype.getValues()) {
+			offspring.put(gt, 0.0);
+		}
+		
+		for (Genotype gt1 : Genotype.getValues()) {
+			for (Genotype gt2 : Genotype.getValues()) {
+				// if gt1xgt2 is not a valid pair or there is no pair of gt1xgt2 chosen in the mating process, skip
+				if (!Utilities.isValidPairing(gt1, gt2)) continue;
+				if (pairings.get(gt1).get(gt2) == 0) continue;
+				
+				//------------------------------------------------------------------------
+				//------------------------------------------------------------------------
+				if (DEBUG_REPRO && populationID == 0) {
+					System.out.println();
+					printPairings_indent(pairings);
+					System.out.println();
+				}
+				//------------------------------------------------------------------------
+				//------------------------------------------------------------------------
+				
+				for (Genotype off : Utilities.getOffspringGenotypes(gt1, gt2)) {
+					double numOfMates = pairings.get(gt1).get(gt2);
+					if (numOfMates != 0) {
+						// questioning the mean and standard deviation...
+						double lambda = (sp.getReproductionRate(gt1) + sp.getReproductionRate(gt2)) * 0.25;
+						int off_num = 0;
+						for(int i = 0 ; i < numOfMates; i++) {
+							off_num += Utilities.getPoisson(lambda);
+						}
+						offspring.put(off, offspring.get(off) + off_num);
+						//------------------------------------------------------------------------
+						//------------------------------------------------------------------------
+						if (DEBUG_REPRO && populationID == 0) {
+							System.out.print("  ");
+							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
+							System.out.print("     ");
+							System.out.println(gt1.toString() + " repror8: " + sp.getReproductionRate(gt1));
+							System.out.print("     ");
+							System.out.println(gt2.toString() + " repror8: " + sp.getReproductionRate(gt2));
+							System.out.print("     ");
+							System.out.println("expected # of offspring" + off.toString() + " per pair: " + lambda);
+							System.out.print("     ");
+							System.out.println("number of mates: " + numOfMates);
+							System.out.print("     ");
+							System.out.println("number of " + off.toString() + " added to the young gen: "+ off_num);
+							System.out.println();
+							printOffspring_indent(offspring);
+							System.out.println();
+						}
+						//------------------------------------------------------------------------					
+						//------------------------------------------------------------------------
+					}
+					else {
+						//------------------------------------------------------------------------
+						//------------------------------------------------------------------------
+						if (DEBUG_REPRO && populationID == 0) {
+							System.out.print("  ");
+							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
+							System.out.print("     ");
+							System.out.println("0 mate will generate 0 offspring.");
+							System.out.println();
+							printOffspring_indent(offspring);
+							System.out.println();
+						}
+						//------------------------------------------------------------------------
+						//------------------------------------------------------------------------
+					}
+				}
+			}
+		}
+		
+		for (Genotype gt : Genotype.getValues()) {
+			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
+			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
+		}
+		//------------------------------------------------------------------------
+		//------------------------------------------------------------------------
+		if (DEBUG_REPRO && populationID == 0) {
+			System.out.println();
+			System.out.println();
+			System.out.println("results after rounding...");
+			printGenoNum_indent(current);
 		}
 		//------------------------------------------------------------------------
 		//------------------------------------------------------------------------

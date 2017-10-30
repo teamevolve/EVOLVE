@@ -51,6 +51,9 @@ public class GUI extends JPanel {
 	public static boolean MIG_SUM = false;
 	public static boolean SURV_SUM = false;
 	public static boolean MUT_SUM = false;
+	
+	public static boolean BINOMIAL = false;
+	public static boolean POISSON = false;
 
 	boolean firstRun = true;
 
@@ -279,7 +282,14 @@ public class GUI extends JPanel {
 	    		default:
 	    			break;
 	      }
+	      
 	      String sum = args[1].toLowerCase();
+	      
+	      if (sum.contains("binomial"))
+	    	  	BINOMIAL = true;
+	      else if (sum.contains("poisson"))
+	    	  	POISSON = true;
+	      
 	      if (sum.contains("all")) {
 	      		DEBUG_SUMMARY = true;
 	      		MAT_SUM = true;

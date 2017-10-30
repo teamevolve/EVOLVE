@@ -58,6 +58,7 @@ public class CSVExport {
 	public void export(ArrayList<Population> popList) {
 		PrintStream original = System.out;
 		File save = Utilities.generateSaveDialog(null, "csv");
+		
 		try {
 			if (save == null) return;
 			System.setOut(new PrintStream(save));
@@ -67,10 +68,14 @@ public class CSVExport {
 		}
 		
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
+		
 		printLabInfo();
+		
 		if (popList.size() < 2) {
 			sp.setMigrationChecked(false);
 		}
+		
+		
 		for (Population p : popList) {
 			printHeader(p);
 			ArrayList<GenerationRecord> genHistory = p.getGenerationHistory();
@@ -96,6 +101,7 @@ public class CSVExport {
 				System.out.printf("%d\n", netChange);
 			}
 		}
+		
 		System.setOut(original);
 	}
 
@@ -108,6 +114,7 @@ public class CSVExport {
 	 * @return total number of deaths during this generation
 	 */
 	private static int printDeaths(GenerationRecord rec) {
+		
 		int total = 0;
 
 		for (Genotype gt : Genotype.getValues()) {
@@ -116,7 +123,6 @@ public class CSVExport {
 		}
 
 		System.out.printf("%d,", total);
-
 		return total;
 	}
 
@@ -129,6 +135,7 @@ public class CSVExport {
 	 * @return net population change due to migration
 	 */
 	private static int printMigrations(GenerationRecord rec) {
+		
 		int totalEmigrations = 0;
 		int totalImmigrations = 0;
 
@@ -145,7 +152,6 @@ public class CSVExport {
 		}
 
 		System.out.printf("%d,", totalImmigrations);
-
 		System.out.printf("%d,", totalImmigrations - totalEmigrations);
 
 		return totalImmigrations - totalEmigrations;
@@ -203,7 +209,6 @@ public class CSVExport {
 		for (Genotype gt : Genotype.getValues()) {
 			System.out.printf("%d,", rec.getGenotypeSubpopulationSize(gt));
 		}
-
 	}
 
 	/**
@@ -314,16 +319,21 @@ public class CSVExport {
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 
 		System.out.println("Title,\"" + sp.getTitle() + "\"");
-		System.out.println("Question,\"" + sp.getQuestion() + "\"");
-		System.out.println("Design,\"" + sp.getDesign() + "\"");
-		System.out.println("Results,\"" + sp.getResults() + "\"");
-		System.out.println("Notes,\"" + sp.getDiscuss() + "\"");
+		
+		if (sp.getQuestion().trim().length() > 0) 
+			System.out.println("Question,\"" + sp.getQuestion() + "\"");
+		if (sp.getDesign().trim().length() > 0) 
+			System.out.println("Design,\"" + sp.getDesign() + "\"");
+		if (sp.getResults().trim().length() > 0) 
+			System.out.println("Results,\"" + sp.getResults() + "\"");
+		if (sp.getDiscuss().trim().length() > 0) 
+			System.out.println("Notes,\"" + sp.getDiscuss() + "\"");
 		System.out.println();
 		System.out.println();
 
 		if (!DataManager.getInstance().getSessionParams().isThreeAlleles()) {
 			System.out.println("Seed, #Gen.s, #Pop.s, Freq.A, Freq.B, 1st Pop., Carrying Cap, Post-Crash Size");
-			System.out.printf("%d,%d,%d,%f,%f,%d,%d,%d\n",
+			System.out.printf("%d,%d,%d,%.2f,%.2f,%d,%d,%d\n",
 						sp.getSeed(), 
 						sp.getNumGens(), 
 						sp.getNumPops(),
@@ -336,11 +346,11 @@ public class CSVExport {
 			System.out.println();
 			// Natural selection
 			System.out.println("NAT. SEL.,AA,AB,BB");
-			System.out.printf("Surv.,%f,%f,%f\n",
+			System.out.printf("Surv.,%.2f,%.2f,%.2f\n",
 					sp.getSurvivalRate(Genotype.AA),
 					sp.getSurvivalRate(Genotype.AB),
 					sp.getSurvivalRate(Genotype.BB));
-			System.out.printf("Repr.,%f,%f,%f\n",
+			System.out.printf("Repr.,%.2f,%.2f,%.2f\n",
 					sp.getReproductionRate(Genotype.AA),
 					sp.getReproductionRate(Genotype.AB),
 					sp.getReproductionRate(Genotype.BB));
@@ -350,7 +360,7 @@ public class CSVExport {
 			
 			// migration
 			if (sp.isMigrationChecked()) {
-				System.out.printf("MIGRATION,%f,%f,%f\n", 
+				System.out.printf("MIGRATION,%.2f,%.2f,%.2f\n", 
 						sp.getMigrationRate(Genotype.AA),
 						sp.getMigrationRate(Genotype.AB),
 						sp.getMigrationRate(Genotype.BB));
@@ -358,12 +368,15 @@ public class CSVExport {
 			}
 			
 			if (sp.isSexSelectChecked()) {
-				System.out.println("SEXUAL SEL.");
+				System.out.println("SEXUAL SEL.,,,,Total");
 				for (Genotype gt1 : Genotype.getValues()) {
+					double sum = 0.0;
 					System.out.printf("%s Pref.,", gt1.toString());
 					for (Genotype gt2: Genotype.getValues()) {
-						System.out.printf("%f,",sp.getSexualSelectionRate(gt1, gt2));
+						System.out.printf("%.2f,",sp.getSexualSelectionRate(gt1, gt2));
+						sum += sp.getSexualSelectionRate(gt1, gt2);
 					}
+					System.out.printf("%.2f",sum);
 					System.out.println();
 				}
 				System.out.println();
@@ -371,14 +384,14 @@ public class CSVExport {
 			
 			if (sp.isMutationChecked()) {
 				System.out.println("MUTATION, A>B, B>A");
-				System.out.printf(",%f,%f\n",sp.getAlleleMutationRate(Allele.A, Allele.B), sp.getAlleleMutationRate(Allele.B, Allele.A));
+				System.out.printf(",%.2f,%.2f\n",sp.getAlleleMutationRate(Allele.A, Allele.B), sp.getAlleleMutationRate(Allele.B, Allele.A));
 			}
 			System.out.println();
 			System.out.println();
 		}
 		else {			
 			System.out.println("Seed, #Gen.s, #Pop.s, Freq.A, Freq.B, Freq.C, 1st Pop, Carrying Cap, Post-Crash Size");
-			System.out.printf("%d,%d,%d,%f,%f,%f,%d,%d,%d\n",
+			System.out.printf("%d,%d,%d,%.2f,%.2f,%.2f,%d,%d,%d\n",
 					sp.getSeed(), sp.getNumGens(), sp.getNumPops(),
 					sp.getAlleleFrequency(Allele.A), 
 					sp.getAlleleFrequency(Allele.B),
@@ -391,14 +404,14 @@ public class CSVExport {
 			
 			// Natural selection
 			System.out.println("NAT. SEL.,AA,AB,BB,AC,BC,CC");
-			System.out.printf("Surv.,%f,%f,%f,%f,%f,%f\n",
+			System.out.printf("Surv.,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",
 					sp.getSurvivalRate(Genotype.AA),
 					sp.getSurvivalRate(Genotype.AB),
 					sp.getSurvivalRate(Genotype.BB),
 					sp.getSurvivalRate(Genotype.AC),
 					sp.getSurvivalRate(Genotype.BC),
 					sp.getSurvivalRate(Genotype.CC));
-			System.out.printf("Repr.,%f,%f,%f,%f,%f,%f\n",
+			System.out.printf("Repr.,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",
 					sp.getReproductionRate(Genotype.AA),
 					sp.getReproductionRate(Genotype.AB),
 					sp.getReproductionRate(Genotype.BB),
@@ -411,7 +424,7 @@ public class CSVExport {
 			
 			// migration
 			if (sp.isMigrationChecked()) {
-				System.out.printf("MIGRATION,%f,%f,%f,%f,%f,%f\n", 
+				System.out.printf("MIGRATION,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n", 
 						sp.getMigrationRate(Genotype.AA),
 						sp.getMigrationRate(Genotype.AB),
 						sp.getMigrationRate(Genotype.BB),
@@ -422,12 +435,15 @@ public class CSVExport {
 			}
 			
 			if (sp.isSexSelectChecked()) {
-				System.out.println("SEXUAL SEL.");
+				System.out.println("SEXUAL SEL.,,,,,,,Total");
 				for (Genotype gt1 : Genotype.getValues()) {
+					double sum = 0.0;
 					System.out.printf("%s Pref.,", gt1.toString());
 					for (Genotype gt2: Genotype.getValues()) {
-						System.out.printf("%f,",sp.getSexualSelectionRate(gt1, gt2));
+						System.out.printf("%.2f,",sp.getSexualSelectionRate(gt1, gt2));
+						sum += sp.getSexualSelectionRate(gt1, gt2);
 					}
+					System.out.print(sum);
 					System.out.println();
 				}
 				System.out.println();
@@ -435,7 +451,7 @@ public class CSVExport {
 	
 			if (sp.isMutationChecked()) {
 				System.out.println("MUTATION, A>B, B>A, A>C, C>A, B>C, C>B");
-				System.out.printf(",%f,%f\n",
+				System.out.printf(",%.2f,%.2f\n",
 						sp.getAlleleMutationRate(Allele.A, Allele.B), 
 						sp.getAlleleMutationRate(Allele.B, Allele.A),
 						sp.getAlleleMutationRate(Allele.A, Allele.C), 

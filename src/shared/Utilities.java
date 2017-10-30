@@ -36,6 +36,44 @@ public class Utilities {
 		return rng.nextGaussian() * stdDev + mean;
 	}
 	
+	/**
+	 * Generates a random number with a Poisson distribution based on a given
+	 * mean lambda. 
+	 * 
+	 * @param lambda average value to be produced
+	 * 
+	 * @return random number with a Poisson distribution
+	 * 
+	 */
+	public static int getPoisson(double lambda) {
+		 double L = Math.exp(-lambda);
+		 double p = 1.0;
+		 int k = 0;
+		 do {
+			 k++;
+			 p *= Math.random();
+		 } while (p > L);
+		 return k - 1;
+	}
+	
+	/**
+	 * Generates a random number with a Binomial distribution based on a given
+	 * number of trials n and probability of an event p. 
+	 * 
+	 * @param n number of trials
+	 * @param p probability of each trial
+	 * 
+	 * @return random number with a binomial distribution
+	 * 
+	 */
+	public static int getBinomial(int n, double p) {
+		int x = 0;
+		for(int i = 0; i < n; i++) {
+			if(Math.random() < p)
+				x++;
+		}
+		return x;
+	}
 	
 	/**
 	 * Returns whether or not the pairing gt1, gt2 is valid (order matters).

@@ -314,6 +314,7 @@ public class _2DGraphingManager {
 						String design = "";
 						String prediction = "";
 						String result = "";
+						String discussion = "";
 						if (DataManager.getInstance().getSessionParams().getQuestion().trim().length() > 0) 
 							question = "     Question: " + DataManager.getInstance().getSessionParams().getQuestion() + "\n";
 						if (DataManager.getInstance().getSessionParams().getDesign().trim().length() > 0) 
@@ -322,8 +323,10 @@ public class _2DGraphingManager {
 							prediction = "     Predictions: " + DataManager.getInstance().getSessionParams().getPrediction() + "\n";
 						if (DataManager.getInstance().getSessionParams().getResults().trim().length() > 0) 
 							result = "     Results: " + DataManager.getInstance().getSessionParams().getResults();
+						if (DataManager.getInstance().getSessionParams().getDiscuss().trim().length() > 0) 
+							discussion = "     Notes: " + DataManager.getInstance().getSessionParams().getDiscuss();
 						
-						String labInfo = question + design  + prediction + result;
+						String labInfo = question + design  + prediction + result + discussion;
 						TextTitle labinfo = new TextTitle(labInfo, new Font("Serif", Font.PLAIN, 14), Color.black,
 							    RectangleEdge.BOTTOM, HorizontalAlignment.LEFT,
 							    VerticalAlignment.CENTER, RectangleInsets.ZERO_INSETS); 
