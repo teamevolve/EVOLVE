@@ -151,6 +151,9 @@ public class DataManager {
 				if (a1_0 == a1_1 && a2_0 == a2_1)
 					sessionParams.setMutationRate(gt1, gt2, 
 							Math.pow(sessionParams.getAlleleMutationRate(a1_0, a2_0), 2));
+				else if (a2_0 == a2_1) 
+					sessionParams.setMutationRate(gt1, gt2, 
+							sessionParams.getAlleleMutationRate(a1_0, a2_0) * sessionParams.getAlleleMutationRate(a1_1, a2_1));
 				else
 					sessionParams.setMutationRate(gt1, gt2, 
 							sessionParams.getAlleleMutationRate(a1_0, a2_0) * sessionParams.getAlleleMutationRate(a1_1, a2_1) +
