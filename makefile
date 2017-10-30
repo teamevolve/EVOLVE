@@ -43,8 +43,12 @@ build/recipts/src: $(src_files) $(rtf_dest)
 # 	@cp $< $@
 
 build/classes/%.pdf: src/%.rtf
+ifeq ($(OS), Linux)
 	@mkdir -p $(@D)
 	@libreoffice --headless --convert-to pdf --outdir $(@D) $< > /dev/null
+else
+	@echo $< "could not be compiled; skipping"
+endif
 
 build/recipts/%: lib/%.jar
 	@mkdir -p $(@D)
