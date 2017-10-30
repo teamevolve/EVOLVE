@@ -150,24 +150,21 @@ public class Population {
 		}
 		
 		reproduce(getLastGeneration(), newGeneration); // mating and reproduce
-		
-//		survive(newGeneration); //natural selection
-//		if (DataManager.getInstance().getSessionParams().isMutationChecked()) {
-//			mutate(newGeneration); //mutate
-//		}
-//		if ((DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION) && populationID == 0){
-//			System.out.println();
-//			System.out.println();
-//			System.out.println();
-//		}
-//		
-		//return newGeneration;
 		generationHistory.add(newGeneration);
 	}
 	
 	public void simulateSurviveMutation() {
 		GenerationRecord newGeneration = generationHistory.get(generationHistory.size() - 1);
-		survive(newGeneration); //natural selection
+		
+		if (BINOMIAL) {
+			survive_binomial(newGeneration);
+		}
+		else if (POISSON) {
+			survive_poisson(newGeneration);
+		}
+		else {
+			survive(newGeneration); //natural selection
+		}
 		
 		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || SURV_SUM) && populationID == 0)) {
 
@@ -1158,7 +1155,158 @@ public class Population {
 		
 	}
 	
+	private void survive_binomial(GenerationRecord current) {
+
+		int numSurvived;
+		int totalAdults = 0; 
+		double crash;
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+
+		if (DEBUG_SURVIVAL && populationID == 0) {
+			System.out.println();
+			printGenoNum_indent(current);
+			System.out.println();
+		}
+		
+		//Calculate the number of each genotype surviving
+		for (Genotype gt: Genotype.getValues()) {
+			//Typecasting to int in java is analogous to flooring
+			double p = sp.getSurvivalRate(gt);
+			int n = current.getGenotypeSubpopulationSize(gt);
+			numSurvived = Utilities.getBinomial(n, p);
+
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			if (DEBUG_SURVIVAL && populationID == 0) {
+				System.out.println("     [ " + gt.toString() + " ]");
+				System.out.print("       ");
+				System.out.println("number of genotype " + gt.toString() + ": " + n);
+				System.out.print("       ");
+				System.out.println("survival rate of genotype " + gt.toString() + ": " + p);
+				System.out.print("       ");
+				System.out.println("number of " + gt.toString() + " survived: " + numSurvived);
+			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			
+		
+			if (numSurvived > n){
+				numSurvived = n;
+			}
+			
+			
+			current.setGenotypeSubpopulationSize(gt, numSurvived);
+			current.setDeaths(gt, n - numSurvived);
+			totalAdults += numSurvived;
+		}
+		
+		//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
+		if (DEBUG_SURVIVAL && populationID == 0) {
+			System.out.println();
+			System.out.println("     RESULT POP: ");
+			printGenoNum_indent(current);
+		}
+		//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
+		
+		//Kill off populations if larger than carrying capacity
+		if (totalAdults > sp.getPopCapacity()) {
+			crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
+			for (Genotype gt: Genotype.getValues()) {
+				current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
+			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			if (DEBUG_SURVIVAL && populationID == 0) {
+				System.out.println();
+				System.out.print("     ");
+				System.out.println("Scale the subpop sizes since pop. size is larger than carrying capacity.");
+				printGenoNum_indent(current);
+			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------		
+		}
+		
+	}
 	
+	private void survive_poisson(GenerationRecord current) {
+
+		int numSurvived;
+		int totalAdults = 0; 
+		double crash;
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+
+		if (DEBUG_SURVIVAL && populationID == 0) {
+			System.out.println();
+			printGenoNum_indent(current);
+			System.out.println();
+		}
+		
+		//Calculate the number of each genotype surviving
+		for (Genotype gt: Genotype.getValues()) {
+			//Typecasting to int in java is analogous to flooring
+			int n = current.getGenotypeSubpopulationSize(gt);
+			double lambda = sp.getSurvivalRate(gt) * (double) n;
+			numSurvived = Utilities.getPoisson(lambda);
+
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			if (DEBUG_SURVIVAL && populationID == 0) {
+				System.out.println("     [ " + gt.toString() + " ]");
+				System.out.print("       ");
+				System.out.println("number of genotype " + gt.toString() + ": " + n);
+				System.out.print("       ");
+				System.out.println("survival rate of genotype " + gt.toString() + ": " + sp.getSurvivalRate(gt));
+				System.out.print("       ");
+				System.out.println("expected number of " + gt.toString() + " survived: " + lambda);
+				System.out.print("       ");
+				System.out.println("number of " + gt.toString() + " survived: " + numSurvived);
+			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			
+		
+			if (numSurvived > n){
+				numSurvived = n;
+			}
+			
+			
+			current.setGenotypeSubpopulationSize(gt, numSurvived);
+			current.setDeaths(gt, n - numSurvived);
+			totalAdults += numSurvived;
+		}
+		
+		//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
+		if (DEBUG_SURVIVAL && populationID == 0) {
+			System.out.println();
+			System.out.println("     RESULT POP: ");
+			printGenoNum_indent(current);
+		}
+		//----------------------------------------------------------------------------
+		//----------------------------------------------------------------------------
+		
+		//Kill off populations if larger than carrying capacity
+		if (totalAdults > sp.getPopCapacity()) {
+			crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
+			for (Genotype gt: Genotype.getValues()) {
+				current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
+			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------
+			if (DEBUG_SURVIVAL && populationID == 0) {
+				System.out.println();
+				System.out.print("     ");
+				System.out.println("Scale the subpop sizes since pop. size is larger than carrying capacity.");
+				printGenoNum_indent(current);
+			}
+			//----------------------------------------------------------------------------
+			//----------------------------------------------------------------------------		
+		}
+		
+	}
+
 	private void printGenoNum(GenerationRecord record) {
 		String genoNum =   "|Number         ";
 		String genotypes = "|               ";
