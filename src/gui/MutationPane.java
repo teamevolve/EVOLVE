@@ -51,12 +51,12 @@ public class MutationPane extends EvoPane {
 		mutCtoALabel = new JLabel("C to A:"); threeAllelesList.add(mutCtoALabel);
 		mutBtoCLabel = new JLabel("B to C:"); threeAllelesList.add(mutBtoCLabel);
 		mutCtoBLabel = new JLabel("C to B:"); threeAllelesList.add(mutCtoBLabel);
-		mutAtoB = new EvoTextField(TEXT_LEN_LONG);
-		mutBtoA = new EvoTextField(TEXT_LEN_LONG);
-		mutAtoC = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutAtoC);
-		mutCtoA = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutCtoA);
-		mutBtoC = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutBtoC);
-		mutCtoB = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutCtoB);
+		mutAtoB = new EvoTextField(TEXT_LEN_SHORT);
+		mutBtoA = new EvoTextField(TEXT_LEN_SHORT);
+		mutAtoC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutAtoC);
+		mutCtoA = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutCtoA);
+		mutBtoC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutBtoC);
+		mutCtoB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutCtoB);
 
 		// Set input verifiers
 
@@ -81,18 +81,23 @@ public class MutationPane extends EvoPane {
     mutPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		mutPane.add(mutAtoBLabel);
 		mutPane.add(mutAtoB);
+    mutPane.add(Box.createHorizontalStrut(10));
 
 		mutPane.add(mutBtoALabel);
 		mutPane.add(mutBtoA);
+    mutPane.add(Box.createHorizontalStrut(10));
 
 		mutPane.add(mutAtoCLabel);
 		mutPane.add(mutAtoC);
+    mutPane.add(Box.createHorizontalStrut(10));
 
 		mutPane.add(mutCtoALabel);
 		mutPane.add(mutCtoA);
+    mutPane.add(Box.createHorizontalStrut(10));
 
 		mutPane.add(mutBtoCLabel);
 		mutPane.add(mutBtoC);
+    mutPane.add(Box.createHorizontalStrut(10));
 
 		mutPane.add(mutCtoBLabel);
 		mutPane.add(mutCtoB);
