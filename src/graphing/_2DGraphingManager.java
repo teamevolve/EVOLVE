@@ -217,9 +217,6 @@ public class _2DGraphingManager {
 			frequenciesPanel.add(box);
 		}
 		
-		
-		
-		
 		JPanel rangesPanel = new JPanel();
 		rangesPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c1 = new GridBagConstraints();
@@ -391,10 +388,11 @@ public class _2DGraphingManager {
 			for (Population p : DataManager.getInstance().getSimulationData()) {
 				XYSeries series = new XYSeries(at.toString() + " " + p.getPopID());
 				for (GenerationRecord gr : p.getGenerationHistory()) {
-					series.add(gr.getGenerationNumber(), getDataPoint(gr, at));
+					series.add(gr.getGenerationNumber(), getDataPoint(gr, at, p));
 				}
 				seriesCollection.addSeries(series);
 				((XYPlot)chart.getPlot()).getRenderer().setBaseStroke(new BasicStroke(2.0f));
+				// need to set up colors for quant types
 				((XYPlot)chart.getPlot()).getRenderer().setSeriesPaint(seriesCollection.getSeriesIndex(at.toString() + " " + p.getPopID()), FrequencyType.getColor(at));
 			}
 		}
@@ -462,9 +460,18 @@ public class _2DGraphingManager {
 	 * @return datapoint relating to given AxisType 
 	 * 
 	 */
-	private double getDataPoint(GenerationRecord gr, AxisType type) {
+	private double getDataPoint(GenerationRecord gr, AxisType type, Population p) {
 		if (type == QuantityType.POPSIZE)
 			return gr.getPopulationSize();
+		
+//		else if (type == QuantityType.SUBPOPSIZE_AA) 
+//			return gr.getGenotypeSubpopulationSize(Genotype.AA);
+//		
+//		else if (type == QuantityType.SUBPOPSIZE_AB) 
+//			return gr.getGenotypeSubpopulationSize(Genotype.AB);
+//		
+//		else if (type == QuantityType.SUBPOPSIZE_BB) 
+//			return gr.getGenotypeSubpopulationSize(Genotype.BB);
 		
 		else if (type == QuantityType.IMMIGRATION) { 
 			double totalImmigrations = 0;
@@ -474,6 +481,15 @@ public class _2DGraphingManager {
 			return totalImmigrations;
 		}
 		
+//		else if (type == QuantityType.IMMIGRATION_AA)
+//			return gr.getImmigrationCount(Genotype.AA);
+//		
+//		else if (type == QuantityType.IMMIGRATION_AB)
+//			return gr.getImmigrationCount(Genotype.AB);
+//		
+//		else if (type == QuantityType.IMMIGRATION_BB)
+//			return gr.getImmigrationCount(Genotype.BB);
+		
 		else if (type == QuantityType.EMIGRATION) {
 			double totalEmigrations = 0;
 			for(Genotype gt : Genotype.getValues()) {
@@ -481,7 +497,16 @@ public class _2DGraphingManager {
 			}
 			return totalEmigrations;
 		}
-			
+		
+//		else if (type == QuantityType.EMIGRATION_AA)
+//			return gr.getEmigrationCount(Genotype.AA);
+//		
+//		else if (type == QuantityType.EMIGRATION_AB)
+//			return gr.getEmigrationCount(Genotype.AB);
+//		
+//		else if (type == QuantityType.EMIGRATION_BB)
+//			return gr.getEmigrationCount(Genotype.BB);
+//		
 		else if (type == QuantityType.NETMIGRATION) {
 			double totalMigrations = 0;
 			for(Genotype gt : Genotype.getValues()) {
@@ -490,7 +515,16 @@ public class _2DGraphingManager {
 			}
 			return totalMigrations;
 		}
-			
+		
+//		else if (type == QuantityType.NETMIGRATION_AA) 
+//			return gr.getImmigrationCount(Genotype.AA) - gr.getEmigrationCount(Genotype.AA);
+//
+//		else if (type == QuantityType.NETMIGRATION_AB) 
+//			return gr.getImmigrationCount(Genotype.AB) - gr.getEmigrationCount(Genotype.AB);
+//
+//		else if (type == QuantityType.NETMIGRATION_BB) 
+//			return gr.getImmigrationCount(Genotype.BB) - gr.getEmigrationCount(Genotype.BB);
+//	
 		else if (type == QuantityType.MUTATION) {
 			double totalMutations = 0;
 			for(Genotype from : Genotype.getValues()) {
@@ -500,6 +534,33 @@ public class _2DGraphingManager {
 			}
 			return totalMutations;
 		}
+//		
+//		else if (type == QuantityType.MUTATION_AA) {
+//			double mutations = 0;
+//			for (Genotype to : Genotype.getValues()) {
+//				if (to == Genotype.AA) continue;
+//				mutations += gr.getMutationCount(Genotype.AA, to);
+//			}
+//			return mutations;
+//		}
+//		
+//		else if (type == QuantityType.MUTATION_AB) {
+//			double mutations = 0;
+//			for (Genotype to : Genotype.getValues()) {
+//				if (to == Genotype.AB) continue;
+//				mutations += gr.getMutationCount(Genotype.AB, to);
+//			}
+//			return mutations;
+//		}
+//		
+//		else if (type == QuantityType.MUTATION_BB) {
+//			double mutations = 0;
+//			for (Genotype to : Genotype.getValues()) {
+//				if (to == Genotype.BB) continue;
+//				mutations += gr.getMutationCount(Genotype.BB, to);
+//			}
+//			return mutations;
+//		}
 			
 		else if (type == QuantityType.BIRTHS) {
 			double totalBirths = 0;
@@ -508,7 +569,16 @@ public class _2DGraphingManager {
 			}
 			return totalBirths;
 		}
-			
+		
+//		else if (type == QuantityType.BIRTHS_AA)
+//			return gr.getBirths(Genotype.AA);
+//		
+//		else if (type == QuantityType.BIRTHS_AB)
+//			return gr.getBirths(Genotype.AB);
+//		
+//		else if (type == QuantityType.BIRTHS_BB)
+//			return gr.getBirths(Genotype.BB);
+//			
 		else if (type == QuantityType.DEATHS) {
 			double totalDeaths = 0;
 			for(Genotype gt : Genotype.getValues()) {
@@ -516,6 +586,15 @@ public class _2DGraphingManager {
 			}
 			return totalDeaths;
 		}
+		
+//		else if (type == QuantityType.DEATHS_AA)
+//			return gr.getDeaths(Genotype.AA);
+//		
+//		else if (type == QuantityType.DEATHS_AB)
+//			return gr.getDeaths(Genotype.AB);
+//		
+//		else if (type == QuantityType.DEATHS_BB)
+//			return gr.getDeaths(Genotype.BB);
 		
 		else if (((FrequencyType) type).isAllele()) {
 			Allele target = ((FrequencyType)type).getAllele();
@@ -537,9 +616,43 @@ public class _2DGraphingManager {
 		else if (((FrequencyType) type).isGenotype()) {
 			return gr.getGenotypeFreq(((FrequencyType)type).getGenotype());
 		}
+		
+		else if (((FrequencyType) type).isDelta_Allele()) {
+			if (gr == p.getLastGeneration()) return 0;
+			
+			Allele target = ((FrequencyType)type).getAllele();
+			
+			double total = 0.0;
+			
+			for (Genotype gt : Genotype.getValues()) {
+				if (gt.getFirstAllele() == target) {
+					total += gr.getGenotypeSubpopulationSize(gt);
+				}
+				if (gt.getSecondAllele() == target) {
+					total += gr.getGenotypeSubpopulationSize(gt);
+				}
+			}
+			double old_freq = total / (gr.getPopulationSize() * 2);
+			
+			GenerationRecord gr2 = p.getGenerationHistory().get(p.getGenerationHistory().indexOf(gr) + 1);
+			
+			double total2 = 0.0;
+			
+			for (Genotype gt : Genotype.getValues()) {
+				if (gt.getFirstAllele() == target) {
+					total2 += gr2.getGenotypeSubpopulationSize(gt);
+				}
+				if (gt.getSecondAllele() == target) {
+					total2 += gr2.getGenotypeSubpopulationSize(gt);
+				}
+			}
+			return (total2 / (gr2.getPopulationSize() * 2)) - old_freq;
+		}
+		
 		else {
 			return Integer.MIN_VALUE;
 		}
+		
 	
 	}
 }

@@ -9,13 +9,17 @@ public enum FrequencyType implements AxisType {
 	ALLELE_FREQ_A("Allele Freq. A"),
 	ALLELE_FREQ_B("Allele Freq. B"),
 	ALLELE_FREQ_C("Allele Freq. C"),
+	
 	GT_FREQ_AA("Genotype Freq. AA"),
 	GT_FREQ_AB("Genotype Freq. AB"),
 	GT_FREQ_AC("Genotype Freq. AC"),
 	GT_FREQ_BB("Genotype Freq. BB"),
 	GT_FREQ_BC("Genotype Freq. BC"),
-	GT_FREQ_CC("Genotype Freq. CC");
-
+	GT_FREQ_CC("Genotype Freq. CC"),
+	
+	D_ALLELE_FREQ_A("Change in Allele Freq. A"),
+	D_ALLELE_FREQ_B("Change in Allele Freq. B"),
+	D_ALLELE_FREQ_C("Change in Allele Freq. C");
 	
 	private static final Color ALLELE_A_COLOR = Color.RED;
 	private static final Color ALLELE_B_COLOR = Color.BLUE;
@@ -39,14 +43,21 @@ public enum FrequencyType implements AxisType {
 	}
 	
 	public boolean isGenotype() {
-		if (this != ALLELE_FREQ_A && this != ALLELE_FREQ_B && this != ALLELE_FREQ_C)
+		if (this == GT_FREQ_AA || this == GT_FREQ_AB || this == GT_FREQ_AC || this == GT_FREQ_BB || this == GT_FREQ_BC || this == GT_FREQ_CC)
 			return true;
-		else
-			return false;
+		return false;
 	}
 	
 	public boolean isAllele() {
-		return !isGenotype();
+		if (this == ALLELE_FREQ_A || this == ALLELE_FREQ_B || this == ALLELE_FREQ_C)
+			return true;
+		return false;
+	}
+	
+	public boolean isDelta_Allele() {
+		if (this == D_ALLELE_FREQ_A || this == D_ALLELE_FREQ_B || this == D_ALLELE_FREQ_C)
+			return true;
+		return false;
 	}
 
 	
@@ -54,9 +65,15 @@ public enum FrequencyType implements AxisType {
 		switch(this) {
 		case ALLELE_FREQ_A:
 			return Allele.A;
+		case D_ALLELE_FREQ_A:
+			return Allele.A;
 		case ALLELE_FREQ_B:
 			return Allele.B;
+		case D_ALLELE_FREQ_B:
+			return Allele.B;	
 		case ALLELE_FREQ_C:
+			return Allele.C;
+		case D_ALLELE_FREQ_C:
 			return Allele.C;
 		default:
 			return null;
@@ -110,6 +127,19 @@ public enum FrequencyType implements AxisType {
 			return ALLELE_FREQ_B;
 		case C:
 			return ALLELE_FREQ_C;
+		default:
+			return null;	
+		}
+	}
+	
+	public static FrequencyType toEnumDelta(Allele a) {
+		switch(a) {
+		case A:
+			return D_ALLELE_FREQ_A;
+		case B:
+			return D_ALLELE_FREQ_B;
+		case C:
+			return D_ALLELE_FREQ_C;
 		default:
 			return null;	
 		}

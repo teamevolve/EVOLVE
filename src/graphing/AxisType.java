@@ -7,6 +7,12 @@ public interface AxisType {
 		switch(s) {
 		case "Population Size":
 			return QuantityType.POPSIZE;
+//		case "Subpop Size of AA":
+//			return QuantityType.SUBPOPSIZE_AA;
+//		case "Subpop Size of AB":
+//			return QuantityType.SUBPOPSIZE_AB;
+//		case "Subpop Size of BB":
+//			return QuantityType.SUBPOPSIZE_BB;
 		case "Immigration":
 			return QuantityType.IMMIGRATION;
 		case "Emigration":
@@ -25,6 +31,12 @@ public interface AxisType {
 			return FrequencyType.ALLELE_FREQ_B;
 		case "Allele Freq. C":
 			return FrequencyType.ALLELE_FREQ_C;
+		case "Change in Allele Freq. A":
+			return FrequencyType.D_ALLELE_FREQ_A;
+		case "Change in Allele Freq. B":
+			return FrequencyType.D_ALLELE_FREQ_B;
+		case "Change in Allele Freq. C":
+			return FrequencyType.D_ALLELE_FREQ_C;
 		case "Genotype Freq. AA":
 			return FrequencyType.GT_FREQ_AA;
 		case "Genotype Freq. AB":
