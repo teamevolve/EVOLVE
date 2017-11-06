@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.Box;
@@ -27,7 +26,7 @@ import shared.Genotype;
  *
  */
 
-public class MigrationPane extends EvoPane {
+public class MigrationPane extends EvoMainPanel {
 
 	/**
 	 * auto gen'd
@@ -49,8 +48,6 @@ public class MigrationPane extends EvoPane {
 
 	ArrayList<Component> labels = new ArrayList<Component>();
 	ArrayList<Component> fields = new ArrayList<Component>();
-
-	JPanel table;
 
 	public MigrationPane() {
 		super();
@@ -113,7 +110,7 @@ public class MigrationPane extends EvoPane {
 		varMigRateAB.setName(RATE); varMigRateAB.setInputVerifier(iv);
 		varMigRateBB.setName(RATE); varMigRateBB.setInputVerifier(iv);
 
-		table = new JPanel();
+		EvoPanel table = new EvoPanel();
 		table.setBackground(getBackground());
 		table.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
@@ -246,9 +243,6 @@ public class MigrationPane extends EvoPane {
 	@Override
 	public void setEnabled(boolean enabled){
 		super.setEnabled(enabled);
-		for(Component c : table.getComponents()) {
-			c.setEnabled(enabled);
-		}
 		if (fixedMig.isSelected() && enabled == true) {
 			modeFixed(true);
 		}

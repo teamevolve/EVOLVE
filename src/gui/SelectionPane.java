@@ -17,7 +17,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -31,7 +30,7 @@ import shared.SessionParameters;
  * @author alexdennis
  *
  */
-public class SelectionPane extends EvoPane {
+public class SelectionPane extends EvoMainPanel {
   JButton help;
 	JLabel selectLabel;
 	ButtonGroup selectGroup;
@@ -57,8 +56,6 @@ public class SelectionPane extends EvoPane {
 	ArrayList<Component> absFitList = new ArrayList<Component>();
 	ArrayList<Component> relFitList = new ArrayList<Component>();
 
-	JPanel table;
-
 	public SelectionPane() {
 		super();
 
@@ -76,7 +73,7 @@ public class SelectionPane extends EvoPane {
 		selectGroup.add(selectRandS);
 		selectGroup.add(selectAbs);
 
-    JPanel titlePane = new JPanel();
+    EvoPanel titlePane = new EvoPanel();
     titlePane.setLayout(new WrapLayout(WrapLayout.LEADING));
     titlePane.setBackground(getBackground());
     titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -86,7 +83,7 @@ public class SelectionPane extends EvoPane {
     titlePane.add(Box.createHorizontalStrut(20));
 		titlePane.add(selectAbs);
 
-    JPanel helpPane = new JPanel();
+    EvoPanel helpPane = new EvoPanel();
     helpPane.setLayout(new BoxLayout(helpPane, BoxLayout.LINE_AXIS));
     helpPane.setBackground(getBackground());
     helpPane.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -233,7 +230,7 @@ public class SelectionPane extends EvoPane {
 		relFitBC = new JLabel("___"); threeAllelesList.add(relFitBC);
 		relFitCC = new JLabel("___"); threeAllelesList.add(relFitCC);
 
-		table = new JPanel();
+		EvoPanel table = new EvoPanel();
 		table.setBackground(getBackground());
 		table.setLayout(new GridBagLayout());
     table.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -375,9 +372,6 @@ public class SelectionPane extends EvoPane {
 		super.setEnabled(enable);
 		if (!enable) {
 			fillWithOnes();
-		}
-		for(Component comp : table.getComponents()){
-			comp.setEnabled(enable);
 		}
 		if (selectRandS.isSelected() && enable) {
 			modeRandS(true);

@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
@@ -22,7 +21,7 @@ import javax.swing.Box;
  *
  */
 
-public class GeneticDriftPane extends EvoPane{
+public class GeneticDriftPane extends EvoMainPanel{
   JButton help;
 	JLabel genDriftLabel;			// Population constant
 	JLabel carryCapLabel;			// Carrying Capacity
@@ -41,7 +40,7 @@ public class GeneticDriftPane extends EvoPane{
 		genDriftLabel = new JLabel("<html><span style='font-size:11px'><b>Genetic Drift</b> (Population Size): </span>");
     help = new JButton("Help");
 
-    JPanel titlePane = new JPanel();
+    EvoPanel titlePane = new EvoPanel();
     titlePane.setBackground(getBackground());
     titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.LINE_AXIS));
     titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -60,7 +59,7 @@ public class GeneticDriftPane extends EvoPane{
 		postCrash.setName(INT); postCrash.setInputVerifier(iv);
 
 		// add carrying capacity and post crash stuff to separate panel for formatting
-		JPanel fields = new JPanel();
+		EvoPanel fields = new EvoPanel();
 		fields.setBackground(getBackground());
 		fields.setLayout(new WrapLayout(WrapLayout.LEADING));
     fields.setAlignmentX(Component.LEFT_ALIGNMENT);

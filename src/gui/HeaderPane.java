@@ -17,7 +17,6 @@ import javax.swing.JCheckBox;
 import javax.swing.ButtonGroup;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 
@@ -26,7 +25,7 @@ import javax.swing.Box;
  * @author alexdennis
  *
  */
-public class HeaderPane extends EvoPane {
+public class HeaderPane extends EvoMainPanel {
   // Lab report stuff
   JLabel headerLabel;
   JLabel titleLabel; EvoTextField title;
@@ -174,7 +173,7 @@ public class HeaderPane extends EvoPane {
 		seedLabel = new JLabel("<html><b>Seed:</b>");
 		seedField = new EvoTextField(TEXT_LEN_SHORT);
 
-    JPanel seedPane = new JPanel();
+    EvoPanel seedPane = new EvoPanel();
     seedPane.setBackground(getBackground());
     seedPane.setLayout(new BoxLayout(seedPane, BoxLayout.LINE_AXIS));
     seedPane.add(seedLabel);
@@ -203,7 +202,7 @@ public class HeaderPane extends EvoPane {
 		numAlleles.add(alleles2);
 		numAlleles.add(alleles3);
 
-    JPanel allelesPane = new JPanel();
+    EvoPanel allelesPane = new EvoPanel();
     allelesPane.setBackground(getBackground());
     allelesPane.setLayout(new WrapLayout(WrapLayout.LEADING));
     allelesPane.add(alleles2);
@@ -264,7 +263,7 @@ public class HeaderPane extends EvoPane {
 		c.gridwidth = 3;
 		add(evoForces, c);
 
-    JPanel forcesPane = new JPanel();
+    EvoPanel forcesPane = new EvoPanel();
     forcesPane.setBackground(getBackground());
     forcesPane.setLayout(new WrapLayout(WrapLayout.LEADING));
     forcesPane.add(popSizeCheck);

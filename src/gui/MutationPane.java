@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
@@ -21,7 +20,7 @@ import shared.Genotype;
  * @author alexdennis
  *
  */
-public class MutationPane extends EvoPane {
+public class MutationPane extends EvoMainPanel {
   JButton help;
 
 	JLabel mutLabel,					// Mutation (0 to 1)
@@ -67,7 +66,7 @@ public class MutationPane extends EvoPane {
 		mutBtoC.setName(RATE); mutBtoA.setInputVerifier(iv);
 		mutCtoB.setName(RATE); mutBtoA.setInputVerifier(iv);
 
-    JPanel titlePane = new JPanel();
+    EvoPanel titlePane = new EvoPanel();
     titlePane.setBackground(getBackground());
     titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.LINE_AXIS));
     titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -75,7 +74,7 @@ public class MutationPane extends EvoPane {
     titlePane.add(Box.createHorizontalGlue());
     titlePane.add(help);
 
-    JPanel mutPane = new JPanel();
+    EvoPanel mutPane = new EvoPanel();
     mutPane.setBackground(getBackground());
     mutPane.setLayout(new WrapLayout(WrapLayout.LEADING));
     mutPane.setAlignmentX(Component.LEFT_ALIGNMENT);

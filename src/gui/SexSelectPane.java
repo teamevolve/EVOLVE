@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
@@ -26,7 +25,7 @@ import shared.Genotype;
  *
  */
 
-public class SexSelectPane extends EvoPane {
+public class SexSelectPane extends EvoMainPanel {
 	final static int TEXT_LEN_SHORT = 3;
 
   JButton help;
@@ -46,8 +45,6 @@ public class SexSelectPane extends EvoPane {
 	ArrayList<Component> labels = new ArrayList<Component>();
 	ArrayList<Component> fields = new ArrayList<Component>();
 
-	JPanel table;
-
 	public SexSelectPane() {
 		super();
 
@@ -59,7 +56,7 @@ public class SexSelectPane extends EvoPane {
     mateFreqLabel = new JLabel("<html><span style='font-size:11px'><b>Sexual Selection </b>(Non-Random Mating): </span>(0.0-1.0)");
     help = new JButton("Help");
 
-    JPanel titlePane = new JPanel();
+    EvoPanel titlePane = new EvoPanel();
     titlePane.setBackground(getBackground());
     titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.LINE_AXIS));
     titlePane.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -125,7 +122,7 @@ public class SexSelectPane extends EvoPane {
 
 		addToLists();
 
-		table = new JPanel();
+		EvoPanel table = new EvoPanel();
     table.setBackground(getBackground());
     table.setAlignmentX(Component.LEFT_ALIGNMENT);
 		table.setLayout(new GridBagLayout());
@@ -208,14 +205,6 @@ public class SexSelectPane extends EvoPane {
 		fields.add(freqCCxAA); fields.add(freqCCxAB); fields.add(freqCCxBB);
 		fields.add(freqCCxAC); fields.add(freqCCxBC); fields.add(freqCCxCC);
 
-	}
-
-	@Override
-	public void setEnabled(boolean enable) {
-		super.setEnabled(enable);
-		for(Component c : table.getComponents()) {
-			c.setEnabled(enable);
-		}
 	}
 
 	public void submit(shared.SessionParameters p) {
