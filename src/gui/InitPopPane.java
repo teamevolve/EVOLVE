@@ -14,7 +14,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.Box;
 
@@ -34,7 +33,7 @@ import java.util.ArrayList;
  * number of populations, population size, and enter allele frequencies OR genotype numbers.
  *
  */
-public class InitPopPane extends EvoPane {
+public class InitPopPane extends EvoMainPanel {
 	JLabel popLabel;			// Population size
   JButton help;
 	JLabel popSizeLabel;
@@ -57,10 +56,7 @@ public class InitPopPane extends EvoPane {
 		genoBBLabel, genoACLabel,
 		genoBCLabel, genoCCLabel;
 	JLabel genoTotal;
-	EvoTextField genoAA, genoAB,
-		genoBB, genoAC, genoBC,
-		genoCC;
-	JPanel afPane, gnPane;		// allele freqency and genotype panes
+	EvoTextField genoAA, genoAB, genoBB, genoAC, genoBC, genoCC;
 
 	ArrayList<Component> alFreqList = new ArrayList<Component>();
 	ArrayList<Component> gtNumList = new ArrayList<Component>();
@@ -84,7 +80,6 @@ public class InitPopPane extends EvoPane {
         updateGenoNums();
       }
     };
-		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
 
 		// init pop size
 		c.gridx = 0; c.gridy = 0;
@@ -142,11 +137,7 @@ public class InitPopPane extends EvoPane {
     };
 		initFreqC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(initFreqC);
 
-		initFreqA.setName(RATE);
-		initFreqB.setName(RATE);
-		initFreqC.setName(RATE);
-
-		afPane = new JPanel();
+		EvoPanel afPane = new EvoPanel();
 		afPane.setBackground(getBackground());
 		afPane.setLayout(new WrapLayout(WrapLayout.LEADING));
 
@@ -210,7 +201,7 @@ public class InitPopPane extends EvoPane {
     threeAllelesList.add(genoBC);
     threeAllelesList.add(genoCC);
 
-		gnPane = new JPanel();
+		EvoPanel gnPane = new EvoPanel();
     gnPane.setBackground(getBackground());
 		gnPane.setLayout(new GridBagLayout());
 		GridBagConstraints t = new GridBagConstraints();
