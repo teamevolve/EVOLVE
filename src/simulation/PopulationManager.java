@@ -11,11 +11,10 @@ import shared.Genotype;
 import shared.SessionParameters;
 import shared.Utilities;
 
-import static gui.GUI.DEBUG_MATE;
+import static gui.GUI.BINOMIAL;
+import static gui.GUI.POISSON;
+
 import static gui.GUI.DEBUG_MIGRATION;
-import static gui.GUI.DEBUG_MUTATION;
-import static gui.GUI.DEBUG_REPRO;
-import static gui.GUI.DEBUG_SURVIVAL;
 import static gui.GUI.DEBUG_SUMMARY;
 
 
@@ -99,8 +98,17 @@ public class PopulationManager {
 			p.simulateMatingRepro();	
 		}
 
-		if (sp.isMigrationChecked() && populationList.size() > 1)
-			processMigrations();
+		if (sp.isMigrationChecked() && populationList.size() > 1) {
+			if (BINOMIAL) {
+				processMigrations_binomial();
+			}
+			else if (POISSON) {
+				processMigrations_poisson();
+			}
+			else {
+				processMigrations(); // migration
+			}
+		}
 
 		for (Population p : populationList) {
 			p.simulateSurviveMutation();	
@@ -151,7 +159,6 @@ public class PopulationManager {
 		int contribution;
 		int adjustedI;
 		int subPopSize;
-		int index;
 		double totalImmigrations;
 		double adjustedD;
 		double genotypeMigrationRate;
@@ -175,8 +182,6 @@ public class PopulationManager {
 			genotypeMigrationRate = sp.getMigrationRate(gt);
 			totalEmigrations = 0;
 			
-			String popInfo;
-			
 			HashMap<Population, Double> pop_rand = new HashMap<Population, Double>();
 			HashMap<Population, Integer> pop_num = new HashMap<Population, Integer>();
 			//--------------------------------------------------------------------
@@ -184,7 +189,6 @@ public class PopulationManager {
 
 			// Process emigrations
 			for (Population pop : populationList) {
-				index = populationList.indexOf(pop);
 				subPopSize = pop.getLastGeneration().getGenotypeSubpopulationSize(gt);
 				random_co = Utilities.nextGaussianRand(INTERNAL_RNG, EMIGRATION_MEAN, EMIGRATION_STDDEV);
 				numEmigrations = (int)Math.round(random_co * subPopSize * genotypeMigrationRate);
@@ -254,6 +258,250 @@ public class PopulationManager {
 			System.out.println("----------------------------------------------------------------------------------");
 		}
 	}
+
+	public void processMigrations_binomial() {
+		if (DEBUG_MIGRATION) {
+			System.out.println();
+			System.out.println("---MIGRATION DEBUGGING---\nGENERATION " + (populationList.get(0).getGenerationHistory().size() - 1));
+		}
+		// Used to determine how individuals are redistributed, as individuals
+		// may not immigrate to the population they emigrated from
+		final double distributeTo = populationList.size() - 1;
+		
+		// Contains all populations that can take an extra individual after
+		// initial redistribution of organisms
+		final HashSet<Population> accepting = new HashSet<Population>();
+		
+		// Records how many individuals of each genotype a population has
+		// contributed to the pool of drifting organism
+		final HashMap<Population, HashMap<Genotype, Integer>> contributions = new HashMap<Population, HashMap<Genotype, Integer>>();
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+
+		// Containers to hold temporary values used more than once
+		int numEmigrations;
+		int contribution;
+		int adjustedI;
+		double totalImmigrations;
+		double adjustedD;
+		double genotypeMigrationRate;
+		double totalEmigrations;
+		GenerationRecord record;
+
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		HashMap<Genotype, HashMap<Population, Double>> gt_pop_rand = new HashMap<Genotype, HashMap<Population, Double>>();
+		HashMap<Genotype, HashMap<Population, Integer>> gt_pop_num = new HashMap<Genotype, HashMap<Population, Integer>>();
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		
+		for (Population p : populationList) {
+			contributions.put(p, new HashMap<Genotype, Integer>());
+		}
+		//printContributions(contributions);
+
+		for (Genotype gt : Genotype.getValues()) {
+			genotypeMigrationRate = sp.getMigrationRate(gt);
+			totalEmigrations = 0;
+			
+			HashMap<Population, Double> pop_rand = new HashMap<Population, Double>();
+			HashMap<Population, Integer> pop_num = new HashMap<Population, Integer>();
+			//--------------------------------------------------------------------
+			//--------------------------------------------------------------------
+
+			// Process emigrations
+			for (Population pop : populationList) {
+				int n = pop.getLastGeneration().getGenotypeSubpopulationSize(gt);
+				double p = genotypeMigrationRate;
+				numEmigrations = Utilities.getBinomial(n, p);
+				
+				// Correct for extreme values from the rng
+				if (numEmigrations < 0) numEmigrations = 0;
+				else if (numEmigrations > n) numEmigrations = n;
+
+				totalEmigrations += numEmigrations;
+				contributions.get(pop).put(gt, numEmigrations);
+				
+				//--------------------------------------------------------------------
+				//--------------------------------------------------------------------
+				if (DEBUG_MIGRATION) {
+					pop_rand.put(pop, p);
+					pop_num.put(pop, n);
+				}
+				//--------------------------------------------------------------------
+				//--------------------------------------------------------------------
+			}
+			
+			if (DEBUG_MIGRATION) {
+				gt_pop_rand.put(gt, pop_rand);
+				gt_pop_num.put(gt, pop_num);
+			}
+
+			totalImmigrations = totalEmigrations;
+			
+			// Process immigrations
+			for (Population pop : populationList) {
+				record = pop.getLastGeneration();
+				contribution = contributions.get(pop).get(gt);
+
+				// Calculate how many individuals will immigrate, and if any
+				// stragglers can be taken later on
+				adjustedD = (totalEmigrations - contribution) / distributeTo;
+				adjustedI = (int)adjustedD;
+
+				// Record if population can accept another individual
+				if (adjustedD > adjustedI) accepting.add(pop);
+
+				totalImmigrations -= adjustedI;
+				
+				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) - contribution + adjustedI);
+				record.setEmigrationCount(gt, contribution);
+				record.setImmigrationCount(gt, adjustedI);
+			}
+
+			// Redistribute remaining individuals
+			for (Iterator<Population> it = accepting.iterator(); totalImmigrations > 0; totalImmigrations--) {
+				record = it.next().getLastGeneration();
+				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) + 1);
+				record.setImmigrationCount(gt, record.getImmigrationCount(gt) + 1);
+			}
+			
+			if (DEBUG_MIGRATION) {
+				System.out.println();
+				System.out.println("  [ " + gt.toString() + " ]");	
+				System.out.println("     migration rate of " + gt.toString() + ": " + sp.getMigrationRate(gt));	
+				printMigration_indent(gt_pop_rand, gt_pop_num, gt);
+				System.out.println("     total emigration = total immigration = " + totalEmigrations);
+			}
+		}
+		
+		if (DEBUG_MIGRATION) {
+			System.out.println();
+			System.out.println("----------------------------------------------------------------------------------");
+		}
+	}
+	
+	public void processMigrations_poisson() {
+		if (DEBUG_MIGRATION) {
+			System.out.println();
+			System.out.println("---MIGRATION DEBUGGING---\nGENERATION " + (populationList.get(0).getGenerationHistory().size() - 1));
+		}
+		// Used to determine how individuals are redistributed, as individuals
+		// may not immigrate to the population they emigrated from
+		final double distributeTo = populationList.size() - 1;
+		
+		// Contains all populations that can take an extra individual after
+		// initial redistribution of organisms
+		final HashSet<Population> accepting = new HashSet<Population>();
+		
+		// Records how many individuals of each genotype a population has
+		// contributed to the pool of drifting organism
+		final HashMap<Population, HashMap<Genotype, Integer>> contributions = new HashMap<Population, HashMap<Genotype, Integer>>();
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+
+		// Containers to hold temporary values used more than once
+		int numEmigrations;
+		int contribution;
+		int adjustedI;
+		double totalImmigrations;
+		double adjustedD;
+		double genotypeMigrationRate;
+		double totalEmigrations;
+		GenerationRecord record;
+
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		HashMap<Genotype, HashMap<Population, Double>> gt_pop_rand = new HashMap<Genotype, HashMap<Population, Double>>();
+		HashMap<Genotype, HashMap<Population, Integer>> gt_pop_num = new HashMap<Genotype, HashMap<Population, Integer>>();
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		
+		for (Population p : populationList) {
+			contributions.put(p, new HashMap<Genotype, Integer>());
+		}
+		//printContributions(contributions);
+
+		for (Genotype gt : Genotype.getValues()) {
+			genotypeMigrationRate = sp.getMigrationRate(gt);
+			totalEmigrations = 0;
+			
+			HashMap<Population, Double> pop_rand = new HashMap<Population, Double>();
+			HashMap<Population, Integer> pop_num = new HashMap<Population, Integer>();
+			//--------------------------------------------------------------------
+			//--------------------------------------------------------------------
+
+			// Process emigrations
+			for (Population pop : populationList) {
+				int n = pop.getLastGeneration().getGenotypeSubpopulationSize(gt);
+				double p = genotypeMigrationRate;
+				double lambda = (double)(n) * p;
+				numEmigrations = Utilities.getPoisson(lambda);
+				
+				// Correct for extreme values from the rng
+				if (numEmigrations < 0) numEmigrations = 0;
+				else if (numEmigrations > n) numEmigrations = n;
+
+				totalEmigrations += numEmigrations;
+				contributions.get(pop).put(gt, numEmigrations);
+				
+				//--------------------------------------------------------------------
+				//--------------------------------------------------------------------
+				if (DEBUG_MIGRATION) {
+					pop_rand.put(pop, p);
+					pop_num.put(pop, n);
+				}
+				//--------------------------------------------------------------------
+				//--------------------------------------------------------------------
+			}
+			
+			if (DEBUG_MIGRATION) {
+				gt_pop_rand.put(gt, pop_rand);
+				gt_pop_num.put(gt, pop_num);
+			}
+
+			totalImmigrations = totalEmigrations;
+			
+			// Process immigrations
+			for (Population pop : populationList) {
+				record = pop.getLastGeneration();
+				contribution = contributions.get(pop).get(gt);
+
+				// Calculate how many individuals will immigrate, and if any
+				// stragglers can be taken later on
+				adjustedD = (totalEmigrations - contribution) / distributeTo;
+				adjustedI = (int)adjustedD;
+
+				// Record if population can accept another individual
+				if (adjustedD > adjustedI) accepting.add(pop);
+
+				totalImmigrations -= adjustedI;
+				
+				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) - contribution + adjustedI);
+				record.setEmigrationCount(gt, contribution);
+				record.setImmigrationCount(gt, adjustedI);
+			}
+
+			// Redistribute remaining individuals
+			for (Iterator<Population> it = accepting.iterator(); totalImmigrations > 0; totalImmigrations--) {
+				record = it.next().getLastGeneration();
+				record.setGenotypeSubpopulationSize(gt, record.getGenotypeSubpopulationSize(gt) + 1);
+				record.setImmigrationCount(gt, record.getImmigrationCount(gt) + 1);
+			}
+			
+			if (DEBUG_MIGRATION) {
+				System.out.println();
+				System.out.println("  [ " + gt.toString() + " ]");	
+				System.out.println("     migration rate of " + gt.toString() + ": " + sp.getMigrationRate(gt));	
+				printMigration_indent(gt_pop_rand, gt_pop_num, gt);
+				System.out.println("     total emigration = total immigration = " + totalEmigrations);
+			}
+		}
+		
+		if (DEBUG_MIGRATION) {
+			System.out.println();
+			System.out.println("----------------------------------------------------------------------------------");
+		}
+	}
+
 	
 	public void printContributions (HashMap<Population, HashMap<Genotype, Integer>> contributions) {
 		String genotypes = "|population #   ";

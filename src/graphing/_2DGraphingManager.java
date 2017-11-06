@@ -406,7 +406,8 @@ public class _2DGraphingManager {
 		domain.setRange(xMin, xMax);
 		
 		//set up tick unit
-		long unit = Math.round(xMax/200) * 10;
+		long unit = Math.round(xMax/2000) * 200;
+		if (unit == 0) unit = Math.round(xMax/200) * 10;
 		if (unit == 0) unit = Math.round(xMax/100) * 5;
 		if (unit == 0) unit = Math.round(xMax/50) * 2;
 		if (unit == 0) unit = 1;

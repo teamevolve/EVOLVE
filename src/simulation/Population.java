@@ -175,7 +175,15 @@ public class Population {
 		}
 		
 		if (DataManager.getInstance().getSessionParams().isMutationChecked()) {
-			mutate(newGeneration); //mutate
+			if (BINOMIAL) {
+				mutate_binomial(newGeneration);
+			}
+			else if (POISSON) {
+				mutate_poisson(newGeneration);
+			}
+			else {
+				mutate(newGeneration); //mutate
+			}
 		}
 
 		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || MUT_SUM) && populationID == 0)) {
@@ -1390,6 +1398,222 @@ public class Population {
 										+ ": " + sp.getMutationRate(from, to));
 					System.out.print("        ");
 					System.out.println("random coefficient for " + to.toString() + ": " + random_co);
+					System.out.print("        ");
+					System.out.println("raw number of " + from.toString() + " -> " + to.toString() + 
+							": " + rawMutations);
+					System.out.print("        ");
+					System.out.println("rounded number of " + from.toString() + " -> " + to.toString() + 
+							"(before adjustment) : " + numMutations);
+				}
+				//------------------------------------------------------------
+				//------------------------------------------------------------
+			}
+
+			// If no mutations happened, move on to the next genotype
+			if (totalMutations == 0) 
+			{
+				for (Genotype to : Genotype.getValues()) {
+					current.setMutationCount(from, to, 0);
+				}
+				continue;
+			}
+
+			// Ratio to scale mutations by to keep population size constant
+			ratio = (double) current.getGenotypeSubpopulationSize(from) / (double)totalMutations;
+			
+			//------------------------------------------------------------
+			//------------------------------------------------------------
+			if (DEBUG_MUTATION && populationID == 0) {
+				System.out.println();
+				mutationTable_indent(contrib, from);
+				System.out.println("     scale mutations to keep population size constant");
+			}
+			//------------------------------------------------------------
+			//------------------------------------------------------------
+			
+			for (Genotype to : Genotype.getValues()) {
+				//if (to == from) continue;
+
+				// Scale mutation count appropriately
+				adjustedMutations = (int)Math.round(ratio * contrib.get(to));
+
+				// Adjust subpopulation counts
+				current.setMutationCount(from, to, adjustedMutations);
+				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - adjustedMutations);
+				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + adjustedMutations);
+
+				//----------------------------------------------------------------------------
+				//----------------------------------------------------------------------------
+				if (DEBUG_MUTATION && populationID == 0) {
+					System.out.print("        ");
+					System.out.println("number of " + from.toString() + " -> " + to.toString() + 
+							"(after adjustment): " + adjustedMutations);
+				}
+				//----------------------------------------------------------------------------
+				//----------------------------------------------------------------------------
+			}
+			
+			if (DEBUG_MUTATION && populationID == 0) {
+				System.out.println();
+				printGenoNum_indent(current);
+				System.out.println("    -------------------------------------------------------------------------");
+			}
+
+		}
+	}
+
+	private void mutate_binomial(GenerationRecord current) {
+
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+
+		// Containers to hold temporary values used more than once
+		int totalMutations;
+		double rawMutations;
+		int numMutations;
+		int adjustedMutations;
+		double ratio;
+		HashMap<Genotype, Integer> contrib;
+
+		// For all possible combinations of genotypes...
+		for (Genotype from : Genotype.getValues()) {
+			contrib = new HashMap<Genotype, Integer>();
+			totalMutations = 0;
+			
+			if (DEBUG_MUTATION && populationID == 0) {
+				System.out.println();
+				printGenoNum_indent(current);
+			}
+			
+			for (Genotype to : Genotype.getValues()) {
+				int n = current.getGenotypeSubpopulationSize(from);
+				double p = sp.getMutationRate(from, to);
+				rawMutations = Utilities.getBinomial(n, p);
+				numMutations = (int)Math.round(rawMutations);
+
+				// Ensure rng did not produce negative value
+				if (numMutations < 0) numMutations = 0;
+
+				totalMutations += numMutations;
+				contrib.put(to, numMutations);
+				
+				//------------------------------------------------------------
+				//------------------------------------------------------------
+				if (DEBUG_MUTATION && populationID == 0) {
+					System.out.println();
+					System.out.print("     ");
+					System.out.println("[ " + from.toString() + " -> " + to.toString() + " ]");
+					System.out.print("        ");
+					System.out.println("mutation rate from " + from.toString() + " to " + to.toString() 
+										+ ": " + sp.getMutationRate(from, to));
+					System.out.print("        ");
+					System.out.println("raw number of " + from.toString() + " -> " + to.toString() + 
+							": " + rawMutations);
+					System.out.print("        ");
+					System.out.println("rounded number of " + from.toString() + " -> " + to.toString() + 
+							"(before adjustment) : " + numMutations);
+				}
+				//------------------------------------------------------------
+				//------------------------------------------------------------
+			}
+
+			// If no mutations happened, move on to the next genotype
+			if (totalMutations == 0) 
+			{
+				for (Genotype to : Genotype.getValues()) {
+					current.setMutationCount(from, to, 0);
+				}
+				continue;
+			}
+
+			// Ratio to scale mutations by to keep population size constant
+			ratio = (double) current.getGenotypeSubpopulationSize(from) / (double)totalMutations;
+			
+			//------------------------------------------------------------
+			//------------------------------------------------------------
+			if (DEBUG_MUTATION && populationID == 0) {
+				System.out.println();
+				mutationTable_indent(contrib, from);
+				System.out.println("     scale mutations to keep population size constant");
+			}
+			//------------------------------------------------------------
+			//------------------------------------------------------------
+			
+			for (Genotype to : Genotype.getValues()) {
+				//if (to == from) continue;
+
+				// Scale mutation count appropriately
+				adjustedMutations = (int)Math.round(ratio * contrib.get(to));
+
+				// Adjust subpopulation counts
+				current.setMutationCount(from, to, adjustedMutations);
+				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - adjustedMutations);
+				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + adjustedMutations);
+
+				//----------------------------------------------------------------------------
+				//----------------------------------------------------------------------------
+				if (DEBUG_MUTATION && populationID == 0) {
+					System.out.print("        ");
+					System.out.println("number of " + from.toString() + " -> " + to.toString() + 
+							"(after adjustment): " + adjustedMutations);
+				}
+				//----------------------------------------------------------------------------
+				//----------------------------------------------------------------------------
+			}
+			
+			if (DEBUG_MUTATION && populationID == 0) {
+				System.out.println();
+				printGenoNum_indent(current);
+				System.out.println("    -------------------------------------------------------------------------");
+			}
+
+		}
+	}
+	
+	private void mutate_poisson(GenerationRecord current) {
+
+		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+
+		// Containers to hold temporary values used more than once
+		int totalMutations;
+		double rawMutations;
+		int numMutations;
+		int adjustedMutations;
+		double ratio;
+		HashMap<Genotype, Integer> contrib;
+
+		// For all possible combinations of genotypes...
+		for (Genotype from : Genotype.getValues()) {
+			contrib = new HashMap<Genotype, Integer>();
+			totalMutations = 0;
+			
+			if (DEBUG_MUTATION && populationID == 0) {
+				System.out.println();
+				printGenoNum_indent(current);
+			}
+			
+			for (Genotype to : Genotype.getValues()) {
+				double lambda = current.getGenotypeSubpopulationSize(from) * sp.getMutationRate(from, to);
+				rawMutations = Utilities.getPoisson(lambda);
+				numMutations = (int)Math.round(rawMutations);
+
+				// Ensure rng did not produce negative value
+				if (numMutations < 0) numMutations = 0;
+
+				totalMutations += numMutations;
+				contrib.put(to, numMutations);
+				
+				//------------------------------------------------------------
+				//------------------------------------------------------------
+				if (DEBUG_MUTATION && populationID == 0) {
+					System.out.println();
+					System.out.print("     ");
+					System.out.println("[ " + from.toString() + " -> " + to.toString() + " ]");
+					System.out.print("        ");
+					System.out.println("mutation rate from " + from.toString() + " to " + to.toString() 
+										+ ": " + sp.getMutationRate(from, to));
+					System.out.print("        ");
+					System.out.println("expected number of mutation from " + from.toString() + " to " + to.toString() 
+										+ ": " + lambda);
 					System.out.print("        ");
 					System.out.println("raw number of " + from.toString() + " -> " + to.toString() + 
 							": " + rawMutations);
