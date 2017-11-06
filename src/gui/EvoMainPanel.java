@@ -23,18 +23,10 @@ import javax.swing.border.EmptyBorder;
 public class EvoMainPanel extends EvoPanel {
 	final static int TEXT_LEN_LONG = 8;
 	final static int TEXT_LEN_SHORT = 4;
-	final static String INT = "int";
-	final static String ANY_DOUBLE = "double";
-	final static String RATE = "rate";
-	final static String ANY_DOUBLE_ZERO_TO_TEN = "double zero to ten";
-	final static String ANY_NUMBER = "any number";
   final static public Color COLOR1 = new Color(213, 218, 226);
 	final static public Color COLOR2 = new Color(183, 210, 222);
 
 	public boolean threeAlleles;
-
-	public OurInputVerifier iv = new OurInputVerifier();
-
 	public ArrayList<Component> threeAllelesList = new ArrayList<Component>();
 
 	EvoMainPanel() {

@@ -106,10 +106,6 @@ public class MigrationPane extends EvoMainPanel {
 		varMigRateBC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateBC);
 		varMigRateCC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(varMigRateCC);
 
-		varMigRateAA.setName(RATE); varMigRateAA.setInputVerifier(iv);
-		varMigRateAB.setName(RATE); varMigRateAB.setInputVerifier(iv);
-		varMigRateBB.setName(RATE); varMigRateBB.setInputVerifier(iv);
-
 		EvoPanel table = new EvoPanel();
 		table.setBackground(getBackground());
 		table.setLayout(new GridBagLayout());

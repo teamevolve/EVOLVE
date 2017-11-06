@@ -80,7 +80,6 @@ public class InitPopPane extends EvoMainPanel {
         updateGenoNums();
       }
     };
-		popSizeField.setName(INT); popSizeField.setInputVerifier(iv);
 
 		// init pop size
 		c.gridx = 0; c.gridy = 0;
@@ -137,10 +136,6 @@ public class InitPopPane extends EvoMainPanel {
       }
     };
 		initFreqC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(initFreqC);
-
-		initFreqA.setName(RATE);
-		initFreqB.setName(RATE);
-		initFreqC.setName(RATE);
 
 		EvoPanel afPane = new EvoPanel();
 		afPane.setBackground(getBackground());

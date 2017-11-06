@@ -51,12 +51,10 @@ public class GeneticDriftPane extends EvoMainPanel{
 		// carrying capacity stuff - appears when popSize varying
 		carryCapLabel = new JLabel("Carrying Capacity:");
 		carryCap = new EvoTextField(TEXT_LEN_LONG);
-		carryCap.setName(INT); carryCap.setInputVerifier(iv);
 
 		// post crash population size stuff - appears when popSize varying
 		postCrashLabel = new JLabel("Post Crash Population Size:");
 		postCrash = new EvoTextField(TEXT_LEN_LONG);
-		postCrash.setName(INT); postCrash.setInputVerifier(iv);
 
 		// add carrying capacity and post crash stuff to separate panel for formatting
 		EvoPanel fields = new EvoPanel();

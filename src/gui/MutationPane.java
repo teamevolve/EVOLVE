@@ -57,15 +57,6 @@ public class MutationPane extends EvoMainPanel {
 		mutBtoC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutBtoC);
 		mutCtoB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutCtoB);
 
-		// Set input verifiers
-
-		mutAtoB.setName(RATE); mutAtoB.setInputVerifier(iv);
-		mutBtoA.setName(RATE); mutBtoA.setInputVerifier(iv);
-		mutAtoC.setName(RATE); mutBtoA.setInputVerifier(iv);
-		mutCtoA.setName(RATE); mutBtoA.setInputVerifier(iv);
-		mutBtoC.setName(RATE); mutBtoA.setInputVerifier(iv);
-		mutCtoB.setName(RATE); mutBtoA.setInputVerifier(iv);
-
     EvoPanel titlePane = new EvoPanel();
     titlePane.setBackground(getBackground());
     titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.LINE_AXIS));
