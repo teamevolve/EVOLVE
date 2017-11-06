@@ -4,10 +4,10 @@ entrypoint ?= gui.GUI
 OS ?= $(shell uname)
 
 src_files := $(shell find src -type f -name '*.java')
-# pdf_files := $(shell find src -type f -name '*.pdf')
-# pdf_dest := $(patsubst src/%.pdf, build/classes/%.pdf, $(pdf_files))
+pdf_files := $(shell find src -type f -name '*.pdf')
+pdf_dest := $(patsubst src/%.pdf, build/classes/%.pdf, $(pdf_files))
 rtf_files := $(shell find src -type f -name '*.rtf')
-rtf_dest := $(patsubst src/%.rtf, build/classes/%.pdf, $(rtf_files))
+pdf_dest += $(patsubst src/%.rtf, build/classes/%.pdf, $(rtf_files))
 lib_files := lib/jfreechart-1.0.19.jar lib/orsoncharts-1.5.jar lib/jcommon-1.0.23.jar # $(shell find lib -type f -name '*.jar')
 lib_cp := $(shell echo $(lib_files) | sed "s/ /:/g")
 lib_rcts := $(patsubst lib/%.jar, build/recipts/%, $(lib_files))
@@ -32,22 +32,22 @@ run: build/recipts/src
 	@mkdir -p output
 	@java -cp build/classes:$(lib_cp) $(entrypoint) $(arg) $(sum)
 
-build/recipts/src: $(src_files) $(rtf_dest)
+build/recipts/src: $(src_files) $(pdf_dest)
 	@mkdir -p $(@D)
 	@mkdir -p build/classes
 	@javac -d build/classes -cp $(lib_cp) $(src_files)
 	@touch $@
 
-# build/classes/%.pdf: src/%.pdf
-# 	@mkdir -p $(@D)
-# 	@cp $< $@
+build/classes/%.pdf: src/%.pdf
+	@mkdir -p $(@D)
+	@cp $< $@
 
 build/classes/%.pdf: src/%.rtf
-ifeq ($(OS), Linux)
+ifeq ($(shell which libreoffice), )
+	@echo $< "could not be compiled; skipping"
+else
 	@mkdir -p $(@D)
 	@libreoffice --headless --convert-to pdf --outdir $(@D) $< > /dev/null
-else
-	@echo $< "could not be compiled; skipping"
 endif
 
 build/recipts/%: lib/%.jar
