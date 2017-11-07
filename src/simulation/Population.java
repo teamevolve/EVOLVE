@@ -156,15 +156,17 @@ public class Population {
 	public void simulateSurviveMutation() {
 		GenerationRecord newGeneration = generationHistory.get(generationHistory.size() - 1);
 		
-		if (BINOMIAL) {
-			survive_binomial(newGeneration);
-		}
-		else if (POISSON) {
-			survive_poisson(newGeneration);
-		}
-		else {
-			survive(newGeneration); //natural selection
-		}
+		survive_binomial(newGeneration);
+//
+//		if (BINOMIAL) {
+//		survive_binomial(newGeneration);
+//		}
+//		else if (POISSON) {
+//			survive_poisson(newGeneration);
+//		}
+//		else {
+//			survive(newGeneration); //natural selection
+//		}
 		
 		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || SURV_SUM) && populationID == 0)) {
 
@@ -175,15 +177,17 @@ public class Population {
 		}
 		
 		if (DataManager.getInstance().getSessionParams().isMutationChecked()) {
-			if (BINOMIAL) {
-				mutate_binomial(newGeneration);
-			}
-			else if (POISSON) {
-				mutate_poisson(newGeneration);
-			}
-			else {
-				mutate(newGeneration); //mutate
-			}
+//			if (BINOMIAL) {
+//				mutate_binomial(newGeneration);
+//			}
+//			else if (POISSON) {
+//				mutate_poisson(newGeneration);
+//			}
+//			else {
+//				mutate(newGeneration); //mutate
+//			}
+			mutate_binomial(newGeneration);
+
 		}
 
 		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || MUT_SUM) && populationID == 0)) {
@@ -266,16 +270,18 @@ public class Population {
 		
 		///*DEBUG*/System.out.println(System.currentTimeMillis() - start);
 		// generate Offspring
-		if (BINOMIAL) {
-			generateOffspring_binomial(current, pairings);
-		}
-		else if (POISSON) {
-			generateOffspring_poisson(current, pairings);
-		}
-		else {
-			generateOffspring(current, pairings);
-		}
-		
+		generateOffspring_binomial(current, pairings);
+//
+//		if (BINOMIAL) {
+//			generateOffspring_binomial(current, pairings);
+//		}
+//		else if (POISSON) {
+//			generateOffspring_poisson(current, pairings);
+//		}
+//		else {
+//			generateOffspring(current, pairings);
+//		}
+//		
 		//----------DEBUGGING CODE-------------
 		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || REP_SUM) && populationID == 0)) {
 			System.out.println();
@@ -945,98 +951,98 @@ public class Population {
 		
 	}
 	
-	private void generateOffspring_poisson(GenerationRecord current, 
-			HashMap<Genotype, HashMap<Genotype, Integer>> pairings) {
-		HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
-		SessionParameters sp = DataManager.getInstance().getSessionParams();
-		// initialize the young generation
-		for (Genotype gt : Genotype.getValues()) {
-			offspring.put(gt, 0.0);
-		}
-		
-		for (Genotype gt1 : Genotype.getValues()) {
-			for (Genotype gt2 : Genotype.getValues()) {
-				// if gt1xgt2 is not a valid pair or there is no pair of gt1xgt2 chosen in the mating process, skip
-				if (!Utilities.isValidPairing(gt1, gt2)) continue;
-				if (pairings.get(gt1).get(gt2) == 0) continue;
-				
-				//------------------------------------------------------------------------
-				//------------------------------------------------------------------------
-				if (DEBUG_REPRO && populationID == 0) {
-					System.out.println();
-					printPairings_indent(pairings);
-					System.out.println();
-				}
-				//------------------------------------------------------------------------
-				//------------------------------------------------------------------------
-				
-				for (Genotype off : Utilities.getOffspringGenotypes(gt1, gt2)) {
-					double numOfMates = pairings.get(gt1).get(gt2);
-					if (numOfMates != 0) {
-						// questioning the mean and standard deviation...
-						double lambda = (sp.getReproductionRate(gt1) + sp.getReproductionRate(gt2)) * 0.25;
-						int off_num = 0;
-						for(int i = 0 ; i < numOfMates; i++) {
-							off_num += Utilities.getPoisson(lambda);
-						}
-						offspring.put(off, offspring.get(off) + off_num);
-						//------------------------------------------------------------------------
-						//------------------------------------------------------------------------
-						if (DEBUG_REPRO && populationID == 0) {
-							System.out.print("  ");
-							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
-							System.out.print("     ");
-							System.out.println(gt1.toString() + " repror8: " + sp.getReproductionRate(gt1));
-							System.out.print("     ");
-							System.out.println(gt2.toString() + " repror8: " + sp.getReproductionRate(gt2));
-							System.out.print("     ");
-							System.out.println("expected # of offspring" + off.toString() + " per pair: " + lambda);
-							System.out.print("     ");
-							System.out.println("number of mates: " + numOfMates);
-							System.out.print("     ");
-							System.out.println("number of " + off.toString() + " added to the young gen: "+ off_num);
-							System.out.println();
-							printOffspring_indent(offspring);
-							System.out.println();
-						}
-						//------------------------------------------------------------------------					
-						//------------------------------------------------------------------------
-					}
-					else {
-						//------------------------------------------------------------------------
-						//------------------------------------------------------------------------
-						if (DEBUG_REPRO && populationID == 0) {
-							System.out.print("  ");
-							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
-							System.out.print("     ");
-							System.out.println("0 mate will generate 0 offspring.");
-							System.out.println();
-							printOffspring_indent(offspring);
-							System.out.println();
-						}
-						//------------------------------------------------------------------------
-						//------------------------------------------------------------------------
-					}
-				}
-			}
-		}
-		
-		for (Genotype gt : Genotype.getValues()) {
-			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
-			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
-		}
-		//------------------------------------------------------------------------
-		//------------------------------------------------------------------------
-		if (DEBUG_REPRO && populationID == 0) {
-			System.out.println();
-			System.out.println();
-			System.out.println("results after rounding...");
-			printGenoNum_indent(current);
-		}
-		//------------------------------------------------------------------------
-		//------------------------------------------------------------------------
-		
-	}
+//	private void generateOffspring_poisson(GenerationRecord current, 
+//			HashMap<Genotype, HashMap<Genotype, Integer>> pairings) {
+//		HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
+//		SessionParameters sp = DataManager.getInstance().getSessionParams();
+//		// initialize the young generation
+//		for (Genotype gt : Genotype.getValues()) {
+//			offspring.put(gt, 0.0);
+//		}
+//		
+//		for (Genotype gt1 : Genotype.getValues()) {
+//			for (Genotype gt2 : Genotype.getValues()) {
+//				// if gt1xgt2 is not a valid pair or there is no pair of gt1xgt2 chosen in the mating process, skip
+//				if (!Utilities.isValidPairing(gt1, gt2)) continue;
+//				if (pairings.get(gt1).get(gt2) == 0) continue;
+//				
+//				//------------------------------------------------------------------------
+//				//------------------------------------------------------------------------
+//				if (DEBUG_REPRO && populationID == 0) {
+//					System.out.println();
+//					printPairings_indent(pairings);
+//					System.out.println();
+//				}
+//				//------------------------------------------------------------------------
+//				//------------------------------------------------------------------------
+//				
+//				for (Genotype off : Utilities.getOffspringGenotypes(gt1, gt2)) {
+//					double numOfMates = pairings.get(gt1).get(gt2);
+//					if (numOfMates != 0) {
+//						// questioning the mean and standard deviation...
+//						double lambda = (sp.getReproductionRate(gt1) + sp.getReproductionRate(gt2)) * 0.25;
+//						int off_num = 0;
+//						for(int i = 0 ; i < numOfMates; i++) {
+//							off_num += Utilities.getPoisson(lambda);
+//						}
+//						offspring.put(off, offspring.get(off) + off_num);
+//						//------------------------------------------------------------------------
+//						//------------------------------------------------------------------------
+//						if (DEBUG_REPRO && populationID == 0) {
+//							System.out.print("  ");
+//							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
+//							System.out.print("     ");
+//							System.out.println(gt1.toString() + " repror8: " + sp.getReproductionRate(gt1));
+//							System.out.print("     ");
+//							System.out.println(gt2.toString() + " repror8: " + sp.getReproductionRate(gt2));
+//							System.out.print("     ");
+//							System.out.println("expected # of offspring" + off.toString() + " per pair: " + lambda);
+//							System.out.print("     ");
+//							System.out.println("number of mates: " + numOfMates);
+//							System.out.print("     ");
+//							System.out.println("number of " + off.toString() + " added to the young gen: "+ off_num);
+//							System.out.println();
+//							printOffspring_indent(offspring);
+//							System.out.println();
+//						}
+//						//------------------------------------------------------------------------					
+//						//------------------------------------------------------------------------
+//					}
+//					else {
+//						//------------------------------------------------------------------------
+//						//------------------------------------------------------------------------
+//						if (DEBUG_REPRO && populationID == 0) {
+//							System.out.print("  ");
+//							System.out.println("[ " +gt1.toString() +" x "+  gt2.toString() + " => "+ off.toString()+" ]");
+//							System.out.print("     ");
+//							System.out.println("0 mate will generate 0 offspring.");
+//							System.out.println();
+//							printOffspring_indent(offspring);
+//							System.out.println();
+//						}
+//						//------------------------------------------------------------------------
+//						//------------------------------------------------------------------------
+//					}
+//				}
+//			}
+//		}
+//		
+//		for (Genotype gt : Genotype.getValues()) {
+//			current.setBirths(gt, (int)Math.round(offspring.get(gt)));
+//			current.setGenotypeSubpopulationSize(gt, (int)Math.round(offspring.get(gt)));
+//		}
+//		//------------------------------------------------------------------------
+//		//------------------------------------------------------------------------
+//		if (DEBUG_REPRO && populationID == 0) {
+//			System.out.println();
+//			System.out.println();
+//			System.out.println("results after rounding...");
+//			printGenoNum_indent(current);
+//		}
+//		//------------------------------------------------------------------------
+//		//------------------------------------------------------------------------
+//		
+//	}
 	
 	private void printOffspring(HashMap<Genotype, Double> offspring) {
 		String number = "|Num ";
@@ -1238,82 +1244,82 @@ public class Population {
 		
 	}
 	
-	private void survive_poisson(GenerationRecord current) {
-
-		int numSurvived;
-		int totalAdults = 0; 
-		double crash;
-		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-
-		if (DEBUG_SURVIVAL && populationID == 0) {
-			System.out.println();
-			printGenoNum_indent(current);
-			System.out.println();
-		}
-		
-		//Calculate the number of each genotype surviving
-		for (Genotype gt: Genotype.getValues()) {
-			//Typecasting to int in java is analogous to flooring
-			int n = current.getGenotypeSubpopulationSize(gt);
-			double lambda = sp.getSurvivalRate(gt) * (double) n;
-			numSurvived = Utilities.getPoisson(lambda);
-
-			//----------------------------------------------------------------------------
-			//----------------------------------------------------------------------------
-			if (DEBUG_SURVIVAL && populationID == 0) {
-				System.out.println("     [ " + gt.toString() + " ]");
-				System.out.print("       ");
-				System.out.println("number of genotype " + gt.toString() + ": " + n);
-				System.out.print("       ");
-				System.out.println("survival rate of genotype " + gt.toString() + ": " + sp.getSurvivalRate(gt));
-				System.out.print("       ");
-				System.out.println("expected number of " + gt.toString() + " survived: " + lambda);
-				System.out.print("       ");
-				System.out.println("number of " + gt.toString() + " survived: " + numSurvived);
-			}
-			//----------------------------------------------------------------------------
-			//----------------------------------------------------------------------------
-			
-		
-			if (numSurvived > n){
-				numSurvived = n;
-			}
-			
-			
-			current.setGenotypeSubpopulationSize(gt, numSurvived);
-			current.setDeaths(gt, n - numSurvived);
-			totalAdults += numSurvived;
-		}
-		
-		//----------------------------------------------------------------------------
-		//----------------------------------------------------------------------------
-		if (DEBUG_SURVIVAL && populationID == 0) {
-			System.out.println();
-			System.out.println("     RESULT POP: ");
-			printGenoNum_indent(current);
-		}
-		//----------------------------------------------------------------------------
-		//----------------------------------------------------------------------------
-		
-		//Kill off populations if larger than carrying capacity
-		if (totalAdults > sp.getPopCapacity()) {
-			crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
-			for (Genotype gt: Genotype.getValues()) {
-				current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
-			}
-			//----------------------------------------------------------------------------
-			//----------------------------------------------------------------------------
-			if (DEBUG_SURVIVAL && populationID == 0) {
-				System.out.println();
-				System.out.print("     ");
-				System.out.println("Scale the subpop sizes since pop. size is larger than carrying capacity.");
-				printGenoNum_indent(current);
-			}
-			//----------------------------------------------------------------------------
-			//----------------------------------------------------------------------------		
-		}
-		
-	}
+//	private void survive_poisson(GenerationRecord current) {
+//
+//		int numSurvived;
+//		int totalAdults = 0; 
+//		double crash;
+//		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+//
+//		if (DEBUG_SURVIVAL && populationID == 0) {
+//			System.out.println();
+//			printGenoNum_indent(current);
+//			System.out.println();
+//		}
+//		
+//		//Calculate the number of each genotype surviving
+//		for (Genotype gt: Genotype.getValues()) {
+//			//Typecasting to int in java is analogous to flooring
+//			int n = current.getGenotypeSubpopulationSize(gt);
+//			double lambda = sp.getSurvivalRate(gt) * (double) n;
+//			numSurvived = Utilities.getPoisson(lambda);
+//
+//			//----------------------------------------------------------------------------
+//			//----------------------------------------------------------------------------
+//			if (DEBUG_SURVIVAL && populationID == 0) {
+//				System.out.println("     [ " + gt.toString() + " ]");
+//				System.out.print("       ");
+//				System.out.println("number of genotype " + gt.toString() + ": " + n);
+//				System.out.print("       ");
+//				System.out.println("survival rate of genotype " + gt.toString() + ": " + sp.getSurvivalRate(gt));
+//				System.out.print("       ");
+//				System.out.println("expected number of " + gt.toString() + " survived: " + lambda);
+//				System.out.print("       ");
+//				System.out.println("number of " + gt.toString() + " survived: " + numSurvived);
+//			}
+//			//----------------------------------------------------------------------------
+//			//----------------------------------------------------------------------------
+//			
+//		
+//			if (numSurvived > n){
+//				numSurvived = n;
+//			}
+//			
+//			
+//			current.setGenotypeSubpopulationSize(gt, numSurvived);
+//			current.setDeaths(gt, n - numSurvived);
+//			totalAdults += numSurvived;
+//		}
+//		
+//		//----------------------------------------------------------------------------
+//		//----------------------------------------------------------------------------
+//		if (DEBUG_SURVIVAL && populationID == 0) {
+//			System.out.println();
+//			System.out.println("     RESULT POP: ");
+//			printGenoNum_indent(current);
+//		}
+//		//----------------------------------------------------------------------------
+//		//----------------------------------------------------------------------------
+//		
+//		//Kill off populations if larger than carrying capacity
+//		if (totalAdults > sp.getPopCapacity()) {
+//			crash = (double)(sp.getCrashCapacity()) / (double)(totalAdults);
+//			for (Genotype gt: Genotype.getValues()) {
+//				current.setGenotypeSubpopulationSize(gt, (int)(current.getGenotypeSubpopulationSize(gt) * crash));
+//			}
+//			//----------------------------------------------------------------------------
+//			//----------------------------------------------------------------------------
+//			if (DEBUG_SURVIVAL && populationID == 0) {
+//				System.out.println();
+//				System.out.print("     ");
+//				System.out.println("Scale the subpop sizes since pop. size is larger than carrying capacity.");
+//				printGenoNum_indent(current);
+//			}
+//			//----------------------------------------------------------------------------
+//			//----------------------------------------------------------------------------		
+//		}
+//		
+//	}
 
 	private void printGenoNum(GenerationRecord record) {
 		String genoNum =   "|Number         ";
@@ -1569,114 +1575,114 @@ public class Population {
 		}
 	}
 	
-	private void mutate_poisson(GenerationRecord current) {
-
-		final SessionParameters sp = DataManager.getInstance().getSessionParams();
-
-		// Containers to hold temporary values used more than once
-		int totalMutations;
-		double rawMutations;
-		int numMutations;
-		int adjustedMutations;
-		double ratio;
-		HashMap<Genotype, Integer> contrib;
-
-		// For all possible combinations of genotypes...
-		for (Genotype from : Genotype.getValues()) {
-			contrib = new HashMap<Genotype, Integer>();
-			totalMutations = 0;
-			
-			if (DEBUG_MUTATION && populationID == 0) {
-				System.out.println();
-				printGenoNum_indent(current);
-			}
-			
-			for (Genotype to : Genotype.getValues()) {
-				double lambda = current.getGenotypeSubpopulationSize(from) * sp.getMutationRate(from, to);
-				rawMutations = Utilities.getPoisson(lambda);
-				numMutations = (int)Math.round(rawMutations);
-
-				// Ensure rng did not produce negative value
-				if (numMutations < 0) numMutations = 0;
-
-				totalMutations += numMutations;
-				contrib.put(to, numMutations);
-				
-				//------------------------------------------------------------
-				//------------------------------------------------------------
-				if (DEBUG_MUTATION && populationID == 0) {
-					System.out.println();
-					System.out.print("     ");
-					System.out.println("[ " + from.toString() + " -> " + to.toString() + " ]");
-					System.out.print("        ");
-					System.out.println("mutation rate from " + from.toString() + " to " + to.toString() 
-										+ ": " + sp.getMutationRate(from, to));
-					System.out.print("        ");
-					System.out.println("expected number of mutation from " + from.toString() + " to " + to.toString() 
-										+ ": " + lambda);
-					System.out.print("        ");
-					System.out.println("raw number of " + from.toString() + " -> " + to.toString() + 
-							": " + rawMutations);
-					System.out.print("        ");
-					System.out.println("rounded number of " + from.toString() + " -> " + to.toString() + 
-							"(before adjustment) : " + numMutations);
-				}
-				//------------------------------------------------------------
-				//------------------------------------------------------------
-			}
-
-			// If no mutations happened, move on to the next genotype
-			if (totalMutations == 0) 
-			{
-				for (Genotype to : Genotype.getValues()) {
-					current.setMutationCount(from, to, 0);
-				}
-				continue;
-			}
-
-			// Ratio to scale mutations by to keep population size constant
-			ratio = (double) current.getGenotypeSubpopulationSize(from) / (double)totalMutations;
-			
-			//------------------------------------------------------------
-			//------------------------------------------------------------
-			if (DEBUG_MUTATION && populationID == 0) {
-				System.out.println();
-				mutationTable_indent(contrib, from);
-				System.out.println("     scale mutations to keep population size constant");
-			}
-			//------------------------------------------------------------
-			//------------------------------------------------------------
-			
-			for (Genotype to : Genotype.getValues()) {
-				//if (to == from) continue;
-
-				// Scale mutation count appropriately
-				adjustedMutations = (int)Math.round(ratio * contrib.get(to));
-
-				// Adjust subpopulation counts
-				current.setMutationCount(from, to, adjustedMutations);
-				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - adjustedMutations);
-				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + adjustedMutations);
-
-				//----------------------------------------------------------------------------
-				//----------------------------------------------------------------------------
-				if (DEBUG_MUTATION && populationID == 0) {
-					System.out.print("        ");
-					System.out.println("number of " + from.toString() + " -> " + to.toString() + 
-							"(after adjustment): " + adjustedMutations);
-				}
-				//----------------------------------------------------------------------------
-				//----------------------------------------------------------------------------
-			}
-			
-			if (DEBUG_MUTATION && populationID == 0) {
-				System.out.println();
-				printGenoNum_indent(current);
-				System.out.println("    -------------------------------------------------------------------------");
-			}
-
-		}
-	}
+//	private void mutate_poisson(GenerationRecord current) {
+//
+//		final SessionParameters sp = DataManager.getInstance().getSessionParams();
+//
+//		// Containers to hold temporary values used more than once
+//		int totalMutations;
+//		double rawMutations;
+//		int numMutations;
+//		int adjustedMutations;
+//		double ratio;
+//		HashMap<Genotype, Integer> contrib;
+//
+//		// For all possible combinations of genotypes...
+//		for (Genotype from : Genotype.getValues()) {
+//			contrib = new HashMap<Genotype, Integer>();
+//			totalMutations = 0;
+//			
+//			if (DEBUG_MUTATION && populationID == 0) {
+//				System.out.println();
+//				printGenoNum_indent(current);
+//			}
+//			
+//			for (Genotype to : Genotype.getValues()) {
+//				double lambda = current.getGenotypeSubpopulationSize(from) * sp.getMutationRate(from, to);
+//				rawMutations = Utilities.getPoisson(lambda);
+//				numMutations = (int)Math.round(rawMutations);
+//
+//				// Ensure rng did not produce negative value
+//				if (numMutations < 0) numMutations = 0;
+//
+//				totalMutations += numMutations;
+//				contrib.put(to, numMutations);
+//				
+//				//------------------------------------------------------------
+//				//------------------------------------------------------------
+//				if (DEBUG_MUTATION && populationID == 0) {
+//					System.out.println();
+//					System.out.print("     ");
+//					System.out.println("[ " + from.toString() + " -> " + to.toString() + " ]");
+//					System.out.print("        ");
+//					System.out.println("mutation rate from " + from.toString() + " to " + to.toString() 
+//										+ ": " + sp.getMutationRate(from, to));
+//					System.out.print("        ");
+//					System.out.println("expected number of mutation from " + from.toString() + " to " + to.toString() 
+//										+ ": " + lambda);
+//					System.out.print("        ");
+//					System.out.println("raw number of " + from.toString() + " -> " + to.toString() + 
+//							": " + rawMutations);
+//					System.out.print("        ");
+//					System.out.println("rounded number of " + from.toString() + " -> " + to.toString() + 
+//							"(before adjustment) : " + numMutations);
+//				}
+//				//------------------------------------------------------------
+//				//------------------------------------------------------------
+//			}
+//
+//			// If no mutations happened, move on to the next genotype
+//			if (totalMutations == 0) 
+//			{
+//				for (Genotype to : Genotype.getValues()) {
+//					current.setMutationCount(from, to, 0);
+//				}
+//				continue;
+//			}
+//
+//			// Ratio to scale mutations by to keep population size constant
+//			ratio = (double) current.getGenotypeSubpopulationSize(from) / (double)totalMutations;
+//			
+//			//------------------------------------------------------------
+//			//------------------------------------------------------------
+//			if (DEBUG_MUTATION && populationID == 0) {
+//				System.out.println();
+//				mutationTable_indent(contrib, from);
+//				System.out.println("     scale mutations to keep population size constant");
+//			}
+//			//------------------------------------------------------------
+//			//------------------------------------------------------------
+//			
+//			for (Genotype to : Genotype.getValues()) {
+//				//if (to == from) continue;
+//
+//				// Scale mutation count appropriately
+//				adjustedMutations = (int)Math.round(ratio * contrib.get(to));
+//
+//				// Adjust subpopulation counts
+//				current.setMutationCount(from, to, adjustedMutations);
+//				current.setGenotypeSubpopulationSize(from, current.getGenotypeSubpopulationSize(from) - adjustedMutations);
+//				current.setGenotypeSubpopulationSize(to, current.getGenotypeSubpopulationSize(to) + adjustedMutations);
+//
+//				//----------------------------------------------------------------------------
+//				//----------------------------------------------------------------------------
+//				if (DEBUG_MUTATION && populationID == 0) {
+//					System.out.print("        ");
+//					System.out.println("number of " + from.toString() + " -> " + to.toString() + 
+//							"(after adjustment): " + adjustedMutations);
+//				}
+//				//----------------------------------------------------------------------------
+//				//----------------------------------------------------------------------------
+//			}
+//			
+//			if (DEBUG_MUTATION && populationID == 0) {
+//				System.out.println();
+//				printGenoNum_indent(current);
+//				System.out.println("    -------------------------------------------------------------------------");
+//			}
+//
+//		}
+//	}
 
 	private void mutationTable(HashMap<Genotype, Integer> contrib, Genotype gt) {
 		String mutation = "|Mutations      ";

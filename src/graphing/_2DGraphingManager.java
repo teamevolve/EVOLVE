@@ -390,6 +390,7 @@ public class _2DGraphingManager {
 				for (GenerationRecord gr : p.getGenerationHistory()) {
 					series.add(gr.getGenerationNumber(), getDataPoint(gr, at, p));
 				}
+				
 				seriesCollection.addSeries(series);
 				((XYPlot)chart.getPlot()).getRenderer().setBaseStroke(new BasicStroke(2.0f));
 				// need to set up colors for quant types
