@@ -8,7 +8,7 @@ pdf_files := $(shell find src -type f -name '*.pdf')
 pdf_dest := $(patsubst src/%.pdf, build/classes/%.pdf, $(pdf_files))
 rtf_files := $(shell find src -type f -name '*.rtf')
 pdf_dest += $(patsubst src/%.rtf, build/classes/%.pdf, $(rtf_files))
-lib_files := lib/jfreechart-1.0.19.jar lib/orsoncharts-1.5.jar lib/jcommon-1.0.23.jar # $(shell find lib -type f -name '*.jar')
+lib_files := lib/jfreechart-1.0.19.jar lib/jcommon-1.0.23.jar # $(shell find lib -type f -name '*.jar')
 lib_cp := $(shell echo $(lib_files) | sed "s/ /:/g")
 lib_rcts := $(patsubst lib/%.jar, build/recipts/%, $(lib_files))
 
