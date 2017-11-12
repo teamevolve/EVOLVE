@@ -81,13 +81,16 @@ public class CSVExport {
 			ArrayList<GenerationRecord> genHistory = p.getGenerationHistory();
 			for (GenerationRecord rec : genHistory) {
 				int netChange = 0;
-
 				System.out.printf("%d,", rec.getGenerationNumber());
 				System.out.printf("%d,", rec.getPopulationSize());
+				printSubPopSizes(rec);
 
 				printAlleleFreq(rec);
 				printGenotypeFreq(rec);
-				printSubPopSizes(rec);
+
+				printDeltaAlleleFreq(rec, genHistory);
+				printDeltaGenotypeFreq(rec, genHistory);
+				
 				netChange += printBirths(rec);
 
 				if (sp.isMutationChecked())
@@ -98,7 +101,19 @@ public class CSVExport {
 
 				netChange -= printDeaths(rec);
 
-				System.out.printf("%d\n", netChange);
+				System.out.printf("%d,", netChange);
+				
+				printMeanFitAbs(rec);
+				printMeanFitRel(rec);
+				
+				printDeltaMeanFitAbs(rec, genHistory);
+				printDeltaMeanFitRel(rec, genHistory);
+
+				printHetObs(rec);
+				printHetExp(rec);
+				printDeltaHetExp(rec);
+				
+				System.out.println();
 			}
 		}
 		
@@ -165,7 +180,6 @@ public class CSVExport {
 	 */
 	private static void printMutations(GenerationRecord rec) {
 		int total = 0;
-
 		for (Genotype gt1 : Genotype.getValues()) {
 			for (Genotype gt2 : Genotype.getValues()) {
 				if (gt1 == gt2)
@@ -222,6 +236,27 @@ public class CSVExport {
 			System.out.printf("%.2f,", rec.getGenotypeFreq(gt));
 		}
 	}
+	
+	/**
+	 * Prints out information about change in genotype frequency for a single generation.
+	 * 
+	 * @param rec
+	 *            GenerationRecord to pull information from
+	 */
+	private static void printDeltaGenotypeFreq(GenerationRecord rec, ArrayList<GenerationRecord> genHistory) {
+		if (rec.getGenerationNumber() == 0) {
+			for (Genotype gt : Genotype.getValues()) {
+				System.out.print("0,");
+			}
+			return;
+		}
+		
+		GenerationRecord parent = genHistory.get(rec.getGenerationNumber() - 1);
+
+		for (Genotype gt : Genotype.getValues()) {
+			System.out.printf("%.2f,", rec.getGenotypeFreq(gt) - parent.getGenotypeFreq(gt));
+		}
+	}
 
 	/**
 	 * Prints out information about allele frequencies for a single generation.
@@ -230,23 +265,124 @@ public class CSVExport {
 	 *            Generation Record to pull information from
 	 */
 	private static void printAlleleFreq(GenerationRecord rec) {
-		HashMap<Allele, Double> perAllele = new HashMap<Allele, Double>();
+		
 		for (Allele a : Allele.getValues()) {
-			perAllele.put(a, 0.0);
+			System.out.printf("%.2f,", rec.getAlleleFreq(a));
 		}
-
-		for (Genotype gt : Genotype.getValues()) {
-			perAllele.put(gt.getFirstAllele(),
-					perAllele.get(gt.getFirstAllele()) + rec.getGenotypeSubpopulationSize(gt));
-			perAllele.put(gt.getSecondAllele(),
-					perAllele.get(gt.getSecondAllele()) + rec.getGenotypeSubpopulationSize(gt));
+		
+	}
+	
+	/**
+	 * Prints out information about change in allele frequencies for a single generation.
+	 * 
+	 * @param rec
+	 *            Generation Record to pull information from
+	 */
+	private static void printDeltaAlleleFreq(GenerationRecord rec, ArrayList<GenerationRecord> genHistory) {
+		
+		if (rec.getGenerationNumber() == 0) {
+			for (Allele a : Allele.getValues()) {
+				System.out.print("0,");
+			}
+			return;
 		}
-
+		
+		GenerationRecord parent = genHistory.get(rec.getGenerationNumber() - 1);
 		for (Allele a : Allele.getValues()) {
-			System.out.printf("%.2f,", perAllele.get(a) / (rec.getPopulationSize() * 2));
+			System.out.printf("%.2f,", rec.getAlleleFreq(a) - parent.getAlleleFreq(a));
 		}
 	}
 
+	/**
+	 * Prints out information about mean absolute fitness for a single generation.
+	 * 
+	 * @param rec
+	 *            Generation Record to pull information from
+	 */
+	private static void printMeanFitAbs(GenerationRecord rec) {
+		
+		System.out.printf("%.2f,", rec.getMeanFitAbs());	
+		
+	}
+	
+	/**
+	 * Prints out information about change in mean absolute fitness for a single generation.
+	 * 
+	 * @param rec
+	 *            Generation Record to pull information from
+	 */
+	private static void printDeltaMeanFitAbs(GenerationRecord rec, ArrayList<GenerationRecord> genHistory) {
+		if (rec.getGenerationNumber() == 0) {
+			System.out.print("0,");
+			return;
+		}
+		GenerationRecord parent = genHistory.get(rec.getGenerationNumber() - 1);
+		System.out.printf("%.2f,", rec.getMeanFitAbs() - parent.getMeanFitAbs());
+	}
+	
+	/**
+	 * Prints out information about mean relative fitness for a single generation.
+	 * 
+	 * @param rec
+	 *            Generation Record to pull information from
+	 */
+	private static void printMeanFitRel(GenerationRecord rec) {
+		
+		System.out.printf("%.2f,", rec.getMeanFitRel());	
+		
+	}
+	
+	/**
+	 * Prints out information about change in mean relative fitness for a single generation.
+	 * 
+	 * @param rec
+	 *            Generation Record to pull information from
+	 */
+	private static void printDeltaMeanFitRel(GenerationRecord rec, ArrayList<GenerationRecord> genHistory) {
+		if (rec.getGenerationNumber() == 0) {
+			System.out.print("0,");
+			return;
+		}
+		GenerationRecord parent = genHistory.get(rec.getGenerationNumber() - 1);
+		System.out.printf("%.2f,", rec.getMeanFitRel() - parent.getMeanFitRel());
+	}
+
+	/**
+	 * Prints out information about observed heteozygosity for a single generation.
+	 * 
+	 * @param rec
+	 *            Generation Record to pull information from
+	 */
+	private static void printHetObs(GenerationRecord rec) {
+		
+		System.out.printf("%.2f,", rec.getHetObs());	
+		
+	}
+	
+	/**
+	 * Prints out information about expected heteozygosity for a single generation.
+	 * 
+	 * @param rec
+	 *            Generation Record to pull information from
+	 */
+	private static void printHetExp(GenerationRecord rec) {
+		
+		System.out.printf("%.2f,", rec.getHetExp());	
+		
+	}
+	
+	/**
+	 * Prints out information about change in heteozygosity for a single generation.
+	 * 
+	 * @param rec
+	 *            Generation Record to pull information from
+	 */
+	private static void printDeltaHetExp(GenerationRecord rec) {
+		
+		System.out.printf("%.2f,", rec.getDeltaHetExp());	
+		
+	}
+	
 	/**
 	 * Prints out the header for each population entry in the output.
 	 * 
@@ -261,6 +397,10 @@ public class CSVExport {
 		System.out.printf("Pop. # %d\n", popID);
 		System.out.print("Gen. #, Pop. Size,");
 
+		for (Genotype gt : Genotype.getValues()) {
+			System.out.printf("# %s,", gt.toString());
+		}
+		
 		for (Allele a : Allele.getValues()) {
 			System.out.printf("Freq.%s,", a.toString());
 		}
@@ -269,10 +409,14 @@ public class CSVExport {
 			System.out.printf("Freq.%s,", gt.toString());
 		}
 
-		for (Genotype gt : Genotype.getValues()) {
-			System.out.printf("# %s,", gt.toString());
+		for (Allele a : Allele.getValues()) {
+			System.out.printf("Delta Freq.%s,", a.toString());
 		}
-
+		
+		for (Genotype gt : Genotype.getValues()) {
+			System.out.printf("Delta Freq.%s,", gt.toString());
+		}
+		
 		for (Genotype gt : Genotype.getValues()) {
 			System.out.printf("# %s Born,", gt.toString());
 		}
@@ -312,7 +456,10 @@ public class CSVExport {
 
 		System.out.print("Total Deaths, ");
 
-		System.out.println("Net Pop Change");
+		System.out.print("Net Pop Change,");
+		
+		System.out.println("MeanFitAbs,MeanFitRel,Delta MeanFitAbs,Delta MeanFitRel,HetObs,HetExp,Delta HetExp");
+
 	}
 	
 	public void printLabInfo() {

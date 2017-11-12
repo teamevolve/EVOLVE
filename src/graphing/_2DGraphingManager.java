@@ -619,6 +619,7 @@ public class _2DGraphingManager {
 			return gr.getGenotypeFreq(((FrequencyType)type).getGenotype());
 		}
 		
+		
 		else if (((FrequencyType) type).isDelta_Allele()) {
 			if (gr == p.getLastGeneration()) return 0;
 			
@@ -649,6 +650,58 @@ public class _2DGraphingManager {
 				}
 			}
 			return (total2 / (gr2.getPopulationSize() * 2)) - old_freq;
+		}
+		
+		// expected heterozygosity
+		else if (type == StatsType.EXP_HET) { 
+			double total = 1.0;
+			for (Allele a1: Allele.getValues()) {
+				total -= (DataManager.getInstance().getSessionParams().getAlleleFrequency(a1)) * 
+						 (DataManager.getInstance().getSessionParams().getAlleleFrequency(a1));
+			}
+			return total;
+		}
+		
+		// observed heterozygosity
+		else if (type == StatsType.OBS_HET) {
+			double total = 0.0;
+			for (Genotype gt: Genotype.getValues()) {
+				if (gt.getFirstAllele() != gt.getSecondAllele())
+					total += gr.getGenotypeFreq(gt);
+			}
+			return total;
+		}
+		
+		// delta heterozygosity
+		else if (type == StatsType.D_HET) {
+			double total = 1.0;
+			for (Allele a1: Allele.getValues()) {
+				total -= (DataManager.getInstance().getSessionParams().getAlleleFrequency(a1)) * 
+						 (DataManager.getInstance().getSessionParams().getAlleleFrequency(a1));
+			}	
+			for (Genotype gt: Genotype.getValues()) {
+				if (gt.getFirstAllele() != gt.getSecondAllele())
+					total -= gr.getGenotypeFreq(gt);
+			}
+			return total;
+		}
+		
+		// Mean Absolute Fitness
+		else if (type == StatsType.MEAN_FIT_ABS) {
+			double total = 0;
+			for (Genotype gt: Genotype.getValues()) {
+				total += gr.getGenotypeFreq(gt) * DataManager.getInstance().getSessionParams().getAbsoluteFitness(gt);
+			}
+			return total;
+		}
+		
+		// Mean Relative Fitness
+		else if (type == StatsType.MEAN_FIT_REL) {
+			double total = 0;
+			for (Genotype gt: Genotype.getValues()) {
+				total += gr.getGenotypeFreq(gt) * DataManager.getInstance().getSessionParams().getRelativeFitness(gt);
+			}
+			return total;		
 		}
 		
 		else {

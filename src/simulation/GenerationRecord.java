@@ -3,6 +3,9 @@ package simulation;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.HashMap;
+
+import shared.Allele;
+import shared.DataManager;
 import shared.Genotype;
 
 
@@ -30,7 +33,13 @@ public class GenerationRecord implements Serializable{
 	private HashMap<Genotype, HashMap<Genotype, Integer>> mutations;
 	private HashMap<Genotype, Integer> births;
 	private HashMap<Genotype, Integer> deaths;
-	
+	private HashMap<Allele, Integer> alleleNumber;
+	private double MeanFitAbs;
+	private double MeanFitRel;
+	private double HetObs;
+	private double HetExp;
+	private double DeltaHetExp;
+
 	
 	/**
 	 * Constructor; initializes internal representations and sets IDs
@@ -45,8 +54,14 @@ public class GenerationRecord implements Serializable{
 		mutations = new HashMap<Genotype, HashMap<Genotype, Integer>>();
 		births = new HashMap<Genotype, Integer>();
 		deaths = new HashMap<Genotype, Integer>();
+		alleleNumber = new HashMap<Allele, Integer>();
 		parentPopID = popID;
 		generationNumber = genNum;
+		MeanFitAbs = 0;
+		MeanFitRel = 0;
+		HetObs = 0;
+		HetExp = 0;
+		DeltaHetExp = 0;
 	}
 	
 	
@@ -66,7 +81,7 @@ public class GenerationRecord implements Serializable{
 	public int getParentPopID() {
 		return parentPopID;
 	}
-
+	
 	
 	/**
 	 * Returns the total population size of this generation
@@ -80,7 +95,43 @@ public class GenerationRecord implements Serializable{
 		return populationSize;		
 	}
 	
+	public double getMeanFitAbs() {
+		MeanFitAbs = 0;
+		for (Genotype gt: Genotype.getValues()) {
+			MeanFitAbs += getGenotypeFreq(gt) * DataManager.getInstance().getSessionParams().getAbsoluteFitness(gt);
+		}
+		return MeanFitAbs;
+	}
 	
+	public double getMeanFitRel() {
+		MeanFitRel = 0;
+		for (Genotype gt: Genotype.getValues()) {
+			MeanFitRel += getGenotypeFreq(gt) * DataManager.getInstance().getSessionParams().getRelativeFitness(gt);
+		}
+		return MeanFitRel;
+	}
+	
+	public double getHetObs() {
+		HetObs = 0.0;
+		for (Genotype gt: Genotype.getValues()) {
+			if (gt.getFirstAllele() != gt.getSecondAllele())
+				HetObs += getGenotypeFreq(gt);
+		}
+		return HetObs;
+	}
+	
+	public double getHetExp() {
+		HetExp = 1.0;
+		for (Allele a1: Allele.getValues()) {
+			HetExp -= (DataManager.getInstance().getSessionParams().getAlleleFrequency(a1)) * 
+					 (DataManager.getInstance().getSessionParams().getAlleleFrequency(a1));
+		}
+		return HetExp;
+	}
+	
+	public double getDeltaHetExp() {
+		return HetExp - HetObs;
+	}
 	/**
 	 * Get the frequency of a given genotype for this generation
 	 * 
@@ -89,6 +140,28 @@ public class GenerationRecord implements Serializable{
 	 */
 	public double getGenotypeFreq(Genotype gt) {
 		return (double) genotypeSubpopulationSizes.get(gt) / (double) getPopulationSize();
+	}
+	
+	/**
+	 * Get the frequency of a given allele for this generation
+	 * 
+	 * @param al allele to get frequency of
+	 * @return frequency of given allele for this generation
+	 */
+	public double getAlleleFreq(Allele al) {
+		
+		for (Allele a : Allele.getValues()) {
+			alleleNumber.put(a, 0);
+		}
+		
+		for (Genotype gt : Genotype.getValues()) {
+			alleleNumber.put(gt.getFirstAllele(),
+					alleleNumber.get(gt.getFirstAllele()) + genotypeSubpopulationSizes.get(gt));
+			alleleNumber.put(gt.getSecondAllele(),
+					alleleNumber.get(gt.getSecondAllele()) + genotypeSubpopulationSizes.get(gt));
+		}
+		
+		return (double) alleleNumber.get(al) / (getPopulationSize() * 2);
 	}
 	
 	

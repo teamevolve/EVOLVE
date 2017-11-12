@@ -67,8 +67,8 @@ public class GUI extends JPanel {
 	JFrame errorFrame;
 	JButton okay;
 
-  HeaderPane hp = new HeaderPane();
-  InitPopPane pp = new InitPopPane();
+	HeaderPane hp = new HeaderPane();
+	InitPopPane pp = new InitPopPane();
 	GeneticDriftPane gd = new GeneticDriftPane();
 	SelectionPane sp = new SelectionPane();
 	MutationPane mp = new MutationPane();
