@@ -268,20 +268,9 @@ public class Population {
 		}
 
 		
-		///*DEBUG*/System.out.println(System.currentTimeMillis() - start);
 		// generate Offspring
 		generateOffspring_binomial(current, pairings);
-//
-//		if (BINOMIAL) {
-//			generateOffspring_binomial(current, pairings);
-//		}
-//		else if (POISSON) {
-//			generateOffspring_poisson(current, pairings);
-//		}
-//		else {
-//			generateOffspring(current, pairings);
-//		}
-//		
+
 		//----------DEBUGGING CODE-------------
 		if ((DEBUG_SUMMARY && DEBUG_MIGRATION) || ((DEBUG_SUMMARY || REP_SUM) && populationID == 0)) {
 			System.out.println();
@@ -549,9 +538,6 @@ public class Population {
 				System.out.printf("\n     r1: %.5f   \n", r1);
 				System.out.println("     gt1: " + gt1.toString());
 				printGenoInfo_indent(subpopSizes, probabilities, subProb);
-//				System.out.printf("r1: %.5f   \n", r1);
-//				System.out.println("gt1: " + gt1.toString());
-//				printGenoInfo(subpopSizes, probabilities, subProb);
 			}
 			// ---------------------------------------------------------------
 			// ---------------------------------------------------------------
@@ -649,9 +635,10 @@ public class Population {
 	}
 	
 	private void printPairings(HashMap<Genotype, HashMap<Genotype, Integer>> results) {
-		//System.out.println("Pairings: ");		
+		
 		String pairingStr = "";
 		String valueStr = "";
+		
 		for (Genotype gtA : Genotype.getValues()) {
 			for (Genotype gtB : Genotype.getValues()) {
 				if (!Utilities.isValidPairing(gtA, gtB)) {continue;}					
@@ -659,19 +646,18 @@ public class Population {
 				valueStr = valueStr + String.format("|%-11d", results.get(gtA).get(gtB));
 			}
 		}
-		//System.out.println("*-----------*-----------*-----------*-----------*-----------*-----------*");
-		//System.out.println("Mating Table");
+		
 		System.out.println("*mmmmmmmmmmmmmmmmmmmmmmm---Mating Table---mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm*");
 		System.out.print(pairingStr +"|\n");	
 		System.out.print(valueStr + "|\n");	
 		System.out.println("*mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm*");
-		//System.out.println("*-----------*-----------*-----------*-----------*-----------*-----------*");
 	}
 	
 	private void printPairings_indent(HashMap<Genotype, HashMap<Genotype, Integer>> results) {
-		//System.out.println("Pairings: ");		
+		
 		String pairingStr = "     ";
 		String valueStr = "     ";
+		
 		for (Genotype gtA : Genotype.getValues()) {
 			for (Genotype gtB : Genotype.getValues()) {
 				if (!Utilities.isValidPairing(gtA, gtB)) {continue;}					
@@ -679,77 +665,76 @@ public class Population {
 				valueStr = valueStr + String.format("|%-11d", results.get(gtA).get(gtB));
 			}
 		}
-		//System.out.println("*-----------*-----------*-----------*-----------*-----------*-----------*");
-		//System.out.println("Mating Table");
+
 		System.out.println("     *mmmmmmmmmmmmmmmmmmmmmmm---Mating Table---mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm*");
 		System.out.print(pairingStr +"|\n");	
 		System.out.print(valueStr + "|\n");	
 		System.out.println("     *mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm*");
-		//System.out.println("*-----------*-----------*-----------*-----------*-----------*-----------*");
 	}
 	
 	private void printPref(HashMap<Genotype, Double> start, HashMap<Genotype, Double> end, Genotype gt1) {
+		
 		String prefInterval = "|Prob. Interval ";
 		String genotypes = "|               ";
+		
 		for (Genotype gt : Genotype.getValues())
 		{
 			genotypes += String.format("|%-15s", gt.toString());
 			prefInterval += String.format("|%1$.4f-%2$.4f  ", start.get(gt), end.get(gt));
 		}
-		//System.out.println("*---------------*---------------*---------------*---------------*");
+
 		System.out.println("*ppppppppppppp---Preference Table for " + gt1.toString() +"---ppppppppppppppppppppp*");
 		System.out.print(genotypes + "|\n" + prefInterval + "|\n");
 		System.out.println("*ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp*");
-		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 	
 	private void printPref_indent(HashMap<Genotype, Double> start, HashMap<Genotype, Double> end, Genotype gt1) {
 		String prefInterval = "     |Prob. Interval ";
 		String genotypes = "     |               ";
+		
 		for (Genotype gt : Genotype.getValues())
 		{
 			genotypes += String.format("|%-15s", gt.toString());
 			prefInterval += String.format("|%1$.4f-%2$.4f  ", start.get(gt), end.get(gt));
 		}
-		//System.out.println("*---------------*---------------*---------------*---------------*");
+		
 		System.out.println("     *ppppppppppppp---Preference Table for " + gt1.toString() +"---ppppppppppppppppppppp*");
 		System.out.print(genotypes + "|\n" + prefInterval + "|\n");
 		System.out.println("     *ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp*");
-		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 	
 	private void printGenoInfo(HashMap<Genotype, Integer> subpopSizes, HashMap<Genotype, Double> probabilities, HashMap<Genotype, Double> subProb) {
 		String genoNum =   "|Number         ";
 		String genoRatio = "|Prob. Interval ";
 		String genotypes = "|               ";
+		
 		for (Genotype gt : Genotype.getValues())
 		{
 			genotypes += String.format("|%-15s", gt.toString());
 			genoNum += String.format("|%-15d",subpopSizes.get(gt));
 			genoRatio += String.format("|%1$.4f-%2$.4f  ", subProb.get(gt), probabilities.get(gt));
 		}
-		//System.out.println("*---------------*---------------*---------------*---------------*");
+		
 		System.out.println("*ggggggggggggggggg---Genotype Information---gggggggggggggggggggg*");
 		System.out.print(genotypes + "|\n" + genoNum + "|\n" + genoRatio + "|\n");
 		System.out.println("*ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg*");
-		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 	
 	private void printGenoInfo_indent(HashMap<Genotype, Integer> subpopSizes, HashMap<Genotype, Double> probabilities, HashMap<Genotype, Double> subProb) {
 		String genoNum =   "     |Number         ";
 		String genoRatio = "     |Prob. Interval ";
 		String genotypes = "     |               ";
+		
 		for (Genotype gt : Genotype.getValues())
 		{
 			genotypes += String.format("|%-15s", gt.toString());
 			genoNum += String.format("|%-15d",subpopSizes.get(gt));
 			genoRatio += String.format("|%1$.4f-%2$.4f  ", subProb.get(gt), probabilities.get(gt));
 		}
-		//System.out.println("*---------------*---------------*---------------*---------------*");
+
 		System.out.println("     *ggggggggggggggggg---Genotype Information---gggggggggggggggggggg*");
 		System.out.print(genotypes + "|\n" + genoNum + "|\n" + genoRatio + "|\n");
 		System.out.println("     *ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg*");
-		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 
 	
@@ -757,10 +742,10 @@ public class Population {
 		HashMap<Genotype, Double> offspring = new HashMap<Genotype, Double>();
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 		// initialize the young generation
+		
 		for (Genotype gt : Genotype.getValues()) {
 			offspring.put(gt, 0.0);
 		}
-		
 		
 		for (Genotype gt1 : Genotype.getValues()) {
 			for (Genotype gt2 : Genotype.getValues()) {
@@ -843,9 +828,6 @@ public class Population {
 			System.out.println();
 			System.out.println("results after rounding...");
 			printGenoNum_indent(current);
-//			for (Genotype gt : Genotype.getValues()) {
-//				System.out.println("num of " + gt.toString() + ": " + current.getGenotypeSubpopulationSize(gt));
-//			}
 		}
 		//------------------------------------------------------------------------
 		//------------------------------------------------------------------------
@@ -942,9 +924,6 @@ public class Population {
 			System.out.println();
 			System.out.println("results after rounding...");
 			printGenoNum_indent(current);
-//			for (Genotype gt : Genotype.getValues()) {
-//				System.out.println("num of " + gt.toString() + ": " + current.getGenotypeSubpopulationSize(gt));
-//			}
 		}
 		//------------------------------------------------------------------------
 		//------------------------------------------------------------------------
@@ -1047,31 +1026,31 @@ public class Population {
 	private void printOffspring(HashMap<Genotype, Double> offspring) {
 		String number = "|Num ";
 		String genotypes = "|    ";
+		
 		for (Genotype gt : Genotype.getValues())
 		{
 			genotypes += String.format("|%-10s", gt.toString());
 			number += String.format("|%-10.4f", offspring.get(gt));
 		}
-		//System.out.println("*---------------*---------------*---------------*---------------*");
+		
 		System.out.println("*oooooooo---Offspring Table---oooooooo*");
 		System.out.print(genotypes + "|\n" + number + "|\n");
 		System.out.println("*ooooooooooooooooooooooooooooooooooooo*");
-		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 	
 	private void printOffspring_indent(HashMap<Genotype, Double> offspring) {
 		String number = "     |Num ";
 		String genotypes = "     |    ";
+		
 		for (Genotype gt : Genotype.getValues())
 		{
 			genotypes += String.format("|%-10s", gt.toString());
 			number += String.format("|%-10.4f", offspring.get(gt));
 		}
-		//System.out.println("*---------------*---------------*---------------*---------------*");
+		
 		System.out.println("     *oooooooo---Offspring Table---oooooooo*");
 		System.out.print(genotypes + "|\n" + number + "|\n");
 		System.out.println("     *ooooooooooooooooooooooooooooooooooooo*");
-		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 
 	/**
@@ -1169,6 +1148,21 @@ public class Population {
 		
 	}
 	
+	/**
+	 * Simulates survival of members of a population.  Each allele combination has a
+	 * survival rate that will determine how many live/die, modified by a random number
+	 * generated by a binomial distribution.
+	 * If the population goes over the populationCapacity, we set the population down
+	 * to a crashCapacity level.
+	 * 
+	 *
+	 * @param previous GenerationRecord representing the previous generation
+	 *                 used to calculate data about the new generation
+	 * @param current  GenerationRecord representing the current generation,
+	 *                 will be modified by survive() to reflect death
+	 *
+	 * @author candicezhao
+	 */
 	private void survive_binomial(GenerationRecord current) {
 
 		int numSurvived;
@@ -1244,6 +1238,22 @@ public class Population {
 		
 	}
 	
+	
+	/**
+	 * Simulates survival of members of a population.  Each allele combination has a
+	 * survival rate that will determine how many live/die, modified by a random number
+	 * generated by a poisson distribution.
+	 * If the population goes over the populationCapacity, we set the population down
+	 * to a crashCapacity level.
+	 * 
+	 *
+	 * @param previous GenerationRecord representing the previous generation
+	 *                 used to calculate data about the new generation
+	 * @param current  GenerationRecord representing the current generation,
+	 *                 will be modified by survive() to reflect death
+	 *
+	 * @author candicezhao
+	 */
 //	private void survive_poisson(GenerationRecord current) {
 //
 //		int numSurvived;
@@ -1324,11 +1334,13 @@ public class Population {
 	private void printGenoNum(GenerationRecord record) {
 		String genoNum =   "|Number         ";
 		String genotypes = "|               ";
+		
 		for (Genotype gt : Genotype.getValues())
 		{
 			genotypes += String.format("|%-15s", gt.toString());
 			genoNum += String.format("|%-15d",record.getGenotypeSubpopulationSize(gt));
 		}
+		
 		System.out.println("*nnnnnnnnnnnnnnnnnnnn---Genotype Number---nnnnnnnnnnnnnnnnnnnnnn*");
 		System.out.print(genotypes + "|\n" + genoNum + "|\n");
 		System.out.println("*nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn*");
@@ -1337,11 +1349,13 @@ public class Population {
 	private void printGenoNum_indent(GenerationRecord record) {
 		String genoNum =   "     |Number         ";
 		String genotypes = "     |               ";
+		
 		for (Genotype gt : Genotype.getValues())
 		{
 			genotypes += String.format("|%-15s", gt.toString());
 			genoNum += String.format("|%-15d",record.getGenotypeSubpopulationSize(gt));
 		}
+		
 		System.out.println("     *nnnnnnnnnnnnnnnnnnnn---Genotype Number---nnnnnnnnnnnnnnnnnnnnnn*");
 		System.out.print(genotypes + "|\n" + genoNum + "|\n");
 		System.out.println("     *nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn*");
@@ -1438,8 +1452,7 @@ public class Population {
 			//------------------------------------------------------------
 			
 			for (Genotype to : Genotype.getValues()) {
-				//if (to == from) continue;
-
+				
 				// Scale mutation count appropriately
 				adjustedMutations = (int)Math.round(ratio * contrib.get(to));
 
@@ -1468,6 +1481,18 @@ public class Population {
 		}
 	}
 
+	/**
+	 * Simulates mutations within a population. Each allele combination has a
+	 * mutation rate that will determine how many will mutate, modified by a 
+	 * random number generated by a binomial distribution.
+	 *
+	 * @param previous GenerationRecord representing the previous generation
+	 *                 used to calculate data about the new generation
+	 * @param current  GenerationRecord representing the current generation,
+	 *                 will be modified by mutate() to reflect mutations
+	 *
+	 * @author candicezhao
+	 */
 	private void mutate_binomial(GenerationRecord current) {
 
 		final SessionParameters sp = DataManager.getInstance().getSessionParams();
@@ -1575,6 +1600,18 @@ public class Population {
 		}
 	}
 	
+	/**
+	 * Simulates mutations within a population. Each allele combination has a
+	 * mutation rate that will determine how many will mutate, modified by a 
+	 * random number generated by a poisson distribution.
+	 *
+	 * @param previous GenerationRecord representing the previous generation
+	 *                 used to calculate data about the new generation
+	 * @param current  GenerationRecord representing the current generation,
+	 *                 will be modified by mutate() to reflect mutations
+	 *
+	 * @author candicezhao
+	 */
 //	private void mutate_poisson(GenerationRecord current) {
 //
 //		final SessionParameters sp = DataManager.getInstance().getSessionParams();
@@ -1687,31 +1724,31 @@ public class Population {
 	private void mutationTable(HashMap<Genotype, Integer> contrib, Genotype gt) {
 		String mutation = "|Mutations      ";
 		String genotypes = "|               ";
+		
 		for (Genotype gt1 : Genotype.getValues())
 		{
 			genotypes += String.format("|%-10s", gt1.toString());
 			mutation += String.format("|%-10d", contrib.get(gt1));
 		}
-		//System.out.println("*---------------*---------------*---------------*---------------*");
+
 		System.out.println("*mmmmmmmmmm---Mutation Table for " + gt.toString() +"---mmmmmmmmmm*");
 		System.out.print(genotypes + "|\n" + mutation + "|\n");
 		System.out.println("*mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm*");
-		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 	
 	private void mutationTable_indent(HashMap<Genotype, Integer> contrib, Genotype gt) {
 		String mutation = "     |Mutations      ";
 		String genotypes = "     |               ";
+		
 		for (Genotype gt1 : Genotype.getValues())
 		{
 			genotypes += String.format("|%-10s", gt1.toString());
 			mutation += String.format("|%-10d", contrib.get(gt1));
 		}
-		//System.out.println("*---------------*---------------*---------------*---------------*");
+		
 		System.out.println("     *mmmmmmmmmm---Mutation Table for " + gt.toString() +"---mmmmmmmmmm*");
 		System.out.print(genotypes + "|\n" + mutation + "|\n");
 		System.out.println("     *mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm*");
-		//System.out.println("*---------------*---------------*---------------*---------------*");
 	}
 	
 	

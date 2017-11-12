@@ -95,6 +95,10 @@ public class GenerationRecord implements Serializable{
 		return populationSize;		
 	}
 	
+	/**
+	 * Returns the mean absolute fitness
+	 * @return the mean absolute fitness of generation
+	 */
 	public double getMeanFitAbs() {
 		MeanFitAbs = 0;
 		for (Genotype gt: Genotype.getValues()) {
@@ -103,6 +107,10 @@ public class GenerationRecord implements Serializable{
 		return MeanFitAbs;
 	}
 	
+	/**
+	 * Returns the mean relative fitness
+	 * @return the mean relative fitness of generation
+	 */
 	public double getMeanFitRel() {
 		MeanFitRel = 0;
 		for (Genotype gt: Genotype.getValues()) {
@@ -111,6 +119,10 @@ public class GenerationRecord implements Serializable{
 		return MeanFitRel;
 	}
 	
+	/**
+	 * Returns the observed heterozygosity 
+	 * @return the observed heterozygosity of generation
+	 */
 	public double getHetObs() {
 		HetObs = 0.0;
 		for (Genotype gt: Genotype.getValues()) {
@@ -120,6 +132,10 @@ public class GenerationRecord implements Serializable{
 		return HetObs;
 	}
 	
+	/**
+	 * Returns the expected heterozygosity 
+	 * @return the expected heterozygosity of generation
+	 */
 	public double getHetExp() {
 		HetExp = 1.0;
 		for (Allele a1: Allele.getValues()) {
@@ -129,9 +145,14 @@ public class GenerationRecord implements Serializable{
 		return HetExp;
 	}
 	
+	/**
+	 * Returns the change in expected heterozygosity 
+	 * @return the change in expected heterozygosity of generation
+	 */
 	public double getDeltaHetExp() {
 		return HetExp - HetObs;
 	}
+	
 	/**
 	 * Get the frequency of a given genotype for this generation
 	 * 

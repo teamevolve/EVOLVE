@@ -261,6 +261,14 @@ public class PopulationManager {
 		}
 	}
 
+	
+	/**
+	 * Process interpopulation migrations, modifying populations to reflect
+	 * immigrations and emigrations. Organisms emigrating from one population
+	 * cannot immigrate to their original population, and are distributed as
+	 * evenly as possible among all other populations. 
+	 * Using binomial distribution to add noises.
+	 */
 	public void processMigrations_binomial() {
 		if (DEBUG_MIGRATION) {
 			System.out.println();
@@ -382,11 +390,21 @@ public class PopulationManager {
 		}
 	}
 	
+	
+	/**
+	 * Process interpopulation migrations, modifying populations to reflect
+	 * immigrations and emigrations. Organisms emigrating from one population
+	 * cannot immigrate to their original population, and are distributed as
+	 * evenly as possible among all other populations. 
+	 * Using poisson distribution to add noises.
+	 */
+	
 //	public void processMigrations_poisson() {
 //		if (DEBUG_MIGRATION) {
 //			System.out.println();
 //			System.out.println("---MIGRATION DEBUGGING---\nGENERATION " + (populationList.get(0).getGenerationHistory().size() - 1));
 //		}
+	
 //		// Used to determine how individuals are redistributed, as individuals
 //		// may not immigrate to the population they emigrated from
 //		final double distributeTo = populationList.size() - 1;
@@ -524,19 +542,6 @@ public class PopulationManager {
 	}
 	
 	
-	private void printGenoNum(GenerationRecord record) {
-		String genoNum =   "|Number         ";
-		String genotypes = "|               ";
-		for (Genotype gt : Genotype.getValues())
-		{
-			genotypes += String.format("|%-15s", gt.toString());
-			genoNum += String.format("|%-15d",record.getGenotypeSubpopulationSize(gt));
-		}
-		System.out.println("*-----------------------Genotype Number-------------------------*");
-		System.out.print(genotypes + "|\n" + genoNum + "|\n");
-		System.out.println("*---------------------------------------------------------------*");
-	}
-
 	private void printMigration(HashMap<Genotype, HashMap<Population, Double>> gt_pop_rand,
 								HashMap<Genotype, HashMap<Population, Integer>> gt_pop_num, Genotype gt) {
 		String heading = String.format("|             | rand # | pre-# of $s | emig # | immi # | post-# of $s |", gt.toString());
