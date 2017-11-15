@@ -51,9 +51,11 @@ public class GUI extends JPanel {
 	public static boolean MIG_SUM = false;
 	public static boolean SURV_SUM = false;
 	public static boolean MUT_SUM = false;
-	
+
 	public static boolean BINOMIAL = false;
 	public static boolean POISSON = false;
+
+  public static boolean NEW_GRAPH = false;
 
 	boolean firstRun = true;
 
@@ -226,19 +228,19 @@ public class GUI extends JPanel {
 
 		// add the scrollable pane to the window
 		frame.add(g);
-	    try {
-	      for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-	        if ("Nimbus".equals(info.getName())) {
-	          UIManager.setLookAndFeel(info.getClassName());
-	          break;
-	        }
-	      }
-	    }
-	    catch (Exception e) {
-	      e.printStackTrace();
-	    }
+    try {
+      for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
+      }
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
 
-	    SwingUtilities.updateComponentTreeUI(frame);
+    SwingUtilities.updateComponentTreeUI(frame);
 
 		frame.pack();
 
@@ -254,63 +256,40 @@ public class GUI extends JPanel {
 	}
 
 	public static void main(String[] args) {
-	  try {
-		  String arg = args[0];
-	      switch (arg.toLowerCase()) {
-	    		case "mat":
-	      		DEBUG_MATE = true;
-	      		break;
-	    		case "rep":
-	      		DEBUG_REPRO = true;
-	      		break;
-	    		case "mig":
-	    			DEBUG_MIGRATION = true;
-	    			break;
-	    		case "surv":
-	    			DEBUG_SURVIVAL = true;
-	    			break;
-	    		case "mut":
-	    			DEBUG_MUTATION = true;
-	    			break;
-	    		case "all":
-	    			DEBUG_MATE = true;
-	    			DEBUG_REPRO = true;
-	    			DEBUG_MIGRATION = true;
-	    			DEBUG_SURVIVAL = true;
-	    			DEBUG_MUTATION = true;
-	    			break;
-	    		default:
-	    			break;
-	      }
-	      
-	      String sum = args[1].toLowerCase();
-	      
-	      if (sum.contains("binomial"))
-	    	  	BINOMIAL = true;
-	      else if (sum.contains("poisson"))
-	    	  	POISSON = true;
-	      
-	      if (sum.contains("all")) {
-	      		DEBUG_SUMMARY = true;
-	      		MAT_SUM = true;
-	      		REP_SUM = true;
-	      		MIG_SUM = true;
-	      		SURV_SUM = true;
-	      		MUT_SUM = true;
-	      }
-	      else {
-	    	  	if (sum.contains("mat")) MAT_SUM = true;
-	    	  	if (sum.contains("rep")) REP_SUM = true;
-	    	  	if (sum.contains("mig")) MIG_SUM = true;
-	    	  	if (sum.contains("surv")) SURV_SUM = true;
-	    	  	if (sum.contains("mut")) MUT_SUM = true;
-	      }
-	    }
-	    catch (ArrayIndexOutOfBoundsException e){
-	      //System.out.println("ArrayIndexOutOfBoundsException caught");
-	  	}
-	  	finally {
-	  		createAndShowGUI();
-	  	}
+	  for (String arg: args) {
+      switch (arg.toLowerCase()) {
+    		case "mat":
+      		DEBUG_MATE = true;
+      		break;
+    		case "rep":
+      		DEBUG_REPRO = true;
+      		break;
+    		case "mig":
+    			DEBUG_MIGRATION = true;
+    			break;
+    		case "surv":
+    			DEBUG_SURVIVAL = true;
+    			break;
+    		case "mut":
+    			DEBUG_MUTATION = true;
+    			break;
+    		case "all":
+    			DEBUG_MATE = true;
+    			DEBUG_REPRO = true;
+    			DEBUG_MIGRATION = true;
+    			DEBUG_SURVIVAL = true;
+    			DEBUG_MUTATION = true;
+    			break;
+        case "binomial":
+          BINOMIAL = true;
+        case "poisson":
+          POISSON = true;
+        case "new-graph":
+          NEW_GRAPH = true;
+    		default:
+    			break;
+      }
+    }
+		createAndShowGUI();
 	}
 }
