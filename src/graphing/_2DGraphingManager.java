@@ -64,13 +64,13 @@ import simulation.Population;
   * _2DGraphingManager handles all graphing of two-dimensional charts on a
   * Cartesian plane. This manager does not create the window containing the
   * graph, but, rather, populates it with the chart itself and a control panel
-  * to manipulate the chart. All data used to construct the graph is pulled 
+  * to manipulate the chart. All data used to construct the graph is pulled
   * from DataManager after a simulation has been run._2DGraphingManager is used
   * directly by the GraphingEngine.
-  * 
+  *
   * @see GraphingEngine
   * @see DataManager
-  * 
+  *
   * @author linneasahlberg
   * @author ericscollins
   */
@@ -86,8 +86,8 @@ public class _2DGraphingManager {
 	/** Dimensions of exported image of chart **/
 	private static final int EXPORT_WIDTH = 960;
 	private static final int EXPORT_HEIGHT = 540;
-	/** 
-	 * Default value of bounds on x and y axis. In the case that a bound is 
+	/**
+	 * Default value of bounds on x and y axis. In the case that a bound is
 	 * default, the graphing library chooses best fit bounds.
 	 */
 	private static final String DEFAULT_BOUND = "";
@@ -97,25 +97,25 @@ public class _2DGraphingManager {
 	private static final Class<?> DEFAULT_ACTIVE_SECTION = FrequencyType.class;
 	private Container win = null;
 	private ChartPanel panel = null;
-	private boolean usingFrequencies = true; 
-	
+	private boolean usingFrequencies = true;
+
 	/** Enables singelton class **/
 	private static _2DGraphingManager instance = null;
-	
-	
+
+
 	/**
 	 * Enable singelton class.
-	 * 
+	 *
 	 * @return singelton instance of _2DGraphingManager.
-	 * 
+	 *
 	 */
 	public static _2DGraphingManager getInstance() {
 		if (instance == null)
 			instance = new _2DGraphingManager();
 		return instance;
 	}
-	
-	
+
+
 	/**
 	 * Private constructor enables singleton class.
 	 */
@@ -124,9 +124,9 @@ public class _2DGraphingManager {
 			DEFAULT_RANGE_METRIC.add(FrequencyType.toEnum(a));
 		}
 	}
-	 
+
 	/**
-	 * Resets the class to enable default axis types when 
+	 * Resets the class to enable default axis types when
 	 * switching between 2/3 alleles without restarting
 	 * GUI.
 	 */
@@ -134,13 +134,13 @@ public class _2DGraphingManager {
 		instance = null;
 		DEFAULT_RANGE_METRIC.clear();
 	}
-	
+
 	/**
 	 * Constructs the graph and control panel and adds them to a given
 	 * container.
-	 * 
+	 *
 	 * @param container container to build graph and control panel in
-	 * 
+	 *
 	 */
 	public void construct(Container container) {
 		win = container;
@@ -148,33 +148,33 @@ public class _2DGraphingManager {
 		updateSeries(DEFAULT_RANGE_METRIC, DEFAULT_BOUND, DEFAULT_BOUND, DEFAULT_BOUND, DEFAULT_BOUND);
 		win.add(generateControlPanel(), BorderLayout.WEST);
 	}
-	
-	
+
+
 	/**
-	 * Generates panel containing range switching mechanism and axis bound 
+	 * Generates panel containing range switching mechanism and axis bound
 	 * manipulation.
-	 * 
+	 *
 	 * @return panel containing control panel
-	 * 
+	 *
 	 */
 	private JPanel generateControlPanel() {
 		JPanel containerPanel = new JPanel();
-		
+
 		containerPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		ButtonGroup graphingTypes = new ButtonGroup();
-			
+
 		JRadioButton quantitiesButton = new JRadioButton("Graph Quantities");
 		quantitiesButton.setSelected(!usingFrequencies);
 		graphingTypes.add(quantitiesButton);
-		
-		
+
+
 		JPanel quantitiesPanel = new JPanel();
 		quantitiesPanel.setLayout(new BoxLayout(quantitiesPanel, BoxLayout.Y_AXIS));
 		quantitiesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		
+
 		for (QuantityType qt : QuantityType.values()) {
 			JCheckBox box = new JCheckBox(qt.toString());
 			if (DEFAULT_RANGE_METRIC.contains(qt)) {
@@ -185,17 +185,17 @@ public class _2DGraphingManager {
 			}
 			quantitiesPanel.add(box);
 		}
-		
-		
+
+
 		JRadioButton frequenciesButton = new JRadioButton("Graph Frequencies");
 		frequenciesButton.setSelected(usingFrequencies);
 		graphingTypes.add(frequenciesButton);
 
-		
+
 		JPanel frequenciesPanel = new JPanel();
 		frequenciesPanel.setLayout(new BoxLayout(frequenciesPanel, BoxLayout.Y_AXIS));
 		frequenciesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		
+
 		for (Allele a : Allele.getValues()) {
 			AxisType at = FrequencyType.toEnum(a);
 			JCheckBox box = new JCheckBox(at.toString());
@@ -216,13 +216,13 @@ public class _2DGraphingManager {
 				box.setEnabled(false);
 			frequenciesPanel.add(box);
 		}
-		
+
 		JPanel rangesPanel = new JPanel();
 		rangesPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c1 = new GridBagConstraints();
 		c1.gridx = 0; c1.gridy = 0;
 		rangesPanel.add(new JLabel("X-Min: "), c1);
-		JTextField domainLowerBound = new JTextField(BOUND_BOX_WIDTH); 
+		JTextField domainLowerBound = new JTextField(BOUND_BOX_WIDTH);
 		c1.gridx++;
 		rangesPanel.add(domainLowerBound, c1);
 		c1.gridx++;
@@ -237,11 +237,11 @@ public class _2DGraphingManager {
 		rangesPanel.add(rangeLowerBound, c1);
 		c1.gridx++;
 		rangesPanel.add(new JLabel("Y-Max: "), c1);
-		JTextField rangeUpperBound  = new JTextField(BOUND_BOX_WIDTH); 
+		JTextField rangeUpperBound  = new JTextField(BOUND_BOX_WIDTH);
 		c1.gridx++;
 		rangesPanel.add(rangeUpperBound, c1);
-		
-		
+
+
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		JButton apply = new JButton("Apply");
 		buttonPanel.add(apply);
@@ -249,7 +249,7 @@ public class _2DGraphingManager {
 		buttonPanel.add(exportImage);
 		JButton exportCSV = new JButton("Export Data");
 		buttonPanel.add(exportCSV);
-		
+
 		quantitiesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for (Component box : quantitiesPanel.getComponents()) {
@@ -257,11 +257,11 @@ public class _2DGraphingManager {
 					// CHECK and disabled quantity buttons that cannot be plotted
 					String text = ((JCheckBox) box).getText();
 					if (!DataManager.getInstance().getSessionParams().isMigrationChecked())
-						if (text.equals("Immigration") 
-									|| text.equals("Emigration") 
-									|| text.equals("Net Migration")) 
+						if (text.equals("Immigration")
+									|| text.equals("Emigration")
+									|| text.equals("Net Migration"))
 							box.setEnabled(false);
-					if (!DataManager.getInstance().getSessionParams().isMutationChecked() && 
+					if (!DataManager.getInstance().getSessionParams().isMutationChecked() &&
 							(text.equals("Num Mutations"))) {
 						box.setEnabled(false);
 					}
@@ -273,7 +273,7 @@ public class _2DGraphingManager {
 				usingFrequencies = false;
 			}
 		});
-		
+
 		frequenciesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for (Component box : frequenciesPanel.getComponents()) {
@@ -286,7 +286,7 @@ public class _2DGraphingManager {
 				usingFrequencies = true;
 			}
 		});
-		
+
 		// Action listener to apply new range and/or axis bounds to chart
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -296,10 +296,10 @@ public class _2DGraphingManager {
 						axisTypes.add(AxisType.toEnum(((JCheckBox) box).getText()));
 					}
 				}
-				updateSeries(axisTypes, rangeLowerBound.getText(), rangeUpperBound.getText(), domainLowerBound.getText(), domainUpperBound.getText());	
+				updateSeries(axisTypes, rangeLowerBound.getText(), rangeUpperBound.getText(), domainLowerBound.getText(), domainUpperBound.getText());
 			}
 		});
-		
+
 		// Action listener to export graph as png
 		exportImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -312,26 +312,26 @@ public class _2DGraphingManager {
 						String prediction = "";
 						String result = "";
 						String discussion = "";
-						if (DataManager.getInstance().getSessionParams().getQuestion().trim().length() > 0) 
+						if (DataManager.getInstance().getSessionParams().getQuestion().trim().length() > 0)
 							question = "     Question: " + DataManager.getInstance().getSessionParams().getQuestion() + "\n";
-						if (DataManager.getInstance().getSessionParams().getDesign().trim().length() > 0) 
+						if (DataManager.getInstance().getSessionParams().getDesign().trim().length() > 0)
 							design ="     Experimental Design: " +  DataManager.getInstance().getSessionParams().getDesign() + "\n";
-						if (DataManager.getInstance().getSessionParams().getPrediction().trim().length() > 0) 
+						if (DataManager.getInstance().getSessionParams().getPrediction().trim().length() > 0)
 							prediction = "     Predictions: " + DataManager.getInstance().getSessionParams().getPrediction() + "\n";
-						if (DataManager.getInstance().getSessionParams().getResults().trim().length() > 0) 
+						if (DataManager.getInstance().getSessionParams().getResults().trim().length() > 0)
 							result = "     Results: " + DataManager.getInstance().getSessionParams().getResults();
-						if (DataManager.getInstance().getSessionParams().getDiscuss().trim().length() > 0) 
+						if (DataManager.getInstance().getSessionParams().getDiscuss().trim().length() > 0)
 							discussion = "     Notes: " + DataManager.getInstance().getSessionParams().getDiscuss();
-						
+
 						String labInfo = question + design  + prediction + result + discussion;
 						TextTitle labinfo = new TextTitle(labInfo, new Font("Serif", Font.PLAIN, 14), Color.black,
 							    RectangleEdge.BOTTOM, HorizontalAlignment.LEFT,
-							    VerticalAlignment.CENTER, RectangleInsets.ZERO_INSETS); 
+							    VerticalAlignment.CENTER, RectangleInsets.ZERO_INSETS);
 						chart.addSubtitle(labinfo);
-						
+
 						// export the graph as a png
 						ChartUtilities.saveChartAsPNG(target, chart, EXPORT_WIDTH, EXPORT_HEIGHT);
-						
+
 						// remove the lab information added
 						chart.removeSubtitle(labinfo);
 					}
@@ -341,7 +341,7 @@ public class _2DGraphingManager {
 				}
 			}
 		});
-		
+
 		exportCSV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EvolveDirector.getInstance().export(ExportFormat.CSV);
@@ -359,31 +359,31 @@ public class _2DGraphingManager {
 		containerPanel.add(rangesPanel,c);
 		c.gridy++;
 		containerPanel.add(buttonPanel,c);
-		
+
 		return containerPanel;
 	}
-		
-	
+
+
 	/**
-	 * Updates visual representation of chart to reflect changes in control 
-	 * panel; also used on first graph generation. 
-	 * 
+	 * Updates visual representation of chart to reflect changes in control
+	 * panel; also used on first graph generation.
+	 *
 	 * @param types what ranges to graph on
 	 * @param ymin minimum value displayed on y-axis
 	 * @param ymax maximum value displayed on y-axis
 	 * @param xmin minimum value displayed on x-axis
 	 * @param xmax maximum value displayed on x-axis
-	 * 
+	 *
 	 */
 	private void updateSeries(ArrayList<AxisType> types, String ymin, String ymax, String xmin, String xmax) {
 		// Indicate to swing that container needs to be rerendered
 		win.invalidate();
-				
+
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		JFreeChart chart = ChartFactory.createXYLineChart(DataManager.getInstance().getSessionParams().getTitle(), "Generation", "", seriesCollection);
 		chart.setTitle(DataManager.getInstance().getSessionParams().getTitle());
-		chart.removeLegend();		
-		
+		chart.removeLegend();
+
 		for (AxisType at : types) {
 			for (Population p : DataManager.getInstance().getSimulationData()) {
 				XYSeries series = new XYSeries(at.toString() + " " + p.getPopID());
@@ -404,14 +404,14 @@ public class _2DGraphingManager {
 		double xMin = (xmin.equals("")) ? domainRange.getLowerBound() : Double.parseDouble(xmin);
 		double xMax = (xmax.equals("")) ? domainRange.getUpperBound() : Double.parseDouble(xmax);
 		domain.setRange(xMin, xMax);
-		
+
 		//set up tick unit
 		long unit = Math.round(xMax/200) * 10;
 		if (unit == 0) unit = Math.round(xMax/100) * 5;
 		if (unit == 0) unit = Math.round(xMax/50) * 2;
 		if (unit == 0) unit = 1;
-		
-		domain.setTickUnit(new NumberTickUnit(unit)); 
+
+		domain.setTickUnit(new NumberTickUnit(unit));
 		domain.setMinorTickCount(5);
 		domain.setMinorTickMarksVisible(true);
 
@@ -425,7 +425,7 @@ public class _2DGraphingManager {
 
 		if (usingFrequencies) {
 			range.setAttributedLabel("Frequency");
-			range.setTickUnit(new NumberTickUnit(0.1)); 
+			range.setTickUnit(new NumberTickUnit(0.1));
 		}
 		else {
 			// set auto tick unit selection on when using number as y-axis
@@ -433,13 +433,13 @@ public class _2DGraphingManager {
 			range.setAutoTickUnitSelection(!usingFrequencies);
 		}
 
-	
+
 		// Create panel and set its dimensions to avoid text stretching on labels
 		ChartPanel newPanel = new ChartPanel(chart);
 		newPanel.setMaximumDrawHeight(GRAPH_RENDER_HEIGHT);
 		newPanel.setMaximumDrawWidth(GRAPH_RENDER_WIDTH);
 
-		
+
 		// Remove existing panel from screen
 		if (panel != null) win.remove(panel);
 
@@ -449,47 +449,47 @@ public class _2DGraphingManager {
 		win.validate();
 	}
 
-	
+
 	/**
 	 * Retrieves a single datapoint from a generation record based on a given
 	 * range component being plotted on.
-	 * 
+	 *
 	 * @param gr   generation record to pull info from
 	 * @param type determines what sort of info is returned
-	 * 
-	 * @return datapoint relating to given AxisType 
-	 * 
+	 *
+	 * @return datapoint relating to given AxisType
+	 *
 	 */
 	private double getDataPoint(GenerationRecord gr, AxisType type, Population p) {
 		if (type == QuantityType.POPSIZE)
 			return gr.getPopulationSize();
-		
-//		else if (type == QuantityType.SUBPOPSIZE_AA) 
+
+//		else if (type == QuantityType.SUBPOPSIZE_AA)
 //			return gr.getGenotypeSubpopulationSize(Genotype.AA);
-//		
-//		else if (type == QuantityType.SUBPOPSIZE_AB) 
+//
+//		else if (type == QuantityType.SUBPOPSIZE_AB)
 //			return gr.getGenotypeSubpopulationSize(Genotype.AB);
-//		
-//		else if (type == QuantityType.SUBPOPSIZE_BB) 
+//
+//		else if (type == QuantityType.SUBPOPSIZE_BB)
 //			return gr.getGenotypeSubpopulationSize(Genotype.BB);
-		
-		else if (type == QuantityType.IMMIGRATION) { 
+
+		else if (type == QuantityType.IMMIGRATION) {
 			double totalImmigrations = 0;
 			for (Genotype gt : Genotype.getValues()) {
 				totalImmigrations += gr.getImmigrationCount(gt);
 			}
 			return totalImmigrations;
 		}
-		
+
 //		else if (type == QuantityType.IMMIGRATION_AA)
 //			return gr.getImmigrationCount(Genotype.AA);
-//		
+//
 //		else if (type == QuantityType.IMMIGRATION_AB)
 //			return gr.getImmigrationCount(Genotype.AB);
-//		
+//
 //		else if (type == QuantityType.IMMIGRATION_BB)
 //			return gr.getImmigrationCount(Genotype.BB);
-		
+
 		else if (type == QuantityType.EMIGRATION) {
 			double totalEmigrations = 0;
 			for(Genotype gt : Genotype.getValues()) {
@@ -497,16 +497,16 @@ public class _2DGraphingManager {
 			}
 			return totalEmigrations;
 		}
-		
+
 //		else if (type == QuantityType.EMIGRATION_AA)
 //			return gr.getEmigrationCount(Genotype.AA);
-//		
+//
 //		else if (type == QuantityType.EMIGRATION_AB)
 //			return gr.getEmigrationCount(Genotype.AB);
-//		
+//
 //		else if (type == QuantityType.EMIGRATION_BB)
 //			return gr.getEmigrationCount(Genotype.BB);
-//		
+//
 		else if (type == QuantityType.NETMIGRATION) {
 			double totalMigrations = 0;
 			for(Genotype gt : Genotype.getValues()) {
@@ -515,16 +515,16 @@ public class _2DGraphingManager {
 			}
 			return totalMigrations;
 		}
-		
-//		else if (type == QuantityType.NETMIGRATION_AA) 
+
+//		else if (type == QuantityType.NETMIGRATION_AA)
 //			return gr.getImmigrationCount(Genotype.AA) - gr.getEmigrationCount(Genotype.AA);
 //
-//		else if (type == QuantityType.NETMIGRATION_AB) 
+//		else if (type == QuantityType.NETMIGRATION_AB)
 //			return gr.getImmigrationCount(Genotype.AB) - gr.getEmigrationCount(Genotype.AB);
 //
-//		else if (type == QuantityType.NETMIGRATION_BB) 
+//		else if (type == QuantityType.NETMIGRATION_BB)
 //			return gr.getImmigrationCount(Genotype.BB) - gr.getEmigrationCount(Genotype.BB);
-//	
+//
 		else if (type == QuantityType.MUTATION) {
 			double totalMutations = 0;
 			for(Genotype from : Genotype.getValues()) {
@@ -534,7 +534,7 @@ public class _2DGraphingManager {
 			}
 			return totalMutations;
 		}
-//		
+//
 //		else if (type == QuantityType.MUTATION_AA) {
 //			double mutations = 0;
 //			for (Genotype to : Genotype.getValues()) {
@@ -543,7 +543,7 @@ public class _2DGraphingManager {
 //			}
 //			return mutations;
 //		}
-//		
+//
 //		else if (type == QuantityType.MUTATION_AB) {
 //			double mutations = 0;
 //			for (Genotype to : Genotype.getValues()) {
@@ -552,7 +552,7 @@ public class _2DGraphingManager {
 //			}
 //			return mutations;
 //		}
-//		
+//
 //		else if (type == QuantityType.MUTATION_BB) {
 //			double mutations = 0;
 //			for (Genotype to : Genotype.getValues()) {
@@ -561,7 +561,7 @@ public class _2DGraphingManager {
 //			}
 //			return mutations;
 //		}
-			
+
 		else if (type == QuantityType.BIRTHS) {
 			double totalBirths = 0;
 			for(Genotype gt : Genotype.getValues()) {
@@ -569,16 +569,16 @@ public class _2DGraphingManager {
 			}
 			return totalBirths;
 		}
-		
+
 //		else if (type == QuantityType.BIRTHS_AA)
 //			return gr.getBirths(Genotype.AA);
-//		
+//
 //		else if (type == QuantityType.BIRTHS_AB)
 //			return gr.getBirths(Genotype.AB);
-//		
+//
 //		else if (type == QuantityType.BIRTHS_BB)
 //			return gr.getBirths(Genotype.BB);
-//			
+//
 		else if (type == QuantityType.DEATHS) {
 			double totalDeaths = 0;
 			for(Genotype gt : Genotype.getValues()) {
@@ -586,21 +586,21 @@ public class _2DGraphingManager {
 			}
 			return totalDeaths;
 		}
-		
+
 //		else if (type == QuantityType.DEATHS_AA)
 //			return gr.getDeaths(Genotype.AA);
-//		
+//
 //		else if (type == QuantityType.DEATHS_AB)
 //			return gr.getDeaths(Genotype.AB);
-//		
+//
 //		else if (type == QuantityType.DEATHS_BB)
 //			return gr.getDeaths(Genotype.BB);
-		
+
 		else if (((FrequencyType) type).isAllele()) {
 			Allele target = ((FrequencyType)type).getAllele();
-			
+
 			double total = 0.0;
-			
+
 			for (Genotype gt : Genotype.getValues()) {
 				if (gt.getFirstAllele() == target) {
 					total += gr.getGenotypeSubpopulationSize(gt);
@@ -612,18 +612,18 @@ public class _2DGraphingManager {
 			return total / (gr.getPopulationSize() * 2);
 		}
 
-	
+
 		else if (((FrequencyType) type).isGenotype()) {
 			return gr.getGenotypeFreq(((FrequencyType)type).getGenotype());
 		}
-		
+
 		else if (((FrequencyType) type).isDelta_Allele()) {
 			if (gr == p.getLastGeneration()) return 0;
-			
+
 			Allele target = ((FrequencyType)type).getAllele();
-			
+
 			double total = 0.0;
-			
+
 			for (Genotype gt : Genotype.getValues()) {
 				if (gt.getFirstAllele() == target) {
 					total += gr.getGenotypeSubpopulationSize(gt);
@@ -633,11 +633,11 @@ public class _2DGraphingManager {
 				}
 			}
 			double old_freq = total / (gr.getPopulationSize() * 2);
-			
+
 			GenerationRecord gr2 = p.getGenerationHistory().get(p.getGenerationHistory().indexOf(gr) + 1);
-			
+
 			double total2 = 0.0;
-			
+
 			for (Genotype gt : Genotype.getValues()) {
 				if (gt.getFirstAllele() == target) {
 					total2 += gr2.getGenotypeSubpopulationSize(gt);
@@ -648,11 +648,11 @@ public class _2DGraphingManager {
 			}
 			return (total2 / (gr2.getPopulationSize() * 2)) - old_freq;
 		}
-		
+
 		else {
 			return Integer.MIN_VALUE;
 		}
-		
-	
+
+
 	}
 }
