@@ -9,18 +9,18 @@ public enum FrequencyType implements AxisType {
 	ALLELE_FREQ_A("Allele Freq. A"),
 	ALLELE_FREQ_B("Allele Freq. B"),
 	ALLELE_FREQ_C("Allele Freq. C"),
-	
+
 	GT_FREQ_AA("Genotype Freq. AA"),
 	GT_FREQ_AB("Genotype Freq. AB"),
 	GT_FREQ_AC("Genotype Freq. AC"),
 	GT_FREQ_BB("Genotype Freq. BB"),
 	GT_FREQ_BC("Genotype Freq. BC"),
 	GT_FREQ_CC("Genotype Freq. CC"),
-	
+
 	D_ALLELE_FREQ_A("Change in Allele Freq. A"),
 	D_ALLELE_FREQ_B("Change in Allele Freq. B"),
 	D_ALLELE_FREQ_C("Change in Allele Freq. C");
-	
+
 	private static final Color ALLELE_A_COLOR = Color.RED;
 	private static final Color ALLELE_B_COLOR = Color.BLUE;
 	private static final Color ALLELE_C_COLOR = Color.GREEN;
@@ -30,10 +30,10 @@ public enum FrequencyType implements AxisType {
 	private static final Color GENOTYPE_BB_COLOR = Color.ORANGE;
 	private static final Color GENOTYPE_BC_COLOR = Color.MAGENTA;
 	private static final Color GENOTYPE_CC_COLOR = Color.YELLOW;
-	
-	
+
+
 	private String value;
-	
+
 	FrequencyType(String value) {
 		this.value = value;
 	}
@@ -41,26 +41,26 @@ public enum FrequencyType implements AxisType {
 	public String toString() {
 		return value;
 	}
-	
+
 	public boolean isGenotype() {
 		if (this == GT_FREQ_AA || this == GT_FREQ_AB || this == GT_FREQ_AC || this == GT_FREQ_BB || this == GT_FREQ_BC || this == GT_FREQ_CC)
 			return true;
 		return false;
 	}
-	
+
 	public boolean isAllele() {
 		if (this == ALLELE_FREQ_A || this == ALLELE_FREQ_B || this == ALLELE_FREQ_C)
 			return true;
 		return false;
 	}
-	
+
 	public boolean isDelta_Allele() {
 		if (this == D_ALLELE_FREQ_A || this == D_ALLELE_FREQ_B || this == D_ALLELE_FREQ_C)
 			return true;
 		return false;
 	}
 
-	
+
 	public Allele getAllele() {
 		switch(this) {
 		case ALLELE_FREQ_A:
@@ -70,7 +70,7 @@ public enum FrequencyType implements AxisType {
 		case ALLELE_FREQ_B:
 			return Allele.B;
 		case D_ALLELE_FREQ_B:
-			return Allele.B;	
+			return Allele.B;
 		case ALLELE_FREQ_C:
 			return Allele.C;
 		case D_ALLELE_FREQ_C:
@@ -79,7 +79,7 @@ public enum FrequencyType implements AxisType {
 			return null;
 		}
 	}
-	
+
 	public Genotype getGenotype() {
 		switch(this) {
 		case GT_FREQ_AA:
@@ -98,7 +98,7 @@ public enum FrequencyType implements AxisType {
 			return null;
 		}
 	}
-	
+
 	public static FrequencyType toEnum(Genotype gt) {
 		switch (gt) {
 		case AA:
@@ -117,8 +117,8 @@ public enum FrequencyType implements AxisType {
 			return null;
 		}
 	}
-	
-	
+
+
 	public static FrequencyType toEnum(Allele a) {
 		switch(a) {
 		case A:
@@ -128,10 +128,10 @@ public enum FrequencyType implements AxisType {
 		case C:
 			return ALLELE_FREQ_C;
 		default:
-			return null;	
+			return null;
 		}
 	}
-	
+
 	public static FrequencyType toEnumDelta(Allele a) {
 		switch(a) {
 		case A:
@@ -141,10 +141,10 @@ public enum FrequencyType implements AxisType {
 		case C:
 			return D_ALLELE_FREQ_C;
 		default:
-			return null;	
+			return null;
 		}
 	}
-	
+
 	public static Color getColor(AxisType type) {
 		if (type == ALLELE_FREQ_A)
 			return ALLELE_A_COLOR;
@@ -166,6 +166,6 @@ public enum FrequencyType implements AxisType {
 			return GENOTYPE_CC_COLOR;
 		else
 			return Color.BLACK;
-		
+
 	}
 }
