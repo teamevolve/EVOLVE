@@ -11,3 +11,7 @@ mutation, migration/gene flow, and sexual selection.
 2017: Candace Zhao, Alex Dennis  
 2016: Eric Collins, Jason Fortunato, David Roccapriore, Linnea Sahlberg,
 Rich Wenner
+
+## Getting Started
+To run the project, simply run `make run`.  
+To generate a jar file, run `make jar`.
