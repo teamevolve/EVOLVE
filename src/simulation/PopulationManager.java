@@ -322,8 +322,8 @@ public class PopulationManager {
 			for (Population pop : populationList) {
 				int n = pop.getLastGeneration().getGenotypeSubpopulationSize(gt);
 				double p = genotypeMigrationRate;
-				numEmigrations = Utilities.getBinomial(n, p);
-				
+				numEmigrations = Utilities.getBinomial(INTERNAL_RNG, n, p);
+				// System.out.println(numEmigrations + "    " + n);
 				// Correct for extreme values from the rng
 				if (numEmigrations < 0) numEmigrations = 0;
 				else if (numEmigrations > n) numEmigrations = n;

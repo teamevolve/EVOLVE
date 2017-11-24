@@ -869,7 +869,7 @@ public class Population {
 						double p = 0.25;
 						int off_num = 0;
 						for(int i = 0 ; i < numOfMates; i++) {
-							off_num += Utilities.getBinomial(n, p);
+							off_num += Utilities.getBinomial(INTERNAL_RNG, n, p);
 						}
 						offspring.put(off, offspring.get(off) + off_num);
 						//------------------------------------------------------------------------
@@ -1181,7 +1181,7 @@ public class Population {
 			//Typecasting to int in java is analogous to flooring
 			double p = sp.getSurvivalRate(gt);
 			int n = current.getGenotypeSubpopulationSize(gt);
-			numSurvived = Utilities.getBinomial(n, p);
+			numSurvived = Utilities.getBinomial(INTERNAL_RNG, n, p);
 
 			//----------------------------------------------------------------------------
 			//----------------------------------------------------------------------------
@@ -1518,7 +1518,7 @@ public class Population {
 			for (Genotype to : Genotype.getValues()) {
 				int n = current.getGenotypeSubpopulationSize(from);
 				double p = sp.getMutationRate(from, to);
-				rawMutations = Utilities.getBinomial(n, p);
+				rawMutations = Utilities.getBinomial(INTERNAL_RNG, n, p);
 				numMutations = (int)Math.round(rawMutations);
 
 				// Ensure rng did not produce negative value

@@ -66,10 +66,12 @@ public class Utilities {
 	 * @return random number with a binomial distribution
 	 * 
 	 */
-	public static int getBinomial(int n, double p) {
+	public static int getBinomial(Random rng, int n, double p) {
+		assert(rng != null);
 		int x = 0;
 		for(int i = 0; i < n; i++) {
-			if(Math.random() < p)
+			double randomNext = rng.nextDouble();
+			if(randomNext < p)
 				x++;
 		}
 		return x;
