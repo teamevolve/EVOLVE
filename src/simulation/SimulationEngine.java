@@ -48,16 +48,16 @@ public class SimulationEngine {
 	public void setOutputStream() {
 		counter = 1;
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
-		String filename = String.format("debug-%s-%d.txt",sp.getTitle(), counter);
+		String filename = String.format("debug-%s-%d.txt",sp.getExportTitle(), counter);
 		File[] files = new File("output").listFiles();
 		for (File file : files) {
 			while (filename.equals(file.getName())) {
 				counter ++;
-				filename = String.format("debug-%s-%d.txt",sp.getTitle(), counter);
+				filename = String.format("debug-%s-%d.txt",sp.getExportTitle(), counter);
 			}
 		}
 		
-		filename = String.format("output/debug-%s-%d.txt",sp.getTitle(), counter);
+		filename = String.format("output/debug-%s-%d.txt",sp.getExportTitle(), counter);
 		try {
 			PrintStream original = new PrintStream(new File(filename));
 			System.setOut(original);

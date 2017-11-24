@@ -275,6 +275,12 @@ public class SessionParameters implements Serializable {
 	public String getTitle() {
 		return title;
 	}
+	
+	public String getExportTitle() {
+		// replace all slash in file name with an underscore
+		title = title.replaceAll("/", "_");
+		return title;
+	}
 
 	public void setTitle(String title) {
 		this.title = title;

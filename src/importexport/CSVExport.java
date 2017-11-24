@@ -465,7 +465,7 @@ public class CSVExport {
 	public void printLabInfo() {
 		SessionParameters sp = DataManager.getInstance().getSessionParams();
 
-		System.out.println("Title,\"" + sp.getTitle() + "\"");
+		System.out.println("Title,\"" + sp.getExportTitle() + "\"");
 		
 		if (sp.getQuestion().trim().length() > 0) 
 			System.out.println("Question,\"" + sp.getQuestion() + "\"");
@@ -480,7 +480,7 @@ public class CSVExport {
 
 		if (!DataManager.getInstance().getSessionParams().isThreeAlleles()) {
 			System.out.println("Seed, #Gen.s, #Pop.s, Freq.A, Freq.B, 1st Pop., Carrying Cap, Post-Crash Size");
-			System.out.printf("%d,%d,%d,%.2f,%.2f,%d,%d,%d\n",
+			System.out.printf("%d,%d,%d,%.5f,%.5f,%d,%d,%d\n",
 						sp.getSeed(), 
 						sp.getNumGens(), 
 						sp.getNumPops(),
@@ -493,11 +493,11 @@ public class CSVExport {
 			System.out.println();
 			// Natural selection
 			System.out.println("NAT. SEL.,AA,AB,BB");
-			System.out.printf("Surv.,%.2f,%.2f,%.2f\n",
+			System.out.printf("Surv.,%.5f,%.5f,%.5f\n",
 					sp.getSurvivalRate(Genotype.AA),
 					sp.getSurvivalRate(Genotype.AB),
 					sp.getSurvivalRate(Genotype.BB));
-			System.out.printf("Repr.,%.2f,%.2f,%.2f\n",
+			System.out.printf("Repr.,%.5f,%.5f,%.5f\n",
 					sp.getReproductionRate(Genotype.AA),
 					sp.getReproductionRate(Genotype.AB),
 					sp.getReproductionRate(Genotype.BB));
@@ -507,7 +507,7 @@ public class CSVExport {
 			
 			// migration
 			if (sp.isMigrationChecked()) {
-				System.out.printf("MIGRATION,%.2f,%.2f,%.2f\n", 
+				System.out.printf("MIGRATION,%.5f,%.5f,%.5f\n", 
 						sp.getMigrationRate(Genotype.AA),
 						sp.getMigrationRate(Genotype.AB),
 						sp.getMigrationRate(Genotype.BB));
@@ -520,10 +520,10 @@ public class CSVExport {
 					double sum = 0.0;
 					System.out.printf("%s Pref.,", gt1.toString());
 					for (Genotype gt2: Genotype.getValues()) {
-						System.out.printf("%.2f,",sp.getSexualSelectionRate(gt1, gt2));
+						System.out.printf("%.5f,",sp.getSexualSelectionRate(gt1, gt2));
 						sum += sp.getSexualSelectionRate(gt1, gt2);
 					}
-					System.out.printf("%.2f",sum);
+					System.out.printf("%.5f",sum);
 					System.out.println();
 				}
 				System.out.println();
@@ -531,14 +531,14 @@ public class CSVExport {
 			
 			if (sp.isMutationChecked()) {
 				System.out.println("MUTATION, A>B, B>A");
-				System.out.printf(",%.2f,%.2f\n",sp.getAlleleMutationRate(Allele.A, Allele.B), sp.getAlleleMutationRate(Allele.B, Allele.A));
+				System.out.printf(",%.5f,%.5f\n",sp.getAlleleMutationRate(Allele.A, Allele.B), sp.getAlleleMutationRate(Allele.B, Allele.A));
 			}
 			System.out.println();
 			System.out.println();
 		}
 		else {			
 			System.out.println("Seed, #Gen.s, #Pop.s, Freq.A, Freq.B, Freq.C, 1st Pop, Carrying Cap, Post-Crash Size");
-			System.out.printf("%d,%d,%d,%.2f,%.2f,%.2f,%d,%d,%d\n",
+			System.out.printf("%d,%d,%d,%.5f,%.5f,%.5f,%d,%d,%d\n",
 					sp.getSeed(), sp.getNumGens(), sp.getNumPops(),
 					sp.getAlleleFrequency(Allele.A), 
 					sp.getAlleleFrequency(Allele.B),
@@ -551,14 +551,14 @@ public class CSVExport {
 			
 			// Natural selection
 			System.out.println("NAT. SEL.,AA,AB,BB,AC,BC,CC");
-			System.out.printf("Surv.,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",
+			System.out.printf("Surv.,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n",
 					sp.getSurvivalRate(Genotype.AA),
 					sp.getSurvivalRate(Genotype.AB),
 					sp.getSurvivalRate(Genotype.BB),
 					sp.getSurvivalRate(Genotype.AC),
 					sp.getSurvivalRate(Genotype.BC),
 					sp.getSurvivalRate(Genotype.CC));
-			System.out.printf("Repr.,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",
+			System.out.printf("Repr.,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n",
 					sp.getReproductionRate(Genotype.AA),
 					sp.getReproductionRate(Genotype.AB),
 					sp.getReproductionRate(Genotype.BB),
@@ -571,7 +571,7 @@ public class CSVExport {
 			
 			// migration
 			if (sp.isMigrationChecked()) {
-				System.out.printf("MIGRATION,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n", 
+				System.out.printf("MIGRATION,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", 
 						sp.getMigrationRate(Genotype.AA),
 						sp.getMigrationRate(Genotype.AB),
 						sp.getMigrationRate(Genotype.BB),
@@ -587,7 +587,7 @@ public class CSVExport {
 					double sum = 0.0;
 					System.out.printf("%s Pref.,", gt1.toString());
 					for (Genotype gt2: Genotype.getValues()) {
-						System.out.printf("%.2f,",sp.getSexualSelectionRate(gt1, gt2));
+						System.out.printf("%.5f,",sp.getSexualSelectionRate(gt1, gt2));
 						sum += sp.getSexualSelectionRate(gt1, gt2);
 					}
 					System.out.print(sum);
@@ -598,7 +598,7 @@ public class CSVExport {
 	
 			if (sp.isMutationChecked()) {
 				System.out.println("MUTATION, A>B, B>A, A>C, C>A, B>C, C>B");
-				System.out.printf(",%.2f,%.2f\n",
+				System.out.printf(",%.5f,%.5f\n",
 						sp.getAlleleMutationRate(Allele.A, Allele.B), 
 						sp.getAlleleMutationRate(Allele.B, Allele.A),
 						sp.getAlleleMutationRate(Allele.A, Allele.C), 

@@ -129,7 +129,7 @@ public class Utilities {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setMultiSelectionEnabled(false);
 		chooser.setFileFilter(new FileNameExtensionFilter("", filters));
-		chooser.setSelectedFile(new File(String.format("%1$s.%2$s", sp.getTitle(), filters[0].toString())));
+		chooser.setSelectedFile(new File(String.format("%1$s.%2$s", sp.getExportTitle(), filters[0].toString())));
 		if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
 			return chooser.getSelectedFile();
 		}
