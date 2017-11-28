@@ -233,7 +233,7 @@ public class CSVExport {
 	 */
 	private static void printGenotypeFreq(GenerationRecord rec) {
 		for (Genotype gt : Genotype.getValues()) {
-			System.out.printf("%.2f,", rec.getGenotypeFreq(gt));
+			System.out.printf("%.5f,", rec.getGenotypeFreq(gt));
 		}
 	}
 	
@@ -254,7 +254,7 @@ public class CSVExport {
 		GenerationRecord parent = genHistory.get(rec.getGenerationNumber() - 1);
 
 		for (Genotype gt : Genotype.getValues()) {
-			System.out.printf("%.2f,", rec.getGenotypeFreq(gt) - parent.getGenotypeFreq(gt));
+			System.out.printf("%.5f,", rec.getGenotypeFreq(gt) - parent.getGenotypeFreq(gt));
 		}
 	}
 
@@ -267,7 +267,7 @@ public class CSVExport {
 	private static void printAlleleFreq(GenerationRecord rec) {
 		
 		for (Allele a : Allele.getValues()) {
-			System.out.printf("%.2f,", rec.getAlleleFreq(a));
+			System.out.printf("%.5f,", rec.getAlleleFreq(a));
 		}
 		
 	}
@@ -289,7 +289,7 @@ public class CSVExport {
 		
 		GenerationRecord parent = genHistory.get(rec.getGenerationNumber() - 1);
 		for (Allele a : Allele.getValues()) {
-			System.out.printf("%.2f,", rec.getAlleleFreq(a) - parent.getAlleleFreq(a));
+			System.out.printf("%.5f,", rec.getAlleleFreq(a) - parent.getAlleleFreq(a));
 		}
 	}
 
@@ -301,7 +301,7 @@ public class CSVExport {
 	 */
 	private static void printMeanFitAbs(GenerationRecord rec) {
 		
-		System.out.printf("%.2f,", rec.getMeanFitAbs());	
+		System.out.printf("%.5f,", rec.getMeanFitAbs());	
 		
 	}
 	
@@ -317,7 +317,7 @@ public class CSVExport {
 			return;
 		}
 		GenerationRecord parent = genHistory.get(rec.getGenerationNumber() - 1);
-		System.out.printf("%.2f,", rec.getMeanFitAbs() - parent.getMeanFitAbs());
+		System.out.printf("%.5f,", rec.getMeanFitAbs() - parent.getMeanFitAbs());
 	}
 	
 	/**
@@ -328,7 +328,7 @@ public class CSVExport {
 	 */
 	private static void printMeanFitRel(GenerationRecord rec) {
 		
-		System.out.printf("%.2f,", rec.getMeanFitRel());	
+		System.out.printf("%.5f,", rec.getMeanFitRel());	
 		
 	}
 	
@@ -344,7 +344,7 @@ public class CSVExport {
 			return;
 		}
 		GenerationRecord parent = genHistory.get(rec.getGenerationNumber() - 1);
-		System.out.printf("%.2f,", rec.getMeanFitRel() - parent.getMeanFitRel());
+		System.out.printf("%.5f,", rec.getMeanFitRel() - parent.getMeanFitRel());
 	}
 
 	/**
@@ -355,7 +355,7 @@ public class CSVExport {
 	 */
 	private static void printHetObs(GenerationRecord rec) {
 		
-		System.out.printf("%.2f,", rec.getHetObs());	
+		System.out.printf("%.5f,", rec.getHetObs());	
 		
 	}
 	
@@ -367,7 +367,7 @@ public class CSVExport {
 	 */
 	private static void printHetExp(GenerationRecord rec) {
 		
-		System.out.printf("%.2f,", rec.getHetExp());	
+		System.out.printf("%.5f,", rec.getHetExp());	
 		
 	}
 	
@@ -379,7 +379,7 @@ public class CSVExport {
 	 */
 	private static void printDeltaHetExp(GenerationRecord rec) {
 		
-		System.out.printf("%.2f,", rec.getDeltaHetExp());	
+		System.out.printf("%.5f,", rec.getDeltaHetExp());	
 		
 	}
 	
