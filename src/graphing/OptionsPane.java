@@ -18,6 +18,8 @@ import javax.swing.Box;
  */
 
 class OptionsPane extends JPanel {
+  SessionParameters sess;
+
   JLabel hAxis, hAxisFreq;
   JRadioButton hAxisGen;
   JRadioButton hAxisFreqA, hAxisFreqB, hAxisFreqC,
@@ -33,6 +35,8 @@ class OptionsPane extends JPanel {
 
   public OptionsPane(SessionParameters sess) {
     super();
+
+    this.sess = sess;
 
     setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -184,7 +188,7 @@ class OptionsPane extends JPanel {
       params.addVerticalAxis(FrequencyType.ALLELE_FREQ_B);
     }
 
-    if (vAxisFreqC.isSelected()) {
+    if (sess.isThreeAlleles() && vAxisFreqC.isSelected()) {
       params.addVerticalAxis(FrequencyType.ALLELE_FREQ_C);
     }
 
@@ -200,16 +204,18 @@ class OptionsPane extends JPanel {
       params.addVerticalAxis(FrequencyType.GT_FREQ_BB);
     }
 
-    if (vAxisFreqAC.isSelected()) {
-      params.addVerticalAxis(FrequencyType.GT_FREQ_AC);
-    }
+    if (sess.isThreeAlleles()) {
+      if (vAxisFreqAC.isSelected()) {
+        params.addVerticalAxis(FrequencyType.GT_FREQ_AC);
+      }
 
-    if (vAxisFreqBC.isSelected()) {
-      params.addVerticalAxis(FrequencyType.GT_FREQ_BC);
-    }
+      if (vAxisFreqBC.isSelected()) {
+        params.addVerticalAxis(FrequencyType.GT_FREQ_BC);
+      }
 
-    if (vAxisFreqCC.isSelected()) {
-      params.addVerticalAxis(FrequencyType.GT_FREQ_CC);
+      if (vAxisFreqCC.isSelected()) {
+        params.addVerticalAxis(FrequencyType.GT_FREQ_CC);
+      }
     }
 
     if (vAxisPop.isSelected()) {
