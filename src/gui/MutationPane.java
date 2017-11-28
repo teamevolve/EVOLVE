@@ -50,12 +50,12 @@ public class MutationPane extends EvoMainPanel {
 		mutCtoALabel = new JLabel("C to A:"); threeAllelesList.add(mutCtoALabel);
 		mutBtoCLabel = new JLabel("B to C:"); threeAllelesList.add(mutBtoCLabel);
 		mutCtoBLabel = new JLabel("C to B:"); threeAllelesList.add(mutCtoBLabel);
-		mutAtoB = new EvoTextField(TEXT_LEN_SHORT);
-		mutBtoA = new EvoTextField(TEXT_LEN_SHORT);
-		mutAtoC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutAtoC);
-		mutCtoA = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutCtoA);
-		mutBtoC = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutBtoC);
-		mutCtoB = new EvoTextField(TEXT_LEN_SHORT); threeAllelesList.add(mutCtoB);
+		mutAtoB = new EvoTextField(TEXT_LEN_LONG);
+		mutBtoA = new EvoTextField(TEXT_LEN_LONG);
+		mutAtoC = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutAtoC);
+		mutCtoA = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutCtoA);
+		mutBtoC = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutBtoC);
+		mutCtoB = new EvoTextField(TEXT_LEN_LONG); threeAllelesList.add(mutCtoB);
 
     EvoPanel titlePane = new EvoPanel();
     titlePane.setBackground(getBackground());
