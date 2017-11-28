@@ -13,6 +13,7 @@ import shared.SessionParameters;
 
 public class GraphWindow extends JPanel {
   OptionsPane options;
+  EvoChartPane graph;
 
   public GraphWindow(SessionParameters sess) {
     super();
@@ -21,6 +22,9 @@ public class GraphWindow extends JPanel {
 
     options = new OptionsPane(sess);
     add(options, BorderLayout.LINE_START);
+
+    graph = new EvoChartPane(sess.getTitle(), options.getGraphParams());
+    add(graph, BorderLayout.CENTER);
   }
 
   public static void createGraphWindow(SessionParameters sess) {

@@ -172,4 +172,50 @@ class OptionsPane extends JPanel {
 
     add(Box.createVerticalGlue());
   }
+
+  public GraphParameters getGraphParams() {
+    GraphParameters params = new GraphParameters();
+
+    if (vAxisFreqA.isSelected()) {
+      params.addVerticalAxis(FrequencyType.ALLELE_FREQ_A);
+    }
+
+    if (vAxisFreqB.isSelected()) {
+      params.addVerticalAxis(FrequencyType.ALLELE_FREQ_B);
+    }
+
+    if (vAxisFreqC.isSelected()) {
+      params.addVerticalAxis(FrequencyType.ALLELE_FREQ_C);
+    }
+
+    if (vAxisFreqAA.isSelected()) {
+      params.addVerticalAxis(FrequencyType.GT_FREQ_AA);
+    }
+
+    if (vAxisFreqAB.isSelected()) {
+      params.addVerticalAxis(FrequencyType.GT_FREQ_AB);
+    }
+
+    if (vAxisFreqBB.isSelected()) {
+      params.addVerticalAxis(FrequencyType.GT_FREQ_BB);
+    }
+
+    if (vAxisFreqAC.isSelected()) {
+      params.addVerticalAxis(FrequencyType.GT_FREQ_AC);
+    }
+
+    if (vAxisFreqBC.isSelected()) {
+      params.addVerticalAxis(FrequencyType.GT_FREQ_BC);
+    }
+
+    if (vAxisFreqCC.isSelected()) {
+      params.addVerticalAxis(FrequencyType.GT_FREQ_CC);
+    }
+
+    if (vAxisPop.isSelected()) {
+      params.addVerticalAxis(QuantityType.POPSIZE);
+    }
+
+    return params;
+  }
 }
