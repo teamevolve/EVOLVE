@@ -467,14 +467,14 @@ public class CSVExport {
 
 		System.out.println("Title,\"" + sp.getExportTitle() + "\"");
 		
-		if (sp.getQuestion().trim().length() > 0) 
-			System.out.println("Question,\"" + sp.getQuestion() + "\"");
-		if (sp.getDesign().trim().length() > 0) 
-			System.out.println("Design,\"" + sp.getDesign() + "\"");
-		if (sp.getResults().trim().length() > 0) 
-			System.out.println("Results,\"" + sp.getResults() + "\"");
-		if (sp.getDiscuss().trim().length() > 0) 
-			System.out.println("Notes,\"" + sp.getDiscuss() + "\"");
+		System.out.println("Question,\"" + sp.getQuestion() + "\"");
+		
+		System.out.println("Design,\"" + sp.getDesign() + "\"");
+			
+		System.out.println("Results,\"" + sp.getResults() + "\"");
+		//if (sp.getDiscuss().trim().length() > 0) 
+		System.out.println("Notes,\"" + sp.getDiscuss() + "\"");
+		
 		System.out.println();
 		System.out.println();
 
@@ -533,10 +533,10 @@ public class CSVExport {
 			}
 			else {
 				for (Genotype gt1 : Genotype.getValues()) {
-					double sum = 1.0;
+					double sum = 0.0;
 					System.out.printf("%s Pref.,", gt1.toString());
 					for (Genotype gt2: Genotype.getValues()) {
-						System.out.printf("%.10f,", sum/3);
+						System.out.printf("%.10f,", sum);
 					}
 					System.out.printf("%.10f",sum);
 					System.out.println();
@@ -625,7 +625,7 @@ public class CSVExport {
 			else {
 				System.out.println("SEXUAL SEL.,,,,,,,Total");
 				for (Genotype gt1 : Genotype.getValues()) {
-					double sum = 1.0;
+					double sum = 0.0;
 					System.out.printf("%s Pref.,", gt1.toString());
 					for (Genotype gt2: Genotype.getValues()) {
 						System.out.printf("%.10f,", sum/6);
