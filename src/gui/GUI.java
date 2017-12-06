@@ -256,40 +256,66 @@ public class GUI extends JPanel {
 	}
 
 	public static void main(String[] args) {
-	  for (String arg: args) {
-      switch (arg.toLowerCase()) {
-    		case "mat":
-      		DEBUG_MATE = true;
-      		break;
-    		case "rep":
-      		DEBUG_REPRO = true;
-      		break;
-    		case "mig":
-    			DEBUG_MIGRATION = true;
-    			break;
-    		case "surv":
-    			DEBUG_SURVIVAL = true;
-    			break;
-    		case "mut":
-    			DEBUG_MUTATION = true;
-    			break;
-    		case "all":
-    			DEBUG_MATE = true;
-    			DEBUG_REPRO = true;
-    			DEBUG_MIGRATION = true;
-    			DEBUG_SURVIVAL = true;
-    			DEBUG_MUTATION = true;
-    			break;
-        case "binomial":
-          BINOMIAL = true;
-        case "poisson":
-          POISSON = true;
-        case "new-graph":
-          NEW_GRAPH = true;
-    		default:
-    			break;
-      }
-    }
-		createAndShowGUI();
+		try {
+			String arg = args[0];
+			switch (arg.toLowerCase()) {
+			case "mat":
+				DEBUG_MATE = true;
+				break;
+		    	case "rep":
+		    		DEBUG_REPRO = true;
+		    		break;
+		    	case	 "mig":
+		    		DEBUG_MIGRATION = true;
+		    		break;
+		    	case "surv":
+		    		DEBUG_SURVIVAL = true;
+		    		break;
+		    	case "mut":
+		    		DEBUG_MUTATION = true;
+		    		break;
+		    	case "all":
+		    		DEBUG_MATE = true;
+		    		DEBUG_REPRO = true;
+		    		DEBUG_MIGRATION = true;
+		    		DEBUG_SURVIVAL = true;
+		    		DEBUG_MUTATION = true;
+		    		break;
+		    	case "new-graph":
+		    		NEW_GRAPH = true;
+		    	default:
+		    		break;
+		     }
+		      
+		    	String sum = args[1].toLowerCase();
+//		      
+//		    	if (sum.contains("binomial"))
+//		    		BINOMIAL = true;
+//		    	else	 if (sum.contains("poisson"))
+//		    	  	POISSON = true;
+//		      
+		    	if (sum.contains("all")) {
+		    		DEBUG_SUMMARY = true;
+		    		MAT_SUM = true;
+		    		REP_SUM = true;
+		    		MIG_SUM = true;
+		    		SURV_SUM = true;
+		    		MUT_SUM = true;
+		    	}
+		    	else {
+		    		if (sum.contains("mat")) MAT_SUM = true;
+		    	  	if (sum.contains("rep")) REP_SUM = true;
+		    	  	if (	sum.contains("mig")) MIG_SUM = true;
+		    	  	if (sum.contains("surv")) SURV_SUM = true;
+		    	  	if (sum.contains("mut")) MUT_SUM = true;
+		    	}
+		}
+		catch (ArrayIndexOutOfBoundsException e){
+			System.out.println("ArrayIndexOutOfBoundsException caught");
+		}
+		finally {
+			createAndShowGUI();
+		}
 	}
+
 }

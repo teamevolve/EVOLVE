@@ -422,12 +422,13 @@ public class _2DGraphingManager {
 		double yMin = (ymin.equals("")) ? (usingFrequencies) ? 0 : rangeRange.getLowerBound() : Double.parseDouble(ymin);
 		double yMax = (ymax.equals("")) ? (usingFrequencies) ? 1 : rangeRange.getUpperBound() : Double.parseDouble(ymax);
 		range.setRange(yMin,yMax);
+		range.setTickUnit(new NumberTickUnit((yMax - yMin) / 10));
 		range.setMinorTickCount(5);
 		range.setMinorTickMarksVisible(true);
 
 		if (usingFrequencies) {
 			range.setAttributedLabel("Frequency");
-			range.setTickUnit(new NumberTickUnit(0.1));
+			//range.setTickUnit(new NumberTickUnit(0.1));
 		}
 		else {
 			// set auto tick unit selection on when using number as y-axis

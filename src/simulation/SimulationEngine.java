@@ -12,6 +12,13 @@ import static gui.GUI.DEBUG_REPRO;
 import static gui.GUI.DEBUG_MIGRATION;
 import static gui.GUI.DEBUG_SURVIVAL;
 import static gui.GUI.DEBUG_MUTATION;
+import static gui.GUI.DEBUG_SUMMARY;
+import static gui.GUI.MAT_SUM;
+import static gui.GUI.REP_SUM;
+import static gui.GUI.MIG_SUM;
+import static gui.GUI.SURV_SUM;
+import static gui.GUI.MUT_SUM;
+
 
 /**
  * SimulationEngine is the top of level class of the simulation component of
@@ -68,7 +75,8 @@ public class SimulationEngine {
 	}
 	
 	public void runSimulation() {
-		if (DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION) {
+		if (DEBUG_MATE || DEBUG_REPRO || DEBUG_MUTATION || DEBUG_SURVIVAL || DEBUG_MIGRATION || DEBUG_SUMMARY 
+				|| MAT_SUM || REP_SUM || MIG_SUM || SURV_SUM || MUT_SUM) {
 			setOutputStream();
 		}
 		for (int i = 0; i < DataManager.getInstance().getSessionParams().getNumGens(); i++) {
