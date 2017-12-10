@@ -381,6 +381,9 @@ public class _2DGraphingManager {
 
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		JFreeChart chart = ChartFactory.createXYLineChart(DataManager.getInstance().getSessionParams().getTitle(), "Generation", "", seriesCollection);
+		// Add a padding to the right of the chart so that the labels are not cutoff 
+		chart.setPadding(new RectangleInsets(0, 0, 0, 15));
+		
 		chart.setTitle(DataManager.getInstance().getSessionParams().getTitle());
 		chart.removeLegend();
 
@@ -414,14 +417,29 @@ public class _2DGraphingManager {
 		if (unit == 0) unit = 1;
 
 		domain.setTickUnit(new NumberTickUnit(unit));
+		
+		//set a thicker stroke for tick marks
+		//major tick marks are set to be longer than minor tick marks
+		domain.setTickMarkStroke(new BasicStroke());
+		domain.setTickMarkOutsideLength(3.5f);
+		domain.setMinorTickMarkOutsideLength(1.5f);
+		
 		domain.setMinorTickCount(5);
 		domain.setMinorTickMarksVisible(true);
-
+		
 		NumberAxis range = (NumberAxis)chart.getXYPlot().getRangeAxis();
 		Range rangeRange = range.getRange();
 		double yMin = (ymin.equals("")) ? (usingFrequencies) ? 0 : rangeRange.getLowerBound() : Double.parseDouble(ymin);
 		double yMax = (ymax.equals("")) ? (usingFrequencies) ? 1 : rangeRange.getUpperBound() : Double.parseDouble(ymax);
+		
 		range.setRange(yMin,yMax);
+		
+		//set a thicker stroke for tick marks
+		//major tick marks are set to be longer than minor tick marks
+		range.setTickMarkStroke(new BasicStroke());
+		range.setTickMarkOutsideLength(3.5f);
+		range.setMinorTickMarkOutsideLength(1.5f);
+		
 		range.setTickUnit(new NumberTickUnit((yMax - yMin) / 10));
 		range.setMinorTickCount(5);
 		range.setMinorTickMarksVisible(true);
