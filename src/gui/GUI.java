@@ -223,7 +223,7 @@ public class GUI extends JPanel {
 
 		//make the window
 		JFrame frame = new JFrame();
-		frame.setTitle("EVOLVE - Hamilton College Computer Science");
+		frame.setTitle("EVOLVE 4b - Hamilton College Computer Science");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// add the scrollable pane to the window

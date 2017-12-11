@@ -252,7 +252,7 @@ public class HeaderPane extends EvoMainPanel {
 			}
 		});
 
-		sexualSelectCheck = new JCheckBox("<html><b>Sexual Selection", true);
+		sexualSelectCheck = new JCheckBox("<html><b>Nonrandom Mating", true);
 		sexualSelectCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GUI.getInstance().ssp.setEnabled(sexualSelectCheck.isSelected());
