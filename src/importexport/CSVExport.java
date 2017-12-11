@@ -518,7 +518,7 @@ public class CSVExport {
 			System.out.println();
 			
 			// sexual selection
-			System.out.println("SEXUAL SEL.,,,,Total");
+			System.out.println("NONRANDOM MAT.,,,,Total");
 			if (sp.isSexSelectChecked()) {
 				for (Genotype gt1 : Genotype.getValues()) {
 					double sum = 0.0;
@@ -609,7 +609,7 @@ public class CSVExport {
 			
 			//sexual selection
 			if (sp.isSexSelectChecked()) {
-				System.out.println("SEXUAL SEL.,,,,,,,Total");
+				System.out.println("NONRANDOM MAT.,,,,,,,Total");
 				for (Genotype gt1 : Genotype.getValues()) {
 					double sum = 0.0;
 					System.out.printf("%s Pref.,", gt1.toString());
@@ -623,7 +623,7 @@ public class CSVExport {
 				System.out.println();
 			}
 			else {
-				System.out.println("SEXUAL SEL.,,,,,,,Total");
+				System.out.println("NONRANDOM MAT.,,,,,,,Total");
 				for (Genotype gt1 : Genotype.getValues()) {
 					double sum = 0.0;
 					System.out.printf("%s Pref.,", gt1.toString());
