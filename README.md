@@ -9,7 +9,7 @@ mutation, migration/gene flow, and sexual selection.
 
 ## Contributors
 2017: Candace Zhao, Alex Dennis  
-2016: Eric Collins, Jason Fortunato, David Roccapriore, Linnea Sahlberg,
+2016: Emilia Collins, Jason Fortunato, David Roccapriore, Linnea Sahlberg,
 Rich Wenner
 
 ## Getting Started
